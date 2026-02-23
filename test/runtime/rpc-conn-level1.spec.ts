@@ -646,6 +646,20 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[9], undefined);
   });
 
+  test("closing import is idempotent and does not emit duplicate release", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importClient = conn.addImport(12);
+
+    importClient.close();
+    importClient.close();
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 12);
+    t.equal(transport.sent[0].release.referenceCount, 1);
+  });
+
   test("closing multi-ref import emits aggregated release count", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
@@ -1330,6 +1344,25 @@ describe("Conn level-1 message dispatch", () => {
     conn.shutdown(new Error("second"));
     t.equal(conn.closed, true);
     t.equal(transport.closeCount, 1);
+  });
+
+  test("shutdown clears disembargo/import/export state", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(71, true);
+    const importEntry = conn.imports[71];
+    const base = importEntry.rc._client as ImportClient;
+    const disembargoId = conn.registerDisembargo(base);
+    base.activateEmbargo(disembargoId);
+    const exportId = conn.addExport(new DummyClient());
+
+    conn.shutdown(new Error("shutdown now"));
+
+    t.equal(Object.keys(conn.imports).length, 0);
+    t.equal(Object.keys(conn.disembargoes).length, 0);
+    t.equal(conn.findExport(exportId), null);
+    // avoid unused local warnings in case TS narrows differently
+    importRef.close();
   });
 
   test("errorClient.close is a no-op", () => {
