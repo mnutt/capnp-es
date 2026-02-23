@@ -17,5 +17,5 @@
     }
   },
   "include": ["src", "test", "playground"],
-  "exclude": ["**/*.d.ts"]
+  "exclude": ["**/*.d.ts", "test/interop/cpp/build/**"]
 }

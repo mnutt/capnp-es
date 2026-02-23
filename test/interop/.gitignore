@@ -1,0 +1,2 @@
+# CMake out-of-source build artifacts for C++ interop fixtures.
+cpp/build/

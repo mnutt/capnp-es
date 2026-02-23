@@ -8,3 +8,4 @@ playground/*.d.ts
 playground/*.js
 
 src/capnp/*.ts
+test/interop/cpp/build/**
