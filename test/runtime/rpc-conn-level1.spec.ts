@@ -368,6 +368,42 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[77], undefined);
   });
 
+  test("resolve for unknown promise releases introduced senderPromise import", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 123;
+    resolve._initCap().senderPromise = 78;
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 78);
+    t.equal(conn.imports[78], undefined);
+  });
+
+  test("resolve for unknown promise releases introduced receiverHosted export ref", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const exported = new DummyClient();
+    const exportId = conn.addExport(exported);
+    conn.addExport(exported); // wireRefs = 2
+
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 123;
+    resolve._initCap().receiverHosted = exportId;
+    conn.handleMessage(m);
+
+    // clientFromCapDescriptor(receiverHosted) adds a local ref and close() drops it.
+    // Net wireRefs remains unchanged at 2.
+    const e = conn.findExport(exportId);
+    t.ok(e);
+    t.equal(e!.wireRefs, 2);
+  });
+
   test("descriptorForClient exports cross-conn in-progress pipeline as senderPromise and emits resolve.cap", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
