@@ -625,12 +625,14 @@ export class Conn {
     }
     const heldRefs = entry.refs;
     const releaseCount = Math.max(0, Math.min(refs, heldRefs));
-    entry.refs -= refs;
+    entry.refs -= releaseCount;
     if (entry.refs > 0) {
       return;
     }
-    if (entry.refs < 0) {
-      this.error(`warning: import ${id} has negative refcount (${entry.refs})`);
+    if (refs > heldRefs) {
+      this.error(
+        `warning: import ${id} release overrun (requested ${refs}, held ${heldRefs})`,
+      );
     }
     this.clearDisembargo(entry.rc._client);
     delete this.imports[id];

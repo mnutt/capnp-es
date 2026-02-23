@@ -891,7 +891,10 @@ describe("Conn level-1 message dispatch", () => {
   test("releaseImport clamps wire release count to held refs", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
-    conn.error = () => {};
+    let warning = "";
+    conn.error = (s) => {
+      warning = s;
+    };
     conn.addImport(13);
 
     conn.releaseImport(13, 5);
@@ -901,6 +904,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].release.id, 13);
     t.equal(transport.sent[0].release.referenceCount, 1);
     t.equal(conn.imports[13], undefined);
+    t.ok(warning.includes("release overrun"));
   });
 
   test("return with releaseParamCaps releases question param caps by ID", () => {
