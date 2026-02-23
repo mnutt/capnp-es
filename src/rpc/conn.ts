@@ -93,7 +93,7 @@ export class Conn {
   imports: { [key: number]: ImportEntry } = {};
   disembargoID = new IDGen();
   disembargoes: { [key: number]: ImportClient } = {};
-  tailCallWaiters: { [key: number]: Array<Question<any, any>> } = {};
+  tailAnswerWaiters: { [key: number]: Array<Question<any, any>> } = {};
 
   onError?: (err?: Error) => void;
   main?: Client;
@@ -338,7 +338,6 @@ export class Conn {
 
         const { content } = results;
         q.fulfill(content);
-        this.fulfillTailWaiters(id, content);
         break;
       }
       case Return.EXCEPTION: {
@@ -347,7 +346,6 @@ export class Conn {
           ? new MethodError(q.method, exc.reason)
           : new RPCError(exc);
         q.reject(err);
-        this.rejectTailWaiters(id, err);
         break;
       }
       case Return.TAKE_FROM_OTHER_QUESTION: {
@@ -356,15 +354,25 @@ export class Conn {
           q.reject(new Error(RPC_BAD_TARGET));
           break;
         }
-        const source = this.findQuestion(otherQuestionId);
-        if (!source || source.state !== QuestionState.IN_PROGRESS) {
+        const source = this.answers[otherQuestionId];
+        if (!source) {
           q.reject(new Error(RPC_BAD_TARGET));
           break;
         }
-        if (!this.tailCallWaiters[otherQuestionId]) {
-          this.tailCallWaiters[otherQuestionId] = [];
+        if (source.done) {
+          if (source.err) {
+            q.reject(source.err);
+          } else if (source.obj) {
+            q.fulfill(source.obj);
+          } else {
+            q.reject(new Error(RPC_BAD_TARGET));
+          }
+          break;
         }
-        this.tailCallWaiters[otherQuestionId].push(q);
+        if (!this.tailAnswerWaiters[otherQuestionId]) {
+          this.tailAnswerWaiters[otherQuestionId] = [];
+        }
+        this.tailAnswerWaiters[otherQuestionId].push(q);
         break;
       }
       case Return.RESULTS_SENT_ELSEWHERE: {
@@ -755,23 +763,23 @@ export class Conn {
     return out;
   }
 
-  fulfillTailWaiters(id: number, value: Pointer): void {
-    const waiters = this.tailCallWaiters[id];
+  fulfillTailAnswerWaiters(id: number, value: Pointer): void {
+    const waiters = this.tailAnswerWaiters[id];
     if (!waiters) {
       return;
     }
-    delete this.tailCallWaiters[id];
+    delete this.tailAnswerWaiters[id];
     for (const waiter of waiters) {
       waiter.fulfill(value);
     }
   }
 
-  rejectTailWaiters(id: number, err: Error): void {
-    const waiters = this.tailCallWaiters[id];
+  rejectTailAnswerWaiters(id: number, err: Error): void {
+    const waiters = this.tailAnswerWaiters[id];
     if (!waiters) {
       return;
     }
-    delete this.tailCallWaiters[id];
+    delete this.tailAnswerWaiters[id];
     for (const waiter of waiters) {
       waiter.reject(err);
     }

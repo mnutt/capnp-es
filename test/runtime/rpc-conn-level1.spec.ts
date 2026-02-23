@@ -377,12 +377,15 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(c.closed, true);
   });
 
-  test("return.takeFromOtherQuestion resolves when source question resolves", async () => {
+  test("return.takeFromOtherQuestion resolves when source answer resolves", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
-    const source = conn.newQuestion();
+    const source = conn.insertAnswer(77);
+    if (!source) {
+      throw new Error("expected source answer");
+    }
+    void source.deferred.promise.catch(() => {});
     const redirected = conn.newQuestion();
-    void source.struct().catch(() => {});
     const redirectedPromise = redirected
       .struct()
       .then(() => {
@@ -394,23 +397,17 @@ describe("Conn level-1 message dispatch", () => {
       const m = new Message().initRoot(RPCMessage);
       const ret = m._initReturn();
       ret.answerId = redirected.id;
-      ret.takeFromOtherQuestion = source.id;
+      ret.takeFromOtherQuestion = 77;
       conn.handleMessage(m);
     }
 
-    {
-      const m = new Message().initRoot(RPCMessage);
-      const ret = m._initReturn();
-      ret.answerId = source.id;
-      ret._initException().reason = "source failed";
-      conn.handleMessage(m);
-    }
+    source.reject(new Error("source failed"));
 
     const redirectedError = await redirectedPromise;
     t.ok(redirectedError.message.includes("source failed"));
     t.equal(transport.sent.length, 2);
-    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
-    t.equal(transport.sent[1].which(), RPCMessage.FINISH);
+    t.ok(transport.sent.some((m) => m.which() === RPCMessage.RETURN));
+    t.ok(transport.sent.some((m) => m.which() === RPCMessage.FINISH));
   });
 
   test("return.resultsSentElsewhere rejects waiting question", async () => {

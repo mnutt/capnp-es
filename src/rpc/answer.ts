@@ -64,6 +64,7 @@ export class AnswerEntry<R extends Struct> {
     if (this.sendResultsElsewhere) {
       ret.resultsSentElsewhere = true;
       this.deferred.resolve(obj);
+      this.conn.fulfillTailAnswerWaiters(this.id, obj);
       this.conn.sendMessage(retmsg);
       return;
     }
@@ -75,6 +76,7 @@ export class AnswerEntry<R extends Struct> {
       this.conn.makeCapTable(ret.segment, (len) => payload._initCapTable(len));
       this.resultCaps = this.conn.collectPayloadSenderHosted(payload);
       this.deferred.resolve(obj);
+      this.conn.fulfillTailAnswerWaiters(this.id, obj);
       this.conn.sendMessage(retmsg);
     } catch (error_) {
       if (!firstErr) {
@@ -124,6 +126,7 @@ export class AnswerEntry<R extends Struct> {
     this.err = err;
     this.done = true;
     this.deferred.reject(err);
+    this.conn.rejectTailAnswerWaiters(this.id, err);
 
     let firstErr: Error | undefined;
     try {
