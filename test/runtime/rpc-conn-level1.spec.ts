@@ -378,6 +378,56 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.findExport(promiseId), null);
   });
 
+  test("reused senderPromise emits exactly one resolve on settlement", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const desc1 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    const desc2 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+
+    conn.descriptorForClient(desc1, pc);
+    conn.descriptorForClient(desc2, pc);
+    t.equal(desc1.senderPromise, desc2.senderPromise);
+
+    const msg = new Message();
+    const out = msg.initRoot(OneCapStruct);
+    out.setCap(new DummyClient());
+    q.fulfill(out as any);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const resolves = transport.sent.filter((m) => m.which() === RPCMessage.RESOLVE);
+    t.equal(resolves.length, 1);
+    t.equal(resolves[0].resolve.promiseId, desc1.senderPromise);
+  });
+
+  test("different transforms on same unresolved question allocate different senderPromises", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+
+    const p1 = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const p2 = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(AnyStruct as any, 0)
+      .getPipeline(Interface as any, 0)
+      .client();
+
+    const d1 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    const d2 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    conn.descriptorForClient(d1, p1);
+    conn.descriptorForClient(d2, p2);
+
+    t.equal(d1.which(), CapDescriptor.SENDER_PROMISE);
+    t.equal(d2.which(), CapDescriptor.SENDER_PROMISE);
+    t.notEqual(d1.senderPromise, d2.senderPromise);
+  });
+
   test("release before senderPromise settlement suppresses outgoing resolve", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
