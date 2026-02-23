@@ -111,7 +111,7 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     a.questionId = this.id;
     transformToPromisedAnswer(a, transform);
     const payload = msgCall._initParams();
-    this.conn.fillParams(payload, call);
+    pipeq.paramCaps = this.conn.fillParams(payload, call);
     this.conn.sendMessage(msg);
     this.addPromise(transform);
     return pipeq;

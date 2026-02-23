@@ -43,6 +43,13 @@ class DummyClient implements Client {
 }
 
 describe("Conn level-1 message dispatch", () => {
+  test("table lookups return null for missing first slot", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    t.equal(conn.findExport(0), null);
+    t.equal(conn.findQuestion(0), null);
+  });
+
   test("resolve is handled via unimplemented echo", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
@@ -101,5 +108,60 @@ describe("Conn level-1 message dispatch", () => {
       t.equal(conn.findExport(id), null);
       t.equal(c.closed, true);
     }
+  });
+
+  test("closing import emits release and drops import entry", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importClient = conn.addImport(9);
+
+    t.ok(conn.imports[9]);
+    importClient.close();
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 9);
+    t.equal(transport.sent[0].release.referenceCount, 1);
+    t.equal(conn.imports[9], undefined);
+  });
+
+  test("return with releaseParamCaps releases question param caps by ID", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const c = new DummyClient();
+    const exportId = conn.addExport(c);
+    const q = conn.newQuestion();
+    q.paramCaps = [exportId];
+    void q.struct().catch(() => {});
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    ret._initException().reason = "failed";
+    conn.handleMessage(m);
+
+    t.equal(conn.findExport(exportId), null);
+    t.equal(c.closed, true);
+  });
+
+  test("finish with releaseResultCaps releases answer result caps by ID", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const c = new DummyClient();
+    const exportId = conn.addExport(c);
+    const a = conn.insertAnswer(55);
+    if (!a) {
+      throw new Error("expected answer slot");
+    }
+    a.resultCaps = [exportId];
+
+    const m = new Message().initRoot(RPCMessage);
+    const fin = m._initFinish();
+    fin.questionId = 55;
+    fin.releaseResultCaps = true;
+    conn.handleMessage(m);
+
+    t.equal(conn.findExport(exportId), null);
+    t.equal(c.closed, true);
   });
 });

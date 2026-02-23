@@ -11,6 +11,7 @@ import { AnswerEntry, Answer } from "./answer";
 import {
   newMessage,
   newFinishMessage,
+  newReleaseMessage,
   newUnimplementedMessage,
   newReturnMessage,
   setReturnException,
@@ -163,7 +164,7 @@ export class Conn {
       const caps = a.resultCaps;
       let i = caps.length;
       while (--i >= 0) {
-        this.releaseExport(i, 1);
+        this.releaseExport(caps[i], 1);
       }
     }
   }
@@ -242,7 +243,7 @@ export class Conn {
 
     if (ret.releaseParamCaps) {
       for (let i = 0; i < q.paramCaps.length; i++) {
-        this.releaseExport(id, 1);
+        this.releaseExport(q.paramCaps[i], 1);
       }
     }
 
@@ -441,8 +442,24 @@ export class Conn {
     return ref;
   }
 
+  releaseImport(id: number, refs: number): void {
+    const entry = this.imports[id];
+    if (!entry) {
+      return;
+    }
+    entry.refs -= refs;
+    if (entry.refs > 0) {
+      return;
+    }
+    if (entry.refs < 0) {
+      this.error(`warning: import ${id} has negative refcount (${entry.refs})`);
+    }
+    delete this.imports[id];
+    this.sendMessage(newReleaseMessage(id, refs));
+  }
+
   findExport(id: number): Export | null {
-    if (id > this.exports.length) {
+    if (id >= this.exports.length) {
       return null;
     }
     return this.exports[id];
@@ -510,7 +527,7 @@ export class Conn {
   findQuestion<P extends Struct, R extends Struct>(
     id: number,
   ): Question<P, R> | null {
-    if (id > this.questions.length) {
+    if (id >= this.questions.length) {
       return null;
     }
     return this.questions[id];
@@ -563,12 +580,13 @@ export class Conn {
   fillParams<P extends Struct, R extends Struct>(
     payload: Payload,
     cl: Call<P, R>,
-  ): void {
+  ): number[] {
     const params = placeParams(cl, payload.content);
     payload.content = params;
     this.makeCapTable(payload.segment, (length) =>
       payload._initCapTable(length),
     );
+    return this.collectPayloadSenderHosted(payload);
   }
 
   makeCapTable(
@@ -588,6 +606,16 @@ export class Conn {
       }
       this.descriptorForClient(desc, client);
     }
+  }
+
+  collectPayloadSenderHosted(payload: Payload): number[] {
+    const out: number[] = [];
+    for (const desc of payload.capTable) {
+      if (desc.which() === CapDescriptor.SENDER_HOSTED) {
+        out.push(desc.senderHosted);
+      }
+    }
+    return out;
   }
 
   // descriptorForClient fills desc for client, adding it to the export

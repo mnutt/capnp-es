@@ -66,6 +66,7 @@ export class AnswerEntry<R extends Struct> {
     let firstErr: Error | undefined;
     try {
       this.conn.makeCapTable(ret.segment, (len) => payload._initCapTable(len));
+      this.resultCaps = this.conn.collectPayloadSenderHosted(payload);
       this.deferred.resolve(obj);
       this.conn.sendMessage(retmsg);
     } catch (error_) {

@@ -37,6 +37,14 @@ export function newReturnMessage(id: number): RPCMessage {
   return m;
 }
 
+export function newReleaseMessage(id: number, referenceCount: number): RPCMessage {
+  const m = newMessage();
+  const rel = m._initRelease();
+  rel.id = id;
+  rel.referenceCount = referenceCount;
+  return m;
+}
+
 export function setReturnException(ret: Return, err: Error): Exception {
   const exc = ret._initException();
   toException(exc, err);

@@ -34,7 +34,7 @@ export class ImportClient implements Client {
     const target = msgCall._initTarget();
     target.importedCap = this.id;
     const payload = msgCall._initParams();
-    this.conn.fillParams(payload, cl);
+    q.paramCaps = this.conn.fillParams(payload, cl);
     // TODO: handle thrown exceptions here?
 
     this.conn.sendMessage(msg);
@@ -43,6 +43,10 @@ export class ImportClient implements Client {
   }
 
   close(): void {
-    // TODO: figure out
+    if (this.closed) {
+      return;
+    }
+    this.closed = true;
+    this.conn.releaseImport(this.id, 1);
   }
 }
