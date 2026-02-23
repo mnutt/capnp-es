@@ -199,13 +199,11 @@ export class Conn {
       // Resolve may race with release. If this promise is already unknown,
       // release any newly-introduced capability immediately.
       if (resolve.which() === Resolve.CAP) {
-        let client: Client | null = null;
         try {
-          client = this.clientFromCapDescriptor(resolve.cap);
+          this.discardResolvedCap(resolve.cap);
         } catch {
           this.sendMessage(newUnimplementedMessage(m));
         }
-        client?.close();
       }
       return;
     }
@@ -218,13 +216,11 @@ export class Conn {
       // Duplicate/late resolve for an already-settled import.
       // Ignore it, but release any newly introduced capability to avoid leaks.
       if (resolve.which() === Resolve.CAP) {
-        let client: Client | null = null;
         try {
-          client = this.clientFromCapDescriptor(resolve.cap);
+          this.discardResolvedCap(resolve.cap);
         } catch {
           this.sendMessage(newUnimplementedMessage(m));
         }
-        client?.close();
       }
       return;
     }
@@ -262,6 +258,7 @@ export class Conn {
         break;
       }
       default: {
+        entry.isPromise = false;
         importClient.setResolved(new ErrorClient(new Error(RPC_UNIMPLEMENTED)));
       }
     }
@@ -975,6 +972,39 @@ export class Conn {
           a,
           promisedAnswerOpsToTransform(recvAns.transform),
         );
+      }
+      default: {
+        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+      }
+    }
+  }
+
+  discardResolvedCap(desc: CapDescriptor): void {
+    switch (desc.which()) {
+      case CapDescriptor.SENDER_HOSTED: {
+        this.sendMessage(newReleaseMessage(desc.senderHosted, 1));
+        return;
+      }
+      case CapDescriptor.SENDER_PROMISE: {
+        this.sendMessage(newReleaseMessage(desc.senderPromise, 1));
+        return;
+      }
+      case CapDescriptor.RECEIVER_HOSTED: {
+        const id = desc.receiverHosted;
+        if (!this.findExport(id)) {
+          throw new Error(format(RPC_UNKNOWN_EXPORT_ID, id));
+        }
+        return;
+      }
+      case CapDescriptor.RECEIVER_ANSWER: {
+        const id = desc.receiverAnswer.questionId;
+        if (!this.answers[id]) {
+          throw new Error(format(RPC_UNKNOWN_ANSWER_ID, id));
+        }
+        return;
+      }
+      case CapDescriptor.NONE: {
+        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
       }
       default: {
         throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
