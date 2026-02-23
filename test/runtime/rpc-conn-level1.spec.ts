@@ -8,7 +8,7 @@ import {
   Return_Which,
 } from "src/capnp/rpc";
 import { Client } from "src/rpc/client";
-import { Struct } from "src/serialization";
+import { Struct, ObjectSize, utils } from "src/serialization";
 import { AnyStruct } from "src/serialization/pointers/struct";
 import { Call } from "src/rpc/call";
 import { Answer } from "src/rpc/answer";
@@ -111,6 +111,19 @@ const TEST_METHOD: Method<any, any> = {
   ParamsClass: AnyStruct as any,
   ResultsClass: AnyStruct as any,
 };
+
+class OneCapStruct extends Struct {
+  static readonly _capnp = {
+    displayName: "OneCapStruct",
+    id: "0000000000000001",
+    size: new ObjectSize(0, 1),
+  };
+
+  setCap(client: Client): void {
+    const capId = this.segment.message.addCap(client);
+    utils.setInterfacePointer(capId, utils.getPointer(0, this));
+  }
+}
 
 describe("Conn level-1 message dispatch", () => {
   test("table lookups return null for missing first slot", () => {
@@ -407,6 +420,44 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(c.closed, true);
   });
 
+  test("return.releaseParamCaps releases cap referenced in serialized params", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(90);
+    const paramCap = new DummyClient();
+
+    const answer = importRef.call({
+      method: {
+        interfaceId: 0xabcden,
+        methodId: 0,
+        ParamsClass: OneCapStruct as any,
+        ResultsClass: AnyStruct as any,
+      },
+      paramsFunc: (params: OneCapStruct) => {
+        params.setCap(paramCap);
+      },
+    });
+    void answer.struct().catch(() => {});
+
+    const callMsg = transport.sent[0];
+    t.equal(callMsg.which(), RPCMessage.CALL);
+    const questionId = callMsg.call.questionId;
+    const q = conn.findQuestion(questionId);
+    t.ok(q);
+    t.equal(q!.paramCaps.length, 1);
+    const capExportId = q!.paramCaps[0];
+    t.notEqual(conn.findExport(capExportId), null);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = questionId;
+    ret._initException().reason = "done";
+    conn.handleMessage(m);
+
+    t.equal(conn.findExport(capExportId), null);
+    t.equal(paramCap.closed, true);
+  });
+
   test("finish with releaseResultCaps releases answer result caps by ID", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
@@ -426,6 +477,66 @@ describe("Conn level-1 message dispatch", () => {
 
     t.equal(conn.findExport(exportId), null);
     t.equal(c.closed, true);
+  });
+
+  test("finish.releaseResultCaps releases cap referenced in serialized results", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const resultCap = new DummyClient();
+    const interfaceId = 0xff01n;
+    const methodId = 0;
+
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: OneCapStruct as any,
+        },
+      ],
+    });
+
+    class ResultCapClient implements Client {
+      call<P extends Struct, R extends Struct>(_call: Call<P, R>): Answer<R> {
+        const msg = new Message();
+        const out = msg.initRoot(OneCapStruct);
+        out.setCap(resultCap);
+        return new ImmediateAnswer(out as any);
+      }
+
+      close(): void {
+        // no-op
+      }
+    }
+
+    const targetExportId = conn.addExport(new ResultCapClient());
+    const callMsg = new Message().initRoot(RPCMessage);
+    const call = callMsg._initCall();
+    call.questionId = 71;
+    call.interfaceId = interfaceId;
+    call.methodId = methodId;
+    call._initTarget().importedCap = targetExportId;
+    call._initParams();
+    conn.handleMessage(callMsg);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RETURN);
+    const answer = conn.answers[71];
+    t.ok(answer);
+    t.equal(answer.resultCaps.length, 1);
+    const resultCapExportId = answer.resultCaps[0];
+    t.notEqual(conn.findExport(resultCapExportId), null);
+
+    const finMsg = new Message().initRoot(RPCMessage);
+    const fin = finMsg._initFinish();
+    fin.questionId = 71;
+    fin.releaseResultCaps = true;
+    conn.handleMessage(finMsg);
+
+    t.equal(conn.findExport(resultCapExportId), null);
+    t.equal(resultCap.closed, true);
   });
 
   test("finish for unknown answer is ignored", () => {
