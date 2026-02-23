@@ -577,6 +577,56 @@ describe("rpc", () => {
     await waitUntil(() => (clientConn as any).closed === true, 1000);
   });
 
+  test("return.canceled rejects pending question over integration transport", {
+    timeout: 2000,
+  }, async () => {
+    const server = async () => {
+      const s = await rpc.accept();
+      s.initMain(SimpleInterface, {
+        subtract: async (p, r) => {
+          r.result = p.a - p.b;
+        },
+      });
+      return s;
+    };
+
+    const serverConnPromise = server();
+    const clientConn = rpc.connect();
+
+    const method = (SimpleInterface as any).Client.methods[0];
+    const q = (clientConn as any).newQuestion(method);
+    const rejected = q
+      .struct()
+      .then(() => null)
+      .catch((error_: unknown) => error_ as Error);
+
+    const msg = new Message().initRoot(RPCMessage);
+    const call = msg._initCall();
+    call.questionId = q.id;
+    call.interfaceId = method.interfaceId;
+    call.methodId = method.methodId;
+    call._initTarget().importedCap = 0;
+    const payload = call._initParams();
+    const paramsMsg = new Message();
+    const params = paramsMsg.initRoot(SimpleInterface_Subtract$Params);
+    params.a = 10;
+    params.b = 6;
+    payload.content = params;
+    clientConn.sendMessage(msg);
+    q.start();
+
+    const retMsg = new Message().initRoot(RPCMessage);
+    const ret = retMsg._initReturn();
+    ret.answerId = q.id;
+    ret.canceled = true;
+    (await serverConnPromise).sendMessage(retMsg);
+
+    const err = await rejected;
+    t.ok(err instanceof Error);
+    t.ok(err.message.includes("call canceled by remote"));
+    t.equal((clientConn as any).findQuestion(q.id), null);
+  });
+
   test("takeFromOtherQuestion follows source answer over integration transport", {
     timeout: 2000,
   }, async () => {
