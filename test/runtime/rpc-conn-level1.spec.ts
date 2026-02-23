@@ -199,6 +199,49 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[2].release.id, 7);
   });
 
+  test("resolve.cap starts embargo and forwards calls after receiverLoopback", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const promiseRef = conn.addImport(7, true);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 7;
+      resolve._initCap().senderHosted = 8;
+      conn.handleMessage(m);
+    }
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
+    const loopbackId = transport.sent[0].disembargo.context.senderLoopback;
+
+    const call = {
+      method: TEST_METHOD,
+      params: new Message().initRoot(AnyStruct),
+    } as any;
+    promiseRef.call(call);
+
+    // Still embargoed: no forwarded call yet.
+    t.equal(
+      transport.sent.filter((m) => m.which() === RPCMessage.CALL).length,
+      0,
+    );
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const dis = m._initDisembargo();
+      dis._initTarget().importedCap = 7;
+      dis._initContext().receiverLoopback = loopbackId;
+      conn.handleMessage(m);
+    }
+
+    const calls = transport.sent.filter((m) => m.which() === RPCMessage.CALL);
+    t.equal(calls.length, 1);
+    t.equal(calls[0].call.target.which(), 0); // importedCap
+    t.equal(calls[0].call.target.importedCap, 8);
+  });
+
   test("import embargo queues calls until receiverLoopback", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
