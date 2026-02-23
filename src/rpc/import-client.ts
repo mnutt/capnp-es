@@ -7,12 +7,18 @@ import { Call } from "./call";
 import { Answer } from "./answer";
 import { ErrorAnswer } from "./error-answer";
 import { newMessage } from "./capability";
-import { RPC_IMPORT_CLOSED } from "../errors";
+import { RPC_CALL_QUEUE_FULL, RPC_IMPORT_CLOSED } from "../errors";
+import { Fulfiller } from "./fulfiller/fulfiller";
+import { copyCall } from "./call";
+import { joinAnswer } from "./join";
 
 // An ImportClient implements Client for a remote capability.
 export class ImportClient implements Client {
   closed = false;
   resolved?: Client;
+  embargoId?: number;
+  embargoQueue: Array<{ call: Call<any, any>; f: Fulfiller<any> }> = [];
+  embargoQueueCap = 64;
 
   constructor(
     public conn: Conn,
@@ -24,6 +30,17 @@ export class ImportClient implements Client {
   ): Answer<CallResults> {
     if (this.closed) {
       return new ErrorAnswer(new Error(RPC_IMPORT_CLOSED));
+    }
+    if (this.embargoId !== undefined && this.resolved) {
+      if (this.embargoQueue.length >= this.embargoQueueCap) {
+        return new ErrorAnswer(new Error(RPC_CALL_QUEUE_FULL));
+      }
+      const f = new Fulfiller<CallResults>();
+      this.embargoQueue.push({
+        call: copyCall(cl),
+        f,
+      });
+      return f;
     }
     if (this.resolved) {
       return this.resolved.call(cl);
@@ -53,6 +70,26 @@ export class ImportClient implements Client {
     }
     this.resolved?.close();
     this.resolved = client;
+  }
+
+  activateEmbargo(id: number): void {
+    this.embargoId = id;
+  }
+
+  liftEmbargo(id: number): boolean {
+    if (this.embargoId !== id) {
+      return false;
+    }
+    this.embargoId = undefined;
+    const resolved = this.resolved;
+    if (!resolved) {
+      return true;
+    }
+    for (const item of this.embargoQueue) {
+      joinAnswer(item.f, resolved.call(item.call));
+    }
+    this.embargoQueue = [];
+    return true;
   }
 
   close(): void {

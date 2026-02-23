@@ -8,6 +8,7 @@ import { Struct } from "src/serialization";
 import { Call } from "src/rpc/call";
 import { Answer } from "src/rpc/answer";
 import { ImportClient } from "src/rpc/import-client";
+import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -40,6 +41,19 @@ class DummyClient implements Client {
 
   close(): void {
     this.closed = true;
+  }
+}
+
+class CountingClient implements Client {
+  calls = 0;
+
+  call<P extends Struct, R extends Struct>(_call: Call<P, R>): Answer<R> {
+    this.calls++;
+    return new Fulfiller<R>();
+  }
+
+  close(): void {
+    // no-op
   }
 }
 
@@ -92,13 +106,38 @@ describe("Conn level-1 message dispatch", () => {
 
     promiseRef.close();
 
-    // Closing promise import should release both the resolved forwarding cap
-    // and the promise import itself.
-    t.equal(transport.sent.length, 2);
-    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
-    t.equal(transport.sent[0].release.id, 8);
+    // Resolve emits sender-loopback disembargo, and closing promise import
+    // releases both forwarding cap and promise import.
+    t.equal(transport.sent.length, 3);
+    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
     t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
-    t.equal(transport.sent[1].release.id, 7);
+    t.equal(transport.sent[1].release.id, 8);
+    t.equal(transport.sent[2].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[2].release.id, 7);
+  });
+
+  test("import embargo queues calls until receiverLoopback", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(7, true);
+    const entry = conn.imports[7];
+    const base = entry.rc._client as ImportClient;
+    const counting = new CountingClient();
+    base.setResolved(counting);
+    const embargoId = conn.registerDisembargo(base);
+    base.activateEmbargo(embargoId);
+
+    const fakeCall = { method: {} as any, params: {} as any } as any;
+    importRef.call(fakeCall);
+    t.equal(counting.calls, 0);
+
+    const m = new Message().initRoot(RPCMessage);
+    const dis = m._initDisembargo();
+    dis._initTarget().importedCap = 7;
+    dis._initContext().receiverLoopback = embargoId;
+    conn.handleMessage(m);
+
+    t.equal(counting.calls, 1);
   });
 
   test("senderPromise imports are tracked as promise imports", () => {

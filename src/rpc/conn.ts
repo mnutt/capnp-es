@@ -89,6 +89,8 @@ export class Conn {
   exports: Array<Export | null> = [];
 
   imports: { [key: number]: ImportEntry } = {};
+  disembargoID = new IDGen();
+  disembargoes: { [key: number]: ImportClient } = {};
 
   onError?: (err?: Error) => void;
   main?: Client;
@@ -200,8 +202,19 @@ export class Conn {
 
     switch (resolve.which()) {
       case Resolve.CAP: {
+        const wasPromise = entry.isPromise;
         entry.isPromise = false;
         importClient.setResolved(this.clientFromCapDescriptor(resolve.cap));
+        if (wasPromise) {
+          const embargoId = this.registerDisembargo(importClient);
+          importClient.activateEmbargo(embargoId);
+          const out = newDisembargoMessage(
+            Disembargo_Context_Which.SENDER_LOOPBACK,
+            embargoId,
+          );
+          out.disembargo._initTarget().importedCap = promiseId;
+          this.sendMessage(out);
+        }
         break;
       }
       case Resolve.EXCEPTION: {
@@ -234,8 +247,14 @@ export class Conn {
         break;
       }
       case Disembargo_Context_Which.RECEIVER_LOOPBACK: {
-        // Loopback completed on this side. Queue/embargo plumbing is not yet
-        // fully wired, so there is nothing to do right now.
+        const id = ctx.receiverLoopback;
+        const client = this.disembargoes[id];
+        if (!client) {
+          break;
+        }
+        delete this.disembargoes[id];
+        this.disembargoID.remove(id);
+        client.liftEmbargo(id);
         break;
       }
       default: {
@@ -515,8 +534,25 @@ export class Conn {
     if (entry.refs < 0) {
       this.error(`warning: import ${id} has negative refcount (${entry.refs})`);
     }
+    this.clearDisembargo(entry.rc._client);
     delete this.imports[id];
     this.sendMessage(newReleaseMessage(id, refs));
+  }
+
+  registerDisembargo(client: ImportClient): number {
+    const id = this.disembargoID.next();
+    this.disembargoes[id] = client;
+    return id;
+  }
+
+  clearDisembargo(client: Client): void {
+    for (const [idStr, c] of Object.entries(this.disembargoes)) {
+      if (c === client) {
+        const id = Number(idStr);
+        delete this.disembargoes[id];
+        this.disembargoID.remove(id);
+      }
+    }
   }
 
   findExport(id: number): Export | null {

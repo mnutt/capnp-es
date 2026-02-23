@@ -12,8 +12,8 @@ export function joinAnswer<R extends Struct>(
   fl: FulfillerLike<R>,
   answer: Answer<R>,
 ): void {
-  answer
-    .struct()
+  Promise.resolve()
+    .then(() => answer.struct())
     .then((obj) => {
       fl.fulfill(obj);
     })
