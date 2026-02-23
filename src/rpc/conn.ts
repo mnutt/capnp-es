@@ -596,6 +596,8 @@ export class Conn {
     if (!entry) {
       return;
     }
+    const heldRefs = entry.refs;
+    const releaseCount = Math.max(0, Math.min(refs, heldRefs));
     entry.refs -= refs;
     if (entry.refs > 0) {
       return;
@@ -605,7 +607,9 @@ export class Conn {
     }
     this.clearDisembargo(entry.rc._client);
     delete this.imports[id];
-    this.sendMessage(newReleaseMessage(id, refs));
+    if (releaseCount > 0) {
+      this.sendMessage(newReleaseMessage(id, releaseCount));
+    }
   }
 
   releaseImportAll(id: number): void {

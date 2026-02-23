@@ -769,6 +769,21 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[10], undefined);
   });
 
+  test("releaseImport clamps wire release count to held refs", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    conn.error = () => {};
+    conn.addImport(13);
+
+    conn.releaseImport(13, 5);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 13);
+    t.equal(transport.sent[0].release.referenceCount, 1);
+    t.equal(conn.imports[13], undefined);
+  });
+
   test("return with releaseParamCaps releases question param caps by ID", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
