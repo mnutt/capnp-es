@@ -41,6 +41,7 @@ jobs:
       - run: pnpm build
       - run: pnpm vitest --coverage
       - run: pnpm test:types
+      - run: pnpm test:interop:cpp
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
