@@ -319,6 +319,73 @@ describe("rpc", () => {
     (await serverConnPromise).shutdown();
   });
 
+  test("pipeline close sends finish for unresolved parent question", {
+    timeout: 2000,
+  }, async () => {
+    let releaseGet: (() => void) | undefined;
+    const getGate = new Promise<void>((resolve) => {
+      releaseGet = resolve;
+    });
+    const serverConnPromise = (async () => {
+      const s = await rpc.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          await getGate;
+          r.capability = new SimpleInterface.Server({
+            subtract: async (p, out) => {
+              out.result = p.a - p.b;
+            },
+          }).client();
+        },
+      });
+      return s;
+    })();
+
+    const clientConn = rpc.connect();
+    const serverConn = await serverConnPromise;
+    const serverPort = (serverConn.transport as any).port;
+
+    let getQuestionId: number | undefined;
+    const finishQuestionIds: number[] = [];
+    const onMessage = (buf: ArrayBuffer) => {
+      const inbound = new Message(buf, false).getRoot(RPCMessage);
+      switch (inbound.which()) {
+        case RPCMessage.CALL: {
+          const call = inbound.call;
+          if (
+            call.interfaceId === (ReturnCapability as any).Client.interfaceId &&
+            call.methodId === 0
+          ) {
+            getQuestionId = call.questionId;
+          }
+          break;
+        }
+        case RPCMessage.FINISH: {
+          finishQuestionIds.push(inbound.finish.questionId);
+          break;
+        }
+        default:
+      }
+    };
+    serverPort.on("message", onMessage);
+
+    try {
+      const pending = clientConn.bootstrap(ReturnCapability).get();
+      void pending.promise().catch(() => {});
+      const pipedCap = pending.getCapability();
+
+      await waitUntil(() => getQuestionId !== undefined, 1000);
+      pipedCap.client.close();
+      await waitUntil(
+        () => finishQuestionIds.includes(getQuestionId as number),
+        1000,
+      );
+    } finally {
+      serverPort.off("message", onMessage);
+      releaseGet?.();
+    }
+  });
+
   test("disembargo senderLoopback echoes receiverLoopback over integration transport", {
     timeout: 2000,
   }, async () => {
