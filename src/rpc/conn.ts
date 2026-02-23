@@ -330,6 +330,14 @@ export class Conn {
         this.handleDisembargoMessage(m);
         break;
       }
+      case RPCMessage.OBSOLETE_SAVE:
+      case RPCMessage.OBSOLETE_DELETE:
+      case RPCMessage.PROVIDE:
+      case RPCMessage.ACCEPT:
+      case RPCMessage.JOIN: {
+        this.sendMessage(newUnimplementedMessage(m));
+        break;
+      }
       case RPCMessage.RETURN: {
         // Make a copy to allow `m` to fall out of scope for GC and finalization
         // this.handleReturnMessage(m.segment.message.copy().initRoot(RPCMessage));
