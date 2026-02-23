@@ -23,6 +23,9 @@ import { QueueClient } from "src/rpc/queue-client";
 import { Method } from "src/rpc/method";
 import { Pipeline } from "src/rpc/pipeline";
 import { Interface } from "src/serialization/pointers/interface";
+import { LocalAnswerClient } from "src/rpc/local-answer-client";
+import { ErrorClient } from "src/rpc/error-client";
+import { Server } from "src/rpc/server";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -1284,5 +1287,36 @@ describe("Conn level-1 message dispatch", () => {
     conn.shutdown(new Error("second"));
     t.equal(conn.closed, true);
     t.equal(transport.closeCount, 1);
+  });
+
+  test("errorClient.close is a no-op", () => {
+    const ec = new ErrorClient(new Error("x"));
+    ec.close();
+    ec.close();
+  });
+
+  test("server.close is a no-op", () => {
+    const server = new Server({}, []);
+    server.close();
+    server.close();
+  });
+
+  test("localAnswerClient.close closes resolved target when answer is done", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const a = conn.insertAnswer(501);
+    if (!a) {
+      throw new Error("expected answer slot");
+    }
+    const target = new DummyClient();
+    const msg = new Message();
+    const out = msg.initRoot(OneCapStruct);
+    out.setCap(target);
+    a.fulfill(out as any);
+
+    const lac = new LocalAnswerClient(a, [{ field: 0 }]);
+    lac.close();
+
+    t.equal(target.closed, true);
   });
 });
