@@ -8,6 +8,7 @@ export * from "./deferred";
 export * from "./error-client";
 export * from "./method";
 export * from "./pipeline";
+export * from "./persistence";
 export * from "./registry";
 // export * from "./rpc-message";
 export * from "./server";
