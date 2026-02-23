@@ -182,4 +182,56 @@ describe("rpc", () => {
       upstream.close();
     }
   });
+
+  test("closing imported capability releases remote export", { timeout: 2000 }, async () => {
+    let serverConn: any;
+    let baselineExports = 0;
+    let resolveClientReady: ((client: any) => void) | undefined;
+    const clientReady = new Promise<any>((resolve) => {
+      resolveClientReady = resolve;
+    });
+    let releaseClose: (() => void) | undefined;
+    const closeGate = new Promise<void>((resolve) => {
+      releaseClose = resolve;
+    });
+
+    const server = async () => {
+      const s = await rpc.accept();
+      serverConn = s;
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          const returnedClient = new SimpleInterface.Server({
+            subtract: async (p, out) => {
+              out.result = p.a - p.b;
+            },
+          }).client();
+          r.capability = returnedClient;
+        },
+      });
+      baselineExports = (s.exports as any[]).filter(Boolean).length;
+      return s;
+    };
+
+    const client = async () => {
+      const res = await rpc.connect().bootstrap(ReturnCapability).get().promise();
+      resolveClientReady?.(res.capability.client);
+      await closeGate;
+      res.capability.client.close();
+    };
+
+    const clientTask = client();
+    await Promise.all([server(), clientReady]);
+    await waitUntil(() => !!serverConn, 500);
+    await waitUntil(
+      () => (serverConn.exports as any[]).filter(Boolean).length > baselineExports,
+      1000,
+    );
+
+    releaseClose?.();
+    await clientTask;
+    await waitUntil(
+      () => (serverConn.exports as any[]).filter(Boolean).length === baselineExports,
+      1000,
+    );
+  });
 });
