@@ -137,7 +137,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.findQuestion(0), null);
   });
 
-  test("resolve with exception updates import and does not echo", async () => {
+  test("resolve with exception rejects future calls and does not echo", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const importClient = conn.addImport(7);
@@ -152,6 +152,12 @@ describe("Conn level-1 message dispatch", () => {
     try {
       await importClient.call({} as any).struct();
       throw new Error("expected resolve exception");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes("broken"));
+    }
+    try {
+      await importClient.call({} as any).struct();
+      throw new Error("expected resolve exception on second call");
     } catch (error_) {
       t.ok((error_ as Error).message.includes("broken"));
     }
