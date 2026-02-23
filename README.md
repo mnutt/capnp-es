@@ -55,7 +55,7 @@ const struct = message.getRoot(MyStruct);
 
 ### RPC Protocol
 
-Experimental [RPC protocol](https://capnproto.org/rpc.html) support is implemented with substantial [level 1](https://capnproto.org/rpc.html#protocol-features) coverage.
+Experimental [RPC protocol](https://capnproto.org/rpc.html) support is implemented with complete two-party [level 1](https://capnproto.org/rpc.html#protocol-features) coverage.
 
 Current support matrix:
 
@@ -69,7 +69,7 @@ Current support matrix:
 | `Disembargo` level-3 contexts | Unsupported | Currently responds with `Unimplemented`. |
 | Tail call: `sendResultsTo.yourself` | Partial | Returns `resultsSentElsewhere`; broader forwarding cases remain incomplete. |
 | Tail call: `takeFromOtherQuestion` | Implemented | Waiting questions can resolve from in-flight incoming answers. |
-| Full Level 1 conformance | Partial | Ongoing; see `docs/rpc-level1-plan.md` for tracked gaps. |
+| Full Level 1 conformance (two-party) | Implemented | See `docs/rpc-level1-plan.md` for coverage matrix and known non-level-1 limits. |
 
 See [tests](./test/integration/rpc.spec.ts) for some examples.
 
