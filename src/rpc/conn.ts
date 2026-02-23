@@ -67,6 +67,7 @@ import {
 import { Server } from "./server";
 import { getAs } from "../serialization/pointers/struct.utils";
 import { ErrorClient } from "./error-client";
+import { Pointer } from "../serialization/pointers/pointer";
 
 type QuestionSlot = Question<any, any> | null;
 
@@ -91,6 +92,7 @@ export class Conn {
   imports: { [key: number]: ImportEntry } = {};
   disembargoID = new IDGen();
   disembargoes: { [key: number]: ImportClient } = {};
+  tailCallWaiters: { [key: number]: Array<Question<any, any>> } = {};
 
   onError?: (err?: Error) => void;
   main?: Client;
@@ -335,6 +337,7 @@ export class Conn {
 
         const { content } = results;
         q.fulfill(content);
+        this.fulfillTailWaiters(id, content);
         break;
       }
       case Return.EXCEPTION: {
@@ -343,6 +346,28 @@ export class Conn {
           ? new MethodError(q.method, exc.reason)
           : new RPCError(exc);
         q.reject(err);
+        this.rejectTailWaiters(id, err);
+        break;
+      }
+      case Return.TAKE_FROM_OTHER_QUESTION: {
+        const otherQuestionId = ret.takeFromOtherQuestion;
+        if (otherQuestionId === id) {
+          q.reject(new Error(RPC_BAD_TARGET));
+          break;
+        }
+        const source = this.findQuestion(otherQuestionId);
+        if (!source || source.state !== QuestionState.IN_PROGRESS) {
+          q.reject(new Error(RPC_BAD_TARGET));
+          break;
+        }
+        if (!this.tailCallWaiters[otherQuestionId]) {
+          this.tailCallWaiters[otherQuestionId] = [];
+        }
+        this.tailCallWaiters[otherQuestionId].push(q);
+        break;
+      }
+      case Return.RESULTS_SENT_ELSEWHERE: {
+        q.reject(new Error(RPC_UNIMPLEMENTED));
         break;
       }
       default:
@@ -713,6 +738,28 @@ export class Conn {
       }
     }
     return out;
+  }
+
+  fulfillTailWaiters(id: number, value: Pointer): void {
+    const waiters = this.tailCallWaiters[id];
+    if (!waiters) {
+      return;
+    }
+    delete this.tailCallWaiters[id];
+    for (const waiter of waiters) {
+      waiter.fulfill(value);
+    }
+  }
+
+  rejectTailWaiters(id: number, err: Error): void {
+    const waiters = this.tailCallWaiters[id];
+    if (!waiters) {
+      return;
+    }
+    delete this.tailCallWaiters[id];
+    for (const waiter of waiters) {
+      waiter.reject(err);
+    }
   }
 
   clientFromCapDescriptor(desc: CapDescriptor): Client {

@@ -357,4 +357,63 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.findExport(exportId), null);
     t.equal(c.closed, true);
   });
+
+  test("return.takeFromOtherQuestion resolves when source question resolves", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const source = conn.newQuestion();
+    const redirected = conn.newQuestion();
+    void source.struct().catch(() => {});
+    const redirectedPromise = redirected
+      .struct()
+      .then(() => {
+        throw new Error("expected redirected rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const ret = m._initReturn();
+      ret.answerId = redirected.id;
+      ret.takeFromOtherQuestion = source.id;
+      conn.handleMessage(m);
+    }
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const ret = m._initReturn();
+      ret.answerId = source.id;
+      ret._initException().reason = "source failed";
+      conn.handleMessage(m);
+    }
+
+    const redirectedError = await redirectedPromise;
+    t.ok(redirectedError.message.includes("source failed"));
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+    t.equal(transport.sent[1].which(), RPCMessage.FINISH);
+  });
+
+  test("return.resultsSentElsewhere rejects waiting question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    ret.resultsSentElsewhere = true;
+    conn.handleMessage(m);
+
+    const err = await wait;
+    t.ok(err.message.length > 0);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
 });
