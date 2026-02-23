@@ -572,6 +572,101 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].return.which(), Return_Which.RESULTS_SENT_ELSEWHERE);
   });
 
+  test("incoming call with unsupported sendResultsTo returns unimplemented and cleans answer", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const interfaceId = 0x1111n;
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId: 0,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+    const exportId = conn.addExport(new ImmediateClient());
+    const m = new Message().initRoot(RPCMessage);
+    const call = m._initCall();
+    call.questionId = 201;
+    call.interfaceId = interfaceId;
+    call.methodId = 0;
+    call._initTarget().importedCap = exportId;
+    call._initParams();
+    call._initSendResultsTo().thirdParty = new Message().initRoot(AnyStruct);
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(conn.answers[201], undefined);
+  });
+
+  test("incoming call unknown interface/method returns unimplemented and cleans answer", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const exportId = conn.addExport(new ImmediateClient());
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const call = m._initCall();
+      call.questionId = 202;
+      call.interfaceId = 0x2222n;
+      call.methodId = 0;
+      call._initTarget().importedCap = exportId;
+      call._initParams();
+      conn.handleMessage(m);
+      t.equal(conn.answers[202], undefined);
+    }
+
+    const iface = 0x3333n;
+    Registry.register(iface, {
+      methods: [],
+    });
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const call = m._initCall();
+      call.questionId = 203;
+      call.interfaceId = iface;
+      call.methodId = 99;
+      call._initTarget().importedCap = exportId;
+      call._initParams();
+      conn.handleMessage(m);
+      t.equal(conn.answers[203], undefined);
+    }
+
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[1].which(), RPCMessage.UNIMPLEMENTED);
+  });
+
+  test("return.results decode failure responds unimplemented and rejects question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected decode rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    const payload = ret._initResults();
+    payload.content = new Message().initRoot(AnyStruct);
+    payload._initCapTable(1).get(0).receiverHosted = 9999;
+
+    conn.handleMessage(m);
+    const err = await wait;
+    t.ok(!!err);
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[1].which(), RPCMessage.FINISH);
+  });
+
   test("cross-conn takeFromOtherQuestion follows source answer result", async () => {
     const ta = new LinkedTransport();
     const tb = new LinkedTransport();
