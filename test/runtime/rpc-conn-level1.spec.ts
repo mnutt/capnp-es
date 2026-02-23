@@ -233,6 +233,53 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[9], undefined);
   });
 
+  test("resolve.cap with invalid descriptor sends unimplemented and settles import to error", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importClient = conn.addImport(19, true);
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 19;
+    resolve._initCap().receiverHosted = 9999;
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+
+    try {
+      await importClient.call({} as any).struct();
+      throw new Error("expected invalid resolve descriptor rejection");
+    } catch (error_) {
+      t.ok((error_ as Error).message.length > 0);
+    }
+  });
+
+  test("duplicate settled resolve.cap with invalid descriptor sends unimplemented", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    conn.addImport(20, true);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 20;
+      resolve._initException().reason = "broken";
+      conn.handleMessage(m);
+    }
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 20;
+      resolve._initCap().receiverHosted = 9999;
+      conn.handleMessage(m);
+    }
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+  });
+
   test("duplicate resolve.cap after resolve.exception is ignored and preserves exception", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

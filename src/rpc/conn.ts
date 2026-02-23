@@ -199,8 +199,13 @@ export class Conn {
       // Resolve may race with release. If this promise is already unknown,
       // release any newly-introduced capability immediately.
       if (resolve.which() === Resolve.CAP) {
-        const client = this.clientFromCapDescriptor(resolve.cap);
-        client.close();
+        let client: Client | null = null;
+        try {
+          client = this.clientFromCapDescriptor(resolve.cap);
+        } catch {
+          this.sendMessage(newUnimplementedMessage(m));
+        }
+        client?.close();
       }
       return;
     }
@@ -213,8 +218,13 @@ export class Conn {
       // Duplicate/late resolve for an already-settled import.
       // Ignore it, but release any newly introduced capability to avoid leaks.
       if (resolve.which() === Resolve.CAP) {
-        const client = this.clientFromCapDescriptor(resolve.cap);
-        client.close();
+        let client: Client | null = null;
+        try {
+          client = this.clientFromCapDescriptor(resolve.cap);
+        } catch {
+          this.sendMessage(newUnimplementedMessage(m));
+        }
+        client?.close();
       }
       return;
     }
@@ -223,7 +233,15 @@ export class Conn {
       case Resolve.CAP: {
         const wasPromise = entry.isPromise;
         entry.isPromise = false;
-        importClient.setResolved(this.clientFromCapDescriptor(resolve.cap));
+        let client: Client;
+        try {
+          client = this.clientFromCapDescriptor(resolve.cap);
+        } catch (error_) {
+          this.sendMessage(newUnimplementedMessage(m));
+          importClient.setResolved(new ErrorClient(error_ as Error));
+          break;
+        }
+        importClient.setResolved(client);
         if (wasPromise) {
           const embargoId = this.registerDisembargo(importClient);
           importClient.activateEmbargo(embargoId);
