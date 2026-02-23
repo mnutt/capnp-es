@@ -6,6 +6,8 @@ import {
   Message as RPCMessage,
   Disembargo_Context_Which,
   Return_Which,
+  CapDescriptor,
+  Resolve,
 } from "src/capnp/rpc";
 import { Client } from "src/rpc/client";
 import { Struct, ObjectSize, utils } from "src/serialization";
@@ -19,6 +21,8 @@ import { Registry } from "src/rpc/registry";
 import { Question } from "src/rpc/question";
 import { QueueClient } from "src/rpc/queue-client";
 import { Method } from "src/rpc/method";
+import { Pipeline } from "src/rpc/pipeline";
+import { Interface } from "src/serialization/pointers/interface";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -286,6 +290,84 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
     t.equal(transport.sent[0].release.id, 77);
     t.equal(conn.imports[77], undefined);
+  });
+
+  test("descriptorForClient exports cross-conn in-progress pipeline as senderPromise and emits resolve.cap", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const desc = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+
+    conn.descriptorForClient(desc, pc);
+    t.equal(desc.which(), CapDescriptor.SENDER_PROMISE);
+    const promiseId = desc.senderPromise;
+    t.ok(conn.findExport(promiseId));
+
+    const resolvedCap = new DummyClient();
+    const msg = new Message();
+    const out = msg.initRoot(OneCapStruct);
+    out.setCap(resolvedCap);
+    q.fulfill(out as any);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    t.ok(transport.sent.some((m) => m.which() === RPCMessage.RESOLVE));
+    const resolveMsg = transport.sent.find((m) => m.which() === RPCMessage.RESOLVE)!;
+    t.equal(resolveMsg.resolve.promiseId, promiseId);
+    t.equal(resolveMsg.resolve.which(), Resolve.CAP);
+  });
+
+  test("descriptorForClient emits resolve.exception for rejected senderPromise", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    void q.struct().catch(() => {});
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const desc = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+
+    conn.descriptorForClient(desc, pc);
+    const promiseId = desc.senderPromise;
+    q.reject(new Error("boom"));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const resolveMsg = transport.sent.find((m) => m.which() === RPCMessage.RESOLVE);
+    t.ok(resolveMsg);
+    t.equal(resolveMsg!.resolve.promiseId, promiseId);
+    t.equal(resolveMsg!.resolve.which(), Resolve.EXCEPTION);
+    t.ok(resolveMsg!.resolve.exception.reason.includes("boom"));
+  });
+
+  test("release before senderPromise settlement suppresses outgoing resolve", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const desc = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    conn.descriptorForClient(desc, pc);
+    const promiseId = desc.senderPromise;
+
+    const rel = new Message().initRoot(RPCMessage);
+    const release = rel._initRelease();
+    release.id = promiseId;
+    release.referenceCount = 1;
+    conn.handleMessage(rel);
+
+    const msg = new Message();
+    const out = msg.initRoot(OneCapStruct);
+    out.setCap(new DummyClient());
+    q.fulfill(out as any);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    t.equal(transport.sent.some((m) => m.which() === RPCMessage.RESOLVE), false);
   });
 
   test("disembargo senderLoopback echos receiverLoopback", () => {

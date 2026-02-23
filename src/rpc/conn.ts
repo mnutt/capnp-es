@@ -21,8 +21,10 @@ import {
   newDisembargoMessage,
   newFinishMessage,
   newReleaseMessage,
+  newResolveMessage,
   newUnimplementedMessage,
   newReturnMessage,
+  setResolveException,
   setReturnException,
 } from "./capability";
 import { Pipeline } from "./pipeline";
@@ -68,6 +70,7 @@ import { Server } from "./server";
 import { getAs } from "../serialization/pointers/struct.utils";
 import { ErrorClient } from "./error-client";
 import { Pointer } from "../serialization/pointers/pointer";
+import { PromiseExportClient } from "./promise-export-client";
 
 type QuestionSlot = Question<any, any> | null;
 
@@ -93,6 +96,7 @@ export class Conn {
   disembargoID = new IDGen();
   disembargoes: { [key: number]: ImportClient } = {};
   tailAnswerWaiters: { [key: number]: Array<Question<any, any>> } = {};
+  exportPromises: { [key: number]: ExportPromiseEntry } = {};
 
   onError?: (err?: Error) => void;
   main?: Client;
@@ -671,6 +675,7 @@ export class Conn {
     if (e.wireRefs < 0) {
       this.error(`warning: export ${id} has negative refcount (${e.wireRefs})`);
     }
+    delete this.exportPromises[id];
     e.client.close();
     this.exports[id] = null;
     this.exportID.remove(id);
@@ -773,6 +778,7 @@ export class Conn {
       this.exports[i] = null;
       this.exportID.remove(i);
     }
+    this.exportPromises = {};
 
     for (const [idStr, entry] of Object.entries(this.imports)) {
       try {
@@ -950,7 +956,9 @@ export class Conn {
               continue;
             }
             if (ans.conn !== this) {
-              break dig;
+              const id = this.addExportPromise(ans, transform);
+              desc.senderPromise = id;
+              return;
             }
             const a = desc._initReceiverAnswer();
             a.questionId = ans.id;
@@ -967,6 +975,59 @@ export class Conn {
 
     const id = this.addExport(_client);
     desc.senderHosted = id;
+  }
+
+  addExportPromise(
+    question: Question<any, any>,
+    transform: PipelineOp[],
+  ): number {
+    const promiseClient = new PromiseExportClient();
+    const id = this.addExport(promiseClient);
+    if (this.exportPromises[id]) {
+      return id;
+    }
+    this.exportPromises[id] = {
+      settled: false,
+      client: promiseClient,
+    };
+    const resolveFromQuestion = async () => {
+      try {
+        const obj = await question.struct();
+        this.resolveExportPromiseCap(
+          id,
+          clientFromResolution(transform, obj, undefined),
+        );
+      } catch (error_) {
+        this.resolveExportPromiseException(id, error_ as Error);
+      }
+    };
+    void resolveFromQuestion();
+    return id;
+  }
+
+  resolveExportPromiseCap(id: number, client: Client): void {
+    const entry = this.exportPromises[id];
+    if (!entry || entry.settled) {
+      client.close();
+      return;
+    }
+    entry.settled = true;
+    entry.client.resolve(client);
+    const m = newResolveMessage(id);
+    this.descriptorForClient(m.resolve._initCap(), client);
+    this.sendMessage(m);
+  }
+
+  resolveExportPromiseException(id: number, err: Error): void {
+    const entry = this.exportPromises[id];
+    if (!entry || entry.settled) {
+      return;
+    }
+    entry.settled = true;
+    entry.client.reject(err);
+    const m = newResolveMessage(id);
+    setResolveException(m.resolve, err);
+    this.sendMessage(m);
   }
 
   sendMessage(msg: RPCMessage): void {
@@ -1000,6 +1061,11 @@ export interface ImportEntry {
   rc: RefCount;
   refs: number;
   isPromise: boolean;
+}
+
+interface ExportPromiseEntry {
+  settled: boolean;
+  client: PromiseExportClient;
 }
 
 export function answerPipelineClient<T extends Struct>(

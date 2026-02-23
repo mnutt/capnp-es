@@ -2,7 +2,7 @@
 
 import { Message as RPCMessage } from "../capnp/rpc";
 import { Message } from "../serialization/message";
-import { Return, Exception, Disembargo_Context_Which } from "../capnp/rpc";
+import { Return, Exception, Disembargo_Context_Which, Resolve } from "../capnp/rpc";
 import { toException } from "./rpc-error";
 import { INVARIANT_UNREACHABLE_CODE } from "../errors";
 
@@ -43,6 +43,19 @@ export function newReleaseMessage(id: number, referenceCount: number): RPCMessag
   rel.id = id;
   rel.referenceCount = referenceCount;
   return m;
+}
+
+export function newResolveMessage(id: number): RPCMessage {
+  const m = newMessage();
+  const res = m._initResolve();
+  res.promiseId = id;
+  return m;
+}
+
+export function setResolveException(res: Resolve, err: Error): Exception {
+  const exc = res._initException();
+  toException(exc, err);
+  return exc;
 }
 
 export function setReturnException(ret: Return, err: Error): Exception {
