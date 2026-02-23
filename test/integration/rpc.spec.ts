@@ -3,10 +3,15 @@
 import { test, describe, assert as t, afterEach, beforeEach } from "vitest";
 import { Hash, HashFactory } from "test/fixtures/hash-factory";
 import { ReturnCapability } from "test/fixtures/import-interface";
-import { SimpleInterface } from "test/fixtures/simple-interface";
+import {
+  SimpleInterface,
+  SimpleInterface_Subtract$Params,
+} from "test/fixtures/simple-interface";
 import { createHash } from "node:crypto";
 import { TestRPC } from "./rpc.utils";
 import { bufferToHex } from "src/util.js";
+import { Message } from "src/serialization/message";
+import { Message as RPCMessage } from "src/capnp/rpc";
 
 async function waitUntil(
   predicate: () => boolean,
@@ -248,6 +253,66 @@ describe("rpc", () => {
       () => (serverConn.exports as any[]).filter(Boolean).length === baselineExports,
       1000,
     );
+  });
+
+  test("sendResultsTo.yourself returns resultsSentElsewhere in integration flow", {
+    timeout: 2000,
+  }, async () => {
+    const server = async () => {
+      const s = await rpc.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          r.capability = new SimpleInterface.Server({
+            subtract: async (p, out) => {
+              out.result = p.a - p.b;
+            },
+          }).client();
+        },
+      });
+      return s;
+    };
+
+    const serverConnPromise = server();
+    const clientConn = rpc.connect();
+    const cap = await clientConn.bootstrap(ReturnCapability).get().promise();
+    void cap.capability.subtract((p) => {
+      p.a = 3;
+      p.b = 1;
+    });
+
+    const importIds = Object.keys((clientConn as any).imports);
+    t.ok(importIds.length > 0);
+    const importId = Number(importIds[0]);
+
+    const method = (SimpleInterface as any).Client.methods[0];
+    const q = (clientConn as any).newQuestion(method);
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected resultsSentElsewhere rejection");
+      })
+      .catch((error_: unknown) => error_ as Error);
+
+    const msg = new Message().initRoot(RPCMessage);
+    const call = msg._initCall();
+    call.questionId = q.id;
+    call.interfaceId = method.interfaceId;
+    call.methodId = method.methodId;
+    call._initTarget().importedCap = importId;
+    const payload = call._initParams();
+    const paramsMsg = new Message();
+    const params = paramsMsg.initRoot(SimpleInterface_Subtract$Params);
+    params.a = 9;
+    params.b = 4;
+    payload.content = params;
+    call._initSendResultsTo().yourself = true;
+    clientConn.sendMessage(msg);
+    q.start();
+
+    const err = await wait;
+    t.ok(err.message.length > 0);
+    t.equal((clientConn as any).findQuestion(q.id), null);
+    (await serverConnPromise).shutdown();
   });
 
 });
