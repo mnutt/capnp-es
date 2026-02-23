@@ -16,6 +16,7 @@ import {
   Disembargo_Context_Which,
   MessageTarget,
 } from "src/capnp/rpc";
+import { ErrorClient } from "src/rpc/error-client";
 
 async function waitUntil(
   predicate: () => boolean,
@@ -296,6 +297,108 @@ describe("rpc", () => {
       releaseUpstream?.();
     } finally {
       releaseUpstream?.();
+      upstream.close();
+    }
+  });
+
+  test("senderPromise emits outgoing resolve.exception over integration transport", {
+    timeout: 4000,
+  }, async () => {
+    const upstream = new TestRPC();
+
+    const upstreamServer = async () => {
+      const s = await upstream.accept();
+      s.initMain(ReturnCapability, {
+        get: async () => {
+          await new Promise(() => {});
+        },
+      });
+      return s;
+    };
+
+    const middleServer = async () => {
+      const s = await rpc.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          const forwarded = upstream.connect().bootstrap(ReturnCapability);
+          const pending = forwarded.get();
+          void pending.promise().catch(() => {});
+          r.capability = pending.getCapability();
+        },
+      });
+      return s;
+    };
+
+    const middlePromise = middleServer();
+    const upstreamPromise = upstreamServer();
+
+    let middleConn: any;
+    let clientConn: any;
+    const resolveExceptionReasons: string[] = [];
+    let restoreSend: (() => void) | undefined;
+    try {
+      clientConn = rpc.connect();
+      middleConn = await middlePromise;
+
+      const originalSendMessage = middleConn.sendMessage.bind(middleConn);
+      middleConn.sendMessage = (m: any) => {
+        if (m.which() === RPCMessage.RESOLVE && m.resolve._isException) {
+          resolveExceptionReasons.push(m.resolve.exception.reason);
+        }
+        originalSendMessage(m);
+      };
+      restoreSend = () => {
+        middleConn.sendMessage = originalSendMessage;
+      };
+
+      const pending = clientConn.bootstrap(ReturnCapability).get();
+      void pending.promise().catch(() => {});
+      const cap = pending.getCapability();
+      void cap;
+
+      const upstreamConn = await upstreamPromise;
+      void upstreamConn;
+
+      await waitUntil(
+        () => Object.keys((middleConn as any).exportPromises).length > 0,
+        1000,
+      );
+      await waitUntil(
+        () =>
+          Object.values((clientConn as any).imports).some(
+            (entry: any) => entry.isPromise === true,
+          ),
+        1000,
+      );
+      const promiseExportIds = Object.keys((middleConn as any).exportPromises);
+      t.ok(promiseExportIds.length > 0);
+      const promiseId = Number(promiseExportIds[0]);
+      (middleConn as any).resolveExportPromiseException(
+        promiseId,
+        new Error("forced upstream exception"),
+      );
+
+      await waitUntil(
+        () =>
+          resolveExceptionReasons.some((reason) =>
+            reason.includes("forced upstream exception"),
+          ),
+        1000,
+      );
+      await waitUntil(
+        () =>
+          Object.values((clientConn as any).imports).some(
+            (entry: any) =>
+              entry.isPromise === false &&
+              entry.rc?._client?.resolved instanceof ErrorClient,
+          ),
+        1000,
+      );
+    } finally {
+      restoreSend?.();
+      if (middleConn) {
+        middleConn.shutdown();
+      }
       upstream.close();
     }
   });

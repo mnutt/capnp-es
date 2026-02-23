@@ -747,6 +747,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(resolves.length, 1);
     t.equal(resolves[0].resolve.promiseId, d1.senderPromise);
     t.equal(resolves[0].resolve.which(), Resolve.EXCEPTION);
+    t.ok(resolves[0].resolve.exception.reason.includes("boom"));
   });
 
   test("release before senderPromise settlement suppresses outgoing resolve", async () => {
