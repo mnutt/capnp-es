@@ -440,6 +440,35 @@ describe("rpc", () => {
     }
   });
 
+  test("disembargo level-3 contexts return unimplemented over integration transport", {
+    timeout: 2000,
+  }, async () => {
+    rpc.connect();
+    const serverConn = await rpc.accept();
+    const serverPort = (serverConn.transport as any).port;
+
+    let sawUnimplemented = false;
+    const onMessage = (buf: ArrayBuffer) => {
+      const inbound = new Message(buf, false).getRoot(RPCMessage);
+      if (inbound.which() === RPCMessage.UNIMPLEMENTED) {
+        sawUnimplemented = true;
+      }
+    };
+    serverPort.on("message", onMessage);
+
+    try {
+      const msg = new Message().initRoot(RPCMessage);
+      const dis = msg._initDisembargo();
+      dis.context.accept = true;
+      dis._initTarget().importedCap = 1;
+      serverConn.sendMessage(msg);
+
+      await waitUntil(() => sawUnimplemented, 1000);
+    } finally {
+      serverPort.off("message", onMessage);
+    }
+  });
+
   test("takeFromOtherQuestion follows source answer over integration transport", {
     timeout: 2000,
   }, async () => {
