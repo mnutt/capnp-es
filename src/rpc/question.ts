@@ -139,10 +139,17 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   }
 
   pipelineClose(_transform: PipelineOp[]): void {
-    const fin = newFinishMessage(this.id, true);
-    this.conn.sendMessage(fin);
-    this.conn.popQuestion(this.id);
-    this.cancel(new Error("pipeline closed"));
+    if (this.state !== QuestionState.IN_PROGRESS) {
+      return;
+    }
+    if (this.conn.findQuestion(this.id)) {
+      const fin = newFinishMessage(this.id, true);
+      this.conn.sendMessage(fin);
+      this.conn.popQuestion(this.id);
+    }
+    this.err = new Error("pipeline closed");
+    this.state = QuestionState.CANCELED;
+    this.deferred.reject(this.err);
   }
 }
 

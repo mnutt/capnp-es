@@ -1362,6 +1362,26 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].finish.questionId, q.id);
   });
 
+  test("question.pipelineClose is idempotent", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected pipeline close rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    q.pipelineClose([]);
+    q.pipelineClose([]);
+
+    const err = await wait;
+    t.ok(err.message.includes("pipeline closed"));
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
   test("question.cancel after start sends finish and pops question", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
