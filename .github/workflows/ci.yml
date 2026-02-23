@@ -2,6 +2,9 @@ name: ci
 
 on: push
 
+env:
+  CAPNP_VERSION: 1.3.0
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -12,16 +15,27 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
-      - name: Install capnp
+      - name: Cache capnp
+        id: capnp-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/capnp/${{ env.CAPNP_VERSION }}
+          key: ${{ runner.os }}-capnp-${{ env.CAPNP_VERSION }}
+      - name: Build capnp
+        if: steps.capnp-cache.outputs.cache-hit != 'true'
         run: |
-          cd /tmp &&
-          curl -O https://capnproto.org/capnproto-c++-1.3.0.tar.gz &&
-          tar zxf capnproto-c++-1.3.0.tar.gz &&
-          cd capnproto-c++-1.3.0 &&
-          ./configure &&
-          make -j8 &&
-          sudo make install &&
-          rm -rf capnproto-c++-1.3.0.tar.gz capnproto-c++-1.3.0
+          cd /tmp
+          curl -fsSLO "https://capnproto.org/capnproto-c++-${CAPNP_VERSION}.tar.gz"
+          tar zxf "capnproto-c++-${CAPNP_VERSION}.tar.gz"
+          cd "capnproto-c++-${CAPNP_VERSION}"
+          ./configure --prefix="$HOME/.local/capnp/${CAPNP_VERSION}"
+          make -j"$(nproc)"
+          make install
+      - name: Add capnp to PATH
+        run: |
+          echo "$HOME/.local/capnp/${CAPNP_VERSION}/bin" >> "$GITHUB_PATH"
+          echo "PKG_CONFIG_PATH=$HOME/.local/capnp/${CAPNP_VERSION}/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
+          echo "LD_LIBRARY_PATH=$HOME/.local/capnp/${CAPNP_VERSION}/lib:${LD_LIBRARY_PATH:-}" >> "$GITHUB_ENV"
       - run: pnpm install
       - run: pnpm lint
       - run: pnpm build
