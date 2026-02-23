@@ -74,7 +74,7 @@ describe("Conn level-1 message dispatch", () => {
   test("resolve with cap sets forwarding client and closes it on import close", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
-    const promiseRef = conn.addImport(7);
+    const promiseRef = conn.addImport(7, true);
     const m = new Message().initRoot(RPCMessage);
     const resolve = m._initResolve();
     resolve.promiseId = 7;
@@ -84,6 +84,7 @@ describe("Conn level-1 message dispatch", () => {
 
     const importEntry = conn.imports[7];
     t.ok(importEntry);
+    t.equal(importEntry.isPromise, false);
     t.ok(importEntry.rc._client instanceof ImportClient);
     const base = importEntry.rc._client as ImportClient;
     t.ok(base.resolved);
@@ -98,6 +99,19 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].release.id, 8);
     t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
     t.equal(transport.sent[1].release.id, 7);
+  });
+
+  test("senderPromise imports are tracked as promise imports", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const desc = m._initResolve()._initCap();
+    desc.senderPromise = 44;
+
+    conn.clientFromCapDescriptor(desc);
+
+    t.ok(conn.imports[44]);
+    t.equal(conn.imports[44].isPromise, true);
   });
 
   test("resolve for unknown promise releases introduced cap immediately", () => {

@@ -198,10 +198,12 @@ export class Conn {
 
     switch (resolve.which()) {
       case Resolve.CAP: {
+        entry.isPromise = false;
         importClient.setResolved(this.clientFromCapDescriptor(resolve.cap));
         break;
       }
       case Resolve.EXCEPTION: {
+        entry.isPromise = false;
         importClient.setResolved(new ErrorClient(new RPCError(resolve.exception)));
         break;
       }
@@ -424,14 +426,14 @@ export class Conn {
         }
         case CapDescriptor.SENDER_HOSTED: {
           const id = desc.senderHosted;
-          const client = this.addImport(id);
+          const client = this.addImport(id, false);
           msg.addCap(client);
           break;
         }
         case CapDescriptor.SENDER_PROMISE: {
           // Apparently, this is a hack, see https://sourcegraph.com/github.com/capnproto/go-capnproto2@e1ae1f982d9908a41db464f02861a850a0880a5a/-/blob/rpc/rpc.go#L549
           const id = desc.senderPromise;
-          const client = this.addImport(id);
+          const client = this.addImport(id, true);
           msg.addCap(client);
           break;
         }
@@ -463,10 +465,11 @@ export class Conn {
     }
   }
 
-  addImport(id: number): Client {
+  addImport(id: number, isPromise = false): Client {
     const importEntry = this.imports[id];
     if (importEntry) {
       importEntry.refs++;
+      importEntry.isPromise = importEntry.isPromise || isPromise;
       return importEntry.rc.ref();
     }
     const client = new ImportClient(this, id);
@@ -474,6 +477,7 @@ export class Conn {
     this.imports[id] = {
       rc,
       refs: 1,
+      isPromise,
     };
     return ref;
   }
@@ -657,10 +661,10 @@ export class Conn {
   clientFromCapDescriptor(desc: CapDescriptor): Client {
     switch (desc.which()) {
       case CapDescriptor.SENDER_HOSTED: {
-        return this.addImport(desc.senderHosted);
+        return this.addImport(desc.senderHosted, false);
       }
       case CapDescriptor.SENDER_PROMISE: {
-        return this.addImport(desc.senderPromise);
+        return this.addImport(desc.senderPromise, true);
       }
       case CapDescriptor.RECEIVER_HOSTED: {
         const id = desc.receiverHosted;
@@ -775,6 +779,7 @@ interface Export {
 export interface ImportEntry {
   rc: RefCount;
   refs: number;
+  isPromise: boolean;
 }
 
 export function answerPipelineClient<T extends Struct>(
