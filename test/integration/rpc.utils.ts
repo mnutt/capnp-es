@@ -15,13 +15,16 @@ export class TestRPC {
     if (this.connections[id] !== undefined) return this.connections[id];
     const ch = new MessageChannel();
     const conn = new Conn(new MessageChannelTransport(ch.port1));
+    conn.onError = () => {};
     const accept = this.acceptQueue.pop();
     this.connections[id] = conn;
 
     if (accept === undefined) {
       this.connectQueue.push(ch.port2);
     } else {
-      accept.resolve(new Conn(new MessageChannelTransport(ch.port2)));
+      const accepted = new Conn(new MessageChannelTransport(ch.port2));
+      accepted.onError = () => {};
+      accept.resolve(accepted);
     }
 
     return conn;
@@ -30,7 +33,9 @@ export class TestRPC {
   accept(): Promise<Conn> {
     const port2 = this.connectQueue.pop();
     if (port2 !== undefined) {
-      return Promise.resolve(new Conn(new MessageChannelTransport(port2)));
+      const conn = new Conn(new MessageChannelTransport(port2));
+      conn.onError = () => {};
+      return Promise.resolve(conn);
     }
     const deferred = new Deferred<Conn>();
     this.acceptQueue.push(deferred);
