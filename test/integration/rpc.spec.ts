@@ -45,6 +45,27 @@ describe("rpc", () => {
     rpc.close();
   });
 
+  test("two-party mode replies unimplemented for level-3 messages", async () => {
+    const client = rpc.connect();
+    const server = await rpc.accept();
+    const sentByServer: number[] = [];
+    const transport = server.transport as {
+      sendMessage: (msg: RPCMessage) => void;
+    };
+    const originalSend = transport.sendMessage.bind(transport);
+    transport.sendMessage = (msg: RPCMessage): void => {
+      sentByServer.push(msg.which());
+      originalSend(msg);
+    };
+
+    const m = new Message().initRoot(RPCMessage);
+    m._initProvide();
+    client.sendMessage(m);
+
+    await waitUntil(() => sentByServer.length > 0);
+    t.equal(sentByServer[0], RPCMessage.UNIMPLEMENTED);
+  });
+
   test("SimpleInterface", { timeout: 1000 }, async () => {
     const server = async () => {
       const s = await rpc.accept();

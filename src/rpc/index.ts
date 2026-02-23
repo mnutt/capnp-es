@@ -6,6 +6,7 @@ export * from "./client";
 export * from "./conn";
 export * from "./deferred";
 export * from "./error-client";
+export * from "./level3";
 export * from "./method";
 export * from "./pipeline";
 export * from "./persistence";
