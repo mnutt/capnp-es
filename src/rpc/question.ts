@@ -8,10 +8,10 @@ import { PipelineOp } from "./pipeline-op";
 import { Deferred } from "./deferred";
 import { Call } from "./call";
 import { clientFromResolution } from "./client";
-import { newMessage } from "./capability";
+import { newMessage, newFinishMessage } from "./capability";
 import { transformToPromisedAnswer } from "./promised-answer";
 import { Pointer } from "../serialization/pointers/pointer";
-import { NOT_IMPLEMENTED, RPC_FULFILL_ALREADY_CALLED } from "../errors";
+import { RPC_FULFILL_ALREADY_CALLED } from "../errors";
 import { getAs } from "../serialization/pointers/struct.utils";
 
 export enum QuestionState {
@@ -126,8 +126,11 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     this.derived.push(transform);
   }
 
-  pipelineClose(): void {
-    throw new Error(NOT_IMPLEMENTED);
+  pipelineClose(_transform: PipelineOp[]): void {
+    const fin = newFinishMessage(this.id, true);
+    this.conn.sendMessage(fin);
+    this.conn.popQuestion(this.id);
+    this.cancel(new Error("pipeline closed"));
   }
 }
 

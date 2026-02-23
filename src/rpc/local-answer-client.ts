@@ -6,7 +6,6 @@ import { Struct } from "../serialization/pointers/struct";
 import { Call } from "./call";
 import { Fulfiller } from "./fulfiller/fulfiller";
 import { Client, clientFromResolution } from "./client";
-import { NOT_IMPLEMENTED } from "../errors";
 
 /**
  * A localAnswerClient is used to provide a pipelined client of an answer.
@@ -27,7 +26,8 @@ export class LocalAnswerClient<T extends Struct> implements Client {
   }
 
   close(): void {
-    // TODO: unstub
-    throw new Error(NOT_IMPLEMENTED);
+    if (this.a.done) {
+      clientFromResolution(this.transform, this.a.obj, this.a.err).close();
+    }
   }
 }

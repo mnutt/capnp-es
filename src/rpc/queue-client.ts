@@ -15,7 +15,7 @@ import { copyCall, Call } from "./call";
 import { ErrorAnswer } from "./error-answer";
 import { Queue } from "./queue";
 import { Qcalls, QCallSlot } from "./qcalls";
-import { RPC_CALL_QUEUE_FULL } from "../errors";
+import { RPC_CALL_QUEUE_FULL, RPC_QUEUE_CALL_CANCEL } from "../errors";
 import { MessageTarget, Disembargo_Context_Which } from "../capnp/rpc";
 import { newDisembargoMessage } from "./capability";
 import { joinAnswer } from "./join";
@@ -125,6 +125,21 @@ export class QueueClient implements Client {
   // close releases any resources associated with this client.
   // No further calls to the client should be made after calling Close.
   close(): void {
-    // muffin
+    while (this.q.len() > 0) {
+      const i = this.q.front();
+      if (i === -1) {
+        break;
+      }
+      const c = this.calls.data[i];
+      if (c) {
+        if (isRemoteCall(c)) {
+          c.a.reject(new Error(RPC_QUEUE_CALL_CANCEL));
+        } else if (isLocalCall(c)) {
+          c.f.reject(new Error(RPC_QUEUE_CALL_CANCEL));
+        }
+      }
+      this.q.pop();
+    }
+    this._client.close();
   }
 }

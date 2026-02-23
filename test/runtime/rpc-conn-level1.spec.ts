@@ -17,9 +17,11 @@ import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
 import { ImmediateAnswer } from "src/rpc/immediate-answer";
 import { Registry } from "src/rpc/registry";
 import { Question } from "src/rpc/question";
+import { QueueClient } from "src/rpc/queue-client";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
+  isClosed = false;
 
   sendMessage(msg: RPCMessage): void {
     this.sent.push(msg);
@@ -30,7 +32,7 @@ class TestTransport implements Transport {
   }
 
   close(): void {
-    // no-op
+    this.isClosed = true;
   }
 }
 
@@ -563,5 +565,63 @@ describe("Conn level-1 message dispatch", () => {
         (m) => m.which() === RPCMessage.FINISH && m.finish.questionId === redirected.id,
       ),
     );
+  });
+
+  test("question.pipelineClose sends finish and rejects pending question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected pipeline close rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    q.pipelineClose([]);
+
+    const err = await wait;
+    t.ok(err.message.includes("pipeline closed"));
+    t.equal(conn.findQuestion(q.id), null);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+    t.equal(transport.sent[0].finish.questionId, q.id);
+  });
+
+  test("queueClient.close rejects queued local calls", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const counting = new CountingClient();
+    const qc = new QueueClient(conn, counting, []);
+    const answer = qc.pushCall({ method: {} as any, params: {} as any } as any);
+
+    qc.close();
+
+    try {
+      await answer.struct();
+      throw new Error("expected canceled queued call");
+    } catch (error_) {
+      t.ok(!!error_);
+    }
+  });
+
+  test("shutdown rejects in-flight questions and closes transport", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected shutdown rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    conn.shutdown(new Error("shutdown now"));
+
+    const err = await wait;
+    t.ok(err.message.includes("shutdown now"));
+    t.equal(transport.isClosed, true);
+    t.equal(conn.closed, true);
+    t.equal(conn.findQuestion(q.id), null);
   });
 });

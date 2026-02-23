@@ -98,6 +98,7 @@ export class Conn {
   onError?: (err?: Error) => void;
   main?: Client;
   working = false;
+  closed = false;
 
   /**
    * Create a new connection
@@ -708,7 +709,76 @@ export class Conn {
   }
 
   shutdown(_err?: Error): void {
-    // FIXME: unstub
+    if (this.closed) {
+      return;
+    }
+    this.closed = true;
+    this.working = false;
+    const err = _err ?? new Error("connection closed");
+
+    for (let i = 0; i < this.questions.length; i++) {
+      const q = this.questions[i];
+      if (!q) {
+        continue;
+      }
+      if (q.state === QuestionState.IN_PROGRESS) {
+        q.reject(err);
+      }
+      this.questions[i] = null;
+      this.questionID.remove(i);
+    }
+
+    for (const idStr of Object.keys(this.answers)) {
+      const id = Number(idStr);
+      const a = this.answers[id];
+      a.done = true;
+      a.err = err;
+      a.deferred.reject(err);
+      delete this.answers[id];
+    }
+
+    for (let i = 0; i < this.exports.length; i++) {
+      const e = this.exports[i];
+      if (!e) {
+        continue;
+      }
+      try {
+        e.client.close();
+      } catch {
+        // ignore
+      }
+      this.exports[i] = null;
+      this.exportID.remove(i);
+    }
+
+    for (const [idStr, entry] of Object.entries(this.imports)) {
+      try {
+        const c = entry.rc._client;
+        if (c instanceof ImportClient) {
+          c.closed = true;
+          c.resolved?.close();
+          c.resolved = undefined;
+          c.embargoQueue = [];
+          c.embargoId = undefined;
+        }
+      } catch {
+        // ignore
+      }
+      delete this.imports[Number(idStr)];
+    }
+
+    for (const idStr of Object.keys(this.tailAnswerWaiters)) {
+      const id = Number(idStr);
+      const waiters = this.tailAnswerWaiters[id];
+      for (const q of waiters) {
+        if (q.state === QuestionState.IN_PROGRESS) {
+          q.reject(err);
+        }
+      }
+      delete this.tailAnswerWaiters[id];
+    }
+
+    this.disembargoes = {};
     this.transport.close();
   }
 

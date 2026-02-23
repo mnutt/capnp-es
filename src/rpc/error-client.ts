@@ -15,7 +15,7 @@ export class ErrorClient implements Client {
   }
 
   close(): void {
-    throw this.err;
+    // Broken clients are already unusable; close is a no-op.
   }
 }
 

@@ -59,6 +59,6 @@ export class Server implements Client {
   }
 
   close(): void {
-    // muffin
+    // No transport resources are owned by Server itself.
   }
 }
