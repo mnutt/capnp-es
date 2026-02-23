@@ -627,6 +627,54 @@ describe("rpc", () => {
     t.equal((clientConn as any).findQuestion(q.id), null);
   });
 
+  test("duplicate incoming call question id closes receiver connection", {
+    timeout: 2000,
+  }, async () => {
+    let releaseSubtract: (() => void) | undefined;
+    const subtractGate = new Promise<void>((resolve) => {
+      releaseSubtract = resolve;
+    });
+    const serverConnPromise = (async () => {
+      const s = await rpc.accept();
+      s.initMain(SimpleInterface, {
+        subtract: async (p, r) => {
+          await subtractGate;
+          r.result = p.a - p.b;
+        },
+      });
+      return s;
+    })();
+
+    const clientConn = rpc.connect();
+    const serverConn = await serverConnPromise;
+    (serverConn as any).onError = () => {};
+    const method = (SimpleInterface as any).Client.methods[0];
+
+    const makeCall = () => {
+      const msg = new Message().initRoot(RPCMessage);
+      const call = msg._initCall();
+      call.questionId = 4242;
+      call.interfaceId = method.interfaceId;
+      call.methodId = method.methodId;
+      call._initTarget().importedCap = 0;
+      const payload = call._initParams();
+      const paramsMsg = new Message();
+      const params = paramsMsg.initRoot(SimpleInterface_Subtract$Params);
+      params.a = 10;
+      params.b = 1;
+      payload.content = params;
+      return msg;
+    };
+
+    clientConn.sendMessage(makeCall());
+    await waitUntil(() => !!(serverConn as any).answers[4242], 1000);
+    void (serverConn as any).answers[4242].deferred.promise.catch(() => {});
+    clientConn.sendMessage(makeCall());
+
+    await waitUntil(() => (serverConn as any).closed === true, 1000);
+    releaseSubtract?.();
+  });
+
   test("takeFromOtherQuestion follows source answer over integration transport", {
     timeout: 2000,
   }, async () => {
