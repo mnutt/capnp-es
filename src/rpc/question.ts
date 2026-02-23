@@ -140,18 +140,41 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     this.derived.push(transform);
   }
 
-  pipelineClose(_transform: PipelineOp[]): void {
-    if (this.state !== QuestionState.IN_PROGRESS) {
+  pipelineClose(transform: PipelineOp[]): void {
+    if (transform.length > 0) {
+      this.derived = this.derived.filter((d) => !transformsEqual(transform, d));
+      if (this.derived.length > 0) {
+        return;
+      }
+    }
+
+    // Closing the root pipeline cancels the outstanding question.
+    if (this.state === QuestionState.IN_PROGRESS) {
+      if (this.conn.findQuestion(this.id)) {
+        const fin = newFinishMessage(this.id, true);
+        this.conn.sendMessage(fin);
+        this.conn.popQuestion(this.id);
+      }
+      this.err = new Error("pipeline closed");
+      this.state = QuestionState.CANCELED;
+      this.deferred.reject(this.err);
       return;
     }
-    if (this.conn.findQuestion(this.id)) {
-      const fin = newFinishMessage(this.id, true);
-      this.conn.sendMessage(fin);
-      this.conn.popQuestion(this.id);
+
+    // Closing a derived pipeline should only close the derived capability once
+    // resolution arrives; it must not cancel the parent question.
+    const closeResolved = () => {
+      try {
+        clientFromResolution(transform, this.obj, this.err).close();
+      } catch {
+        // Ignore close races while question is settling.
+      }
+    };
+    if (this.state === QuestionState.IN_PROGRESS) {
+      this.deferred.promise.then(closeResolved, closeResolved);
+      return;
     }
-    this.err = new Error("pipeline closed");
-    this.state = QuestionState.CANCELED;
-    this.deferred.reject(this.err);
+    closeResolved();
   }
 }
 
