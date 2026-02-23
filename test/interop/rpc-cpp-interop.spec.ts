@@ -106,7 +106,8 @@ type CppClientMode =
   | "exception"
   | "pipeline-success"
   | "pipeline-exception"
-  | "parallel";
+  | "parallel"
+  | "persistent-nonpersistent";
 
 async function runCppClient(
   host: string,
@@ -275,6 +276,50 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
           .get((p) => {
             p.index = 1;
           })
+          .promise()
+          .then(() => null)
+          .catch((error__: unknown) => error__ as Error);
+
+        t.ok(error_ instanceof Error);
+        t.ok(error_.message.length > 0);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client cast to Persistent fails for non-persistent C++ capability",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { ReturnCapability }, { Persistent }] = await Promise.all(
+        [
+          import("src/rpc"),
+          import("test/fixtures/import-interface"),
+          import("src/capnp/persistent"),
+        ],
+      );
+      const server = await startCppServer();
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const ret = await conn
+          .bootstrap(ReturnCapability)
+          .get((p) => {
+            p.index = 0;
+          })
+          .promise();
+        const persistent = new Persistent.Client(ret.capability.client);
+        const error_ = await persistent
+          .save()
           .promise()
           .then(() => null)
           .catch((error__: unknown) => error__ as Error);
@@ -458,6 +503,26 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK parallel=7,22"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client cast to Persistent fails for non-persistent capnp-es capability",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer();
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "persistent-nonpersistent",
+        );
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK exception="));
       } finally {
         await server.stop();
       }

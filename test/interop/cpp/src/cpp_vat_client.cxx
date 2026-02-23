@@ -6,6 +6,7 @@
 
 #include "capnp/simple-interface.capnp.h"
 #include "capnp/import-interface.capnp.h"
+#include <capnp/persistent.capnp.h>
 
 static std::string getArg(int argc, char* argv[], int idx, const char* fallback) {
   if (idx < argc) {
@@ -22,7 +23,10 @@ int main(int argc, char* argv[]) {
 
   capnp::EzRpcClient client(addr);
   auto& waitScope = client.getWaitScope();
-  const bool expectException = mode == "exception" || mode == "pipeline-exception";
+  const bool expectException =
+      mode == "exception" ||
+      mode == "pipeline-exception" ||
+      mode == "persistent-nonpersistent";
 
   try {
     auto mainCap = client.getMain<ReturnCapability>();
@@ -71,6 +75,15 @@ int main(int argc, char* argv[]) {
 
     auto resp = req.send().wait(waitScope);
     auto cap = resp.getCapability();
+
+    if (mode == "persistent-nonpersistent") {
+      auto persistent =
+          cap.template castAs<capnp::Persistent<capnp::AnyPointer, capnp::AnyPointer>>();
+      auto saveReq = persistent.saveRequest();
+      saveReq.send().wait(waitScope);
+      std::cerr << "expected Persistent.save() exception but call succeeded" << std::endl;
+      return 6;
+    }
 
     auto sub = cap.subtractRequest();
     sub.setA(11);

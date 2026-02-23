@@ -52,7 +52,7 @@ export class Server implements Client {
 
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
     const serverMethod = this.methods[call.method.methodId];
-    if (!serverMethod) {
+    if (!serverMethod || serverMethod.interfaceId !== call.method.interfaceId) {
       return new ErrorAnswer(
         new MethodError(call.method, RPC_METHOD_NOT_IMPLEMENTED),
       );
