@@ -787,6 +787,9 @@ export class Conn {
         const c = entry.rc._client;
         if (c instanceof ImportClient) {
           c.closed = true;
+          for (const item of c.embargoQueue) {
+            item.f.reject(err);
+          }
           c.resolved?.close();
           c.resolved = undefined;
           c.embargoQueue = [];

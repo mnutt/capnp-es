@@ -1222,4 +1222,27 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.closed, true);
     t.equal(conn.findQuestion(q.id), null);
   });
+
+  test("shutdown rejects embargo-queued import calls", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(70, true);
+    const entry = conn.imports[70];
+    const base = entry.rc._client as ImportClient;
+    base.setResolved(new CountingClient());
+    const embargoId = conn.registerDisembargo(base);
+    base.activateEmbargo(embargoId);
+
+    const queued = importRef.call({ method: {} as any, params: {} as any } as any);
+    const wait = queued
+      .struct()
+      .then(() => {
+        throw new Error("expected shutdown rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    conn.shutdown(new Error("shutdown now"));
+    const err = await wait;
+    t.ok(err.message.includes("shutdown now"));
+  });
 });
