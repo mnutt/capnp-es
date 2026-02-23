@@ -1258,6 +1258,20 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent.length, 0);
   });
 
+  test("return for unknown question triggers shutdown", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = 9999;
+    ret._initException().reason = "late";
+
+    conn.handleMessage(m);
+
+    t.equal(conn.closed, true);
+    t.equal(transport.isClosed, true);
+  });
+
   test("incoming call with sendResultsTo.yourself returns resultsSentElsewhere", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

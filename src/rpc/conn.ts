@@ -353,7 +353,8 @@ export class Conn {
     const id = ret.answerId;
     const q = this.popQuestion(id);
     if (!q) {
-      throw new Error(format(RPC_RETURN_FOR_UNKNOWN_QUESTION, id));
+      this.shutdown(new Error(format(RPC_RETURN_FOR_UNKNOWN_QUESTION, id)));
+      return;
     }
 
     if (ret.releaseParamCaps) {
