@@ -922,6 +922,26 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(warning.includes("release overrun"));
   });
 
+  test("releaseImport ignores zero and negative release counts", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const warnings: string[] = [];
+    conn.error = (s) => {
+      warnings.push(s);
+    };
+    conn.addImport(14);
+    conn.addImport(14);
+
+    conn.releaseImport(14, 0);
+    conn.releaseImport(14, -3);
+
+    t.equal(conn.imports[14].refs, 2);
+    t.equal(transport.sent.length, 0);
+    t.equal(warnings.length, 2);
+    t.ok(warnings[0].includes("non-positive"));
+    t.ok(warnings[1].includes("non-positive"));
+  });
+
   test("return with releaseParamCaps releases question param caps by ID", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

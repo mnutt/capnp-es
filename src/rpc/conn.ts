@@ -623,6 +623,12 @@ export class Conn {
     if (!entry) {
       return;
     }
+    if (refs <= 0) {
+      this.error(
+        `warning: import ${id} release with non-positive count (${refs}) ignored`,
+      );
+      return;
+    }
     const heldRefs = entry.refs;
     const releaseCount = Math.max(0, Math.min(refs, heldRefs));
     entry.refs -= releaseCount;
