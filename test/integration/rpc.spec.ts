@@ -315,4 +315,69 @@ describe("rpc", () => {
     (await serverConnPromise).shutdown();
   });
 
+  test("takeFromOtherQuestion follows source answer over integration transport", {
+    timeout: 2000,
+  }, async () => {
+    const clientConn = rpc.connect();
+    let releaseSourceCall: (() => void) | undefined;
+    const sourceCallGate = new Promise<void>((resolve) => {
+      releaseSourceCall = resolve;
+    });
+    clientConn.initMain(SimpleInterface, {
+      subtract: async (p, r) => {
+        await sourceCallGate;
+        r.result = p.a - p.b;
+      },
+    });
+    const serverConn = await rpc.accept();
+
+    // Bootstrap first and call through promisedAnswer to avoid import-id assumptions.
+    const bootstrapQuestion = (serverConn as any).newQuestion();
+    const bootstrapMsg = new Message().initRoot(RPCMessage);
+    bootstrapMsg._initBootstrap().questionId = bootstrapQuestion.id;
+    serverConn.sendMessage(bootstrapMsg);
+    bootstrapQuestion.start();
+
+    // Start an in-flight incoming call on the client: this creates the source answer id.
+    const sourceMethod = (SimpleInterface as any).Client.methods[0];
+    const sourceQuestion = (serverConn as any).newQuestion(sourceMethod);
+    const sourceCallMsg = new Message().initRoot(RPCMessage);
+    const sourceCall = sourceCallMsg._initCall();
+    sourceCall.questionId = sourceQuestion.id;
+    sourceCall.interfaceId = sourceMethod.interfaceId;
+    sourceCall.methodId = sourceMethod.methodId;
+    const promisedTarget = sourceCall._initTarget()._initPromisedAnswer();
+    promisedTarget.questionId = bootstrapQuestion.id;
+    promisedTarget._initTransform(0);
+    const sourcePayload = sourceCall._initParams();
+    const sourceParamsMsg = new Message();
+    const sourceParams = sourceParamsMsg.initRoot(SimpleInterface_Subtract$Params);
+    sourceParams.a = 12;
+    sourceParams.b = 5;
+    sourcePayload.content = sourceParams;
+    serverConn.sendMessage(sourceCallMsg);
+    sourceQuestion.start();
+
+    await waitUntil(
+      () => !!(clientConn as any).answers[sourceQuestion.id],
+      1000,
+    );
+
+    // Keep a pending client question that the server will resolve indirectly.
+    const redirectedQuestion = (clientConn as any).newQuestion();
+    const redirectedPromise = redirectedQuestion.struct();
+
+    // Redirect the pending question to the in-flight source answer.
+    const retMsg = new Message().initRoot(RPCMessage);
+    const ret = retMsg._initReturn();
+    ret.answerId = redirectedQuestion.id;
+    ret.takeFromOtherQuestion = sourceQuestion.id;
+    (serverConn as any).sendMessage(retMsg);
+
+    releaseSourceCall?.();
+    const redirectedResult = await redirectedPromise;
+    t.equal(redirectedResult.result, 7);
+    t.equal((clientConn as any).findQuestion(redirectedQuestion.id), null);
+  });
+
 });
