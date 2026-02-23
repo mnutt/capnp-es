@@ -471,6 +471,21 @@ describe("rpc", () => {
     }
   });
 
+  test("return for unknown question id closes receiver connection", {
+    timeout: 2000,
+  }, async () => {
+    const clientConn = rpc.connect();
+    const serverConn = await rpc.accept();
+
+    const msg = new Message().initRoot(RPCMessage);
+    const ret = msg._initReturn();
+    ret.answerId = 999999;
+    ret.canceled = true;
+    serverConn.sendMessage(msg);
+
+    await waitUntil(() => (clientConn as any).closed === true, 1000);
+  });
+
   test("takeFromOtherQuestion follows source answer over integration transport", {
     timeout: 2000,
   }, async () => {
