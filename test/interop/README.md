@@ -16,6 +16,8 @@ Current spec: `test/interop/rpc-cpp-interop.spec.ts`
 - Method exception propagation from `capnp-es` server to C++ client.
 - `Persistent.save()` cast fails on non-persistent capabilities in both
   directions.
+- Restorer bootstrap (`restore(sturdyRef)`) success/failure checks in both
+  directions.
 
 ## Run in one command (recommended)
 

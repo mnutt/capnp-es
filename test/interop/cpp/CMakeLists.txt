@@ -10,6 +10,7 @@ set(SCHEMA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/capnp)
 set(SCHEMAS
   ${SCHEMA_DIR}/simple-interface.capnp
   ${SCHEMA_DIR}/import-interface.capnp
+  ${SCHEMA_DIR}/rpc-level2.capnp
 )
 
 capnp_generate_cpp(CAPNP_SRCS CAPNP_HDRS ${SCHEMAS})

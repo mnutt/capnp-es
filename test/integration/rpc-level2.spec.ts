@@ -10,7 +10,11 @@ import {
   SimpleInterface,
   type SimpleInterface$Client,
 } from "test/fixtures/simple-interface";
-import { RpcLevel2Owner, RpcLevel2SturdyRef } from "test/fixtures/rpc-level2";
+import {
+  RpcLevel2Owner,
+  RpcLevel2Restorer,
+  RpcLevel2SturdyRef,
+} from "test/fixtures/rpc-level2";
 
 describe("rpc level-2", () => {
   let rpc: TestRPC;
@@ -149,5 +153,182 @@ describe("rpc level-2", () => {
 
     const [, host] = await Promise.all([server(), client()]);
     t.equal(host, "cast-ok");
+  });
+
+  test("bootstrap restorer can restore sturdyRef and return callable capability", async () => {
+    const lookup = new MapRestorerLookup<
+      { host: string; object: string },
+      SimpleInterface$Client
+    >();
+
+    const server = async () => {
+      const s = await rpc.accept();
+      const cap = new SimpleInterface.Server({
+        subtract: async (params, results) => {
+          results.result = params.a - params.b;
+        },
+      }).client();
+      lookup.set({ host: "vat-a", object: "calc-1" }, cap);
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, results) {
+          const sturdyRef = params.sturdyRef;
+          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          results.capability = lookup.restore({
+            host: sturdyRef.host,
+            object,
+          });
+        },
+      });
+      return s;
+    };
+
+    const client = async () => {
+      const restored = await rpc
+        .connect()
+        .bootstrap(RpcLevel2Restorer)
+        .restore((params) => {
+          params._initSturdyRef().host = "vat-a";
+          const objectId = new TextEncoder().encode("calc-1");
+          params.sturdyRef
+            ._initObjectId(objectId.byteLength)
+            .copyBuffer(objectId);
+          params._initOwner().id = "owner-a";
+        })
+        .promise();
+      const out = await restored.capability
+        .subtract((params) => {
+          params.a = 20;
+          params.b = 6;
+        })
+        .promise();
+      return out.result;
+    };
+
+    const [, result] = await Promise.all([server(), client()]);
+    t.equal(result, 14);
+  });
+
+  test("bootstrap restorer rejects unknown sturdyRef deterministically", async () => {
+    const lookup = new MapRestorerLookup<
+      { host: string; object: string },
+      SimpleInterface$Client
+    >();
+
+    const server = async () => {
+      const s = await rpc.accept();
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, results) {
+          const sturdyRef = params.sturdyRef;
+          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          results.capability = lookup.restore({
+            host: sturdyRef.host,
+            object,
+          });
+        },
+      });
+      return s;
+    };
+
+    const client = async () => {
+      try {
+        await rpc
+          .connect()
+          .bootstrap(RpcLevel2Restorer)
+          .restore((params) => {
+            params._initSturdyRef().host = "vat-a";
+            const objectId = new TextEncoder().encode("missing");
+            params.sturdyRef
+              ._initObjectId(objectId.byteLength)
+              .copyBuffer(objectId);
+            params._initOwner().id = "owner-a";
+          })
+          .promise();
+        throw new Error("expected restore failure");
+      } catch (error_) {
+        t.ok((error_ as Error).message.includes("unknown sturdyRef"));
+      }
+    };
+
+    await Promise.all([server(), client()]);
+  });
+
+  test("forwarded restore (A->B->C) returns callable restored capability", async () => {
+    const upstream = new TestRPC();
+
+    const upstreamServer = async () => {
+      const s = await upstream.accept();
+      const cap = new SimpleInterface.Server({
+        subtract: async (params, results) => {
+          results.result = params.a - params.b;
+        },
+      }).client();
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, results) {
+          const sturdyRef = params.sturdyRef;
+          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          if (sturdyRef.host !== "vat-c" || object !== "calc-c") {
+            throw new Error("unknown sturdyRef");
+          }
+          results.capability = cap;
+        },
+      });
+      return s;
+    };
+
+    const middleServer = async () => {
+      const s = await rpc.accept();
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, results) {
+          const upstreamRestore = upstream.connect().bootstrap(RpcLevel2Restorer);
+          const restored = await upstreamRestore
+            .restore((p) => {
+              const ref = p._initSturdyRef();
+              ref.host = params.sturdyRef.host;
+              const objectId = params.sturdyRef.objectId.toUint8Array();
+              ref._initObjectId(objectId.byteLength).copyBuffer(objectId);
+              p._initOwner().id = params.owner.id;
+            })
+            .promise();
+          results.capability = restored.capability;
+        },
+      });
+      return s;
+    };
+
+    const middlePromise = middleServer();
+    const upstreamPromise = upstreamServer();
+
+    let middleConn: any;
+    let upstreamConn: any;
+    let clientConn: any;
+    try {
+      clientConn = rpc.connect();
+      middleConn = await middlePromise;
+
+      const restored = await clientConn.bootstrap(RpcLevel2Restorer).restore((p) => {
+        p._initSturdyRef().host = "vat-c";
+        const objectId = new TextEncoder().encode("calc-c");
+        p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        p._initOwner().id = "owner-c";
+      }).promise();
+
+      const out = await restored.capability.subtract((p) => {
+        p.a = 22;
+        p.b = 5;
+      }).promise();
+      t.equal(out.result, 17);
+      upstreamConn = await upstreamPromise;
+    } finally {
+      if (clientConn) {
+        clientConn.shutdown();
+      }
+      if (middleConn) {
+        middleConn.shutdown();
+      }
+      if (upstreamConn) {
+        upstreamConn.shutdown();
+      }
+      upstream.close();
+    }
   });
 });
