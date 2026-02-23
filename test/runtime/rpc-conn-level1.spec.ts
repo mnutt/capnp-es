@@ -233,6 +233,45 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[9], undefined);
   });
 
+  test("duplicate resolve.cap after resolve.exception is ignored and preserves exception", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importClient = conn.addImport(17, true);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 17;
+      resolve._initException().reason = "broken";
+      conn.handleMessage(m);
+    }
+    t.equal(transport.sent.length, 0);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 17;
+      resolve._initCap().senderHosted = 18;
+      conn.handleMessage(m);
+    }
+
+    // duplicate resolve.cap on settled import is ignored but introduced cap is
+    // immediately released.
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 18);
+    t.equal(conn.imports[18], undefined);
+
+    for (let i = 0; i < 2; i++) {
+      try {
+        await importClient.call({} as any).struct();
+        throw new Error("expected resolve exception");
+      } catch (error_) {
+        t.ok((error_ as Error).message.includes("broken"));
+      }
+    }
+  });
+
   test("resolve.cap starts embargo and forwards calls after receiverLoopback", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
