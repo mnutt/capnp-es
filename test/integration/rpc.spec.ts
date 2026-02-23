@@ -335,20 +335,25 @@ describe("rpc", () => {
     let middleConn: any;
     let clientConn: any;
     const resolveExceptionReasons: string[] = [];
-    let restoreSend: (() => void) | undefined;
+    let unlistenClient: (() => void) | undefined;
     try {
       clientConn = rpc.connect();
       middleConn = await middlePromise;
 
-      const originalSendMessage = middleConn.sendMessage.bind(middleConn);
-      middleConn.sendMessage = (m: any) => {
-        if (m.which() === RPCMessage.RESOLVE && m.resolve._isException) {
-          resolveExceptionReasons.push(m.resolve.exception.reason);
+      const clientPort = (clientConn.transport as any).port;
+      const onClientMessage = (buf: ArrayBuffer) => {
+        const inbound = new Message(buf, false).getRoot(RPCMessage);
+        if (inbound.which() !== RPCMessage.RESOLVE) {
+          return;
         }
-        originalSendMessage(m);
+        const resolve = inbound.resolve;
+        if (resolve._isException) {
+          resolveExceptionReasons.push(resolve.exception.reason);
+        }
       };
-      restoreSend = () => {
-        middleConn.sendMessage = originalSendMessage;
+      clientPort.on("message", onClientMessage);
+      unlistenClient = () => {
+        clientPort.off("message", onClientMessage);
       };
 
       const pending = clientConn.bootstrap(ReturnCapability).get();
@@ -395,7 +400,7 @@ describe("rpc", () => {
         1000,
       );
     } finally {
-      restoreSend?.();
+      unlistenClient?.();
       if (middleConn) {
         middleConn.shutdown();
       }
