@@ -11,7 +11,11 @@ import { createHash } from "node:crypto";
 import { TestRPC } from "./rpc.utils";
 import { bufferToHex } from "src/util.js";
 import { Message } from "src/serialization/message";
-import { Message as RPCMessage } from "src/capnp/rpc";
+import {
+  Message as RPCMessage,
+  Disembargo_Context_Which,
+  MessageTarget,
+} from "src/capnp/rpc";
 
 async function waitUntil(
   predicate: () => boolean,
@@ -313,6 +317,60 @@ describe("rpc", () => {
     t.ok(err.message.length > 0);
     t.equal((clientConn as any).findQuestion(q.id), null);
     (await serverConnPromise).shutdown();
+  });
+
+  test("disembargo senderLoopback echoes receiverLoopback over integration transport", {
+    timeout: 2000,
+  }, async () => {
+    const clientConn = rpc.connect();
+    const serverConn = await rpc.accept();
+
+    const received: Array<{
+      which: number;
+      loopbackId?: number;
+      targetWhich: number;
+      importedCap?: number;
+    }> = [];
+
+    const serverPort = (serverConn.transport as any).port;
+    const onMessage = (buf: ArrayBuffer) => {
+      const inbound = new Message(buf, false).getRoot(RPCMessage);
+      if (inbound.which() !== RPCMessage.DISEMBARGO) {
+        return;
+      }
+      const dis = inbound.disembargo;
+      const ctx = dis.context;
+      received.push({
+        which: ctx.which(),
+        loopbackId:
+          ctx.which() === Disembargo_Context_Which.RECEIVER_LOOPBACK
+            ? ctx.receiverLoopback
+            : undefined,
+        targetWhich: dis.target.which(),
+        importedCap:
+          dis.target.which() === MessageTarget.IMPORTED_CAP
+            ? dis.target.importedCap
+            : undefined,
+      });
+    };
+    serverPort.on("message", onMessage);
+
+    try {
+      const msg = new Message().initRoot(RPCMessage);
+      const dis = msg._initDisembargo();
+      dis.context.senderLoopback = 42;
+      dis._initTarget().importedCap = 99;
+      serverConn.sendMessage(msg);
+
+      await waitUntil(() => received.length > 0, 1000);
+      t.equal(received[0].which, Disembargo_Context_Which.RECEIVER_LOOPBACK);
+      t.equal(received[0].loopbackId, 42);
+      t.equal(received[0].targetWhich, MessageTarget.IMPORTED_CAP);
+      t.equal(received[0].importedCap, 99);
+      void clientConn;
+    } finally {
+      serverPort.off("message", onMessage);
+    }
   });
 
   test("takeFromOtherQuestion follows source answer over integration transport", {
