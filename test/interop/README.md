@@ -1,4 +1,4 @@
-# C++ Interop E2E (Level 1)
+# C++ Interop E2E (Level 1 + Level 2)
 
 This folder contains an end-to-end RPC interop harness between:
 
@@ -84,5 +84,6 @@ Optional env vars:
 ## Notes
 
 - Tests are gated behind `CAPNP_CPP_INTEROP=1` and skip by default.
-- The C++ fixture currently implements only the minimal surface needed for Level 1 e2e smoke checks.
+- The C++ fixture implements the minimal surface needed for Level 1 e2e checks
+  plus targeted Level 2 persistence/restore interop scenarios.
 - Interop C++ schema inputs are vendored in `test/interop/cpp/capnp/` for CMake `capnp_generate_cpp` path compatibility.
