@@ -209,6 +209,15 @@ export class Conn {
     if (!(importClient instanceof ImportClient)) {
       throw new Error(INVARIANT_UNREACHABLE_CODE);
     }
+    if (!entry.isPromise) {
+      // Duplicate/late resolve for an already-settled import.
+      // Ignore it, but release any newly introduced capability to avoid leaks.
+      if (resolve.which() === Resolve.CAP) {
+        const client = this.clientFromCapDescriptor(resolve.cap);
+        client.close();
+      }
+      return;
+    }
 
     switch (resolve.which()) {
       case Resolve.CAP: {

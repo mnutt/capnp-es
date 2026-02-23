@@ -146,7 +146,7 @@ describe("Conn level-1 message dispatch", () => {
   test("resolve with exception rejects future calls and does not echo", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
-    const importClient = conn.addImport(7);
+    const importClient = conn.addImport(7, true);
     const m = new Message().initRoot(RPCMessage);
     const resolve = m._initResolve();
     resolve.promiseId = 7;
@@ -198,6 +198,39 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[1].release.id, 8);
     t.equal(transport.sent[2].which(), RPCMessage.RELEASE);
     t.equal(transport.sent[2].release.id, 7);
+  });
+
+  test("duplicate resolve for settled import is ignored and introduced cap is released", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    conn.addImport(7, true);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 7;
+      resolve._initCap().senderHosted = 8;
+      conn.handleMessage(m);
+    }
+
+    // First resolve starts disembargo flow.
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const resolve = m._initResolve();
+      resolve.promiseId = 7;
+      resolve._initCap().senderHosted = 9;
+      conn.handleMessage(m);
+    }
+
+    // Duplicate resolve should not retarget; newly introduced cap should be
+    // immediately released and cleaned up.
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[1].release.id, 9);
+    t.equal(conn.imports[9], undefined);
   });
 
   test("resolve.cap starts embargo and forwards calls after receiverLoopback", () => {
