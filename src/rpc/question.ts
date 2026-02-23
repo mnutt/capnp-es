@@ -170,10 +170,6 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
         // Ignore close races while question is settling.
       }
     };
-    if (this.state === QuestionState.IN_PROGRESS) {
-      this.deferred.promise.then(closeResolved, closeResolved);
-      return;
-    }
     closeResolved();
   }
 }
