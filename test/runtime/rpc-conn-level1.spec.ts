@@ -130,15 +130,48 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[77], undefined);
   });
 
-  test("disembargo is handled via unimplemented echo", () => {
+  test("disembargo senderLoopback echos receiverLoopback", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const dis = m._initDisembargo();
+    dis._initTarget().importedCap = 99;
+    const ctx = dis._initContext();
+    ctx.senderLoopback = 42;
+    t.equal(ctx.which(), Disembargo_Context_Which.SENDER_LOOPBACK);
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
+    t.equal(
+      transport.sent[0].disembargo.context.which(),
+      Disembargo_Context_Which.RECEIVER_LOOPBACK,
+    );
+    t.equal(transport.sent[0].disembargo.context.receiverLoopback, 42);
+    t.equal(transport.sent[0].disembargo.target.importedCap, 99);
+  });
+
+  test("disembargo receiverLoopback is a no-op", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const dis = m._initDisembargo();
+    dis._initTarget().importedCap = 5;
+    dis._initContext().receiverLoopback = 11;
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 0);
+  });
+
+  test("disembargo level-3 contexts return unimplemented", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const m = new Message().initRoot(RPCMessage);
     const dis = m._initDisembargo();
     dis._initTarget().importedCap = 1;
-    const ctx = dis._initContext();
-    ctx.senderLoopback = 42;
-    t.equal(ctx.which(), Disembargo_Context_Which.SENDER_LOOPBACK);
+    dis._initContext().accept = true;
 
     conn.handleMessage(m);
 

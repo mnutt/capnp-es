@@ -11,11 +11,13 @@ import {
   CapDescriptor,
   MessageTarget,
   Resolve,
+  Disembargo_Context_Which,
 } from "../capnp/rpc";
 import { RPCError } from "./rpc-error";
 import { AnswerEntry, Answer } from "./answer";
 import {
   newMessage,
+  newDisembargoMessage,
   newFinishMessage,
   newReleaseMessage,
   newUnimplementedMessage,
@@ -219,9 +221,28 @@ export class Conn {
   }
 
   handleDisembargoMessage(m: RPCMessage): void {
-    // Level 1 disembargo semantics are not fully implemented yet.
-    // Echo unimplemented so the peer can apply fallback behavior.
-    this.sendMessage(newUnimplementedMessage(m));
+    const dis = m.disembargo;
+    const ctx = dis.context;
+    switch (ctx.which()) {
+      case Disembargo_Context_Which.SENDER_LOOPBACK: {
+        const out = newDisembargoMessage(
+          Disembargo_Context_Which.RECEIVER_LOOPBACK,
+          ctx.senderLoopback,
+        );
+        out.disembargo.target = dis.target;
+        this.sendMessage(out);
+        break;
+      }
+      case Disembargo_Context_Which.RECEIVER_LOOPBACK: {
+        // Loopback completed on this side. Queue/embargo plumbing is not yet
+        // fully wired, so there is nothing to do right now.
+        break;
+      }
+      default: {
+        // Level 3+ contexts are unsupported in this implementation.
+        this.sendMessage(newUnimplementedMessage(m));
+      }
+    }
   }
 
   handleMessage(m: RPCMessage): void {
