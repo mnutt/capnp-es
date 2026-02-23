@@ -94,16 +94,23 @@ export class AnswerEntry<R extends Struct> {
     if (!objcap.capTable) {
       objcap.capTable = [];
     }
+    const queueClients: QueueClient[] = [];
     for (const capIdxStr of Object.keys(queues)) {
       const capIdx = Number(capIdxStr);
       const q = queues[capIdx];
       if (objcap.capTable === null) throw new Error(INVARIANT_UNREACHABLE_CODE);
-      objcap.capTable[capIdx] = new QueueClient(
+      const queueClient = new QueueClient(
         this.conn,
 
         objcap.capTable[capIdx]!,
         q,
       );
+      objcap.capTable[capIdx] = queueClient;
+      queueClients.push(queueClient);
+    }
+
+    for (const queueClient of queueClients) {
+      queueClient.flushQueue();
     }
 
     if (firstErr) {

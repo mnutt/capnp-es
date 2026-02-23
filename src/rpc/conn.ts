@@ -212,7 +212,7 @@ export class Conn {
 
     const importClient = entry.rc._client;
     if (!(importClient instanceof ImportClient)) {
-      throw new Error(INVARIANT_UNREACHABLE_CODE);
+      throw new TypeError(INVARIANT_UNREACHABLE_CODE);
     }
     if (!entry.isPromise) {
       // Duplicate/late resolve for an already-settled import.
@@ -256,7 +256,9 @@ export class Conn {
       }
       case Resolve.EXCEPTION: {
         entry.isPromise = false;
-        importClient.setResolved(new ErrorClient(new RPCError(resolve.exception)));
+        importClient.setResolved(
+          new ErrorClient(new RPCError(resolve.exception)),
+        );
         break;
       }
       default: {

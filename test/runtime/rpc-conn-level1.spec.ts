@@ -447,7 +447,10 @@ describe("Conn level-1 message dispatch", () => {
     const embargoId = conn.registerDisembargo(base);
     base.activateEmbargo(embargoId);
 
-    const queued = importRef.call({ method: {} as any, params: {} as any } as any);
+    const queued = importRef.call({
+      method: {} as any,
+      params: {} as any,
+    } as any);
     importRef.close();
 
     try {
@@ -561,7 +564,9 @@ describe("Conn level-1 message dispatch", () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     t.ok(transport.sent.some((m) => m.which() === RPCMessage.RESOLVE));
-    const resolveMsg = transport.sent.find((m) => m.which() === RPCMessage.RESOLVE)!;
+    const resolveMsg = transport.sent.find(
+      (m) => m.which() === RPCMessage.RESOLVE,
+    )!;
     t.equal(resolveMsg.resolve.promiseId, promiseId);
     t.equal(resolveMsg.resolve.which(), Resolve.CAP);
   });
@@ -582,7 +587,9 @@ describe("Conn level-1 message dispatch", () => {
     q.reject(new Error("boom"));
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const resolveMsg = transport.sent.find((m) => m.which() === RPCMessage.RESOLVE);
+    const resolveMsg = transport.sent.find(
+      (m) => m.which() === RPCMessage.RESOLVE,
+    );
     t.ok(resolveMsg);
     t.equal(resolveMsg!.resolve.promiseId, promiseId);
     t.equal(resolveMsg!.resolve.which(), Resolve.EXCEPTION);
@@ -645,7 +652,9 @@ describe("Conn level-1 message dispatch", () => {
     q.fulfill(out as any);
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const resolves = transport.sent.filter((m) => m.which() === RPCMessage.RESOLVE);
+    const resolves = transport.sent.filter(
+      (m) => m.which() === RPCMessage.RESOLVE,
+    );
     t.equal(resolves.length, 1);
     t.equal(resolves[0].resolve.promiseId, desc1.senderPromise);
   });
@@ -714,7 +723,9 @@ describe("Conn level-1 message dispatch", () => {
     }
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const returns = transport.sent.filter((m) => m.which() === RPCMessage.RETURN);
+    const returns = transport.sent.filter(
+      (m) => m.which() === RPCMessage.RETURN,
+    );
     t.equal(returns.length, 1);
     t.equal(returns[0].return.answerId, 5000 + 64);
     t.equal(returns[0].return.which(), Return_Which.EXCEPTION);
@@ -743,7 +754,9 @@ describe("Conn level-1 message dispatch", () => {
     q.reject(new Error("boom"));
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const resolves = transport.sent.filter((m) => m.which() === RPCMessage.RESOLVE);
+    const resolves = transport.sent.filter(
+      (m) => m.which() === RPCMessage.RESOLVE,
+    );
     t.equal(resolves.length, 1);
     t.equal(resolves[0].resolve.promiseId, d1.senderPromise);
     t.equal(resolves[0].resolve.which(), Resolve.EXCEPTION);
@@ -774,7 +787,10 @@ describe("Conn level-1 message dispatch", () => {
     q.fulfill(out as any);
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    t.equal(transport.sent.some((m) => m.which() === RPCMessage.RESOLVE), false);
+    t.equal(
+      transport.sent.some((m) => m.which() === RPCMessage.RESOLVE),
+      false,
+    );
   });
 
   test("disembargo senderLoopback echos receiverLoopback", () => {
@@ -1304,7 +1320,10 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent.length, 1);
     t.equal(transport.sent[0].which(), RPCMessage.RETURN);
     t.equal(transport.sent[0].return.answerId, 33);
-    t.equal(transport.sent[0].return.which(), Return_Which.RESULTS_SENT_ELSEWHERE);
+    t.equal(
+      transport.sent[0].return.which(),
+      Return_Which.RESULTS_SENT_ELSEWHERE,
+    );
   });
 
   test("incoming call with unsupported sendResultsTo returns unimplemented and cleans answer", () => {
@@ -1472,12 +1491,15 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(
       ta.sent.some(
         (m) =>
-          m.which() === RPCMessage.RETURN && m.return.answerId === sourceAnswerId,
+          m.which() === RPCMessage.RETURN &&
+          m.return.answerId === sourceAnswerId,
       ),
     );
     t.ok(
       ta.sent.some(
-        (m) => m.which() === RPCMessage.FINISH && m.finish.questionId === redirected.id,
+        (m) =>
+          m.which() === RPCMessage.FINISH &&
+          m.finish.questionId === redirected.id,
       ),
     );
   });
@@ -1588,15 +1610,12 @@ describe("Conn level-1 message dispatch", () => {
     const conn = new TestConn(transport);
     const q = conn.newQuestion(TEST_METHOD);
 
-    const answer = q.pipelineCall(
-      [],
-      {
-        method: TEST_METHOD,
-        paramsFunc: () => {
-          throw new Error("pipeline explode");
-        },
-      } as any,
-    );
+    const answer = q.pipelineCall([], {
+      method: TEST_METHOD,
+      paramsFunc: () => {
+        throw new Error("pipeline explode");
+      },
+    } as any);
 
     try {
       await answer.struct();
@@ -1656,7 +1675,10 @@ describe("Conn level-1 message dispatch", () => {
     const embargoId = conn.registerDisembargo(base);
     base.activateEmbargo(embargoId);
 
-    const queued = importRef.call({ method: {} as any, params: {} as any } as any);
+    const queued = importRef.call({
+      method: {} as any,
+      params: {} as any,
+    } as any);
     const wait = queued
       .struct()
       .then(() => {
