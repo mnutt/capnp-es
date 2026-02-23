@@ -18,6 +18,8 @@ Current spec: `test/interop/rpc-cpp-interop.spec.ts`
   directions.
 - Restorer bootstrap (`restore(sturdyRef)`) success/failure checks in both
   directions.
+- Restorer reconnect checks and sealed-owner allow/deny checks in both
+  directions.
 
 ## Run in one command (recommended)
 

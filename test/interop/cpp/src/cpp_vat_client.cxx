@@ -28,20 +28,36 @@ int main(int argc, char* argv[]) {
       mode == "exception" ||
       mode == "pipeline-exception" ||
       mode == "persistent-nonpersistent" ||
-      mode == "restore-unknown";
+      mode == "restore-unknown" ||
+      mode == "restore-sealed-denied";
 
   try {
-    if (mode == "restore-success" || mode == "restore-unknown") {
+    if (
+        mode == "restore-success" ||
+        mode == "restore-unknown" ||
+        mode == "restore-sealed-success" ||
+        mode == "restore-sealed-denied") {
       auto restorer = client.getMain<RpcLevel2Restorer>();
       auto req = restorer.restoreRequest();
       auto sturdyRef = req.initSturdyRef();
-      sturdyRef.setHost("vat-cpp");
-      const char* object = mode == "restore-success" ? "calc-1" : "bad-id";
+
+      const bool sealedMode =
+          mode == "restore-sealed-success" ||
+          mode == "restore-sealed-denied";
+      sturdyRef.setHost(sealedMode ? "sealed-cpp" : "vat-cpp");
+      const char* object =
+          mode == "restore-success" ? "calc-1" :
+          mode == "restore-unknown" ? "bad-id" :
+          "seal-1";
       auto objectId = sturdyRef.initObjectId(6);
       for (uint i = 0; i < 6; i++) {
         objectId[i] = object[i];
       }
-      req.initOwner().setId("owner-cpp");
+      const char* owner =
+          mode == "restore-sealed-success" ? "owner-ok" :
+          mode == "restore-sealed-denied" ? "owner-bad" :
+          "owner-cpp";
+      req.initOwner().setId(owner);
 
       auto resp = req.send().wait(waitScope);
       auto cap = resp.getCapability();
@@ -49,7 +65,7 @@ int main(int argc, char* argv[]) {
       sub.setA(11);
       sub.setB(4);
       const auto out = sub.send().wait(waitScope).getResult();
-      if (mode == "restore-unknown") {
+      if (mode == "restore-unknown" || mode == "restore-sealed-denied") {
         std::cerr << "expected restore exception but got result=" << out << std::endl;
         return 7;
       }

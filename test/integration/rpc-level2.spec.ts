@@ -404,4 +404,94 @@ describe("rpc level-2", () => {
     (await serverConn2).shutdown();
   });
 
+  test("sealed sturdyRef restores for allowed owner", async () => {
+    const cap = new SimpleInterface.Server({
+      subtract: async (params, results) => {
+        results.result = params.a - params.b;
+      },
+    }).client();
+
+    const server = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, results) {
+          const sturdyRef = params.sturdyRef;
+          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          if (
+            sturdyRef.host === "sealed-vat" &&
+            object === "sealed-1" &&
+            params.owner.id === "owner-ok"
+          ) {
+            results.capability = cap;
+            return;
+          }
+          throw new Error("owner not allowed");
+        },
+      });
+      return s;
+    };
+
+    const serverConn = server();
+    const clientConn = rpc.connect();
+    const restored = await clientConn
+      .bootstrap(RpcLevel2Restorer)
+      .restore((p) => {
+        p._initSturdyRef().host = "sealed-vat";
+        const objectId = new TextEncoder().encode("sealed-1");
+        p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        p._initOwner().id = "owner-ok";
+      })
+      .promise();
+    const out = await restored.capability
+      .subtract((p) => {
+        p.a = 10;
+        p.b = 3;
+      })
+      .promise();
+    t.equal(out.result, 7);
+    clientConn.shutdown();
+    (await serverConn).shutdown();
+  });
+
+  test("sealed sturdyRef rejects different owner", async () => {
+    const server = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2Restorer, {
+        async restore(params, _results) {
+          const sturdyRef = params.sturdyRef;
+          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          if (
+            sturdyRef.host === "sealed-vat" &&
+            object === "sealed-1" &&
+            params.owner.id === "owner-ok"
+          ) {
+            return;
+          }
+          throw new Error("owner not allowed");
+        },
+      });
+      return s;
+    };
+
+    const serverConn = server();
+    const clientConn = rpc.connect();
+    const error_ = await clientConn
+      .bootstrap(RpcLevel2Restorer)
+      .restore((p) => {
+        p._initSturdyRef().host = "sealed-vat";
+        const objectId = new TextEncoder().encode("sealed-1");
+        p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        p._initOwner().id = "owner-bad";
+      })
+      .promise()
+      .then(() => null)
+      .catch((e: unknown) => e as Error);
+    t.ok(error_ instanceof Error);
+    t.ok(error_.message.includes("owner not allowed"));
+    clientConn.shutdown();
+    (await serverConn).shutdown();
+  });
+
 });
