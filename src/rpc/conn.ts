@@ -12,6 +12,7 @@ import {
   MessageTarget,
   Resolve,
   Disembargo_Context_Which,
+  Call_SendResultsTo_Which,
 } from "../capnp/rpc";
 import { RPCError } from "./rpc-error";
 import { AnswerEntry, Answer } from "./answer";
@@ -404,6 +405,20 @@ export class Conn {
     if (!a) {
       // TODO: this should abort the whole conn
       throw new Error(format(RPC_QUESTION_ID_REUSED, id));
+    }
+    switch (mcall.sendResultsTo.which()) {
+      case Call_SendResultsTo_Which.CALLER: {
+        break;
+      }
+      case Call_SendResultsTo_Which.YOURSELF: {
+        a.sendResultsElsewhere = true;
+        break;
+      }
+      default: {
+        const um = newUnimplementedMessage(m);
+        this.sendMessage(um);
+        return;
+      }
     }
 
     const interfaceDef = Registry.lookup(mcall.interfaceId);

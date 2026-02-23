@@ -37,6 +37,7 @@ export class AnswerEntry<R extends Struct> {
   id: number;
   conn: Conn;
   resultCaps: number[] = [];
+  sendResultsElsewhere = false;
 
   done = false;
   obj?: R;
@@ -60,6 +61,12 @@ export class AnswerEntry<R extends Struct> {
 
     const retmsg = newReturnMessage(this.id);
     const ret = retmsg.return;
+    if (this.sendResultsElsewhere) {
+      ret.resultsSentElsewhere = true;
+      this.deferred.resolve(obj);
+      this.conn.sendMessage(retmsg);
+      return;
+    }
     const payload = ret._initResults();
     payload.content = obj;
 

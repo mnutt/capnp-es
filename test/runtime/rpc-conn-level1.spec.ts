@@ -2,13 +2,20 @@ import { describe, test, assert as t } from "vitest";
 import { Conn } from "src/rpc/conn";
 import { Transport } from "src/rpc/transport";
 import { Message } from "src/serialization/message";
-import { Message as RPCMessage, Disembargo_Context_Which } from "src/capnp/rpc";
+import {
+  Message as RPCMessage,
+  Disembargo_Context_Which,
+  Return_Which,
+} from "src/capnp/rpc";
 import { Client } from "src/rpc/client";
 import { Struct } from "src/serialization";
+import { AnyStruct } from "src/serialization/pointers/struct";
 import { Call } from "src/rpc/call";
 import { Answer } from "src/rpc/answer";
 import { ImportClient } from "src/rpc/import-client";
 import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
+import { ImmediateAnswer } from "src/rpc/immediate-answer";
+import { Registry } from "src/rpc/registry";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -55,6 +62,18 @@ class CountingClient implements Client {
       this.order.push(tag);
     }
     return new Fulfiller<R>();
+  }
+
+  close(): void {
+    // no-op
+  }
+}
+
+class ImmediateClient implements Client {
+  call<P extends Struct, R extends Struct>(_call: Call<P, R>): Answer<R> {
+    const m = new Message();
+    const s = m.initRoot(AnyStruct);
+    return new ImmediateAnswer(s as any);
   }
 
   close(): void {
@@ -415,5 +434,39 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(err.message.length > 0);
     t.equal(transport.sent.length, 1);
     t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
+  test("incoming call with sendResultsTo.yourself returns resultsSentElsewhere", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const interfaceId = 0xdeadbeefn;
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId: 0,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+    const exportId = conn.addExport(new ImmediateClient());
+
+    const m = new Message().initRoot(RPCMessage);
+    const call = m._initCall();
+    call.questionId = 33;
+    call.interfaceId = interfaceId;
+    call.methodId = 0;
+    call._initTarget().importedCap = exportId;
+    call._initParams();
+    call._initSendResultsTo().yourself = true;
+
+    conn.handleMessage(m);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RETURN);
+    t.equal(transport.sent[0].return.answerId, 33);
+    t.equal(transport.sent[0].return.which(), Return_Which.RESULTS_SENT_ELSEWHERE);
   });
 });
