@@ -23,6 +23,7 @@ export enum QuestionState {
 export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   paramCaps: number[] = [];
   state = QuestionState.IN_PROGRESS;
+  started = false;
   obj?: R;
   err?: Error;
   derived: PipelineOp[][] = [];
@@ -40,8 +41,7 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
 
   // start signals the question has been sent
   start(): void {
-    // TODO: send finishMessage in case it gets cancelled
-    // see https://sourcegraph.com/github.com/capnproto/go-capnproto2@e1ae1f982d9908a41db464f02861a850a0880a5a/-/blob/rpc/question.go#L77
+    this.started = true;
   }
 
   // fulfill is called to resolve a question successfully.
@@ -78,6 +78,11 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   // cancel is called to resolve a question with cancellation.
   cancel(err: Error): boolean {
     if (this.state === QuestionState.IN_PROGRESS) {
+      if (this.started && this.conn.findQuestion(this.id)) {
+        const fin = newFinishMessage(this.id, true);
+        this.conn.sendMessage(fin);
+        this.conn.popQuestion(this.id);
+      }
       this.err = err;
       this.state = QuestionState.CANCELED;
       this.deferred.reject(err);
@@ -113,6 +118,7 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     const payload = msgCall._initParams();
     pipeq.paramCaps = this.conn.fillParams(payload, call);
     this.conn.sendMessage(msg);
+    pipeq.start();
     this.addPromise(transform);
     return pipeq;
   }

@@ -59,7 +59,7 @@ export class ImportClient implements Client {
     // TODO: handle thrown exceptions here?
 
     this.conn.sendMessage(msg);
-    // TODO: what about q.start()?
+    q.start();
     return q;
   }
 

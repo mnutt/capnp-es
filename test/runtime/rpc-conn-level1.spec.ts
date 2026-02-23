@@ -588,6 +588,20 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].finish.questionId, q.id);
   });
 
+  test("question.cancel after start sends finish and pops question", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    void q.struct().catch(() => {});
+    q.start();
+
+    t.equal(q.cancel(new Error("cancel")), true);
+    t.equal(conn.findQuestion(q.id), null);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+    t.equal(transport.sent[0].finish.questionId, q.id);
+  });
+
   test("queueClient.close rejects queued local calls", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

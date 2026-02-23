@@ -124,6 +124,7 @@ export class Conn {
     boot.questionId = q.id;
 
     this.sendMessage(msg);
+    q.start();
     return new InterfaceClass.Client(new Pipeline(AnyStruct, q).client());
   }
 
