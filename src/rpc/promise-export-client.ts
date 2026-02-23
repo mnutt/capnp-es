@@ -1,10 +1,11 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { Answer } from "./answer";
-import { Call } from "./call";
+import { Call, copyCall } from "./call";
 import { Client } from "./client";
 import { ErrorAnswer } from "./error-answer";
 import { Fulfiller } from "./fulfiller/fulfiller";
+import { joinAnswer } from "./join";
 import { Struct } from "../serialization/pointers/struct";
 
 export class PromiseExportClient implements Client {
@@ -18,8 +19,14 @@ export class PromiseExportClient implements Client {
     }
     if (!this.resolved) {
       const f = new Fulfiller<R>();
+      let copied: Call<P, R>;
+      try {
+        copied = copyCall(call);
+      } catch (error_) {
+        return new ErrorAnswer(error_ as Error);
+      }
       this.queue.push({
-        call,
+        call: copied,
         f,
       });
       return f;
@@ -35,11 +42,7 @@ export class PromiseExportClient implements Client {
     this.resolved?.close();
     this.resolved = client;
     for (const item of this.queue) {
-      const ans = client.call(item.call);
-      ans.struct().then(
-        (r) => item.f.fulfill(r),
-        (e: unknown) => item.f.reject(e as Error),
-      );
+      joinAnswer(item.f, client.call(item.call));
     }
     this.queue = [];
   }
