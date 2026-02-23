@@ -209,6 +209,97 @@ describe("rpc", () => {
     }
   });
 
+  test("incoming resolve.exception settles senderPromise import over integration transport", {
+    timeout: 4000,
+  }, async () => {
+    const upstream = new TestRPC();
+    let releaseUpstream: (() => void) | undefined;
+    const upstreamGate = new Promise<void>((resolve) => {
+      releaseUpstream = resolve;
+    });
+
+    const upstreamServer = async () => {
+      const s = await upstream.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          await upstreamGate;
+          r.capability = new SimpleInterface.Server({
+            subtract: async (p, out) => {
+              out.result = p.a - p.b;
+            },
+          }).client();
+        },
+      });
+      return s;
+    };
+
+    const middleServer = async () => {
+      const s = await rpc.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_, r) => {
+          const forwarded = upstream.connect().bootstrap(ReturnCapability);
+          r.capability = forwarded.get().getCapability();
+        },
+      });
+      return s;
+    };
+
+    const middlePromise = middleServer();
+    const upstreamPromise = upstreamServer();
+
+    let middleConn: any;
+    let upstreamConn: any;
+    let clientConn: any;
+    let pendingCap: any;
+    try {
+      clientConn = rpc.connect();
+      middleConn = await middlePromise;
+      pendingCap = await clientConn.bootstrap(ReturnCapability).get().promise();
+      upstreamConn = await upstreamPromise;
+
+      await waitUntil(
+        () =>
+          Object.values((clientConn as any).imports).some(
+            (entry: any) => entry.isPromise === true,
+          ),
+        1000,
+      );
+
+      const promiseImportIds = Object.keys((clientConn as any).imports).filter(
+        (id) => (clientConn as any).imports[Number(id)].isPromise === true,
+      );
+      t.ok(promiseImportIds.length > 0);
+      const promiseId = Number(promiseImportIds[0]);
+
+      const resolveMsg = new Message().initRoot(RPCMessage);
+      const resolve = resolveMsg._initResolve();
+      resolve.promiseId = promiseId;
+      resolve._initException().reason = "integration forced resolve exception";
+      middleConn.sendMessage(resolveMsg);
+
+      await waitUntil(
+        () => (clientConn as any).imports[promiseId]?.isPromise === false,
+        1000,
+      );
+
+      const err = await pendingCap.capability
+        .subtract((p: SimpleInterface_Subtract$Params) => {
+          p.a = 7;
+          p.b = 4;
+        })
+        .promise()
+        .then(() => null)
+        .catch((error_: unknown) => error_ as Error);
+      t.ok(err instanceof Error);
+      t.ok(err.message.includes("integration forced resolve exception"));
+
+      releaseUpstream?.();
+    } finally {
+      releaseUpstream?.();
+      upstream.close();
+    }
+  });
+
   test("closing imported capability releases remote export", { timeout: 2000 }, async () => {
     let serverConn: any;
     let baselineExports = 0;
