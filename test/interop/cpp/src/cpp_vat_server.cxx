@@ -40,11 +40,12 @@ public:
   kj::Promise<void> restore(RestoreContext context) override {
     auto params = context.getParams();
     auto sturdyRef = params.getSturdyRef();
+    auto owner = params.getOwner();
     auto objectId = sturdyRef.getObjectId();
 
     const auto host = sturdyRef.getHost();
-    const bool hostOk = host == "vat-cpp";
-    const bool objectOk =
+    const bool openHostOk = host == "vat-cpp";
+    const bool openObjectOk =
         objectId.size() == 6 &&
         objectId[0] == 'c' &&
         objectId[1] == 'a' &&
@@ -53,12 +54,29 @@ public:
         objectId[4] == '-' &&
         objectId[5] == '1';
 
-    if (!hostOk || !objectOk) {
-      throw KJ_EXCEPTION(FAILED, "unknown sturdyRef");
+    const bool sealedHostOk = host == "sealed-cpp";
+    const bool sealedObjectOk =
+        objectId.size() == 6 &&
+        objectId[0] == 's' &&
+        objectId[1] == 'e' &&
+        objectId[2] == 'a' &&
+        objectId[3] == 'l' &&
+        objectId[4] == '-' &&
+        objectId[5] == '1';
+    const bool sealedOwnerOk = owner.getId() == "owner-ok";
+
+    if ((openHostOk && openObjectOk) || (sealedHostOk && sealedObjectOk && sealedOwnerOk)) {
+      context.getResults().setCapability(kj::heap<SimpleImpl>());
+      return kj::READY_NOW;
     }
 
-    context.getResults().setCapability(kj::heap<SimpleImpl>());
-    return kj::READY_NOW;
+    if (sealedHostOk && sealedObjectOk && !sealedOwnerOk) {
+      throw KJ_EXCEPTION(FAILED, "owner not allowed");
+    }
+
+    {
+      throw KJ_EXCEPTION(FAILED, "unknown sturdyRef");
+    }
   }
 };
 

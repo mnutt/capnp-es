@@ -119,7 +119,9 @@ type CppClientMode =
   | "parallel"
   | "persistent-nonpersistent"
   | "restore-success"
-  | "restore-unknown";
+  | "restore-unknown"
+  | "restore-sealed-success"
+  | "restore-sealed-denied";
 
 async function runCppClient(
   host: string,
@@ -194,14 +196,26 @@ async function startTsServer(
           const objectId = new TextDecoder().decode(
             sturdyRef.objectId.toUint8Array(),
           );
-          if (sturdyRef.host !== "vat-cpp" || objectId !== "calc-1") {
-            throw new Error("unknown sturdyRef");
+          if (sturdyRef.host === "vat-cpp" && objectId === "calc-1") {
+            r.capability = new SimpleInterface.Server({
+              subtract: async (sp, out) => {
+                out.result = sp.a - sp.b;
+              },
+            }).client();
+            return;
           }
-          r.capability = new SimpleInterface.Server({
-            subtract: async (sp, out) => {
-              out.result = sp.a - sp.b;
-            },
-          }).client();
+          if (sturdyRef.host === "sealed-cpp" && objectId === "seal-1") {
+            if (p.owner.id !== "owner-ok") {
+              throw new Error("owner not allowed");
+            }
+            r.capability = new SimpleInterface.Server({
+              subtract: async (sp, out) => {
+                out.result = sp.a - sp.b;
+              },
+            }).client();
+            return;
+          }
+          throw new Error("unknown sturdyRef");
         },
       });
     } else {
@@ -436,6 +450,89 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
             const objectId = new TextEncoder().encode("bad-id");
             p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
             p._initOwner().id = "owner-ts";
+          })
+          .promise()
+          .then(() => null)
+          .catch((error__: unknown) => error__ as Error);
+
+        t.ok(error_ instanceof Error);
+        t.ok(error_.message.length > 0);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client can restore sealed sturdyRef from C++ restorer with allowed owner",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const restored = await conn
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "sealed-cpp";
+            const objectId = new TextEncoder().encode("seal-1");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ok";
+          })
+          .promise();
+
+        const out = await restored.capability
+          .subtract((p: any) => {
+            p.a = 11;
+            p.b = 4;
+          })
+          .promise();
+        t.equal(out.result, 7);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client gets owner rejection for sealed sturdyRef from C++ restorer",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const error_ = await conn
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "sealed-cpp";
+            const objectId = new TextEncoder().encode("seal-1");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-bad";
           })
           .promise()
           .then(() => null)
@@ -713,6 +810,46 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
       const server = await startTsServer("restorer");
       try {
         const res = await runCppClient(server.host, server.port, "restore-unknown");
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK exception="));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client can restore sealed sturdyRef from capnp-es restorer with allowed owner",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "restore-sealed-success",
+        );
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK restore=7"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client gets owner rejection for sealed sturdyRef from capnp-es restorer",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "restore-sealed-denied",
+        );
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
