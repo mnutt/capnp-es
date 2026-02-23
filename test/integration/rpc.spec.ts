@@ -15,6 +15,7 @@ import {
   Message as RPCMessage,
   Disembargo_Context_Which,
   MessageTarget,
+  Resolve,
 } from "src/capnp/rpc";
 import { ErrorClient } from "src/rpc/error-client";
 
@@ -160,8 +161,22 @@ describe("rpc", () => {
     let middleConn: any;
     let upstreamConn: any;
     let clientConn: any;
+    const seenClientResolves: number[] = [];
+    let unlistenClient: (() => void) | undefined;
     try {
       clientConn = rpc.connect();
+      const clientPort = (clientConn.transport as any).port;
+      const onClientMessage = (buf: ArrayBuffer) => {
+        const inbound = new Message(buf, false).getRoot(RPCMessage);
+        if (inbound.which() !== RPCMessage.RESOLVE) {
+          return;
+        }
+        seenClientResolves.push(inbound.resolve.which());
+      };
+      clientPort.on("message", onClientMessage);
+      unlistenClient = () => {
+        clientPort.off("message", onClientMessage);
+      };
       middleConn = await middlePromise;
       getPromise = clientConn.bootstrap(ReturnCapability).get().promise();
       upstreamConn = await upstreamPromise;
@@ -196,7 +211,9 @@ describe("rpc", () => {
           ),
         1000,
       );
+      t.ok(seenClientResolves.includes(Resolve.CAP));
     } finally {
+      unlistenClient?.();
       if (getPromise) {
         await getPromise.catch(() => {});
       }
