@@ -48,6 +48,7 @@ export class AnswerEntry<R extends Struct> {
   constructor(conn: Conn, id: number) {
     this.conn = conn;
     this.id = id;
+    this.deferred.promise.catch(() => {});
   }
 
   // fulfill is called to resolve an answer successfully.
