@@ -1396,6 +1396,30 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].finish.questionId, q.id);
   });
 
+  test("question.cancel before start pops question without finish", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    void q.struct().catch(() => {});
+
+    t.equal(q.cancel(new Error("cancel")), true);
+    t.equal(conn.findQuestion(q.id), null);
+    t.equal(transport.sent.length, 0);
+  });
+
+  test("question.cancel is idempotent", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    void q.struct().catch(() => {});
+    q.start();
+
+    t.equal(q.cancel(new Error("first")), true);
+    t.equal(q.cancel(new Error("second")), false);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
   test("importClient.call serialization failure returns ErrorAnswer and pops question", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

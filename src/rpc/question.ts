@@ -79,9 +79,11 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   // cancel is called to resolve a question with cancellation.
   cancel(err: Error): boolean {
     if (this.state === QuestionState.IN_PROGRESS) {
-      if (this.started && this.conn.findQuestion(this.id)) {
-        const fin = newFinishMessage(this.id, true);
-        this.conn.sendMessage(fin);
+      if (this.conn.findQuestion(this.id)) {
+        if (this.started) {
+          const fin = newFinishMessage(this.id, true);
+          this.conn.sendMessage(fin);
+        }
         this.conn.popQuestion(this.id);
       }
       this.err = err;
