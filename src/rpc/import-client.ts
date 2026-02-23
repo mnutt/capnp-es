@@ -101,7 +101,11 @@ export class ImportClient implements Client {
     }
     this.closed = true;
     for (const item of this.embargoQueue) {
-      item.f.reject(new Error(RPC_IMPORT_CLOSED));
+      try {
+        item.f.reject(new Error(RPC_IMPORT_CLOSED));
+      } catch {
+        // Ignore late settlement races during close.
+      }
     }
     this.embargoQueue = [];
     this.embargoId = undefined;

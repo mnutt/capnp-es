@@ -788,7 +788,11 @@ export class Conn {
         if (c instanceof ImportClient) {
           c.closed = true;
           for (const item of c.embargoQueue) {
-            item.f.reject(err);
+            try {
+              item.f.reject(err);
+            } catch {
+              // Ignore late settlement races during shutdown.
+            }
           }
           c.resolved?.close();
           c.resolved = undefined;
