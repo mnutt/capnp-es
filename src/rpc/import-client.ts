@@ -100,6 +100,11 @@ export class ImportClient implements Client {
       return;
     }
     this.closed = true;
+    for (const item of this.embargoQueue) {
+      item.f.reject(new Error(RPC_IMPORT_CLOSED));
+    }
+    this.embargoQueue = [];
+    this.embargoId = undefined;
     this.resolved?.close();
     this.conn.releaseImportAll(this.id);
   }

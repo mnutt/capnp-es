@@ -269,6 +269,27 @@ describe("Conn level-1 message dispatch", () => {
     t.deepEqual(counting.order, [1, 2]);
   });
 
+  test("closing embargoed import rejects queued calls", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(7, true);
+    const entry = conn.imports[7];
+    const base = entry.rc._client as ImportClient;
+    base.setResolved(new CountingClient());
+    const embargoId = conn.registerDisembargo(base);
+    base.activateEmbargo(embargoId);
+
+    const queued = importRef.call({ method: {} as any, params: {} as any } as any);
+    importRef.close();
+
+    try {
+      await queued.struct();
+      throw new Error("expected queued call rejection");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes("closed import"));
+    }
+  });
+
   test("senderPromise imports are tracked as promise imports", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
