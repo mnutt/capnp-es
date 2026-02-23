@@ -49,7 +49,6 @@ import { joinAnswer } from "./join";
 import {
   INVARIANT_UNREACHABLE_CODE,
   RPC_BAD_TARGET,
-  RPC_FINISH_UNKNOWN_ANSWER,
   RPC_NO_MAIN_INTERFACE,
   RPC_QUESTION_ID_REUSED,
   RPC_RETURN_FOR_UNKNOWN_QUESTION,
@@ -175,7 +174,8 @@ export class Conn {
     const id = finish.questionId;
     const a = this.popAnswer(id);
     if (a === null) {
-      throw new Error(format(RPC_FINISH_UNKNOWN_ANSWER, id));
+      // Finish may race with noFinishNeeded cleanup; silently ignore.
+      return;
     }
     if (finish.releaseResultCaps) {
       const caps = a.resultCaps;
@@ -350,6 +350,10 @@ export class Conn {
         q.reject(err);
         break;
       }
+      case Return.CANCELED: {
+        q.reject(new Error("call canceled by remote"));
+        break;
+      }
       case Return.TAKE_FROM_OTHER_QUESTION: {
         const otherQuestionId = ret.takeFromOtherQuestion;
         if (otherQuestionId === id) {
@@ -385,8 +389,10 @@ export class Conn {
       // Ignore
     }
 
-    const fin = newFinishMessage(id, releaseResultCaps);
-    this.sendMessage(fin);
+    if (!ret.noFinishNeeded) {
+      const fin = newFinishMessage(id, releaseResultCaps);
+      this.sendMessage(fin);
+    }
   }
 
   handleCallMessage(m: RPCMessage): void {
@@ -704,7 +710,7 @@ export class Conn {
   }
 
   popAnswer(id: number): AnswerEntry<any> | null {
-    const a = this.answers[id];
+    const a = this.answers[id] ?? null;
     delete this.answers[id];
     return a;
   }

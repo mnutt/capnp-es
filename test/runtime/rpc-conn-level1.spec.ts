@@ -400,6 +400,16 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(c.closed, true);
   });
 
+  test("finish for unknown answer is ignored", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const fin = m._initFinish();
+    fin.questionId = 4242;
+    conn.handleMessage(m);
+    t.equal(transport.sent.length, 0);
+  });
+
   test("return.takeFromOtherQuestion resolves when source answer resolves", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
@@ -483,6 +493,49 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(err.message.length > 0);
     t.equal(transport.sent.length, 1);
     t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
+  test("return.canceled rejects waiting question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected canceled rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    ret.canceled = true;
+    conn.handleMessage(m);
+
+    const err = await wait;
+    t.ok(err.message.includes("canceled"));
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
+  test("return.noFinishNeeded skips sending finish", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    const wait = q.struct();
+
+    const msg = new Message();
+    const s = msg.initRoot(AnyStruct);
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    ret.noFinishNeeded = true;
+    const payload = ret._initResults();
+    payload.content = s;
+    conn.handleMessage(m);
+
+    await wait;
+    t.equal(transport.sent.length, 0);
   });
 
   test("incoming call with sendResultsTo.yourself returns resultsSentElsewhere", async () => {
