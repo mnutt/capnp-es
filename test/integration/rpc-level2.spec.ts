@@ -12,6 +12,7 @@ import {
 } from "test/fixtures/simple-interface";
 import {
   RpcLevel2Owner,
+  RpcLevel2PersistenceService,
   RpcLevel2Restorer,
   RpcLevel2SturdyRef,
 } from "test/fixtures/rpc-level2";
@@ -331,4 +332,76 @@ describe("rpc level-2", () => {
       upstream.close();
     }
   });
+
+  test("save on one connection can be restored on a new connection", async () => {
+    const store = new Map<string, SimpleInterface$Client>();
+    const persisted = new SimpleInterface.Server({
+      subtract: async (params, results) => {
+        results.result = params.a - params.b;
+      },
+    }).client();
+
+    const initServerConn = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2PersistenceService, {
+        async save(params, results) {
+          const ownerId = params.sealFor.id || "anon";
+          const key = `persisted:${ownerId}`;
+          store.set(key, persisted);
+          const objectId = new TextEncoder().encode(key);
+          const ref = results._initSturdyRef();
+          ref.host = "vat-e";
+          ref._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        },
+        async restore(params, results) {
+          const object = new TextDecoder().decode(
+            params.sturdyRef.objectId.toUint8Array(),
+          );
+          const cap = store.get(object);
+          if (!cap) {
+            throw new Error("unknown sturdyRef");
+          }
+          results.capability = cap;
+        },
+      });
+      return s;
+    };
+
+    const serverConn1 = initServerConn();
+    const clientConn1 = rpc.connect(1);
+    const saved = await clientConn1
+      .bootstrap(RpcLevel2PersistenceService)
+      .save((params) => {
+        params._initSealFor().id = "owner-e";
+      })
+      .promise();
+    const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
+    clientConn1.shutdown();
+    (await serverConn1).shutdown();
+
+    const serverConn2 = initServerConn();
+    const clientConn2 = rpc.connect(2);
+    const restored = await clientConn2
+      .bootstrap(RpcLevel2PersistenceService)
+      .restore((params) => {
+        params._initSturdyRef().host = sturdyRef.host;
+        const objectId = sturdyRef.objectId.toUint8Array();
+        params.sturdyRef
+          ._initObjectId(objectId.byteLength)
+          .copyBuffer(objectId);
+        params._initOwner().id = "owner-e";
+      })
+      .promise();
+    const out = await restored.capability
+      .subtract((params) => {
+        params.a = 40;
+        params.b = 13;
+      })
+      .promise();
+    t.equal(out.result, 27);
+    clientConn2.shutdown();
+    (await serverConn2).shutdown();
+  });
+
 });

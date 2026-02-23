@@ -451,6 +451,70 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
   );
 
   test(
+    "capnp-es client can restore across reconnects from C++ restorer bootstrap",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn1: Conn | undefined;
+      let conn2: Conn | undefined;
+
+      try {
+        conn1 = new Conn(
+          await TcpRPCTransport.connect(server.host, server.port),
+        );
+        conn1.onError = () => {};
+        const restored1 = await conn1
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "vat-cpp";
+            const objectId = new TextEncoder().encode("calc-1");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
+          .promise();
+        const out1 = await restored1.capability
+          .subtract((p: any) => {
+            p.a = 9;
+            p.b = 2;
+          })
+          .promise();
+        t.equal(out1.result, 7);
+        conn1.shutdown();
+        conn1 = undefined;
+
+        conn2 = new Conn(
+          await TcpRPCTransport.connect(server.host, server.port),
+        );
+        conn2.onError = () => {};
+        const restored2 = await conn2
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "vat-cpp";
+            const objectId = new TextEncoder().encode("calc-1");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
+          .promise();
+        const out2 = await restored2.capability
+          .subtract((p: any) => {
+            p.a = 11;
+            p.b = 4;
+          })
+          .promise();
+        t.equal(out2.result, 7);
+      } finally {
+        conn1?.shutdown();
+        conn2?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
     "capnp-es client supports pipelined capability call to C++ server",
     { timeout: 10000 },
     async () => {
@@ -652,6 +716,31 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client can restore across reconnects from capnp-es restorer bootstrap",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const first = await runCppClient(server.host, server.port, "restore-success");
+        t.equal(first.code, 0);
+        t.equal(first.signal, null);
+        t.ok(first.stdout.includes("OK restore=7"));
+
+        const second = await runCppClient(
+          server.host,
+          server.port,
+          "restore-success",
+        );
+        t.equal(second.code, 0);
+        t.equal(second.signal, null);
+        t.ok(second.stdout.includes("OK restore=7"));
       } finally {
         await server.stop();
       }
