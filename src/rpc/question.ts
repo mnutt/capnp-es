@@ -13,6 +13,7 @@ import { transformToPromisedAnswer } from "./promised-answer";
 import { Pointer } from "../serialization/pointers/pointer";
 import { RPC_FULFILL_ALREADY_CALLED } from "../errors";
 import { getAs } from "../serialization/pointers/struct.utils";
+import { ErrorAnswer } from "./error-answer";
 
 export enum QuestionState {
   IN_PROGRESS,
@@ -106,21 +107,26 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     }
 
     const pipeq = this.conn.newQuestion(call.method);
-    const msg = newMessage();
-    const msgCall = msg._initCall();
-    msgCall.questionId = pipeq.id;
-    msgCall.interfaceId = call.method.interfaceId;
-    msgCall.methodId = call.method.methodId;
-    const target = msgCall._initTarget();
-    const a = target._initPromisedAnswer();
-    a.questionId = this.id;
-    transformToPromisedAnswer(a, transform);
-    const payload = msgCall._initParams();
-    pipeq.paramCaps = this.conn.fillParams(payload, call);
-    this.conn.sendMessage(msg);
-    pipeq.start();
-    this.addPromise(transform);
-    return pipeq;
+    try {
+      const msg = newMessage();
+      const msgCall = msg._initCall();
+      msgCall.questionId = pipeq.id;
+      msgCall.interfaceId = call.method.interfaceId;
+      msgCall.methodId = call.method.methodId;
+      const target = msgCall._initTarget();
+      const a = target._initPromisedAnswer();
+      a.questionId = this.id;
+      transformToPromisedAnswer(a, transform);
+      const payload = msgCall._initParams();
+      pipeq.paramCaps = this.conn.fillParams(payload, call);
+      this.conn.sendMessage(msg);
+      pipeq.start();
+      this.addPromise(transform);
+      return pipeq;
+    } catch (error_) {
+      this.conn.popQuestion(pipeq.id);
+      return new ErrorAnswer(error_ as Error);
+    }
   }
 
   addPromise(transform: PipelineOp[]): void {

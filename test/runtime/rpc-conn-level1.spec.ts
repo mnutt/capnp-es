@@ -18,6 +18,7 @@ import { ImmediateAnswer } from "src/rpc/immediate-answer";
 import { Registry } from "src/rpc/registry";
 import { Question } from "src/rpc/question";
 import { QueueClient } from "src/rpc/queue-client";
+import { Method } from "src/rpc/method";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -103,6 +104,13 @@ class ImmediateClient implements Client {
     // no-op
   }
 }
+
+const TEST_METHOD: Method<any, any> = {
+  interfaceId: 0x4444n,
+  methodId: 0,
+  ParamsClass: AnyStruct as any,
+  ResultsClass: AnyStruct as any,
+};
 
 describe("Conn level-1 message dispatch", () => {
   test("table lookups return null for missing first slot", () => {
@@ -358,6 +366,26 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].release.id, 9);
     t.equal(transport.sent[0].release.referenceCount, 1);
     t.equal(conn.imports[9], undefined);
+  });
+
+  test("closing multi-ref import emits aggregated release count", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef1 = conn.addImport(10);
+    const importRef2 = conn.addImport(10);
+    const importRef3 = conn.addImport(10);
+
+    t.ok(conn.imports[10]);
+    t.equal(conn.imports[10].refs, 3);
+    importRef1.close();
+    importRef2.close();
+    importRef3.close();
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 10);
+    t.equal(transport.sent[0].release.referenceCount, 3);
+    t.equal(conn.imports[10], undefined);
   });
 
   test("return with releaseParamCaps releases question param caps by ID", () => {
@@ -748,6 +776,54 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent.length, 1);
     t.equal(transport.sent[0].which(), RPCMessage.FINISH);
     t.equal(transport.sent[0].finish.questionId, q.id);
+  });
+
+  test("importClient.call serialization failure returns ErrorAnswer and pops question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(66);
+
+    const answer = importRef.call({
+      method: TEST_METHOD,
+      paramsFunc: () => {
+        throw new Error("params explode");
+      },
+    } as any);
+
+    try {
+      await answer.struct();
+      throw new Error("expected params serialization rejection");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes("params explode"));
+    }
+    t.equal(conn.questions.filter(Boolean).length, 0);
+    t.equal(transport.sent.length, 0);
+  });
+
+  test("question.pipelineCall serialization failure returns ErrorAnswer and pops question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion(TEST_METHOD);
+
+    const answer = q.pipelineCall(
+      [],
+      {
+        method: TEST_METHOD,
+        paramsFunc: () => {
+          throw new Error("pipeline explode");
+        },
+      } as any,
+    );
+
+    try {
+      await answer.struct();
+      throw new Error("expected pipeline serialization rejection");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes("pipeline explode"));
+    }
+    // only original question remains
+    t.equal(conn.questions.filter(Boolean).length, 1);
+    t.equal(transport.sent.length, 0);
   });
 
   test("queueClient.close rejects queued local calls", async () => {

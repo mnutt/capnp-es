@@ -335,8 +335,13 @@ export class Conn {
       case Return.RESULTS: {
         releaseResultCaps = false;
         const { results } = ret;
-        // TODO: reply with unimplemented if we have a problem here
-        this.populateMessageCapTable(results);
+        try {
+          this.populateMessageCapTable(results);
+        } catch (error_) {
+          this.sendMessage(newUnimplementedMessage(m));
+          q.reject(error_ as Error);
+          break;
+        }
 
         const { content } = results;
         q.fulfill(content);
@@ -419,8 +424,8 @@ export class Conn {
     const id = mcall.questionId;
     const a = this.insertAnswer(id);
     if (!a) {
-      // TODO: this should abort the whole conn
-      throw new Error(format(RPC_QUESTION_ID_REUSED, id));
+      this.shutdown(new Error(format(RPC_QUESTION_ID_REUSED, id)));
+      return;
     }
     switch (mcall.sendResultsTo.which()) {
       case Call_SendResultsTo_Which.CALLER: {
@@ -431,6 +436,7 @@ export class Conn {
         break;
       }
       default: {
+        this.popAnswer(id);
         const um = newUnimplementedMessage(m);
         this.sendMessage(um);
         return;
@@ -439,6 +445,7 @@ export class Conn {
 
     const interfaceDef = Registry.lookup(mcall.interfaceId);
     if (!interfaceDef) {
+      this.popAnswer(id);
       const um = newUnimplementedMessage(m);
       this.sendMessage(um);
       return;
@@ -446,6 +453,7 @@ export class Conn {
 
     const method = interfaceDef.methods[mcall.methodId];
     if (!method) {
+      this.popAnswer(id);
       const um = newUnimplementedMessage(m);
       this.sendMessage(um);
       return;
@@ -593,6 +601,14 @@ export class Conn {
     this.clearDisembargo(entry.rc._client);
     delete this.imports[id];
     this.sendMessage(newReleaseMessage(id, refs));
+  }
+
+  releaseImportAll(id: number): void {
+    const entry = this.imports[id];
+    if (!entry) {
+      return;
+    }
+    this.releaseImport(id, entry.refs);
   }
 
   registerDisembargo(client: ImportClient): number {

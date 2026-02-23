@@ -47,20 +47,23 @@ export class ImportClient implements Client {
     }
 
     const q = this.conn.newQuestion(cl.method);
-    const msg = newMessage();
-    const msgCall = msg._initCall();
-    msgCall.questionId = q.id;
-    msgCall.interfaceId = cl.method.interfaceId;
-    msgCall.methodId = cl.method.methodId;
-    const target = msgCall._initTarget();
-    target.importedCap = this.id;
-    const payload = msgCall._initParams();
-    q.paramCaps = this.conn.fillParams(payload, cl);
-    // TODO: handle thrown exceptions here?
-
-    this.conn.sendMessage(msg);
-    q.start();
-    return q;
+    try {
+      const msg = newMessage();
+      const msgCall = msg._initCall();
+      msgCall.questionId = q.id;
+      msgCall.interfaceId = cl.method.interfaceId;
+      msgCall.methodId = cl.method.methodId;
+      const target = msgCall._initTarget();
+      target.importedCap = this.id;
+      const payload = msgCall._initParams();
+      q.paramCaps = this.conn.fillParams(payload, cl);
+      this.conn.sendMessage(msg);
+      q.start();
+      return q;
+    } catch (error_) {
+      this.conn.popQuestion(q.id);
+      return new ErrorAnswer(error_ as Error);
+    }
   }
 
   setResolved(client: Client): void {
@@ -98,6 +101,6 @@ export class ImportClient implements Client {
     }
     this.closed = true;
     this.resolved?.close();
-    this.conn.releaseImport(this.id, 1);
+    this.conn.releaseImportAll(this.id);
   }
 }
