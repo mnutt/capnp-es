@@ -410,6 +410,35 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(transport.sent.some((m) => m.which() === RPCMessage.FINISH));
   });
 
+  test("return.takeFromOtherQuestion fulfills when source answer fulfills", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const source = conn.insertAnswer(88);
+    if (!source) {
+      throw new Error("expected source answer");
+    }
+    const redirected = conn.newQuestion();
+    const redirectedPromise = redirected.struct();
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const ret = m._initReturn();
+      ret.answerId = redirected.id;
+      ret.takeFromOtherQuestion = 88;
+      conn.handleMessage(m);
+    }
+
+    const msg = new Message();
+    const s = msg.initRoot(AnyStruct);
+    source.fulfill(s);
+
+    const redirectedResult = await redirectedPromise;
+    t.ok(redirectedResult);
+    t.equal(transport.sent.length, 2);
+    t.ok(transport.sent.some((m) => m.which() === RPCMessage.RETURN));
+    t.ok(transport.sent.some((m) => m.which() === RPCMessage.FINISH));
+  });
+
   test("return.resultsSentElsewhere rejects waiting question", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
