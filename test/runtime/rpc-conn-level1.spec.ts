@@ -428,6 +428,29 @@ describe("Conn level-1 message dispatch", () => {
     t.notEqual(d1.senderPromise, d2.senderPromise);
   });
 
+  test("reused senderPromise emits exactly one resolve.exception on rejection", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    void q.struct().catch(() => {});
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const d1 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    const d2 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    conn.descriptorForClient(d1, pc);
+    conn.descriptorForClient(d2, pc);
+
+    q.reject(new Error("boom"));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const resolves = transport.sent.filter((m) => m.which() === RPCMessage.RESOLVE);
+    t.equal(resolves.length, 1);
+    t.equal(resolves[0].resolve.promiseId, d1.senderPromise);
+    t.equal(resolves[0].resolve.which(), Resolve.EXCEPTION);
+  });
+
   test("release before senderPromise settlement suppresses outgoing resolve", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
@@ -907,6 +930,38 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent.length, 1);
     t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
     t.equal(conn.answers[201], undefined);
+  });
+
+  test("incoming call with duplicate question id triggers shutdown", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const interfaceId = 0x9999n;
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId: 0,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+    const exportId = conn.addExport(new ImmediateClient());
+    const existing = conn.insertAnswer(777);
+    t.ok(existing);
+    void existing!.deferred.promise.catch(() => {});
+
+    const m = new Message().initRoot(RPCMessage);
+    const call = m._initCall();
+    call.questionId = 777;
+    call.interfaceId = interfaceId;
+    call.methodId = 0;
+    call._initTarget().importedCap = exportId;
+    call._initParams();
+    conn.handleMessage(m);
+
+    t.equal(conn.closed, true);
+    t.equal(transport.isClosed, true);
   });
 
   test("incoming call unknown interface/method returns unimplemented and cleans answer", () => {
