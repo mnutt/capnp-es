@@ -71,9 +71,20 @@ Current support matrix:
 | Tail call: `sendResultsTo.yourself`  | Partial     | Returns `resultsSentElsewhere`; broader forwarding cases remain incomplete.                      |
 | Tail call: `takeFromOtherQuestion`   | Implemented | Waiting questions can resolve from in-flight incoming answers.                                   |
 | Full Level 1 conformance (two-party) | Implemented | See `docs/rpc-level1-plan.md` for coverage matrix and known non-level-1 limits.                  |
-| Level 2 persistence (`Persistent.save()` + restore flow) | In progress | Plan tracked in `docs/rpc-level2-plan.md`.                                                        |
+| Level 2 persistence (`Persistent.save()` + restore flow) | Implemented (two-party) | `Persistent.save()` + app-defined restorer bootstrap + reconnect/sealing/revocation flows are covered in integration + interop tests. |
 
-See [tests](./test/integration/rpc.spec.ts) for some examples.
+See [tests](./test/integration/rpc.spec.ts) and [Level 2 integration tests](./test/integration/rpc-level2.spec.ts) for examples.
+
+Planning and conformance notes:
+
+- Level 1: `docs/rpc-level1-plan.md`
+- Level 2: `docs/rpc-level2-plan.md`
+
+Level 2 authoring guidance:
+
+- Define an app/realm-specific SturdyRef schema.
+- Expose a bootstrap restorer interface that accepts that SturdyRef (+ optional owner/sealing context) and returns a live capability.
+- Treat SturdyRefs as durable app-level tokens; transient per-connection tables are not durable.
 
 ## Status
 
