@@ -1454,6 +1454,41 @@ describe("Conn level-1 message dispatch", () => {
     importRef.close();
   });
 
+  test("question ids are reusable after shutdown", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion();
+    void q.struct().catch(() => {});
+    t.equal(q.id, 0);
+    conn.shutdown(new Error("shutdown now"));
+    const next = conn.questionID.next();
+    t.equal(next, 0);
+  });
+
+  test("export ids are reusable after shutdown", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const id = conn.addExport(new DummyClient());
+    t.equal(id, 0);
+    conn.shutdown(new Error("shutdown now"));
+    const next = conn.exportID.next();
+    t.equal(next, 0);
+  });
+
+  test("disembargo ids are reusable after shutdown", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const importRef = conn.addImport(80, true);
+    const entry = conn.imports[80];
+    const base = entry.rc._client as ImportClient;
+    const id = conn.registerDisembargo(base);
+    t.equal(id, 0);
+    conn.shutdown(new Error("shutdown now"));
+    const next = conn.disembargoID.next();
+    t.equal(next, 0);
+    importRef.close();
+  });
+
   test("errorClient.close is a no-op", () => {
     const ec = new ErrorClient(new Error("x"));
     ec.close();

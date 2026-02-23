@@ -816,6 +816,9 @@ export class Conn {
       delete this.tailAnswerWaiters[id];
     }
 
+    for (const idStr of Object.keys(this.disembargoes)) {
+      this.disembargoID.remove(Number(idStr));
+    }
     this.disembargoes = {};
     this.transport.close();
   }
