@@ -121,7 +121,8 @@ type CppClientMode =
   | "restore-success"
   | "restore-unknown"
   | "restore-sealed-success"
-  | "restore-sealed-denied";
+  | "restore-sealed-denied"
+  | "restore-revoked";
 
 async function runCppClient(
   host: string,
@@ -203,6 +204,9 @@ async function startTsServer(
               },
             }).client();
             return;
+          }
+          if (sturdyRef.host === "vat-cpp" && objectId === "revk-1") {
+            throw new Error("revoked sturdyRef");
           }
           if (sturdyRef.host === "sealed-cpp" && objectId === "seal-1") {
             if (p.owner.id !== "owner-ok") {
@@ -448,6 +452,46 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
           .restore((p) => {
             p._initSturdyRef().host = "vat-cpp";
             const objectId = new TextEncoder().encode("bad-id");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
+          .promise()
+          .then(() => null)
+          .catch((error__: unknown) => error__ as Error);
+
+        t.ok(error_ instanceof Error);
+        t.ok(error_.message.length > 0);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client gets revoked exception from C++ restorer",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const error_ = await conn
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "vat-cpp";
+            const objectId = new TextEncoder().encode("revk-1");
             p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
             p._initOwner().id = "owner-ts";
           })
@@ -810,6 +854,22 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
       const server = await startTsServer("restorer");
       try {
         const res = await runCppClient(server.host, server.port, "restore-unknown");
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK exception="));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client gets revoked exception from capnp-es restorer",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const res = await runCppClient(server.host, server.port, "restore-revoked");
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
