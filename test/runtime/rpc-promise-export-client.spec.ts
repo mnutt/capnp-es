@@ -6,6 +6,7 @@ import { Answer } from "src/rpc/answer";
 import { Struct, ObjectSize } from "src/serialization";
 import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
 import { Message } from "src/serialization/message";
+import { RPC_CALL_QUEUE_FULL } from "src/errors";
 
 class TinyStruct extends Struct {
   static readonly _capnp = {
@@ -99,6 +100,28 @@ describe("PromiseExportClient", () => {
       throw new Error("expected later call rejection");
     } catch (error_) {
       t.ok((error_ as Error).message.includes("closed"));
+    }
+  });
+
+  test("unresolved queue is bounded", async () => {
+    const p = new PromiseExportClient();
+    for (let i = 0; i < p.queueCap; i++) {
+      p.call({
+        method: METHOD,
+        params: makeParams(),
+      } as any);
+    }
+
+    const overflow = p.call({
+      method: METHOD,
+      params: makeParams(),
+    } as any);
+
+    try {
+      await overflow.struct();
+      throw new Error("expected queue full rejection");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes(RPC_CALL_QUEUE_FULL));
     }
   });
 });

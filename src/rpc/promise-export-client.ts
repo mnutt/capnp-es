@@ -7,17 +7,24 @@ import { ErrorAnswer } from "./error-answer";
 import { Fulfiller } from "./fulfiller/fulfiller";
 import { joinAnswer } from "./join";
 import { Struct } from "../serialization/pointers/struct";
+import { RPC_CALL_QUEUE_FULL } from "../errors";
+
+const promiseExportQueueCap = 64;
 
 export class PromiseExportClient implements Client {
   resolved?: Client;
   closed = false;
   queue: Array<{ call: Call<any, any>; f: Fulfiller<any> }> = [];
+  queueCap = promiseExportQueueCap;
 
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
     if (this.closed) {
       return new ErrorAnswer(new Error("promise export closed"));
     }
     if (!this.resolved) {
+      if (this.queue.length >= this.queueCap) {
+        return new ErrorAnswer(new Error(RPC_CALL_QUEUE_FULL));
+      }
       const f = new Fulfiller<R>();
       let copied: Call<P, R>;
       try {
