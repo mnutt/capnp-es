@@ -168,6 +168,23 @@ export class Conn {
     }
   }
 
+  handleResolveMessage(m: RPCMessage): void {
+    // Level 1 resolve semantics are not fully implemented yet.
+    // Echo unimplemented so the peer can apply fallback behavior.
+    this.sendMessage(newUnimplementedMessage(m));
+  }
+
+  handleReleaseMessage(m: RPCMessage): void {
+    const rel = m.release;
+    this.releaseExport(rel.id, rel.referenceCount);
+  }
+
+  handleDisembargoMessage(m: RPCMessage): void {
+    // Level 1 disembargo semantics are not fully implemented yet.
+    // Echo unimplemented so the peer can apply fallback behavior.
+    this.sendMessage(newUnimplementedMessage(m));
+  }
+
   handleMessage(m: RPCMessage): void {
     switch (m.which()) {
       case RPCMessage.UNIMPLEMENTED: {
@@ -184,6 +201,18 @@ export class Conn {
       }
       case RPCMessage.FINISH: {
         this.handleFinishMessage(m);
+        break;
+      }
+      case RPCMessage.RESOLVE: {
+        this.handleResolveMessage(m);
+        break;
+      }
+      case RPCMessage.RELEASE: {
+        this.handleReleaseMessage(m);
+        break;
+      }
+      case RPCMessage.DISEMBARGO: {
+        this.handleDisembargoMessage(m);
         break;
       }
       case RPCMessage.RETURN: {
