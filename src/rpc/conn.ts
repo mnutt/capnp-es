@@ -708,12 +708,22 @@ export class Conn {
     if (!e) {
       return;
     }
-    e.wireRefs -= refs;
+    if (refs <= 0) {
+      this.error(
+        `warning: export ${id} release with non-positive count (${refs}) ignored`,
+      );
+      return;
+    }
+    const heldRefs = e.wireRefs;
+    const releaseCount = Math.max(0, Math.min(refs, heldRefs));
+    e.wireRefs -= releaseCount;
     if (e.wireRefs > 0) {
       return;
     }
-    if (e.wireRefs < 0) {
-      this.error(`warning: export ${id} has negative refcount (${e.wireRefs})`);
+    if (refs > heldRefs) {
+      this.error(
+        `warning: export ${id} release overrun (requested ${refs}, held ${heldRefs})`,
+      );
     }
     delete this.exportPromises[id];
     e.client.close();

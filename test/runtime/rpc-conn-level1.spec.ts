@@ -854,6 +854,46 @@ describe("Conn level-1 message dispatch", () => {
     }
   });
 
+  test("releaseExport clamps overrun and preserves warning diagnostics", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    let warning = "";
+    conn.error = (s) => {
+      warning = s;
+    };
+    const c = new DummyClient();
+    const id = conn.addExport(c);
+
+    conn.releaseExport(id, 5);
+
+    t.equal(conn.findExport(id), null);
+    t.equal(c.closed, true);
+    t.ok(warning.includes("release overrun"));
+  });
+
+  test("releaseExport ignores zero and negative release counts", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const warnings: string[] = [];
+    conn.error = (s) => {
+      warnings.push(s);
+    };
+    const c = new DummyClient();
+    const id = conn.addExport(c);
+    conn.addExport(c); // wireRefs = 2
+
+    conn.releaseExport(id, 0);
+    conn.releaseExport(id, -2);
+
+    const e = conn.findExport(id);
+    t.ok(e);
+    t.equal(e!.wireRefs, 2);
+    t.equal(c.closed, false);
+    t.equal(warnings.length, 2);
+    t.ok(warnings[0].includes("non-positive"));
+    t.ok(warnings[1].includes("non-positive"));
+  });
+
   test("closing import emits release and drops import entry", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
