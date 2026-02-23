@@ -36,8 +36,8 @@ export class Server implements Client {
   startCall<P extends Struct, R extends Struct>(call: ServerCall<P, R>): void {
     const msg = new Message();
     const results = msg.initRoot(call.method.ResultsClass);
-    call.serverMethod.impl
-      .call(this.target, call.params, results)
+    Promise.resolve()
+      .then(() => call.serverMethod.impl.call(this.target, call.params, results))
       .then(() => call.answer.fulfill(results))
       .catch((error_) => call.answer.reject(error_ as Error));
   }

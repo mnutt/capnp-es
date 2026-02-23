@@ -144,7 +144,9 @@ describe("rpc", () => {
       s.initMain(ReturnCapability, {
         get: async (_, r) => {
           const forwarded = upstream.connect().bootstrap(ReturnCapability);
-          r.capability = forwarded.get().getCapability();
+          const pending = forwarded.get();
+          void pending.promise().catch(() => {});
+          r.capability = pending.getCapability();
         },
       });
       return s;
