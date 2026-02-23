@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { Message } from "src/serialization/message";
 import { Server } from "src/rpc/server";
+import { RPC_METHOD_NOT_IMPLEMENTED } from "src/errors";
 import {
   SimpleInterface,
   SimpleInterface_Subtract$Params,
@@ -29,5 +30,32 @@ describe("rpc server", () => {
     } as any);
 
     await expect(answer.struct()).rejects.toThrow("sync impl boom");
+  });
+
+  test("call rejects when method id exists but interface id mismatches", async () => {
+    const method = (SimpleInterface as any).Client.methods[0];
+    const server = new Server({}, [
+      {
+        ...method,
+        impl: async () => {
+          throw new Error("should not be reached");
+        },
+      },
+    ] as any);
+
+    const wrongInterfaceMethod = {
+      ...method,
+      interfaceId: method.interfaceId + 1n,
+    };
+
+    const paramsMsg = new Message();
+    const params = paramsMsg.initRoot(SimpleInterface_Subtract$Params);
+
+    const answer = server.call({
+      method: wrongInterfaceMethod,
+      params,
+    } as any);
+
+    expect(() => answer.struct()).toThrow(RPC_METHOD_NOT_IMPLEMENTED);
   });
 });
