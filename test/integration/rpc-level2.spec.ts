@@ -11,12 +11,14 @@ import { TestRPC } from "./rpc.utils";
 import { ReturnCapability } from "test/fixtures/import-interface";
 import {
   SimpleInterface,
+  type SimpleInterface_Subtract$Params,
   type SimpleInterface$Client,
 } from "test/fixtures/simple-interface";
 import {
   RpcLevel2Owner,
   RpcLevel2PersistenceService,
   RpcLevel2Restorer,
+  type RpcLevel2Restorer_Restore$Params,
   RpcLevel2SturdyRef,
 } from "test/fixtures/rpc-level2";
 
@@ -330,7 +332,7 @@ describe("rpc level-2", () => {
 
       const restored = await clientConn
         .bootstrap(RpcLevel2Restorer)
-        .restore((p) => {
+        .restore((p: RpcLevel2Restorer_Restore$Params) => {
           p._initSturdyRef().host = "vat-c";
           const objectId = new TextEncoder().encode("calc-c");
           p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
@@ -339,7 +341,7 @@ describe("rpc level-2", () => {
         .promise();
 
       const out = await restored.capability
-        .subtract((p) => {
+        .subtract((p: SimpleInterface_Subtract$Params) => {
           p.a = 22;
           p.b = 5;
         })
