@@ -862,7 +862,10 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
     t.equal(transport.sent[0].unimplemented.which(), RPCMessage.OBSOLETE_SAVE);
     t.equal(transport.sent[1].which(), RPCMessage.UNIMPLEMENTED);
-    t.equal(transport.sent[1].unimplemented.which(), RPCMessage.OBSOLETE_DELETE);
+    t.equal(
+      transport.sent[1].unimplemented.which(),
+      RPCMessage.OBSOLETE_DELETE,
+    );
   });
 
   test("unsupported level-3/4 messages return unimplemented", () => {

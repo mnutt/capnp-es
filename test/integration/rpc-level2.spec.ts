@@ -3,7 +3,10 @@ import { Message, utils } from "src/serialization";
 import { Persistent } from "src/capnp/persistent";
 import { RPC_METHOD_NOT_IMPLEMENTED } from "src/errors";
 import { MapRestorerLookup } from "src/rpc/persistence";
-import { createPersistentSaveServer, persistentClient } from "src/rpc/persistent-interface";
+import {
+  createPersistentSaveServer,
+  persistentClient,
+} from "src/rpc/persistent-interface";
 import { TestRPC } from "./rpc.utils";
 import { ReturnCapability } from "test/fixtures/import-interface";
 import {
@@ -75,7 +78,9 @@ describe("rpc level-2", () => {
         .promise();
 
       const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
-      const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+      const object = new TextDecoder().decode(
+        sturdyRef.objectId.toUint8Array(),
+      );
       const restored = lookup.restore({
         host: sturdyRef.host,
         object,
@@ -109,7 +114,11 @@ describe("rpc level-2", () => {
     };
 
     const client = async () => {
-      const result = await rpc.connect().bootstrap(ReturnCapability).get().promise();
+      const result = await rpc
+        .connect()
+        .bootstrap(ReturnCapability)
+        .get()
+        .promise();
       const persistent = persistentClient(result.capability.client);
       try {
         await persistent.save().promise();
@@ -138,14 +147,19 @@ describe("rpc level-2", () => {
             ref._initObjectId(1).copyBuffer(new Uint8Array([1]));
             return ref;
           });
-          results.capability = persistent.client() as unknown as SimpleInterface$Client;
+          results.capability =
+            persistent.client() as unknown as SimpleInterface$Client;
         },
       });
       return s;
     };
 
     const client = async () => {
-      const result = await rpc.connect().bootstrap(ReturnCapability).get().promise();
+      const result = await rpc
+        .connect()
+        .bootstrap(ReturnCapability)
+        .get()
+        .promise();
       const persistent = persistentClient(result.capability.client);
       const saved = await persistent.save().promise();
       const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
@@ -173,7 +187,9 @@ describe("rpc level-2", () => {
       s.initMain(RpcLevel2Restorer, {
         async restore(params, results) {
           const sturdyRef = params.sturdyRef;
-          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          const object = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
+          );
           results.capability = lookup.restore({
             host: sturdyRef.host,
             object,
@@ -220,7 +236,9 @@ describe("rpc level-2", () => {
       s.initMain(RpcLevel2Restorer, {
         async restore(params, results) {
           const sturdyRef = params.sturdyRef;
-          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          const object = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
+          );
           results.capability = lookup.restore({
             host: sturdyRef.host,
             object,
@@ -266,7 +284,9 @@ describe("rpc level-2", () => {
       s.initMain(RpcLevel2Restorer, {
         async restore(params, results) {
           const sturdyRef = params.sturdyRef;
-          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          const object = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
+          );
           if (sturdyRef.host !== "vat-c" || object !== "calc-c") {
             throw new Error("unknown sturdyRef");
           }
@@ -280,7 +300,9 @@ describe("rpc level-2", () => {
       const s = await rpc.accept();
       s.initMain(RpcLevel2Restorer, {
         async restore(params, results) {
-          const upstreamRestore = upstream.connect().bootstrap(RpcLevel2Restorer);
+          const upstreamRestore = upstream
+            .connect()
+            .bootstrap(RpcLevel2Restorer);
           const restored = await upstreamRestore
             .restore((p) => {
               const ref = p._initSturdyRef();
@@ -306,17 +328,22 @@ describe("rpc level-2", () => {
       clientConn = rpc.connect();
       middleConn = await middlePromise;
 
-      const restored = await clientConn.bootstrap(RpcLevel2Restorer).restore((p) => {
-        p._initSturdyRef().host = "vat-c";
-        const objectId = new TextEncoder().encode("calc-c");
-        p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
-        p._initOwner().id = "owner-c";
-      }).promise();
+      const restored = await clientConn
+        .bootstrap(RpcLevel2Restorer)
+        .restore((p) => {
+          p._initSturdyRef().host = "vat-c";
+          const objectId = new TextEncoder().encode("calc-c");
+          p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+          p._initOwner().id = "owner-c";
+        })
+        .promise();
 
-      const out = await restored.capability.subtract((p) => {
-        p.a = 22;
-        p.b = 5;
-      }).promise();
+      const out = await restored.capability
+        .subtract((p) => {
+          p.a = 22;
+          p.b = 5;
+        })
+        .promise();
       t.equal(out.result, 17);
       upstreamConn = await upstreamPromise;
     } finally {
@@ -417,7 +444,9 @@ describe("rpc level-2", () => {
       s.initMain(RpcLevel2Restorer, {
         async restore(params, results) {
           const sturdyRef = params.sturdyRef;
-          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          const object = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
+          );
           if (
             sturdyRef.host === "sealed-vat" &&
             object === "sealed-1" &&
@@ -461,7 +490,9 @@ describe("rpc level-2", () => {
       s.initMain(RpcLevel2Restorer, {
         async restore(params, _results) {
           const sturdyRef = params.sturdyRef;
-          const object = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+          const object = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
+          );
           if (
             sturdyRef.host === "sealed-vat" &&
             object === "sealed-1" &&
@@ -487,7 +518,7 @@ describe("rpc level-2", () => {
       })
       .promise()
       .then(() => null)
-      .catch((e: unknown) => e as Error);
+      .catch((error__: unknown) => error__ as Error);
     t.ok(error_ instanceof Error);
     t.ok(error_.message.includes("owner not allowed"));
     clientConn.shutdown();
@@ -562,12 +593,11 @@ describe("rpc level-2", () => {
       })
       .promise()
       .then(() => null)
-      .catch((e: unknown) => e as Error);
+      .catch((error__: unknown) => error__ as Error);
 
     t.ok(error_ instanceof Error);
     t.ok(error_.message.includes("revoked sturdyRef"));
     clientConn2.shutdown();
     (await serverConn2).shutdown();
   });
-
 });

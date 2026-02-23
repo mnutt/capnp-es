@@ -32,7 +32,9 @@ async function startCppServer(): Promise<{
   return startCppServerWithMode("return");
 }
 
-async function startCppServerWithMode(mainType: "return" | "restorer"): Promise<{
+async function startCppServerWithMode(
+  mainType: "return" | "restorer",
+): Promise<{
   child: ChildProcessByStdio<null, Readable, Readable>;
   host: string;
   port: number;
@@ -176,13 +178,17 @@ async function startTsServer(
   port: number;
   stop: () => Promise<void>;
 }> {
-  const [{ Conn }, { ReturnCapability }, { SimpleInterface }, { RpcLevel2Restorer }] =
-    await Promise.all([
-      import("src/rpc"),
-      import("test/fixtures/import-interface"),
-      import("test/fixtures/simple-interface"),
-      import("test/fixtures/rpc-level2"),
-    ]);
+  const [
+    { Conn },
+    { ReturnCapability },
+    { SimpleInterface },
+    { RpcLevel2Restorer },
+  ] = await Promise.all([
+    import("src/rpc"),
+    import("test/fixtures/import-interface"),
+    import("test/fixtures/simple-interface"),
+    import("test/fixtures/rpc-level2"),
+  ]);
 
   const host = process.env.CAPNP_INTEROP_HOST || "127.0.0.1";
   const conns: Conn[] = [];
@@ -345,13 +351,12 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
     "capnp-es client cast to Persistent fails for non-persistent C++ capability",
     { timeout: 10000 },
     async () => {
-      const [{ Conn }, { ReturnCapability }, { Persistent }] = await Promise.all(
-        [
+      const [{ Conn }, { ReturnCapability }, { Persistent }] =
+        await Promise.all([
           import("src/rpc"),
           import("test/fixtures/import-interface"),
           import("src/capnp/persistent"),
-        ],
-      );
+        ]);
       const server = await startCppServer();
       let conn: Conn | undefined;
 
@@ -837,7 +842,11 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
     async () => {
       const server = await startTsServer("restorer");
       try {
-        const res = await runCppClient(server.host, server.port, "restore-success");
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "restore-success",
+        );
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK restore=7"));
@@ -853,7 +862,11 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
     async () => {
       const server = await startTsServer("restorer");
       try {
-        const res = await runCppClient(server.host, server.port, "restore-unknown");
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "restore-unknown",
+        );
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
@@ -869,7 +882,11 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
     async () => {
       const server = await startTsServer("restorer");
       try {
-        const res = await runCppClient(server.host, server.port, "restore-revoked");
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "restore-revoked",
+        );
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
@@ -925,7 +942,11 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
     async () => {
       const server = await startTsServer("restorer");
       try {
-        const first = await runCppClient(server.host, server.port, "restore-success");
+        const first = await runCppClient(
+          server.host,
+          server.port,
+          "restore-success",
+        );
         t.equal(first.code, 0);
         t.equal(first.signal, null);
         t.ok(first.stdout.includes("OK restore=7"));

@@ -1,7 +1,10 @@
 import { describe, test, assert as t } from "vitest";
 import { Conn as BaseConn } from "src/rpc/conn";
 import type { Transport } from "src/rpc/transport";
-import { RpcLevel2PersistenceService, RpcLevel2Restorer } from "test/fixtures/rpc-level2";
+import {
+  RpcLevel2PersistenceService,
+  RpcLevel2Restorer,
+} from "test/fixtures/rpc-level2";
 
 class LinkedTransport implements Transport {
   peer?: TestConn;
@@ -59,7 +62,9 @@ describe("rpc level-2 runtime shutdown races", () => {
       })
       .promise();
 
-    const observed = pending.then(() => null).catch((e: unknown) => e as Error);
+    const observed = pending
+      .then(() => null)
+      .catch((error__: unknown) => error__ as Error);
     client.shutdown();
     release();
     const error_ = await observed;
@@ -95,7 +100,9 @@ describe("rpc level-2 runtime shutdown races", () => {
       })
       .promise();
 
-    const observed = pending.then(() => null).catch((e: unknown) => e as Error);
+    const observed = pending
+      .then(() => null)
+      .catch((error__: unknown) => error__ as Error);
     client.shutdown();
     release();
     const error_ = await observed;
