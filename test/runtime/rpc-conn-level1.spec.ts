@@ -843,6 +843,57 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].unimplemented.which(), RPCMessage.DISEMBARGO);
   });
 
+  test("obsolete level-2 wire messages return unimplemented", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      utils.setUint16(0, RPCMessage.OBSOLETE_SAVE, m);
+      conn.handleMessage(m);
+    }
+    {
+      const m = new Message().initRoot(RPCMessage);
+      utils.setUint16(0, RPCMessage.OBSOLETE_DELETE, m);
+      conn.handleMessage(m);
+    }
+
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].unimplemented.which(), RPCMessage.OBSOLETE_SAVE);
+    t.equal(transport.sent[1].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[1].unimplemented.which(), RPCMessage.OBSOLETE_DELETE);
+  });
+
+  test("unsupported level-3/4 messages return unimplemented", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      m._initProvide();
+      conn.handleMessage(m);
+    }
+    {
+      const m = new Message().initRoot(RPCMessage);
+      m._initAccept();
+      conn.handleMessage(m);
+    }
+    {
+      const m = new Message().initRoot(RPCMessage);
+      m._initJoin();
+      conn.handleMessage(m);
+    }
+
+    t.equal(transport.sent.length, 3);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].unimplemented.which(), RPCMessage.PROVIDE);
+    t.equal(transport.sent[1].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[1].unimplemented.which(), RPCMessage.ACCEPT);
+    t.equal(transport.sent[2].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[2].unimplemented.which(), RPCMessage.JOIN);
+  });
+
   test("release dispatches to export refcount release", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
