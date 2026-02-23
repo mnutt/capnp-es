@@ -59,19 +59,21 @@ Experimental [RPC protocol](https://capnproto.org/rpc.html) support is implement
 
 Current support matrix:
 
-| Feature                                                                               | Status                  | Notes                                                                                                                                 |
-| ------------------------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| Core call/return/bootstrap/finish                                                     | Implemented             | Two-party RPC baseline.                                                                                                               |
-| `Release` refcounting                                                                 | Implemented             | Import/export release accounting and cleanup paths covered by runtime tests.                                                          |
-| Incoming `Resolve`                                                                    | Implemented             | Resolve-to-cap and resolve-to-exception supported, including race-safe unknown-promise handling.                                      |
-| Outgoing `Resolve` (`senderPromise`)                                                  | Implemented             | Exported unresolved pipelines emit exactly one `Resolve(cap                                                                           | exception)` on settlement. |
-| `Disembargo` loopback (two-party)                                                     | Implemented             | Sender/receiver loopback contexts are supported.                                                                                      |
-| `Disembargo` level-3 contexts                                                         | Unsupported             | Currently responds with `Unimplemented`.                                                                                              |
-| Unsupported wire messages (`obsoleteSave`/`obsoleteDelete`/`provide`/`accept`/`join`) | Unsupported             | Deterministically echoed as `Unimplemented`.                                                                                          |
-| Tail call: `sendResultsTo.yourself`                                                   | Partial                 | Returns `resultsSentElsewhere`; broader forwarding cases remain incomplete.                                                           |
-| Tail call: `takeFromOtherQuestion`                                                    | Implemented             | Waiting questions can resolve from in-flight incoming answers.                                                                        |
-| Full Level 1 conformance (two-party)                                                  | Implemented             | See `docs/rpc-level1-plan.md` for coverage matrix and known non-level-1 limits.                                                       |
-| Level 2 persistence (`Persistent.save()` + restore flow)                              | Implemented (two-party) | `Persistent.save()` + app-defined restorer bootstrap + reconnect/sealing/revocation flows are covered in integration + interop tests. |
+| Feature                                                                               | Status                  | Notes                                                                                                                                    |
+| ------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| Core call/return/bootstrap/finish                                                     | Implemented             | Two-party RPC baseline.                                                                                                                  |
+| `Release` refcounting                                                                 | Implemented             | Import/export release accounting and cleanup paths covered by runtime tests.                                                             |
+| Incoming `Resolve`                                                                    | Implemented             | Resolve-to-cap and resolve-to-exception supported, including race-safe unknown-promise handling.                                         |
+| Outgoing `Resolve` (`senderPromise`)                                                  | Implemented             | Exported unresolved pipelines emit exactly one `Resolve(cap                                                                              | exception)` on settlement. |
+| `Disembargo` loopback (two-party)                                                     | Implemented             | Sender/receiver loopback contexts are supported.                                                                                         |
+| `Disembargo` level-3 contexts                                                         | Unsupported             | Currently responds with `Unimplemented`.                                                                                                 |
+| Unsupported wire messages (`obsoleteSave`/`obsoleteDelete`/`provide`/`accept`/`join`) | Unsupported             | Deterministically echoed as `Unimplemented`.                                                                                             |
+| Tail call: `sendResultsTo.yourself`                                                   | Partial                 | Returns `resultsSentElsewhere`; broader forwarding cases remain incomplete.                                                              |
+| Tail call: `takeFromOtherQuestion`                                                    | Implemented             | Waiting questions can resolve from in-flight incoming answers.                                                                           |
+| Full Level 1 conformance (two-party)                                                  | Implemented             | See `docs/rpc-level1-plan.md` for coverage matrix and known non-level-1 limits.                                                          |
+| Level 2 persistence (`Persistent.save()` + restore flow)                              | Implemented (two-party) | `Persistent.save()` + app-defined restorer bootstrap + reconnect/sealing/revocation flows are covered in integration + interop tests.    |
+| Level 3 introductions (`thirdPartyHosted` + `Provide`/`Accept`)                       | In progress             | Enabled only when an introduction-capable network adapter/profile is configured; two-party mode continues deterministic `Unimplemented`. |
+| Level 3 adapter/manager abstractions                                                   | Implemented             | Runtime adapter interfaces, tracing hooks, and vat-keyed `Conn` reuse are available in `src/rpc/network.ts`.                             |
 
 See [tests](./test/integration/rpc.spec.ts) and [Level 2 integration tests](./test/integration/rpc-level2.spec.ts) for examples.
 
@@ -79,6 +81,8 @@ Planning and conformance notes:
 
 - Level 1: `docs/rpc-level1-plan.md`
 - Level 2: `docs/rpc-level2-plan.md`
+- Level 3: `docs/rpc-level3-plan.md`
+- Level 3 network profile: `docs/rpc-level3-network-profile.md`
 
 Level 2 authoring guidance:
 

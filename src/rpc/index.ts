@@ -8,6 +8,7 @@ export * from "./deferred";
 export * from "./error-client";
 export * from "./level3";
 export * from "./method";
+export * from "./network";
 export * from "./pipeline";
 export * from "./persistence";
 export * from "./registry";
