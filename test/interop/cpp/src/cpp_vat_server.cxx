@@ -45,6 +45,14 @@ public:
 
     const auto host = sturdyRef.getHost();
     const bool openHostOk = host == "vat-cpp";
+    const bool openRevokedObject =
+        objectId.size() == 6 &&
+        objectId[0] == 'r' &&
+        objectId[1] == 'e' &&
+        objectId[2] == 'v' &&
+        objectId[3] == 'k' &&
+        objectId[4] == '-' &&
+        objectId[5] == '1';
     const bool openObjectOk =
         objectId.size() == 6 &&
         objectId[0] == 'c' &&
@@ -68,6 +76,10 @@ public:
     if ((openHostOk && openObjectOk) || (sealedHostOk && sealedObjectOk && sealedOwnerOk)) {
       context.getResults().setCapability(kj::heap<SimpleImpl>());
       return kj::READY_NOW;
+    }
+
+    if (openHostOk && openRevokedObject) {
+      throw KJ_EXCEPTION(FAILED, "revoked sturdyRef");
     }
 
     if (sealedHostOk && sealedObjectOk && !sealedOwnerOk) {

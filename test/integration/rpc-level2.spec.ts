@@ -494,4 +494,80 @@ describe("rpc level-2", () => {
     (await serverConn).shutdown();
   });
 
+  test("revoked sturdyRef fails restore-time", async () => {
+    const store = new Map<string, SimpleInterface$Client>();
+    const revoked = new Set<string>();
+    const cap = new SimpleInterface.Server({
+      subtract: async (params, results) => {
+        results.result = params.a - params.b;
+      },
+    }).client();
+
+    const initServerConn = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2PersistenceService, {
+        async save(params, results) {
+          const ownerId = params.sealFor.id || "anon";
+          const key = `revokable:${ownerId}`;
+          store.set(key, cap);
+          const objectId = new TextEncoder().encode(key);
+          const ref = results._initSturdyRef();
+          ref.host = "vat-rev";
+          ref._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        },
+        async restore(params, results) {
+          const object = new TextDecoder().decode(
+            params.sturdyRef.objectId.toUint8Array(),
+          );
+          if (revoked.has(object)) {
+            throw new Error("revoked sturdyRef");
+          }
+          const found = store.get(object);
+          if (!found) {
+            throw new Error("unknown sturdyRef");
+          }
+          results.capability = found;
+        },
+      });
+      return s;
+    };
+
+    const serverConn1 = initServerConn();
+    const clientConn1 = rpc.connect(11);
+    const saved = await clientConn1
+      .bootstrap(RpcLevel2PersistenceService)
+      .save((params) => {
+        params._initSealFor().id = "owner-rev";
+      })
+      .promise();
+    const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
+    const key = new TextDecoder().decode(sturdyRef.objectId.toUint8Array());
+    revoked.add(key);
+    store.delete(key);
+    clientConn1.shutdown();
+    (await serverConn1).shutdown();
+
+    const serverConn2 = initServerConn();
+    const clientConn2 = rpc.connect(12);
+    const error_ = await clientConn2
+      .bootstrap(RpcLevel2PersistenceService)
+      .restore((params) => {
+        params._initSturdyRef().host = sturdyRef.host;
+        const objectId = sturdyRef.objectId.toUint8Array();
+        params.sturdyRef
+          ._initObjectId(objectId.byteLength)
+          .copyBuffer(objectId);
+        params._initOwner().id = "owner-rev";
+      })
+      .promise()
+      .then(() => null)
+      .catch((e: unknown) => e as Error);
+
+    t.ok(error_ instanceof Error);
+    t.ok(error_.message.includes("revoked sturdyRef"));
+    clientConn2.shutdown();
+    (await serverConn2).shutdown();
+  });
+
 });

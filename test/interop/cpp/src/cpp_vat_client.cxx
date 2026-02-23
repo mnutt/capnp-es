@@ -29,14 +29,16 @@ int main(int argc, char* argv[]) {
       mode == "pipeline-exception" ||
       mode == "persistent-nonpersistent" ||
       mode == "restore-unknown" ||
-      mode == "restore-sealed-denied";
+      mode == "restore-sealed-denied" ||
+      mode == "restore-revoked";
 
   try {
     if (
         mode == "restore-success" ||
         mode == "restore-unknown" ||
         mode == "restore-sealed-success" ||
-        mode == "restore-sealed-denied") {
+        mode == "restore-sealed-denied" ||
+        mode == "restore-revoked") {
       auto restorer = client.getMain<RpcLevel2Restorer>();
       auto req = restorer.restoreRequest();
       auto sturdyRef = req.initSturdyRef();
@@ -48,6 +50,7 @@ int main(int argc, char* argv[]) {
       const char* object =
           mode == "restore-success" ? "calc-1" :
           mode == "restore-unknown" ? "bad-id" :
+          mode == "restore-revoked" ? "revk-1" :
           "seal-1";
       auto objectId = sturdyRef.initObjectId(6);
       for (uint i = 0; i < 6; i++) {
@@ -65,7 +68,10 @@ int main(int argc, char* argv[]) {
       sub.setA(11);
       sub.setB(4);
       const auto out = sub.send().wait(waitScope).getResult();
-      if (mode == "restore-unknown" || mode == "restore-sealed-denied") {
+      if (
+          mode == "restore-unknown" ||
+          mode == "restore-sealed-denied" ||
+          mode == "restore-revoked") {
         std::cerr << "expected restore exception but got result=" << out << std::endl;
         return 7;
       }
