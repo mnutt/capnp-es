@@ -523,6 +523,21 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(e!.wireRefs, 2);
   });
 
+  test("resolve for unknown promise with invalid descriptor sends unimplemented", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 123;
+    resolve._initCap().receiverHosted = 9999;
+
+    conn.handleMessage(m);
+
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].unimplemented.which(), RPCMessage.RESOLVE);
+  });
+
   test("descriptorForClient exports cross-conn in-progress pipeline as senderPromise and emits resolve.cap", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
