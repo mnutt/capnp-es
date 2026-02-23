@@ -26,6 +26,7 @@ import { Interface } from "src/serialization/pointers/interface";
 import { LocalAnswerClient } from "src/rpc/local-answer-client";
 import { ErrorClient } from "src/rpc/error-client";
 import { Server } from "src/rpc/server";
+import { RPC_CALL_QUEUE_FULL } from "src/errors";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -501,6 +502,58 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(d1.which(), CapDescriptor.SENDER_PROMISE);
     t.equal(d2.which(), CapDescriptor.SENDER_PROMISE);
     t.notEqual(d1.senderPromise, d2.senderPromise);
+  });
+
+  test("senderPromise queue overflow returns immediate call exception", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const d = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    conn.descriptorForClient(d, pc);
+    const promiseId = d.senderPromise;
+
+    const iface = 0xface1n;
+    Registry.register(iface, {
+      methods: [
+        {
+          interfaceId: iface,
+          methodId: 0,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+
+    for (let i = 0; i < 65; i++) {
+      const m = new Message().initRoot(RPCMessage);
+      const call = m._initCall();
+      call.questionId = 5000 + i;
+      call.interfaceId = iface;
+      call.methodId = 0;
+      call._initTarget().importedCap = promiseId;
+      call._initParams();
+      conn.handleMessage(m);
+      const a = conn.answers[5000 + i];
+      if (a) {
+        void a.deferred.promise.catch(() => {});
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const returns = transport.sent.filter((m) => m.which() === RPCMessage.RETURN);
+    t.equal(returns.length, 1);
+    t.equal(returns[0].return.answerId, 5000 + 64);
+    t.equal(returns[0].return.which(), Return_Which.EXCEPTION);
+    t.ok(returns[0].return.exception.reason.includes(RPC_CALL_QUEUE_FULL));
+
+    for (const a of Object.values(conn.answers)) {
+      void a.deferred.promise.catch(() => {});
+    }
+    conn.shutdown(new Error("test cleanup"));
   });
 
   test("reused senderPromise emits exactly one resolve.exception on rejection", async () => {
