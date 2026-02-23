@@ -16,6 +16,7 @@ import { ImportClient } from "src/rpc/import-client";
 import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
 import { ImmediateAnswer } from "src/rpc/immediate-answer";
 import { Registry } from "src/rpc/registry";
+import { Question } from "src/rpc/question";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -26,6 +27,26 @@ class TestTransport implements Transport {
 
   async recvMessage(): Promise<RPCMessage> {
     throw new Error(`recvMessage should not be called in this test`);
+  }
+
+  close(): void {
+    // no-op
+  }
+}
+
+class LinkedTransport implements Transport {
+  peer?: TestConn;
+  sent: RPCMessage[] = [];
+
+  sendMessage(msg: RPCMessage): void {
+    this.sent.push(msg);
+    if (this.peer) {
+      this.peer.handleMessage(msg);
+    }
+  }
+
+  async recvMessage(): Promise<RPCMessage> {
+    throw new Error("recvMessage should not be called in this test");
   }
 
   close(): void {
@@ -494,5 +515,53 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].which(), RPCMessage.RETURN);
     t.equal(transport.sent[0].return.answerId, 33);
     t.equal(transport.sent[0].return.which(), Return_Which.RESULTS_SENT_ELSEWHERE);
+  });
+
+  test("cross-conn takeFromOtherQuestion follows source answer result", async () => {
+    const ta = new LinkedTransport();
+    const tb = new LinkedTransport();
+    const a = new TestConn(ta);
+    const b = new TestConn(tb);
+    ta.peer = b;
+    tb.peer = a;
+
+    const sourceAnswerId = 10;
+    const source = a.insertAnswer(sourceAnswerId);
+    if (!source) {
+      throw new Error("expected source answer");
+    }
+
+    // B needs matching table entries for protocol-correct replies that A sends.
+    b.questions[sourceAnswerId] = new Question(b, sourceAnswerId);
+
+    const redirected = a.newQuestion();
+    const redirectedPromise = redirected.struct();
+    b.insertAnswer(redirected.id);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const ret = m._initReturn();
+      ret.answerId = redirected.id;
+      ret.takeFromOtherQuestion = sourceAnswerId;
+      b.sendMessage(m);
+    }
+
+    const msg = new Message();
+    const s = msg.initRoot(AnyStruct);
+    source.fulfill(s);
+
+    const redirectedResult = await redirectedPromise;
+    t.ok(redirectedResult);
+    t.ok(
+      ta.sent.some(
+        (m) =>
+          m.which() === RPCMessage.RETURN && m.return.answerId === sourceAnswerId,
+      ),
+    );
+    t.ok(
+      ta.sent.some(
+        (m) => m.which() === RPCMessage.FINISH && m.finish.questionId === redirected.id,
+      ),
+    );
   });
 });
