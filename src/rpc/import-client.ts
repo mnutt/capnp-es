@@ -12,6 +12,7 @@ import { RPC_IMPORT_CLOSED } from "../errors";
 // An ImportClient implements Client for a remote capability.
 export class ImportClient implements Client {
   closed = false;
+  resolved?: Client;
 
   constructor(
     public conn: Conn,
@@ -23,6 +24,9 @@ export class ImportClient implements Client {
   ): Answer<CallResults> {
     if (this.closed) {
       return new ErrorAnswer(new Error(RPC_IMPORT_CLOSED));
+    }
+    if (this.resolved) {
+      return this.resolved.call(cl);
     }
 
     const q = this.conn.newQuestion(cl.method);
@@ -42,11 +46,21 @@ export class ImportClient implements Client {
     return q;
   }
 
+  setResolved(client: Client): void {
+    if (this.closed) {
+      client.close();
+      return;
+    }
+    this.resolved?.close();
+    this.resolved = client;
+  }
+
   close(): void {
     if (this.closed) {
       return;
     }
     this.closed = true;
+    this.resolved?.close();
     this.conn.releaseImport(this.id, 1);
   }
 }

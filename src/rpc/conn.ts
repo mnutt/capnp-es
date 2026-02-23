@@ -5,7 +5,13 @@ import { RefCount } from "./refcount";
 import { Client, isSameClient, clientFromResolution } from "./client";
 import { Transport } from "./transport";
 import { Question, QuestionState } from "./question";
-import { Return, Payload, CapDescriptor, MessageTarget } from "../capnp/rpc";
+import {
+  Return,
+  Payload,
+  CapDescriptor,
+  MessageTarget,
+  Resolve,
+} from "../capnp/rpc";
 import { RPCError } from "./rpc-error";
 import { AnswerEntry, Answer } from "./answer";
 import {
@@ -47,6 +53,7 @@ import {
   RPC_UNKNOWN_ANSWER_ID,
   RPC_UNKNOWN_CAP_DESCRIPTOR,
   RPC_UNKNOWN_EXPORT_ID,
+  RPC_UNIMPLEMENTED,
 } from "../errors";
 import { format } from "../util";
 import { Interface, Message } from "../serialization";
@@ -57,6 +64,7 @@ import {
 } from "../serialization/pointers/interface";
 import { Server } from "./server";
 import { getAs } from "../serialization/pointers/struct.utils";
+import { ErrorClient } from "./error-client";
 
 type QuestionSlot = Question<any, any> | null;
 
@@ -170,9 +178,37 @@ export class Conn {
   }
 
   handleResolveMessage(m: RPCMessage): void {
-    // Level 1 resolve semantics are not fully implemented yet.
-    // Echo unimplemented so the peer can apply fallback behavior.
-    this.sendMessage(newUnimplementedMessage(m));
+    const resolve = m.resolve;
+    const promiseId = resolve.promiseId;
+    const entry = this.imports[promiseId];
+    if (!entry) {
+      // Resolve may race with release. If this promise is already unknown,
+      // release any newly-introduced capability immediately.
+      if (resolve.which() === Resolve.CAP) {
+        const client = this.clientFromCapDescriptor(resolve.cap);
+        client.close();
+      }
+      return;
+    }
+
+    const importClient = entry.rc._client;
+    if (!(importClient instanceof ImportClient)) {
+      throw new Error(INVARIANT_UNREACHABLE_CODE);
+    }
+
+    switch (resolve.which()) {
+      case Resolve.CAP: {
+        importClient.setResolved(this.clientFromCapDescriptor(resolve.cap));
+        break;
+      }
+      case Resolve.EXCEPTION: {
+        importClient.setResolved(new ErrorClient(new RPCError(resolve.exception)));
+        break;
+      }
+      default: {
+        importClient.setResolved(new ErrorClient(new Error(RPC_UNIMPLEMENTED)));
+      }
+    }
   }
 
   handleReleaseMessage(m: RPCMessage): void {
@@ -616,6 +652,40 @@ export class Conn {
       }
     }
     return out;
+  }
+
+  clientFromCapDescriptor(desc: CapDescriptor): Client {
+    switch (desc.which()) {
+      case CapDescriptor.SENDER_HOSTED: {
+        return this.addImport(desc.senderHosted);
+      }
+      case CapDescriptor.SENDER_PROMISE: {
+        return this.addImport(desc.senderPromise);
+      }
+      case CapDescriptor.RECEIVER_HOSTED: {
+        const id = desc.receiverHosted;
+        const e = this.findExport(id);
+        if (!e) {
+          throw new Error(format(RPC_UNKNOWN_EXPORT_ID, id));
+        }
+        return e.rc.ref();
+      }
+      case CapDescriptor.RECEIVER_ANSWER: {
+        const recvAns = desc.receiverAnswer;
+        const id = recvAns.questionId;
+        const a = this.answers[id];
+        if (!a) {
+          throw new Error(format(RPC_UNKNOWN_ANSWER_ID, id));
+        }
+        return answerPipelineClient(
+          a,
+          promisedAnswerOpsToTransform(recvAns.transform),
+        );
+      }
+      default: {
+        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+      }
+    }
   }
 
   // descriptorForClient fills desc for client, adding it to the export

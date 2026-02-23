@@ -7,6 +7,7 @@ import { Client } from "src/rpc/client";
 import { Struct } from "src/serialization";
 import { Call } from "src/rpc/call";
 import { Answer } from "src/rpc/answer";
+import { ImportClient } from "src/rpc/import-client";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -50,9 +51,10 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.findQuestion(0), null);
   });
 
-  test("resolve is handled via unimplemented echo", () => {
+  test("resolve with exception updates import and does not echo", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
+    const importClient = conn.addImport(7);
     const m = new Message().initRoot(RPCMessage);
     const resolve = m._initResolve();
     resolve.promiseId = 7;
@@ -60,9 +62,58 @@ describe("Conn level-1 message dispatch", () => {
 
     conn.handleMessage(m);
 
+    t.equal(transport.sent.length, 0);
+    try {
+      await importClient.call({} as any).struct();
+      throw new Error("expected resolve exception");
+    } catch (error_) {
+      t.ok((error_ as Error).message.includes("broken"));
+    }
+  });
+
+  test("resolve with cap sets forwarding client and closes it on import close", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const promiseRef = conn.addImport(7);
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 7;
+    resolve._initCap().senderHosted = 8;
+
+    conn.handleMessage(m);
+
+    const importEntry = conn.imports[7];
+    t.ok(importEntry);
+    t.ok(importEntry.rc._client instanceof ImportClient);
+    const base = importEntry.rc._client as ImportClient;
+    t.ok(base.resolved);
+    t.ok(conn.imports[8]);
+
+    promiseRef.close();
+
+    // Closing promise import should release both the resolved forwarding cap
+    // and the promise import itself.
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 8);
+    t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[1].release.id, 7);
+  });
+
+  test("resolve for unknown promise releases introduced cap immediately", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const m = new Message().initRoot(RPCMessage);
+    const resolve = m._initResolve();
+    resolve.promiseId = 123;
+    resolve._initCap().senderHosted = 77;
+
+    conn.handleMessage(m);
+
     t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
-    t.equal(transport.sent[0].unimplemented.which(), RPCMessage.RESOLVE);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 77);
+    t.equal(conn.imports[77], undefined);
   });
 
   test("disembargo is handled via unimplemented echo", () => {
