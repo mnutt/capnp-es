@@ -27,6 +27,7 @@ import { Interface } from "src/serialization/pointers/interface";
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
   isClosed = false;
+  closeCount = 0;
 
   sendMessage(msg: RPCMessage): void {
     this.sent.push(msg);
@@ -38,6 +39,7 @@ class TestTransport implements Transport {
 
   close(): void {
     this.isClosed = true;
+    this.closeCount++;
   }
 }
 
@@ -1244,5 +1246,43 @@ describe("Conn level-1 message dispatch", () => {
     conn.shutdown(new Error("shutdown now"));
     const err = await wait;
     t.ok(err.message.includes("shutdown now"));
+  });
+
+  test("shutdown rejects tail-answer waiters", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const source = conn.insertAnswer(91);
+    if (!source) {
+      throw new Error("expected source answer");
+    }
+    void source.deferred.promise.catch(() => {});
+    const redirected = conn.newQuestion();
+    const wait = redirected
+      .struct()
+      .then(() => {
+        throw new Error("expected shutdown rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    {
+      const m = new Message().initRoot(RPCMessage);
+      const ret = m._initReturn();
+      ret.answerId = redirected.id;
+      ret.takeFromOtherQuestion = 91;
+      conn.handleMessage(m);
+    }
+
+    conn.shutdown(new Error("shutdown now"));
+    const err = await wait;
+    t.ok(err.message.includes("shutdown now"));
+  });
+
+  test("shutdown is idempotent", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    conn.shutdown(new Error("first"));
+    conn.shutdown(new Error("second"));
+    t.equal(conn.closed, true);
+    t.equal(transport.closeCount, 1);
   });
 });
