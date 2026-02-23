@@ -7,6 +7,7 @@
 #include "capnp/simple-interface.capnp.h"
 #include "capnp/import-interface.capnp.h"
 #include <capnp/persistent.capnp.h>
+#include "capnp/rpc-level2.capnp.h"
 
 static std::string getArg(int argc, char* argv[], int idx, const char* fallback) {
   if (idx < argc) {
@@ -26,9 +27,40 @@ int main(int argc, char* argv[]) {
   const bool expectException =
       mode == "exception" ||
       mode == "pipeline-exception" ||
-      mode == "persistent-nonpersistent";
+      mode == "persistent-nonpersistent" ||
+      mode == "restore-unknown";
 
   try {
+    if (mode == "restore-success" || mode == "restore-unknown") {
+      auto restorer = client.getMain<RpcLevel2Restorer>();
+      auto req = restorer.restoreRequest();
+      auto sturdyRef = req.initSturdyRef();
+      sturdyRef.setHost("vat-cpp");
+      const char* object = mode == "restore-success" ? "calc-1" : "bad-id";
+      auto objectId = sturdyRef.initObjectId(6);
+      for (uint i = 0; i < 6; i++) {
+        objectId[i] = object[i];
+      }
+      req.initOwner().setId("owner-cpp");
+
+      auto resp = req.send().wait(waitScope);
+      auto cap = resp.getCapability();
+      auto sub = cap.subtractRequest();
+      sub.setA(11);
+      sub.setB(4);
+      const auto out = sub.send().wait(waitScope).getResult();
+      if (mode == "restore-unknown") {
+        std::cerr << "expected restore exception but got result=" << out << std::endl;
+        return 7;
+      }
+      if (out != 7) {
+        std::cerr << "unexpected restored result=" << out << std::endl;
+        return 8;
+      }
+      std::cout << "OK restore=" << out << std::endl;
+      return 0;
+    }
+
     auto mainCap = client.getMain<ReturnCapability>();
     if (mode == "parallel") {
       auto req = mainCap.getRequest();

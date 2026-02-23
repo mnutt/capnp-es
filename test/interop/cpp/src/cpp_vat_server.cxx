@@ -8,6 +8,7 @@
 
 #include "capnp/simple-interface.capnp.h"
 #include "capnp/import-interface.capnp.h"
+#include "capnp/rpc-level2.capnp.h"
 
 class SimpleImpl final: public SimpleInterface::Server {
 public:
@@ -34,6 +35,33 @@ public:
   }
 };
 
+class RpcLevel2RestorerImpl final: public RpcLevel2Restorer::Server {
+public:
+  kj::Promise<void> restore(RestoreContext context) override {
+    auto params = context.getParams();
+    auto sturdyRef = params.getSturdyRef();
+    auto objectId = sturdyRef.getObjectId();
+
+    const auto host = sturdyRef.getHost();
+    const bool hostOk = host == "vat-cpp";
+    const bool objectOk =
+        objectId.size() == 6 &&
+        objectId[0] == 'c' &&
+        objectId[1] == 'a' &&
+        objectId[2] == 'l' &&
+        objectId[3] == 'c' &&
+        objectId[4] == '-' &&
+        objectId[5] == '1';
+
+    if (!hostOk || !objectOk) {
+      throw KJ_EXCEPTION(FAILED, "unknown sturdyRef");
+    }
+
+    context.getResults().setCapability(kj::heap<SimpleImpl>());
+    return kj::READY_NOW;
+  }
+};
+
 static std::string getEnvOr(const char* key, const char* fallback) {
   const char* value = std::getenv(key);
   return value == nullptr ? std::string(fallback) : std::string(value);
@@ -42,15 +70,23 @@ static std::string getEnvOr(const char* key, const char* fallback) {
 int main() {
   const auto host = getEnvOr("CAPNP_INTEROP_HOST", "127.0.0.1");
   const auto portStr = getEnvOr("CAPNP_INTEROP_PORT", "0");
+  const auto mainType = getEnvOr("CAPNP_INTEROP_MAIN", "return");
   const auto bindAddr = host + ":" + portStr;
-
-  capnp::EzRpcServer server(kj::heap<ReturnCapabilityImpl>(), bindAddr);
-  auto& waitScope = server.getWaitScope();
-  auto actualPort = server.getPort().wait(waitScope);
-
-  std::cout << "READY " << actualPort << std::endl;
-  std::cout.flush();
-
-  kj::NEVER_DONE.wait(waitScope);
-  return 0;
+  if (mainType == "restorer") {
+    capnp::EzRpcServer server(kj::heap<RpcLevel2RestorerImpl>(), bindAddr);
+    auto& waitScope = server.getWaitScope();
+    auto actualPort = server.getPort().wait(waitScope);
+    std::cout << "READY " << actualPort << std::endl;
+    std::cout.flush();
+    kj::NEVER_DONE.wait(waitScope);
+    return 0;
+  } else {
+    capnp::EzRpcServer server(kj::heap<ReturnCapabilityImpl>(), bindAddr);
+    auto& waitScope = server.getWaitScope();
+    auto actualPort = server.getPort().wait(waitScope);
+    std::cout << "READY " << actualPort << std::endl;
+    std::cout.flush();
+    kj::NEVER_DONE.wait(waitScope);
+    return 0;
+  }
 }

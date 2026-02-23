@@ -29,11 +29,21 @@ async function startCppServer(): Promise<{
   port: number;
   stop: () => Promise<void>;
 }> {
+  return startCppServerWithMode("return");
+}
+
+async function startCppServerWithMode(mainType: "return" | "restorer"): Promise<{
+  child: ChildProcessByStdio<null, Readable, Readable>;
+  host: string;
+  port: number;
+  stop: () => Promise<void>;
+}> {
   const child = spawn(SERVER_BIN, [], {
     env: {
       ...process.env,
       CAPNP_INTEROP_HOST: process.env.CAPNP_INTEROP_HOST || "127.0.0.1",
       CAPNP_INTEROP_PORT: process.env.CAPNP_INTEROP_PORT || "0",
+      CAPNP_INTEROP_MAIN: mainType,
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -107,7 +117,9 @@ type CppClientMode =
   | "pipeline-success"
   | "pipeline-exception"
   | "parallel"
-  | "persistent-nonpersistent";
+  | "persistent-nonpersistent"
+  | "restore-success"
+  | "restore-unknown";
 
 async function runCppClient(
   host: string,
@@ -154,16 +166,19 @@ async function runCppClient(
   return { code, signal, stdout, stderr };
 }
 
-async function startTsServer(): Promise<{
+async function startTsServer(
+  mainType: "return" | "restorer" = "return",
+): Promise<{
   host: string;
   port: number;
   stop: () => Promise<void>;
 }> {
-  const [{ Conn }, { ReturnCapability }, { SimpleInterface }] =
+  const [{ Conn }, { ReturnCapability }, { SimpleInterface }, { RpcLevel2Restorer }] =
     await Promise.all([
       import("src/rpc"),
       import("test/fixtures/import-interface"),
       import("test/fixtures/simple-interface"),
+      import("test/fixtures/rpc-level2"),
     ]);
 
   const host = process.env.CAPNP_INTEROP_HOST || "127.0.0.1";
@@ -172,21 +187,40 @@ async function startTsServer(): Promise<{
   const server = net.createServer((socket) => {
     const conn = new Conn(TcpRPCTransport.fromSocket(socket));
     conn.onError = () => {};
-    conn.initMain(ReturnCapability, {
-      get: (p, r) => {
-        if (p.index === 1) {
-          throw new Error(
-            "forced get() exception from capnp-es interop server",
+    if (mainType === "restorer") {
+      conn.initMain(RpcLevel2Restorer, {
+        restore: async (p, r) => {
+          const sturdyRef = p.sturdyRef;
+          const objectId = new TextDecoder().decode(
+            sturdyRef.objectId.toUint8Array(),
           );
-        }
-        r.capability = new SimpleInterface.Server({
-          subtract: async (sp, out) => {
-            out.result = sp.a - sp.b;
-          },
-        }).client();
-        return Promise.resolve();
-      },
-    });
+          if (sturdyRef.host !== "vat-cpp" || objectId !== "calc-1") {
+            throw new Error("unknown sturdyRef");
+          }
+          r.capability = new SimpleInterface.Server({
+            subtract: async (sp, out) => {
+              out.result = sp.a - sp.b;
+            },
+          }).client();
+        },
+      });
+    } else {
+      conn.initMain(ReturnCapability, {
+        get: (p, r) => {
+          if (p.index === 1) {
+            throw new Error(
+              "forced get() exception from capnp-es interop server",
+            );
+          }
+          r.capability = new SimpleInterface.Server({
+            subtract: async (sp, out) => {
+              out.result = sp.a - sp.b;
+            },
+          }).client();
+          return Promise.resolve();
+        },
+      });
+    }
     conns.push(conn);
   });
 
@@ -320,6 +354,89 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         const persistent = new Persistent.Client(ret.capability.client);
         const error_ = await persistent
           .save()
+          .promise()
+          .then(() => null)
+          .catch((error__: unknown) => error__ as Error);
+
+        t.ok(error_ instanceof Error);
+        t.ok(error_.message.length > 0);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client can restore sturdyRef from C++ restorer bootstrap",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const restored = await conn
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "vat-cpp";
+            const objectId = new TextEncoder().encode("calc-1");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
+          .promise();
+
+        const out = await restored.capability
+          .subtract((p: any) => {
+            p.a = 11;
+            p.b = 4;
+          })
+          .promise();
+        t.equal(out.result, 7);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client gets restore exception for unknown sturdyRef from C++ restorer",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2Restorer }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/rpc-level2"),
+      ]);
+      const server = await startCppServerWithMode("restorer");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const error_ = await conn
+          .bootstrap(RpcLevel2Restorer)
+          .restore((p) => {
+            p._initSturdyRef().host = "vat-cpp";
+            const objectId = new TextEncoder().encode("bad-id");
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
           .promise()
           .then(() => null)
           .catch((error__: unknown) => error__ as Error);
@@ -503,6 +620,38 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK parallel=7,22"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client can restore sturdyRef from capnp-es restorer bootstrap",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const res = await runCppClient(server.host, server.port, "restore-success");
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK restore=7"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client gets restore exception for unknown sturdyRef from capnp-es restorer",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer("restorer");
+      try {
+        const res = await runCppClient(server.host, server.port, "restore-unknown");
+        t.equal(res.code, 0);
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK exception="));
       } finally {
         await server.stop();
       }
