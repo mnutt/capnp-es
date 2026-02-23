@@ -147,14 +147,22 @@ describe("rpc", () => {
     let getPromise: Promise<any> | undefined;
     let middleConn: any;
     let upstreamConn: any;
+    let clientConn: any;
     try {
-      const clientConn = rpc.connect();
+      clientConn = rpc.connect();
       middleConn = await middlePromise;
       getPromise = clientConn.bootstrap(ReturnCapability).get().promise();
       upstreamConn = await upstreamPromise;
 
       await waitUntil(
         () => Object.keys((middleConn as any).exportPromises).length > 0,
+        1000,
+      );
+      await waitUntil(
+        () =>
+          Object.values((clientConn as any).imports).some(
+            (entry: any) => entry.isPromise === true,
+          ),
         1000,
       );
 
@@ -166,6 +174,13 @@ describe("rpc", () => {
         () =>
           Object.values((middleConn as any).exportPromises).every(
             (entry: any) => entry.settled === true,
+          ),
+        1000,
+      );
+      await waitUntil(
+        () =>
+          Object.values((clientConn as any).imports).every(
+            (entry: any) => entry.isPromise === false,
           ),
         1000,
       );
