@@ -15,9 +15,17 @@ export function joinAnswer<R extends Struct>(
   Promise.resolve()
     .then(() => answer.struct())
     .then((obj) => {
-      fl.fulfill(obj);
+      try {
+        fl.fulfill(obj);
+      } catch {
+        // Races can double-settle fulfillers; ignore late delivery.
+      }
     })
     .catch((error_) => {
-      fl.reject(error_);
+      try {
+        fl.reject(error_);
+      } catch {
+        // Races can double-settle fulfillers; ignore late delivery.
+      }
     });
 }
