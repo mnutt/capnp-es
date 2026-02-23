@@ -55,7 +55,21 @@ const struct = message.getRoot(MyStruct);
 
 ### RPC Protocol
 
-Experimental [RPC protocol](https://capnproto.org/rpc.html) is supported ([level 1](https://capnproto.org/rpc.html#protocol-features)).
+Experimental [RPC protocol](https://capnproto.org/rpc.html) support is implemented with substantial [level 1](https://capnproto.org/rpc.html#protocol-features) coverage.
+
+Current support matrix:
+
+| Feature | Status | Notes |
+| --- | --- | --- |
+| Core call/return/bootstrap/finish | Implemented | Two-party RPC baseline. |
+| `Release` refcounting | Implemented | Import/export release accounting and cleanup paths covered by runtime tests. |
+| Incoming `Resolve` | Implemented | Resolve-to-cap and resolve-to-exception supported, including race-safe unknown-promise handling. |
+| Outgoing `Resolve` (`senderPromise`) | Implemented | Exported unresolved pipelines emit exactly one `Resolve(cap|exception)` on settlement. |
+| `Disembargo` loopback (two-party) | Implemented | Sender/receiver loopback contexts are supported. |
+| `Disembargo` level-3 contexts | Unsupported | Currently responds with `Unimplemented`. |
+| Tail call: `sendResultsTo.yourself` | Partial | Returns `resultsSentElsewhere`; broader forwarding cases remain incomplete. |
+| Tail call: `takeFromOtherQuestion` | Implemented | Waiting questions can resolve from in-flight incoming answers. |
+| Full Level 1 conformance | Partial | Ongoing; see `docs/rpc-level1-plan.md` for tracked gaps. |
 
 See [tests](./test/integration/rpc.spec.ts) for some examples.
 

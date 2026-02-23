@@ -343,6 +343,41 @@ describe("Conn level-1 message dispatch", () => {
     t.ok(resolveMsg!.resolve.exception.reason.includes("boom"));
   });
 
+  test("descriptorForClient reuses senderPromise export for same question+transform", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const other = new TestConn(new TestTransport());
+    const q = other.newQuestion(TEST_METHOD);
+    const pc = new Pipeline(AnyStruct as any, q as any)
+      .getPipeline(Interface as any, 0)
+      .client();
+    const desc1 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+    const desc2 = new Message().initRoot(RPCMessage)._initResolve()._initCap();
+
+    conn.descriptorForClient(desc1, pc);
+    conn.descriptorForClient(desc2, pc);
+    t.equal(desc1.which(), CapDescriptor.SENDER_PROMISE);
+    t.equal(desc2.which(), CapDescriptor.SENDER_PROMISE);
+    t.equal(desc1.senderPromise, desc2.senderPromise);
+
+    const promiseId = desc1.senderPromise;
+    t.ok(conn.findExport(promiseId));
+
+    const rel1 = new Message().initRoot(RPCMessage);
+    const release1 = rel1._initRelease();
+    release1.id = promiseId;
+    release1.referenceCount = 1;
+    conn.handleMessage(rel1);
+    t.ok(conn.findExport(promiseId));
+
+    const rel2 = new Message().initRoot(RPCMessage);
+    const release2 = rel2._initRelease();
+    release2.id = promiseId;
+    release2.referenceCount = 1;
+    conn.handleMessage(rel2);
+    t.equal(conn.findExport(promiseId), null);
+  });
+
   test("release before senderPromise settlement suppresses outgoing resolve", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

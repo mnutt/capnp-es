@@ -97,6 +97,7 @@ export class Conn {
   disembargoes: { [key: number]: ImportClient } = {};
   tailAnswerWaiters: { [key: number]: Array<Question<any, any>> } = {};
   exportPromises: { [key: number]: ExportPromiseEntry } = {};
+  exportPromiseIndex = new WeakMap<Question<any, any>, Map<string, number>>();
 
   onError?: (err?: Error) => void;
   main?: Client;
@@ -779,6 +780,7 @@ export class Conn {
       this.exportID.remove(i);
     }
     this.exportPromises = {};
+    this.exportPromiseIndex = new WeakMap();
 
     for (const [idStr, entry] of Object.entries(this.imports)) {
       try {
@@ -981,8 +983,25 @@ export class Conn {
     question: Question<any, any>,
     transform: PipelineOp[],
   ): number {
+    const key = transform.map((op) => op.field).join(",");
+    let indexed = this.exportPromiseIndex.get(question);
+    if (!indexed) {
+      indexed = new Map();
+      this.exportPromiseIndex.set(question, indexed);
+    }
+    const existingId = indexed.get(key);
+    if (existingId !== undefined) {
+      const existing = this.findExport(existingId);
+      if (existing) {
+        existing.wireRefs++;
+        return existingId;
+      }
+      indexed.delete(key);
+    }
+
     const promiseClient = new PromiseExportClient();
     const id = this.addExport(promiseClient);
+    indexed.set(key, id);
     if (this.exportPromises[id]) {
       return id;
     }
