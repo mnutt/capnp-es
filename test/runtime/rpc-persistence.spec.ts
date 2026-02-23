@@ -16,7 +16,7 @@ import { Message, Struct, utils } from "src/serialization";
 import { Call } from "src/rpc/call";
 import { Answer } from "src/rpc/answer";
 import { RpcLevel2SturdyRef } from "test/fixtures/rpc-level2";
-import { Persistent$Client, Persistent_SaveParams } from "src/capnp/persistent";
+import { Persistent_SaveParams } from "src/capnp/persistent";
 
 describe("rpc persistence abstractions", () => {
   test("json codec round-trips sturdy refs", () => {
@@ -41,7 +41,7 @@ describe("rpc persistence abstractions", () => {
         return typeof (value as { host?: unknown }).host === "string";
       },
     );
-    const payload = new TextEncoder().encode("{\"bad\":true}");
+    const payload = new TextEncoder().encode('{"bad":true}');
     t.throws(() => codec.decode(payload), MalformedSturdyRefError);
   });
 
@@ -77,7 +77,10 @@ describe("rpc persistence abstractions", () => {
   });
 
   test("map restorer throws for unknown sturdy refs", () => {
-    const lookup = new MapRestorerLookup<{ host: string; object: string }, {}>();
+    const lookup = new MapRestorerLookup<
+      { host: string; object: string },
+      {}
+    >();
     t.throws(
       () => lookup.restore({ host: "vat", object: "missing" }),
       UnknownSturdyRefError,
@@ -107,7 +110,9 @@ describe("rpc persistence abstractions", () => {
     });
 
     const client = server.client();
-    const out = await client.save((_params: Persistent_SaveParams) => {}).promise();
+    const out = await client
+      .save((_params: Persistent_SaveParams) => {})
+      .promise();
     const decoded = utils.getAs(RpcLevel2SturdyRef, out.sturdyRef);
     t.equal(decoded.host, "saved-host");
     t.deepEqual([...decoded.objectId.toUint8Array()], [7, 8]);
@@ -117,9 +122,7 @@ describe("rpc persistence abstractions", () => {
     const server = createUnsupportedPersistentServer("unsupported");
     const client = server.client();
     try {
-      await client
-        .save((_params: Persistent_SaveParams) => {})
-        .promise();
+      await client.save((_params: Persistent_SaveParams) => {}).promise();
       throw new Error("expected save failure");
     } catch (error_) {
       t.ok((error_ as Error).message.includes("unsupported"));

@@ -15,7 +15,9 @@ export interface SturdyRefCodec<TSturdyRef> {
   decode(payload: Uint8Array): TSturdyRef;
 }
 
-export class JsonSturdyRefCodec<TSturdyRef> implements SturdyRefCodec<TSturdyRef> {
+export class JsonSturdyRefCodec<
+  TSturdyRef,
+> implements SturdyRefCodec<TSturdyRef> {
   #encoder = new TextEncoder();
   #decoder = new TextDecoder();
 
@@ -72,9 +74,10 @@ export interface RestorerLookup<TSturdyRef, TCapability> {
   restore(ref: TSturdyRef): Promise<TCapability> | TCapability;
 }
 
-export class MapRestorerLookup<TSturdyRef, TCapability>
-  implements RestorerLookup<TSturdyRef, TCapability>
-{
+export class MapRestorerLookup<
+  TSturdyRef,
+  TCapability,
+> implements RestorerLookup<TSturdyRef, TCapability> {
   #entries = new Map<string, TCapability>();
 
   constructor(
