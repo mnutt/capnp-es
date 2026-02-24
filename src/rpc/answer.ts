@@ -62,6 +62,7 @@ export class AnswerEntry<R extends Struct> {
 
     const retmsg = newReturnMessage(this.id);
     const ret = retmsg.return;
+    ret.releaseParamCaps = false;
     if (this.sendResultsElsewhere) {
       ret.resultsSentElsewhere = true;
       this.deferred.resolve(obj);
@@ -129,6 +130,7 @@ export class AnswerEntry<R extends Struct> {
 
     const m = newReturnMessage(this.id);
     const mret = m.return;
+    mret.releaseParamCaps = false;
     setReturnException(mret, err);
 
     this.err = err;

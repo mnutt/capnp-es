@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, test, assert as t } from "vitest";
 import { Message, utils } from "src/serialization";
+import { Conn } from "src/rpc";
 import { Persistent } from "src/capnp/persistent";
 import { RPC_METHOD_NOT_IMPLEMENTED } from "src/errors";
 import { MapRestorerLookup } from "src/rpc/persistence";
@@ -431,6 +432,183 @@ describe("rpc level-2", () => {
     t.equal(out.result, 27);
     clientConn2.shutdown();
     (await serverConn2).shutdown();
+  });
+
+  test("save+restore returns callable imported capability while exporter stays connected", async () => {
+    const store = new Map<string, SimpleInterface$Client>();
+
+    const initServerConn = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2PersistenceService, {
+        async save(params, results) {
+          const ownerId = params.sealFor.id || "anon";
+          const key = `persisted-cap:${ownerId}`;
+          store.set(key, params.capability);
+          const objectId = new TextEncoder().encode(key);
+          const ref = results._initSturdyRef();
+          ref.host = "vat-f";
+          ref._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        },
+        async restore(params, results) {
+          const object = new TextDecoder().decode(
+            params.sturdyRef.objectId.toUint8Array(),
+          );
+          const cap = store.get(object);
+          if (!cap) {
+            throw new Error("unknown sturdyRef");
+          }
+          results.capability = cap;
+        },
+      });
+      return s;
+    };
+
+    const exportedCap = new SimpleInterface.Server({
+      subtract: async (params, results) => {
+        results.result = params.a - params.b;
+      },
+    }).client();
+
+    let conn1Server: Awaited<ReturnType<typeof initServerConn>> | undefined;
+    let conn1Client: Conn | undefined;
+    let conn2Server: Awaited<ReturnType<typeof initServerConn>> | undefined;
+    let conn2Client: Conn | undefined;
+    try {
+      conn1Client = rpc.connect(10);
+      const conn1ServerPromise = initServerConn();
+      const saved = await conn1Client
+        .bootstrap(RpcLevel2PersistenceService)
+        .save((params) => {
+          params.capability = exportedCap;
+          params._initSealFor().id = "owner-f";
+        })
+        .promise();
+      const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
+      conn1Server = await conn1ServerPromise;
+
+      conn2Client = rpc.connect(11);
+      const conn2ServerPromise = initServerConn();
+      const restored = await conn2Client
+        .bootstrap(RpcLevel2PersistenceService)
+        .restore((params) => {
+          params._initSturdyRef().host = sturdyRef.host;
+          const objectId = sturdyRef.objectId.toUint8Array();
+          params.sturdyRef
+            ._initObjectId(objectId.byteLength)
+            .copyBuffer(objectId);
+          params._initOwner().id = "owner-f";
+        })
+        .promise();
+      conn2Server = await conn2ServerPromise;
+
+      const out = await restored.capability
+        .subtract((params) => {
+          params.a = 33;
+          params.b = 8;
+        })
+        .promise();
+      t.equal(out.result, 25);
+    } finally {
+      conn2Client?.shutdown();
+      conn2Server?.shutdown();
+      conn1Client?.shutdown();
+      conn1Server?.shutdown();
+    }
+  });
+
+  test("save+restore imported capability fails after exporter disconnects", async () => {
+    const store = new Map<string, SimpleInterface$Client>();
+
+    const initServerConn = async () => {
+      const s = await rpc.accept();
+      s.onError = () => {};
+      s.initMain(RpcLevel2PersistenceService, {
+        async save(params, results) {
+          const ownerId = params.sealFor.id || "anon";
+          const key = `persisted-cap:${ownerId}`;
+          store.set(key, params.capability);
+          const objectId = new TextEncoder().encode(key);
+          const ref = results._initSturdyRef();
+          ref.host = "vat-g";
+          ref._initObjectId(objectId.byteLength).copyBuffer(objectId);
+        },
+        async restore(params, results) {
+          const object = new TextDecoder().decode(
+            params.sturdyRef.objectId.toUint8Array(),
+          );
+          const cap = store.get(object);
+          if (!cap) {
+            throw new Error("unknown sturdyRef");
+          }
+          results.capability = cap;
+        },
+      });
+      return s;
+    };
+
+    const exportedCap = new SimpleInterface.Server({
+      subtract: async (params, results) => {
+        results.result = params.a - params.b;
+      },
+    }).client();
+
+    let conn1Server: Awaited<ReturnType<typeof initServerConn>> | undefined;
+    let conn1Client: Conn | undefined;
+    let conn2Server: Awaited<ReturnType<typeof initServerConn>> | undefined;
+    let conn2Client: Conn | undefined;
+    try {
+      conn1Client = rpc.connect(12);
+      const conn1ServerPromise = initServerConn();
+      const saved = await conn1Client
+        .bootstrap(RpcLevel2PersistenceService)
+        .save((params) => {
+          params.capability = exportedCap;
+          params._initSealFor().id = "owner-g";
+        })
+        .promise();
+      const sturdyRef = utils.getAs(RpcLevel2SturdyRef, saved.sturdyRef);
+      conn1Server = await conn1ServerPromise;
+      conn1Client.shutdown();
+      conn1Server.shutdown();
+      conn1Client = undefined;
+      conn1Server = undefined;
+
+      conn2Client = rpc.connect(13);
+      const conn2ServerPromise = initServerConn();
+      const restored = await conn2Client
+        .bootstrap(RpcLevel2PersistenceService)
+        .restore((params) => {
+          params._initSturdyRef().host = sturdyRef.host;
+          const objectId = sturdyRef.objectId.toUint8Array();
+          params.sturdyRef
+            ._initObjectId(objectId.byteLength)
+            .copyBuffer(objectId);
+          params._initOwner().id = "owner-g";
+        })
+        .promise();
+      conn2Server = await conn2ServerPromise;
+
+      try {
+        await restored.capability
+          .subtract((params) => {
+            params.a = 33;
+            params.b = 8;
+          })
+          .promise();
+        throw new Error("expected restored imported capability to fail");
+      } catch (error_) {
+        t.match(
+          (error_ as Error).message,
+          /closed import|Method not implemented|null capability|Target not found/i,
+        );
+      }
+    } finally {
+      conn2Client?.shutdown();
+      conn2Server?.shutdown();
+      conn1Client?.shutdown();
+      conn1Server?.shutdown();
+    }
   });
 
   test("sealed sturdyRef restores for allowed owner", async () => {
