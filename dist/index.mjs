@@ -868,6 +868,7 @@ class AnswerEntry {
     this.obj = obj;
     const retmsg = newReturnMessage(this.id);
     const ret = retmsg.return;
+    ret.releaseParamCaps = false;
     if (this.sendResultsElsewhere) {
       ret.resultsSentElsewhere = true;
       this.deferred.resolve(obj);
@@ -927,6 +928,7 @@ class AnswerEntry {
     }
     const m = newReturnMessage(this.id);
     const mret = m.return;
+    mret.releaseParamCaps = false;
     setReturnException(mret, err);
     this.err = err;
     this.done = true;
