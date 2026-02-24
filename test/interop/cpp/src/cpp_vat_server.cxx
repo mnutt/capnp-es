@@ -92,6 +92,53 @@ public:
   }
 };
 
+class RpcLevel2PersistenceImpl final: public RpcLevel2PersistenceService::Server {
+public:
+  kj::Promise<void> save(SaveContext context) override {
+    auto params = context.getParams();
+    auto owner = params.getSealFor();
+    auto key = std::string("persisted:") + std::string(owner.getId().cStr());
+    storedKey = key;
+    storedCap = params.getCapability();
+
+    auto results = context.getResults();
+    auto sturdyRef = results.initSturdyRef();
+    sturdyRef.setHost("vat-cpp");
+    auto objectId = sturdyRef.initObjectId(key.size());
+    for (uint i = 0; i < key.size(); i++) {
+      objectId[i] = key[i];
+    }
+
+    return kj::READY_NOW;
+  }
+
+  kj::Promise<void> restore(RestoreContext context) override {
+    auto params = context.getParams();
+    auto sturdyRef = params.getSturdyRef();
+    auto objectId = sturdyRef.getObjectId();
+    std::string key;
+    key.reserve(objectId.size());
+    for (auto c : objectId) {
+      key.push_back(static_cast<char>(c));
+    }
+
+    if (key != storedKey) {
+      throw KJ_EXCEPTION(FAILED, "unknown sturdyRef");
+    }
+
+    KJ_IF_MAYBE(cap, storedCap) {
+      context.getResults().setCapability(*cap);
+      return kj::READY_NOW;
+    } else {
+      throw KJ_EXCEPTION(FAILED, "unknown sturdyRef");
+    }
+  }
+
+private:
+  std::string storedKey;
+  kj::Maybe<SimpleInterface::Client> storedCap;
+};
+
 static std::string getEnvOr(const char* key, const char* fallback) {
   const char* value = std::getenv(key);
   return value == nullptr ? std::string(fallback) : std::string(value);
@@ -104,6 +151,14 @@ int main() {
   const auto bindAddr = host + ":" + portStr;
   if (mainType == "restorer") {
     capnp::EzRpcServer server(kj::heap<RpcLevel2RestorerImpl>(), bindAddr);
+    auto& waitScope = server.getWaitScope();
+    auto actualPort = server.getPort().wait(waitScope);
+    std::cout << "READY " << actualPort << std::endl;
+    std::cout.flush();
+    kj::NEVER_DONE.wait(waitScope);
+    return 0;
+  } else if (mainType == "persistence") {
+    capnp::EzRpcServer server(kj::heap<RpcLevel2PersistenceImpl>(), bindAddr);
     auto& waitScope = server.getWaitScope();
     auto actualPort = server.getPort().wait(waitScope);
     std::cout << "READY " << actualPort << std::endl;

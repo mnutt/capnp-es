@@ -1,6 +1,7 @@
 import { describe, test, assert as t } from "vitest";
 import { Conn as BaseConn } from "src/rpc/conn";
 import type { Transport } from "src/rpc/transport";
+import { Message as RPCMessage } from "src/capnp/rpc";
 import {
   RpcLevel2PersistenceService,
   RpcLevel2Restorer,
@@ -10,7 +11,8 @@ class LinkedTransport implements Transport {
   peer?: TestConn;
   sendMessage(msg: any): void {
     if (this.peer) {
-      this.peer.handleMessage(msg);
+      const wire = msg.segment.message.copy().getRoot(RPCMessage);
+      this.peer.handleMessage(wire);
     }
   }
   async recvMessage(): Promise<any> {

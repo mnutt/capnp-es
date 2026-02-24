@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
 
   capnp::EzRpcClient client(addr);
   auto& waitScope = client.getWaitScope();
+  std::string stage = "startup";
   const bool expectException =
       mode == "exception" ||
       mode == "pipeline-exception" ||
@@ -84,6 +85,27 @@ int main(int argc, char* argv[]) {
     }
 
     auto mainCap = client.getMain<ReturnCapability>();
+    if (mode == "multiple-get-calls") {
+      for (int i = 0; i < 10; i++) {
+        stage = "multiple-get-calls:getRequest:" + std::to_string(i);
+        auto req = mainCap.getRequest();
+        req.setIndex(0);
+        stage = "multiple-get-calls:send:" + std::to_string(i);
+        auto cap = req.send().wait(waitScope).getCapability();
+        stage = "multiple-get-calls:subtract:" + std::to_string(i);
+        auto sub = cap.subtractRequest();
+        sub.setA(11 + i);
+        sub.setB(4);
+        const auto out = sub.send().wait(waitScope).getResult();
+        if (out != (7 + i)) {
+          std::cerr << "unexpected multiple-get result i=" << i << " out=" << out << std::endl;
+          return 9;
+        }
+      }
+      std::cout << "OK multiple-get-calls=10" << std::endl;
+      return 0;
+    }
+
     if (mode == "parallel") {
       auto req = mainCap.getRequest();
       req.setIndex(0);
@@ -161,7 +183,8 @@ int main(int argc, char* argv[]) {
       std::cout << "OK exception=" << e.getDescription().cStr() << std::endl;
       return 0;
     }
-    std::cerr << "unexpected exception=" << e.getDescription().cStr() << std::endl;
+    std::cerr << "unexpected exception at stage=" << stage
+              << " error=" << e.getDescription().cStr() << std::endl;
     return 4;
   }
 }

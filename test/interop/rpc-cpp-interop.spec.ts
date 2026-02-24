@@ -33,7 +33,7 @@ async function startCppServer(): Promise<{
 }
 
 async function startCppServerWithMode(
-  mainType: "return" | "restorer",
+  mainType: "return" | "restorer" | "persistence",
 ): Promise<{
   child: ChildProcessByStdio<null, Readable, Readable>;
   host: string;
@@ -118,6 +118,7 @@ type CppClientMode =
   | "exception"
   | "pipeline-success"
   | "pipeline-exception"
+  | "multiple-get-calls"
   | "parallel"
   | "persistent-nonpersistent"
   | "restore-success"
@@ -196,6 +197,102 @@ async function startTsServer(
   const server = net.createServer((socket) => {
     const conn = new Conn(TcpRPCTransport.fromSocket(socket));
     conn.onError = () => {};
+    if (process.env.CAPNP_CPP_TRACE === "1") {
+      conn.onError = (error_) => {
+        if (error_) {
+          console.error(`[ts-server] onError: ${error_.message}`);
+        }
+      };
+      const originalSendMessage = conn.sendMessage.bind(conn);
+      conn.sendMessage = (m: any) => {
+        const which = m.which();
+        switch (which) {
+          case 3: {
+            let details = "";
+            if (m.return.which() === 0) {
+              const payload = m.return.results;
+              const content = payload.content;
+              const lo = content.segment.getUint32(content.byteOffset);
+              const hi = content.segment.getUint32(content.byteOffset + 4);
+              details = ` capTable=${payload.capTable.length} ptr=[${lo},${hi}]`;
+            }
+            console.error(
+              `[ts-server->peer] RETURN a=${m.return.answerId} which=${m.return.which()} noFinishNeeded=${m.return.noFinishNeeded}${details}`,
+            );
+
+            break;
+          }
+          case 5: {
+            console.error(
+              `[ts-server->peer] RESOLVE p=${m.resolve.promiseId} which=${m.resolve.which()}`,
+            );
+
+            break;
+          }
+          case 6: {
+            console.error(
+              `[ts-server->peer] RELEASE id=${m.release.id} refs=${m.release.referenceCount}`,
+            );
+
+            break;
+          }
+          // No default
+        }
+        return originalSendMessage(m);
+      };
+      const originalHandleMessage = (conn as any).handleMessage.bind(conn);
+      (conn as any).handleMessage = (m: any) => {
+        const which = m.which();
+        switch (which) {
+          case 1: {
+            console.error(`[ts-server] BOOTSTRAP q=${m.bootstrap.questionId}`);
+
+            break;
+          }
+          case 2: {
+            const targetWhich = m.call.target.which();
+            if (targetWhich === 1) {
+              console.error(
+                `[ts-server] CALL q=${m.call.questionId} target=promised q=${m.call.target.promisedAnswer.questionId}`,
+              );
+            } else if (targetWhich === 0) {
+              console.error(
+                `[ts-server] CALL q=${m.call.questionId} target=imported id=${m.call.target.importedCap}`,
+              );
+            } else {
+              console.error(
+                `[ts-server] CALL q=${m.call.questionId} targetWhich=${targetWhich}`,
+              );
+            }
+
+            break;
+          }
+          case 3: {
+            console.error(
+              `[ts-server] RETURN a=${m.return.answerId} which=${m.return.which()} noFinishNeeded=${m.return.noFinishNeeded}`,
+            );
+
+            break;
+          }
+          case 4: {
+            console.error(
+              `[ts-server] FINISH q=${m.finish.questionId} releaseResultCaps=${m.finish.releaseResultCaps}`,
+            );
+
+            break;
+          }
+          case 6: {
+            console.error(
+              `[ts-server] RELEASE id=${m.release.id} refs=${m.release.referenceCount}`,
+            );
+
+            break;
+          }
+          // No default
+        }
+        return originalHandleMessage(m);
+      };
+    }
     if (mainType === "restorer") {
       conn.initMain(RpcLevel2Restorer, {
         restore: async (p, r) => {
@@ -383,6 +480,66 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
 
         t.ok(error_ instanceof Error);
         t.ok(error_.message.length > 0);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client can round-trip passed capability through C++ persistence service",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { RpcLevel2PersistenceService }, { SimpleInterface }] =
+        await Promise.all([
+          import("src/rpc"),
+          import("test/fixtures/rpc-level2"),
+          import("test/fixtures/simple-interface"),
+        ]);
+      const server = await startCppServerWithMode("persistence");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const passedCap = new SimpleInterface.Server({
+          subtract: async (p, r) => {
+            r.result = p.a - p.b;
+          },
+        }).client();
+
+        const saved = await conn
+          .bootstrap(RpcLevel2PersistenceService)
+          .save((p) => {
+            p.capability = passedCap;
+            p._initSealFor().id = "owner-ts";
+          })
+          .promise();
+
+        const restored = await conn
+          .bootstrap(RpcLevel2PersistenceService)
+          .restore((p) => {
+            p._initSturdyRef().host = saved.sturdyRef.host;
+            const objectId = saved.sturdyRef.objectId.toUint8Array();
+            p.sturdyRef._initObjectId(objectId.byteLength).copyBuffer(objectId);
+            p._initOwner().id = "owner-ts";
+          })
+          .promise();
+
+        const out = await restored.capability
+          .subtract((p) => {
+            p.a = 21;
+            p.b = 8;
+          })
+          .promise();
+
+        t.equal(out.result, 13);
       } finally {
         conn?.shutdown();
         await server.stop();
@@ -814,6 +971,54 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK exception="));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client supports multiple get calls to capnp-es server",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsServer();
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "multiple-get-calls",
+        );
+        t.equal(
+          res.code,
+          0,
+          `stdout=${res.stdout.trim()} stderr=${res.stderr.trim()}`,
+        );
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK multiple-get-calls=10"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client supports multiple get calls to C++ server (control)",
+    { timeout: 10000 },
+    async () => {
+      const server = await startCppServerWithMode("return");
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "multiple-get-calls",
+        );
+        t.equal(
+          res.code,
+          0,
+          `stdout=${res.stdout.trim()} stderr=${res.stderr.trim()}`,
+        );
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK multiple-get-calls=10"));
       } finally {
         await server.stop();
       }

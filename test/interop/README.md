@@ -13,6 +13,7 @@ Current spec: `test/interop/rpc-cpp-interop.spec.ts`
 - Returned capability calls are executed end-to-end over TCP.
 - Method exception propagation from C++ server to `capnp-es` client.
 - C++ client bootstraps `capnp-es` server main interface.
+- Repeated C++ client `get()` calls against a single `capnp-es` bootstrap.
 - Method exception propagation from `capnp-es` server to C++ client.
 - `Persistent.save()` cast fails on non-persistent capabilities in both
   directions.
