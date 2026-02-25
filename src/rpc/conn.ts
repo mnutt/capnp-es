@@ -71,6 +71,7 @@ import { getAs } from "../serialization/pointers/struct.utils";
 import { ErrorClient } from "./error-client";
 import { Pointer } from "../serialization/pointers/pointer";
 import { PromiseExportClient } from "./promise-export-client";
+import { setInterfacePointer } from "../serialization/pointers/pointer.utils";
 
 type QuestionSlot = Question<any, any> | null;
 
@@ -170,8 +171,10 @@ export class Conn {
     }
 
     const msg = new Message();
-    msg.addCap(this.main);
-    a.fulfill(new Interface(msg.getSegment(0), 0));
+    const capId = msg.addCap(this.main);
+    const root = new Interface(msg.getSegment(0), 0);
+    setInterfacePointer(capId, root);
+    a.fulfill(root);
   }
 
   handleFinishMessage(m: RPCMessage): void {
