@@ -28,15 +28,9 @@ test("compiler:compile fixture", async () => {
   });
   for (const [name, content] of files) {
     if (name.endsWith(".ts")) {
-      let out = content.replace(/^\s+/gm, (match) =>
+      const out = content.replace(/^\s+/gm, (match) =>
         " ".repeat(match.length / 2),
       );
-      if (name.endsWith("sandstorm-powerbox-flow.ts")) {
-        out = out.replace(
-          'import * as $ from "capnp-es";',
-          'import * as $ from "./capnp-runtime-shim.js";',
-        );
-      }
       writeFile(new URL(name, projectDir), out);
     }
   }

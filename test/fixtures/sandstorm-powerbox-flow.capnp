@@ -1,5 +1,8 @@
 @0xdb9167bc4be31a1e;
 
+using Ts = import "../../src/capnp/_capnp/ts.capnp";
+$Ts.importPath("./capnp-runtime-shim.js");
+
 interface AppPersistent {
   save @0 () -> (objectId :Data);
 }
