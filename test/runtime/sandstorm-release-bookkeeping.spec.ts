@@ -57,6 +57,95 @@ class OneCapStruct extends Struct {
 }
 
 describe("sandstorm release bookkeeping", () => {
+  test("server Return uses releaseParamCaps=false on successful calls", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const interfaceId = 0x7ff1n;
+    const methodId = 0;
+
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+
+    class OkClient implements Client {
+      call<P extends Struct, R extends Struct>(_call: any): any {
+        return new ImmediateAnswer(new Message().initRoot(AnyStruct) as any);
+      }
+
+      close(): void {
+        // no-op
+      }
+    }
+
+    const targetExportId = conn.addExport(new OkClient());
+    const callMsg = new Message().initRoot(RPCMessage);
+    const call = callMsg._initCall();
+    call.questionId = 7001;
+    call.interfaceId = interfaceId;
+    call.methodId = methodId;
+    call._initTarget().importedCap = targetExportId;
+    call._initParams();
+    conn.handleMessage(callMsg);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const ret = transport.sent.find((m) => m.which() === RPCMessage.RETURN);
+    t.ok(ret);
+    t.equal(ret!.return.answerId, 7001);
+    t.equal(ret!.return.releaseParamCaps, false);
+  });
+
+  test("server Return uses releaseParamCaps=false on failed calls", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const interfaceId = 0x7ff2n;
+    const methodId = 0;
+
+    Registry.register(interfaceId, {
+      methods: [
+        {
+          interfaceId,
+          methodId,
+          ParamsClass: AnyStruct as any,
+          ResultsClass: AnyStruct as any,
+        },
+      ],
+    });
+
+    class FailingClient implements Client {
+      call<P extends Struct, R extends Struct>(_call: any): any {
+        throw new Error("boom");
+      }
+
+      close(): void {
+        // no-op
+      }
+    }
+
+    const targetExportId = conn.addExport(new FailingClient());
+    const callMsg = new Message().initRoot(RPCMessage);
+    const call = callMsg._initCall();
+    call.questionId = 7002;
+    call.interfaceId = interfaceId;
+    call.methodId = methodId;
+    call._initTarget().importedCap = targetExportId;
+    call._initParams();
+    conn.handleMessage(callMsg);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const ret = transport.sent.find((m) => m.which() === RPCMessage.RETURN);
+    t.ok(ret);
+    t.equal(ret!.return.answerId, 7002);
+    t.equal(ret!.return.releaseParamCaps, false);
+    t.equal(ret!.return.exception.reason, "boom");
+  });
+
   test("return.releaseParamCaps releases only the matching question's exported cap", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

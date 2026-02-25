@@ -197,6 +197,91 @@ async function setupHarness(): Promise<SandstormHarness> {
 
 describe("sandstorm-style powerbox flow", () => {
   test(
+    "retained fulfillRequest capability remains callable when returned by claimRequest",
+    { timeout: 20000 },
+    async () => {
+      const rpc = new TestRPC();
+      const events: string[] = [];
+      const retained = new Map<string, Node$Client>();
+      const queue: string[] = [];
+
+      events.push("connect app");
+      const appConn = rpc.connect(101);
+      events.push("accept bridge");
+      const bridgeConn = await rpc.accept();
+
+      const sessionContextServer = new SessionContext.Server({
+        async fulfillRequest(params, _results) {
+          events.push("session.fulfillRequest start");
+          const persistent = new AppPersistent$Client(params.cap.client);
+          const saved = await timeout(
+            "session.fulfillRequest save()",
+            events,
+            persistent.save().promise(),
+          );
+          const objectId = dataToText(saved.objectId);
+          retained.set(objectId, params.cap);
+          queue.push(objectId);
+          events.push("session.fulfillRequest done");
+        },
+        async claimRequest(_params, results) {
+          events.push("session.claimRequest start");
+          const next = queue.shift();
+          if (!next) {
+            throw new Error("missing retained capability");
+          }
+          const cap = retained.get(next);
+          if (!cap) {
+            throw new Error(`missing retained capability for ${next}`);
+          }
+          results.cap = cap;
+          events.push("session.claimRequest done");
+        },
+      }).client();
+
+      bridgeConn.initMain(SandstormBridge, {
+        async getSessionContext(_params, results) {
+          events.push("bridge.getSessionContext");
+          results.context = sessionContextServer;
+        },
+      });
+
+      try {
+        const session = await timeout(
+          "bridge.getSessionContext",
+          events,
+          appConn.bootstrap(SandstormBridge).getSessionContext().promise(),
+        );
+
+        const offeredCap = makePersistentNode("/retained/bridge-cap");
+        await timeout(
+          "session.fulfillRequest",
+          events,
+          session.context
+            .fulfillRequest((p) => {
+              p.cap = offeredCap;
+            })
+            .promise(),
+        );
+
+        const claim = await timeout(
+          "session.claimRequest",
+          events,
+          session.context.claimRequest().promise(),
+        );
+        const saved = await timeout(
+          "claimedPersistent.save",
+          events,
+          new AppPersistent$Client(claim.cap.client).save().promise(),
+        );
+        t.equal(dataToText(saved.objectId), "/retained/bridge-cap");
+      } finally {
+        rpc.close();
+      }
+    },
+  );
+
+  test(
     "bootstrap apphooks, fulfill, save, restore, and claim keep capability live",
     { timeout: 20000 },
     async () => {
