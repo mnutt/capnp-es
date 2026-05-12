@@ -10,6 +10,7 @@ export * from "./method";
 export * from "./pipeline";
 export * from "./persistence";
 export * from "./registry";
+export * from "./rpc-error";
 // export * from "./rpc-message";
 export * from "./server";
 export * from "./transport";

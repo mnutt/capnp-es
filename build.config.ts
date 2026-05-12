@@ -5,6 +5,7 @@ export default defineBuildConfig({
   entries: [
     "./src/index.ts",
     "./src/compiler/index.ts",
+    "./src/node/index.ts",
     "./src/compiler/capnpc-js.ts",
     "./src/compiler/capnpc-dts.ts",
     "./src/compiler/capnpc-ts.ts",

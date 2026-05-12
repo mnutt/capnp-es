@@ -8,20 +8,22 @@ import { Transport } from "../transport";
 export abstract class DeferredTransport implements Transport {
   protected d?: Deferred<RPCMessage>;
   protected closed = false;
+  protected closeError?: unknown;
   protected queue: RPCMessage[] = [];
 
   abstract sendMessage(msg: RPCMessage): void;
 
-  close(): void {
+  close(err?: unknown): void {
     this.closed = true;
+    this.closeError = err;
     this.queue = [];
-    this.d?.reject();
+    this.d?.reject(err);
     this.d = undefined;
   }
 
   recvMessage(): Promise<RPCMessage> {
     if (this.closed) {
-      return Promise.reject();
+      return Promise.reject(this.closeError);
     }
     if (this.queue.length > 0) {
       return Promise.resolve(this.queue.shift()!);

@@ -11,6 +11,7 @@
     "paths": {
       "capnp-es": ["./src/index.ts"],
       "capnp-es/compiler": ["./src/compiler/index.ts"],
+      "capnp-es/node": ["./src/node/index.ts"],
       "capnp-es/capnp/*": ["./src/capnp/*.ts"],
       "src/*": ["./src/*"],
       "test/*": ["./test/*"]

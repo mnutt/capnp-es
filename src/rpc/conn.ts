@@ -393,7 +393,7 @@ export class Conn {
       case Return.EXCEPTION: {
         const exc = ret.exception;
         const err: Error = q.method
-          ? new MethodError(q.method, exc.reason)
+          ? new MethodError(q.method, exc)
           : new RPCError(exc);
         q.reject(err);
         break;
