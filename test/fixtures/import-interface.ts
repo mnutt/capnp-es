@@ -6,7 +6,12 @@ export class ReturnCapability_Get$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "get$Params",
     id: "b23eb0c5c51606ec",
+    typeId: 0xb23eb0c5c51606ecn,
+    typeIdHex: "b23eb0c5c51606ec",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "index", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } }
+    ] as const,
   };
   get index(): number {
     return $.utils.getInt32(0, this);
@@ -20,7 +25,12 @@ export class ReturnCapability_Get$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "get$Results",
     id: "e578034f376aa46f",
+    typeId: 0xe578034f376aa46fn,
+    typeIdHex: "e578034f376aa46f",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
+    ] as const,
   };
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -57,7 +67,9 @@ export class ReturnCapability$Client {
       interfaceId: ReturnCapability$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/import-interface.capnp:ReturnCapability",
-      methodName: "get"
+      methodName: "get",
+      paramFields: ReturnCapability_Get$Params._capnp.fields,
+      resultFields: ReturnCapability_Get$Results._capnp.fields
     }
   ];
   get(paramsFunc?: (params: ReturnCapability_Get$Params) => void): ReturnCapability_Get$Results$Promise {
@@ -94,7 +106,10 @@ export class ReturnCapability extends $.Interface {
   static readonly _capnp = {
     displayName: "ReturnCapability",
     id: "a3610792150745ff",
+    typeId: 0xa3610792150745ffn,
+    typeIdHex: "a3610792150745ff",
     size: new $.ObjectSize(0, 0),
+    methods: ReturnCapability$Client.methods,
   };
   toString(): string { return "ReturnCapability_" + super.toString(); }
 }

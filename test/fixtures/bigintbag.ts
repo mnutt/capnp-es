@@ -5,7 +5,15 @@ export class BigIntBag extends $.Struct {
   static readonly _capnp = {
     displayName: "BigIntBag",
     id: "86748469b18e4943",
+    typeId: 0x86748469b18e4943n,
+    typeIdHex: "86748469b18e4943",
     size: new $.ObjectSize(32, 0),
+    fields: [
+      { name: "signed", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int64" } },
+      { name: "unsigned", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "defaultSigned", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "int64" } },
+      { name: "defaultUnsigned", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "uint64" } }
+    ] as const,
     defaultDefaultSigned: $.getInt64Mask(-0xdb4da5f7ef412b1n),
     defaultDefaultUnsigned: $.getUint64Mask(0xdb4da5f7ef412b1n)
   };

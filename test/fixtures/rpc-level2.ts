@@ -6,7 +6,12 @@ export class RpcLevel2Owner extends $.Struct {
   static readonly _capnp = {
     displayName: "RpcLevel2Owner",
     id: "91e080c1ac2ecb02",
+    typeId: 0x91e080c1ac2ecb02n,
+    typeIdHex: "91e080c1ac2ecb02",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get id(): string {
     return $.utils.getText(0, this);
@@ -20,7 +25,13 @@ export class RpcLevel2SturdyRef extends $.Struct {
   static readonly _capnp = {
     displayName: "RpcLevel2SturdyRef",
     id: "dc55e3c3188e2f10",
+    typeId: 0xdc55e3c3188e2f10n,
+    typeIdHex: "dc55e3c3188e2f10",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "host", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "objectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "data" } }
+    ] as const,
   };
   get host(): string {
     return $.utils.getText(0, this);
@@ -52,7 +63,13 @@ export class RpcLevel2Restorer_Restore$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Params",
     id: "e1a41c4b120105f3",
+    typeId: 0xe1a41c4b120105f3n,
+    typeIdHex: "e1a41c4b120105f3",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xdc55e3c3188e2f10n, typeIdHex: "dc55e3c3188e2f10", displayName: "RpcLevel2SturdyRef" } },
+      { name: "owner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
+    ] as const,
   };
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -96,7 +113,12 @@ export class RpcLevel2Restorer_Restore$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Results",
     id: "e35054d5b9284804",
+    typeId: 0xe35054d5b9284804n,
+    typeIdHex: "e35054d5b9284804",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
+    ] as const,
   };
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -133,7 +155,9 @@ export class RpcLevel2Restorer$Client {
       interfaceId: RpcLevel2Restorer$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/rpc-level2.capnp:RpcLevel2Restorer",
-      methodName: "restore"
+      methodName: "restore",
+      paramFields: RpcLevel2Restorer_Restore$Params._capnp.fields,
+      resultFields: RpcLevel2Restorer_Restore$Results._capnp.fields
     }
   ];
   restore(paramsFunc?: (params: RpcLevel2Restorer_Restore$Params) => void): RpcLevel2Restorer_Restore$Results$Promise {
@@ -170,7 +194,10 @@ export class RpcLevel2Restorer extends $.Interface {
   static readonly _capnp = {
     displayName: "RpcLevel2Restorer",
     id: "e46163da857b06f9",
+    typeId: 0xe46163da857b06f9n,
+    typeIdHex: "e46163da857b06f9",
     size: new $.ObjectSize(0, 0),
+    methods: RpcLevel2Restorer$Client.methods,
   };
   toString(): string { return "RpcLevel2Restorer_" + super.toString(); }
 }
@@ -178,7 +205,13 @@ export class RpcLevel2PersistenceService_Save$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "save$Params",
     id: "a7325bc8f051b6b9",
+    typeId: 0xa7325bc8f051b6b9n,
+    typeIdHex: "a7325bc8f051b6b9",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } },
+      { name: "sealFor", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
+    ] as const,
   };
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -210,7 +243,12 @@ export class RpcLevel2PersistenceService_Save$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "save$Results",
     id: "cd80769c8501847f",
+    typeId: 0xcd80769c8501847fn,
+    typeIdHex: "cd80769c8501847f",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xdc55e3c3188e2f10n, typeIdHex: "dc55e3c3188e2f10", displayName: "RpcLevel2SturdyRef" } }
+    ] as const,
   };
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -245,7 +283,13 @@ export class RpcLevel2PersistenceService_Restore$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Params",
     id: "e6e3144a8f69c47f",
+    typeId: 0xe6e3144a8f69c47fn,
+    typeIdHex: "e6e3144a8f69c47f",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xdc55e3c3188e2f10n, typeIdHex: "dc55e3c3188e2f10", displayName: "RpcLevel2SturdyRef" } },
+      { name: "owner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
+    ] as const,
   };
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -289,7 +333,12 @@ export class RpcLevel2PersistenceService_Restore$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Results",
     id: "bb86f71953078fac",
+    typeId: 0xbb86f71953078facn,
+    typeIdHex: "bb86f71953078fac",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
+    ] as const,
   };
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -327,7 +376,9 @@ export class RpcLevel2PersistenceService$Client {
       interfaceId: RpcLevel2PersistenceService$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/rpc-level2.capnp:RpcLevel2PersistenceService",
-      methodName: "save"
+      methodName: "save",
+      paramFields: RpcLevel2PersistenceService_Save$Params._capnp.fields,
+      resultFields: RpcLevel2PersistenceService_Save$Results._capnp.fields
     },
     {
       ParamsClass: RpcLevel2PersistenceService_Restore$Params,
@@ -335,7 +386,9 @@ export class RpcLevel2PersistenceService$Client {
       interfaceId: RpcLevel2PersistenceService$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/rpc-level2.capnp:RpcLevel2PersistenceService",
-      methodName: "restore"
+      methodName: "restore",
+      paramFields: RpcLevel2PersistenceService_Restore$Params._capnp.fields,
+      resultFields: RpcLevel2PersistenceService_Restore$Results._capnp.fields
     }
   ];
   save(paramsFunc?: (params: RpcLevel2PersistenceService_Save$Params) => void): RpcLevel2PersistenceService_Save$Results$Promise {
@@ -385,7 +438,10 @@ export class RpcLevel2PersistenceService extends $.Interface {
   static readonly _capnp = {
     displayName: "RpcLevel2PersistenceService",
     id: "e76691615a9118dd",
+    typeId: 0xe76691615a9118ddn,
+    typeIdHex: "e76691615a9118dd",
     size: new $.ObjectSize(0, 0),
+    methods: RpcLevel2PersistenceService$Client.methods,
   };
   toString(): string { return "RpcLevel2PersistenceService_" + super.toString(); }
 }

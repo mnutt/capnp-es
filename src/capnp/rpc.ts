@@ -118,7 +118,25 @@ export class Message extends $.Struct {
   static readonly _capnp = {
     displayName: "Message",
     id: "91b79f1f808db032",
+    typeId: 0x91b79f1f808db032n,
+    typeIdHex: "91b79f1f808db032",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "unimplemented", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x91b79f1f808db032n, typeIdHex: "91b79f1f808db032", displayName: "Message" } },
+      { name: "abort", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd625b7063acf691an, typeIdHex: "d625b7063acf691a", displayName: "Exception" } },
+      { name: "bootstrap", codeOrder: 2, ordinal: 8, discriminantValue: 8, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xe94ccf8031176ec4n, typeIdHex: "e94ccf8031176ec4", displayName: "Bootstrap" } },
+      { name: "call", codeOrder: 3, ordinal: 2, discriminantValue: 2, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x836a53ce789d4cd4n, typeIdHex: "836a53ce789d4cd4", displayName: "Call" } },
+      { name: "return", codeOrder: 4, ordinal: 3, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9e19b28d3db3573an, typeIdHex: "9e19b28d3db3573a", displayName: "Return" } },
+      { name: "finish", codeOrder: 5, ordinal: 4, discriminantValue: 4, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd37d2eb2c2f80e63n, typeIdHex: "d37d2eb2c2f80e63", displayName: "Finish" } },
+      { name: "resolve", codeOrder: 6, ordinal: 5, discriminantValue: 5, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xbbc29655fa89086en, typeIdHex: "bbc29655fa89086e", displayName: "Resolve" } },
+      { name: "release", codeOrder: 7, ordinal: 6, discriminantValue: 6, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xad1a6c0d7dd07497n, typeIdHex: "ad1a6c0d7dd07497", displayName: "Release" } },
+      { name: "disembargo", codeOrder: 8, ordinal: 13, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xf964368b0fbd3711n, typeIdHex: "f964368b0fbd3711", displayName: "Disembargo" } },
+      { name: "obsoleteSave", codeOrder: 9, ordinal: 7, discriminantValue: 7, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "obsoleteDelete", codeOrder: 10, ordinal: 9, discriminantValue: 9, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "provide", codeOrder: 11, ordinal: 10, discriminantValue: 10, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9c6a046bfbc1ac5an, typeIdHex: "9c6a046bfbc1ac5a", displayName: "Provide" } },
+      { name: "accept", codeOrder: 12, ordinal: 11, discriminantValue: 11, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd4c9b56290554016n, typeIdHex: "d4c9b56290554016", displayName: "Accept" } },
+      { name: "join", codeOrder: 13, ordinal: 12, discriminantValue: 12, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xfbe1980490e001afn, typeIdHex: "fbe1980490e001af", displayName: "Join" } }
+    ] as const,
   };
   _adoptUnimplemented(value: $.Orphan<Message>): void {
     $.utils.setUint16(0, 0, this);
@@ -581,7 +599,13 @@ export class Bootstrap extends $.Struct {
   static readonly _capnp = {
     displayName: "Bootstrap",
     id: "e94ccf8031176ec4",
+    typeId: 0xe94ccf8031176ec4n,
+    typeIdHex: "e94ccf8031176ec4",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "deprecatedObjectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   /**
 * A new question ID identifying this request, which will eventually receive a Return message
@@ -761,7 +785,14 @@ export class Call_SendResultsTo extends $.Struct {
   static readonly _capnp = {
     displayName: "sendResultsTo",
     id: "dae8b0f61aab5f99",
+    typeId: 0xdae8b0f61aab5f99n,
+    typeIdHex: "dae8b0f61aab5f99",
     size: new $.ObjectSize(24, 3),
+    fields: [
+      { name: "caller", codeOrder: 0, ordinal: 5, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "yourself", codeOrder: 1, ordinal: 6, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "thirdParty", codeOrder: 2, ordinal: 7, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } }
+    ] as const,
   };
   get _isCaller(): boolean {
     return $.utils.getUint16(6, this) === 0;
@@ -825,7 +856,20 @@ export class Call extends $.Struct {
   static readonly _capnp = {
     displayName: "Call",
     id: "836a53ce789d4cd4",
+    typeId: 0x836a53ce789d4cd4n,
+    typeIdHex: "836a53ce789d4cd4",
     size: new $.ObjectSize(24, 3),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "target", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x95bc14545813fbc1n, typeIdHex: "95bc14545813fbc1", displayName: "MessageTarget" } },
+      { name: "interfaceId", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "methodId", codeOrder: 3, ordinal: 3, kind: "slot", offset: 2, type: { kind: "uint16" } },
+      { name: "allowThirdPartyTailCall", codeOrder: 4, ordinal: 8, kind: "slot", offset: 128, type: { kind: "bool" } },
+      { name: "noPromisePipelining", codeOrder: 5, ordinal: 9, kind: "slot", offset: 129, type: { kind: "bool" } },
+      { name: "onlyPromisePipeline", codeOrder: 6, ordinal: 10, kind: "slot", offset: 130, type: { kind: "bool" } },
+      { name: "params", codeOrder: 7, ordinal: 4, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9a0e61223d96743bn, typeIdHex: "9a0e61223d96743b", displayName: "Payload" } },
+      { name: "sendResultsTo", codeOrder: 8, ordinal: 5, kind: "group", type: { kind: "group", typeId: 0xdae8b0f61aab5f99n, typeIdHex: "dae8b0f61aab5f99", displayName: "sendResultsTo" } }
+    ] as const,
     defaultAllowThirdPartyTailCall: $.getBitMask(false, 0),
     defaultNoPromisePipelining: $.getBitMask(false, 1),
     defaultOnlyPromisePipeline: $.getBitMask(false, 2)
@@ -1042,7 +1086,20 @@ export class Return extends $.Struct {
   static readonly _capnp = {
     displayName: "Return",
     id: "9e19b28d3db3573a",
+    typeId: 0x9e19b28d3db3573an,
+    typeIdHex: "9e19b28d3db3573a",
     size: new $.ObjectSize(16, 1),
+    fields: [
+      { name: "answerId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "releaseParamCaps", codeOrder: 1, ordinal: 1, kind: "slot", offset: 32, type: { kind: "bool" } },
+      { name: "noFinishNeeded", codeOrder: 2, ordinal: 8, kind: "slot", offset: 33, type: { kind: "bool" } },
+      { name: "results", codeOrder: 3, ordinal: 2, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9a0e61223d96743bn, typeIdHex: "9a0e61223d96743b", displayName: "Payload" } },
+      { name: "exception", codeOrder: 4, ordinal: 3, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd625b7063acf691an, typeIdHex: "d625b7063acf691a", displayName: "Exception" } },
+      { name: "canceled", codeOrder: 5, ordinal: 4, discriminantValue: 2, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "resultsSentElsewhere", codeOrder: 6, ordinal: 5, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "takeFromOtherQuestion", codeOrder: 7, ordinal: 6, discriminantValue: 4, kind: "slot", offset: 2, type: { kind: "uint32" } },
+      { name: "acceptFromThirdParty", codeOrder: 8, ordinal: 7, discriminantValue: 5, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
     defaultReleaseParamCaps: $.getBitMask(true, 0),
     defaultNoFinishNeeded: $.getBitMask(false, 1)
   };
@@ -1239,7 +1296,14 @@ export class Finish extends $.Struct {
   static readonly _capnp = {
     displayName: "Finish",
     id: "d37d2eb2c2f80e63",
+    typeId: 0xd37d2eb2c2f80e63n,
+    typeIdHex: "d37d2eb2c2f80e63",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "releaseResultCaps", codeOrder: 1, ordinal: 1, kind: "slot", offset: 32, type: { kind: "bool" } },
+      { name: "requireEarlyCancellationWorkaround", codeOrder: 2, ordinal: 2, kind: "slot", offset: 33, type: { kind: "bool" } }
+    ] as const,
     defaultReleaseResultCaps: $.getBitMask(true, 0),
     defaultRequireEarlyCancellationWorkaround: $.getBitMask(true, 1)
   };
@@ -1356,7 +1420,14 @@ export class Resolve extends $.Struct {
   static readonly _capnp = {
     displayName: "Resolve",
     id: "bbc29655fa89086e",
+    typeId: 0xbbc29655fa89086en,
+    typeIdHex: "bbc29655fa89086e",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "promiseId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "cap", codeOrder: 1, ordinal: 1, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x8523ddc40b86b8b0n, typeIdHex: "8523ddc40b86b8b0", displayName: "CapDescriptor" } },
+      { name: "exception", codeOrder: 2, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd625b7063acf691an, typeIdHex: "d625b7063acf691a", displayName: "Exception" } }
+    ] as const,
   };
   /**
 * The ID of the promise to be resolved.
@@ -1470,7 +1541,13 @@ export class Release extends $.Struct {
   static readonly _capnp = {
     displayName: "Release",
     id: "ad1a6c0d7dd07497",
+    typeId: 0xad1a6c0d7dd07497n,
+    typeIdHex: "ad1a6c0d7dd07497",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "referenceCount", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "uint32" } }
+    ] as const,
   };
   /**
 * What to release.
@@ -1549,7 +1626,15 @@ export class Disembargo_Context extends $.Struct {
   static readonly _capnp = {
     displayName: "context",
     id: "d562b4df655bdd4d",
+    typeId: 0xd562b4df655bdd4dn,
+    typeIdHex: "d562b4df655bdd4d",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "senderLoopback", codeOrder: 0, ordinal: 1, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "receiverLoopback", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "accept", codeOrder: 2, ordinal: 3, discriminantValue: 2, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "provide", codeOrder: 3, ordinal: 4, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   /**
 * The sender is requesting a disembargo on a promise that is known to resolve back to a
@@ -1699,7 +1784,13 @@ export class Disembargo extends $.Struct {
   static readonly _capnp = {
     displayName: "Disembargo",
     id: "f964368b0fbd3711",
+    typeId: 0xf964368b0fbd3711n,
+    typeIdHex: "f964368b0fbd3711",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "target", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x95bc14545813fbc1n, typeIdHex: "95bc14545813fbc1", displayName: "MessageTarget" } },
+      { name: "context", codeOrder: 1, ordinal: 1, kind: "group", type: { kind: "group", typeId: 0xd562b4df655bdd4dn, typeIdHex: "d562b4df655bdd4d", displayName: "context" } }
+    ] as const,
   };
   _adoptTarget(value: $.Orphan<MessageTarget>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -1746,7 +1837,14 @@ export class Provide extends $.Struct {
   static readonly _capnp = {
     displayName: "Provide",
     id: "9c6a046bfbc1ac5a",
+    typeId: 0x9c6a046bfbc1ac5an,
+    typeIdHex: "9c6a046bfbc1ac5a",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "target", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x95bc14545813fbc1n, typeIdHex: "95bc14545813fbc1", displayName: "MessageTarget" } },
+      { name: "recipient", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   /**
 * Question ID to be held open until the recipient has received the capability.  A result will be
@@ -1817,7 +1915,14 @@ export class Accept extends $.Struct {
   static readonly _capnp = {
     displayName: "Accept",
     id: "d4c9b56290554016",
+    typeId: 0xd4c9b56290554016n,
+    typeIdHex: "d4c9b56290554016",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "provision", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "embargo", codeOrder: 2, ordinal: 2, kind: "slot", offset: 32, type: { kind: "bool" } }
+    ] as const,
   };
   /**
 * A new question ID identifying this accept message, which will eventually receive a Return
@@ -1937,7 +2042,14 @@ export class Join extends $.Struct {
   static readonly _capnp = {
     displayName: "Join",
     id: "fbe1980490e001af",
+    typeId: 0xfbe1980490e001afn,
+    typeIdHex: "fbe1980490e001af",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "target", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x95bc14545813fbc1n, typeIdHex: "95bc14545813fbc1", displayName: "MessageTarget" } },
+      { name: "keyPart", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   /**
 * Question ID used to respond to this Join.  (Note that this ID only identifies one part of the
@@ -2035,7 +2147,13 @@ export class MessageTarget extends $.Struct {
   static readonly _capnp = {
     displayName: "MessageTarget",
     id: "95bc14545813fbc1",
+    typeId: 0x95bc14545813fbc1n,
+    typeIdHex: "95bc14545813fbc1",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "importedCap", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "promisedAnswer", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd800b1d6cd6f1ca0n, typeIdHex: "d800b1d6cd6f1ca0", displayName: "PromisedAnswer" } }
+    ] as const,
   };
   /**
 * This message is to a capability or promise previously imported by the caller (exported by
@@ -2099,7 +2217,13 @@ export class Payload extends $.Struct {
   static readonly _capnp = {
     displayName: "Payload",
     id: "9a0e61223d96743b",
+    typeId: 0x9a0e61223d96743bn,
+    typeIdHex: "9a0e61223d96743b",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "content", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "capTable", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0x8523ddc40b86b8b0n, typeIdHex: "8523ddc40b86b8b0", displayName: "CapDescriptor" } } }
+    ] as const,
   };
   static _CapTable: $.ListCtor<CapDescriptor>;
   _adoptContent(value: $.Orphan<$.Pointer>): void {
@@ -2224,7 +2348,18 @@ export class CapDescriptor extends $.Struct {
   static readonly _capnp = {
     displayName: "CapDescriptor",
     id: "8523ddc40b86b8b0",
+    typeId: 0x8523ddc40b86b8b0n,
+    typeIdHex: "8523ddc40b86b8b0",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "none", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "senderHosted", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "senderPromise", codeOrder: 2, ordinal: 2, discriminantValue: 2, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "receiverHosted", codeOrder: 3, ordinal: 3, discriminantValue: 3, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "receiverAnswer", codeOrder: 4, ordinal: 4, discriminantValue: 4, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd800b1d6cd6f1ca0n, typeIdHex: "d800b1d6cd6f1ca0", displayName: "PromisedAnswer" } },
+      { name: "thirdPartyHosted", codeOrder: 5, ordinal: 5, discriminantValue: 5, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd37007fde1f0027dn, typeIdHex: "d37007fde1f0027d", displayName: "ThirdPartyCapDescriptor" } },
+      { name: "attachedFd", codeOrder: 6, ordinal: 6, kind: "slot", offset: 2, type: { kind: "uint8" } }
+    ] as const,
     defaultAttachedFd: $.getUint8Mask(255)
   };
   get _isNone(): boolean {
@@ -2438,7 +2573,13 @@ export class PromisedAnswer_Op extends $.Struct {
   static readonly _capnp = {
     displayName: "Op",
     id: "f316944415569081",
+    typeId: 0xf316944415569081n,
+    typeIdHex: "f316944415569081",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "noop", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "getPointerField", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint16" } }
+    ] as const,
   };
   get _isNoop(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -2485,7 +2626,13 @@ export class PromisedAnswer extends $.Struct {
   static readonly _capnp = {
     displayName: "PromisedAnswer",
     id: "d800b1d6cd6f1ca0",
+    typeId: 0xd800b1d6cd6f1ca0n,
+    typeIdHex: "d800b1d6cd6f1ca0",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "questionId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "transform", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf316944415569081n, typeIdHex: "f316944415569081", displayName: "Op" } } }
+    ] as const,
   };
   static _Transform: $.ListCtor<PromisedAnswer_Op>;
   /**
@@ -2535,7 +2682,13 @@ export class ThirdPartyCapDescriptor extends $.Struct {
   static readonly _capnp = {
     displayName: "ThirdPartyCapDescriptor",
     id: "d37007fde1f0027d",
+    typeId: 0xd37007fde1f0027dn,
+    typeIdHex: "d37007fde1f0027d",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "vineId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   _adoptId(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -2668,7 +2821,16 @@ export class Exception extends $.Struct {
   static readonly _capnp = {
     displayName: "Exception",
     id: "d625b7063acf691a",
+    typeId: 0xd625b7063acf691an,
+    typeIdHex: "d625b7063acf691a",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "reason", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "type", codeOrder: 1, ordinal: 3, kind: "slot", offset: 2, type: { kind: "enum", typeId: 0xb28c96e23f4cbd58n, typeIdHex: "b28c96e23f4cbd58", displayName: "Type" } },
+      { name: "obsoleteIsCallersFault", codeOrder: 2, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "obsoleteDurability", codeOrder: 3, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint16" } },
+      { name: "trace", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   /**
 * Human-readable failure description.

@@ -5,7 +5,15 @@ export class Upgrade extends $.Struct {
   static readonly _capnp = {
     displayName: "Upgrade",
     id: "b274c862a78a049c",
+    typeId: 0xb274c862a78a049cn,
+    typeIdHex: "b274c862a78a049c",
     size: new $.ObjectSize(8, 3),
+    fields: [
+      { name: "legacyName", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "legacyId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "selfReference", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xb274c862a78a049cn, typeIdHex: "b274c862a78a049c", displayName: "Upgrade" } },
+      { name: "selfReferences", codeOrder: 3, ordinal: 3, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "struct", typeId: 0xb274c862a78a049cn, typeIdHex: "b274c862a78a049c", displayName: "Upgrade" } } }
+    ] as const,
   };
   static _SelfReferences: $.ListCtor<Upgrade>;
   get legacyName(): string {

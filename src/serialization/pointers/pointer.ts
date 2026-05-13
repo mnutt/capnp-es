@@ -8,10 +8,9 @@ import {
   PTR_OFFSET_OUT_OF_BOUNDS,
 } from "../../errors";
 import { dump, trackPointerAllocation } from "./pointer.utils";
+import type { CapnpSchemaMetadata } from "../../metadata";
 
-export interface _PointerCtor {
-  readonly displayName: string;
-}
+export interface _PointerCtor extends CapnpSchemaMetadata {}
 
 export interface PointerCtor<T extends Pointer> {
   readonly _capnp: _PointerCtor;

@@ -5,7 +5,12 @@ export class Persistent_SaveParams extends $.Struct {
   static readonly _capnp = {
     displayName: "SaveParams",
     id: "f76fba59183073a5",
+    typeId: 0xf76fba59183073a5n,
+    typeIdHex: "f76fba59183073a5",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "sealFor", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptSealFor(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -37,7 +42,12 @@ export class Persistent_SaveResults extends $.Struct {
   static readonly _capnp = {
     displayName: "SaveResults",
     id: "b76848c18c40efbf",
+    typeId: 0xb76848c18c40efbfn,
+    typeIdHex: "b76848c18c40efbf",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptSturdyRef(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -80,7 +90,9 @@ export class Persistent$Client {
       interfaceId: Persistent$Client.interfaceId,
       methodId: 0,
       interfaceName: "persistent.capnp:Persistent",
-      methodName: "save"
+      methodName: "save",
+      paramFields: Persistent_SaveParams._capnp.fields,
+      resultFields: Persistent_SaveResults._capnp.fields
     }
   ];
   /**
@@ -192,7 +204,10 @@ export class Persistent extends $.Interface {
   static readonly _capnp = {
     displayName: "Persistent",
     id: "c8cb212fcd9f5691",
+    typeId: 0xc8cb212fcd9f5691n,
+    typeIdHex: "c8cb212fcd9f5691",
     size: new $.ObjectSize(0, 0),
+    methods: Persistent$Client.methods,
   };
   toString(): string { return "Persistent_" + super.toString(); }
 }

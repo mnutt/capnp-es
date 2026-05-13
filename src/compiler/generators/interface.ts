@@ -9,7 +9,7 @@ import * as util from "../util";
 import type { CodeGeneratorFileContext } from ".";
 import { generateInterfaceClasses } from "./rpc";
 import { createNestedNodeProperty, createValue } from "./struct";
-import { extractJSDocs } from "./helpers";
+import { createBigInt, extractJSDocs } from "./helpers";
 
 /**
  * Generates TypeScript class definition for a Cap'n Proto interface node.
@@ -53,7 +53,10 @@ export function generateInterfaceNode(
      static readonly _capnp = {
         displayName: "${displayNamePrefix}",
         id: "${nodeIdHex}",
+        typeId: ${createBigInt(nodeId)},
+        typeIdHex: "${nodeIdHex}",
         size: new $.ObjectSize(0, 0),
+        methods: ${fullClassName}$Client.methods,
       }
     toString(): string { return "${fullClassName}_" + super.toString(); }`,
   );

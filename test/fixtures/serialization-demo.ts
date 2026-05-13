@@ -12,7 +12,13 @@ export class Person_PhoneNumber extends $.Struct {
   static readonly _capnp = {
     displayName: "PhoneNumber",
     id: "cba8ed6b45001ccc",
+    typeId: 0xcba8ed6b45001cccn,
+    typeIdHex: "cba8ed6b45001ccc",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "number", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "type", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0x98bef1051277b9dfn, typeIdHex: "98bef1051277b9df", displayName: "Type" } }
+    ] as const,
   };
   get number(): string {
     return $.utils.getText(0, this);
@@ -47,7 +53,15 @@ export class Person_Employment extends $.Struct {
   static readonly _capnp = {
     displayName: "employment",
     id: "927f49708287c3b6",
+    typeId: 0x927f49708287c3b6n,
+    typeIdHex: "927f49708287c3b6",
     size: new $.ObjectSize(8, 4),
+    fields: [
+      { name: "unemployed", codeOrder: 0, ordinal: 4, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "employer", codeOrder: 1, ordinal: 5, discriminantValue: 1, kind: "slot", offset: 3, type: { kind: "text" } },
+      { name: "school", codeOrder: 2, ordinal: 6, discriminantValue: 2, kind: "slot", offset: 3, type: { kind: "text" } },
+      { name: "selfEmployed", codeOrder: 3, ordinal: 7, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "void" } }
+    ] as const,
   };
   get _isUnemployed(): boolean {
     return $.utils.getUint16(4, this) === 0;
@@ -93,7 +107,16 @@ export class Person extends $.Struct {
   static readonly _capnp = {
     displayName: "Person",
     id: "efbbc4e996f07104",
+    typeId: 0xefbbc4e996f07104n,
+    typeIdHex: "efbbc4e996f07104",
     size: new $.ObjectSize(8, 4),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "name", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "email", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "text" } },
+      { name: "phones", codeOrder: 3, ordinal: 3, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "struct", typeId: 0xcba8ed6b45001cccn, typeIdHex: "cba8ed6b45001ccc", displayName: "PhoneNumber" } } },
+      { name: "employment", codeOrder: 4, ordinal: 4, kind: "group", type: { kind: "group", typeId: 0x927f49708287c3b6n, typeIdHex: "927f49708287c3b6", displayName: "employment" } }
+    ] as const,
   };
   static _Phones: $.ListCtor<Person_PhoneNumber>;
   get id(): number {
@@ -144,7 +167,12 @@ export class AddressBook extends $.Struct {
   static readonly _capnp = {
     displayName: "AddressBook",
     id: "f724540a01e98224",
+    typeId: 0xf724540a01e98224n,
+    typeIdHex: "f724540a01e98224",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "people", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xefbbc4e996f07104n, typeIdHex: "efbbc4e996f07104", displayName: "Person" } } }
+    ] as const,
   };
   static _People: $.ListCtor<Person>;
   _adoptPeople(value: $.Orphan<$.List<Person>>): void {

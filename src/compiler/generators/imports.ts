@@ -1,8 +1,14 @@
 import type { CodeGeneratorFileContext } from ".";
 import { TS_FILE_ID } from "../constants";
-import { getFullClassName, hasNode, lookupNode } from "../node-util";
+import {
+  getFullClassName,
+  hasNode,
+  lookupNode,
+  schemaDisplayNameToTsPath,
+} from "../node-util";
 import * as util from "../util";
 import type * as schema from "../../capnp/schema";
+import { dirname, relative } from "node:path/posix";
 
 /**
  * Generates the import statement for the capnp-es runtime library.
@@ -49,25 +55,26 @@ export function generateCapnpImport(ctx: CodeGeneratorFileContext): void {
 export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
   for (const imp of ctx.imports) {
     const { name } = imp;
+    const importNode = lookupNode(ctx, imp);
     let importPath: string;
 
     if (name.startsWith("/capnp/")) {
       importPath = `capnp-es/capnp/${name.slice(7).replace(/\.capnp$/, "")}`;
     } else {
-      importPath = name.replace(/\.capnp$/, ".js");
-      if (importPath[0] !== ".") {
-        importPath = `./${importPath}`;
-      }
+      importPath = generatedImportPath(ctx.tsPath, importNode.displayName);
     }
-
-    const importNode = lookupNode(ctx, imp);
 
     const imports = getImportNodes(ctx, importNode)
       .flatMap((node) => {
         const fullClassName = getFullClassName(node);
         if (node._isInterface) {
-          // The client is required for imported interfaces.
-          return [fullClassName, `${fullClassName}$Client`];
+          // The client and server target are required when another interface
+          // inherits imported methods.
+          return [
+            fullClassName,
+            `${fullClassName}$Client`,
+            `${fullClassName}$Server$Target`,
+          ];
         }
         return fullClassName;
       })
@@ -80,6 +87,21 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
 
     ctx.codeParts.push(`import { ${imports} } from "${importPath}";`);
   }
+}
+
+export function generatedImportPath(
+  fromTsPath: string,
+  toSchemaDisplayName: string,
+): string {
+  const toJsPath = schemaDisplayNameToTsPath(toSchemaDisplayName).replace(
+    /\.ts$/,
+    ".js",
+  );
+  let importPath = relative(dirname(fromTsPath), toJsPath);
+  if (!importPath.startsWith(".")) {
+    importPath = `./${importPath}`;
+  }
+  return importPath;
 }
 
 /**

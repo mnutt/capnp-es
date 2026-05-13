@@ -1,6 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import ts from "typescript";
+import { dirname, join, normalize, relative } from "node:path/posix";
 import * as s from "../capnp/schema.ts";
 import { Message } from "../serialization/message.ts";
 import * as E from "./errors";
@@ -46,8 +47,8 @@ export async function compileAll(
   const req = new Message(codeGenRequest, false).getRoot(
     s.CodeGeneratorRequest,
   );
-  const ctx = new CodeGeneratorContext();
-  ctx.files = req.requestedFiles.map((file) => loadRequestedFile(req, file));
+  const ctx = new CodeGeneratorContext(req);
+  ctx.files = req.requestedFiles.map((file) => loadRequestedFile(ctx, file));
 
   // Compile files in memory
   const files = new Map<string, string>(
@@ -157,13 +158,58 @@ function tsCompile(
   compilerHost.writeFile = (fileName: string, declaration: string) => {
     files.set(fileName, declaration);
   };
+  const resolveInMemoryFile = (filename: string): string | undefined => {
+    const candidates = [filename, relative(process.cwd(), filename)];
+    for (const candidate of candidates) {
+      if (files.has(candidate)) {
+        return candidate;
+      }
+      if (candidate.endsWith(".js")) {
+        const tsFilename = candidate.replace(/\.js$/, ".ts");
+        if (files.has(tsFilename)) {
+          return tsFilename;
+        }
+      }
+    }
+    return undefined;
+  };
+  const _fileExists = compilerHost.fileExists;
+  compilerHost.fileExists = (filename) => {
+    if (resolveInMemoryFile(filename)) {
+      return true;
+    }
+    return _fileExists(filename);
+  };
   const _readFile = compilerHost.readFile;
   compilerHost.readFile = (filename) => {
-    if (files.has(filename)) {
-      return files.get(filename);
+    const inMemoryFile = resolveInMemoryFile(filename);
+    if (inMemoryFile) {
+      return files.get(inMemoryFile);
     }
     return _readFile(filename);
   };
+  compilerHost.resolveModuleNames = (moduleNames, containingFile) =>
+    moduleNames.map((moduleName) => {
+      if (moduleName.startsWith(".") && moduleName.endsWith(".js")) {
+        const resolvedModule = normalize(
+          join(dirname(containingFile), moduleName),
+        ).replace(/\.js$/, ".ts");
+        const resolvedFileName = resolveInMemoryFile(resolvedModule);
+        if (resolvedFileName) {
+          return {
+            resolvedFileName,
+            extension: ts.Extension.Ts,
+          };
+        }
+      }
+
+      return ts.resolveModuleName(
+        moduleName,
+        containingFile,
+        compileOptions,
+        compilerHost,
+      ).resolvedModule;
+    });
 
   const program = ts.createProgram(
     [...files.keys()],

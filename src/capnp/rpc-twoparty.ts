@@ -28,7 +28,12 @@ export class VatId extends $.Struct {
   static readonly _capnp = {
     displayName: "VatId",
     id: "d20b909fee733a8e",
+    typeId: 0xd20b909fee733a8en,
+    typeIdHex: "d20b909fee733a8e",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "side", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0x9fd69ebc87b9719cn, typeIdHex: "9fd69ebc87b9719c", displayName: "Side" } }
+    ] as const,
   };
   get side(): Side {
     return $.utils.getUint16(0, this) as Side;
@@ -46,7 +51,12 @@ export class ProvisionId extends $.Struct {
   static readonly _capnp = {
     displayName: "ProvisionId",
     id: "b88d09a9c5f39817",
+    typeId: 0xb88d09a9c5f39817n,
+    typeIdHex: "b88d09a9c5f39817",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "joinId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   /**
 * The ID from `JoinKeyPart`.
@@ -68,7 +78,10 @@ export class RecipientId extends $.Struct {
   static readonly _capnp = {
     displayName: "RecipientId",
     id: "89f389b6fd4082c1",
+    typeId: 0x89f389b6fd4082c1n,
+    typeIdHex: "89f389b6fd4082c1",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "RecipientId_" + super.toString(); }
 }
@@ -80,7 +93,10 @@ export class ThirdPartyCapId extends $.Struct {
   static readonly _capnp = {
     displayName: "ThirdPartyCapId",
     id: "b47f4979672cb59d",
+    typeId: 0xb47f4979672cb59dn,
+    typeIdHex: "b47f4979672cb59d",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "ThirdPartyCapId_" + super.toString(); }
 }
@@ -121,7 +137,14 @@ export class JoinKeyPart extends $.Struct {
   static readonly _capnp = {
     displayName: "JoinKeyPart",
     id: "95b29059097fca83",
+    typeId: 0x95b29059097fca83n,
+    typeIdHex: "95b29059097fca83",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "joinId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "partCount", codeOrder: 1, ordinal: 1, kind: "slot", offset: 2, type: { kind: "uint16" } },
+      { name: "partNum", codeOrder: 2, ordinal: 2, kind: "slot", offset: 3, type: { kind: "uint16" } }
+    ] as const,
   };
   /**
 * A number identifying this join, chosen by the sender.  May be reused once `Finish` messages are
@@ -160,7 +183,14 @@ export class JoinResult extends $.Struct {
   static readonly _capnp = {
     displayName: "JoinResult",
     id: "9d263a3630b7ebee",
+    typeId: 0x9d263a3630b7ebeen,
+    typeIdHex: "9d263a3630b7ebee",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "joinId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "succeeded", codeOrder: 1, ordinal: 1, kind: "slot", offset: 32, type: { kind: "bool" } },
+      { name: "cap", codeOrder: 2, ordinal: 2, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   /**
 * Matches `JoinKeyPart`.

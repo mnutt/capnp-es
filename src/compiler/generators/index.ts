@@ -93,12 +93,41 @@ export function generateNode(
 }
 
 export class CodeGeneratorContext {
+  readonly nodes: schema.Node[];
+  readonly nodeById: Map<bigint, schema.Node>;
+  readonly nodesByScopeId: Map<bigint, schema.Node[]>;
+  readonly sourceInfo: schema.Node_SourceInfo[];
+  readonly sourceInfoById: Map<bigint, schema.Node_SourceInfo>;
   files: CodeGeneratorFileContext[] = [];
+
+  constructor(public readonly req: schema.CodeGeneratorRequest) {
+    this.nodes = req.nodes.toArray();
+    this.nodeById = new Map(this.nodes.map((node) => [node.id, node]));
+    this.nodesByScopeId = new Map();
+    for (const node of this.nodes) {
+      const siblings = this.nodesByScopeId.get(node.scopeId);
+      if (siblings === undefined) {
+        this.nodesByScopeId.set(node.scopeId, [node]);
+      } else {
+        siblings.push(node);
+      }
+    }
+    this.sourceInfo = req.sourceInfo.toArray();
+    this.sourceInfoById = new Map(
+      this.sourceInfo.map((sourceInfo) => [sourceInfo.id, sourceInfo]),
+    );
+  }
 }
 
 export class CodeGeneratorFileContext {
   // inputs
   readonly nodes: schema.Node[];
+  readonly nodeById: Map<bigint, schema.Node>;
+  readonly nodesByScopeId: Map<bigint, schema.Node[]>;
+  readonly localNodeIds: Set<bigint>;
+  readonly schemaDisplayName: string;
+  readonly sourceInfo: schema.Node_SourceInfo[];
+  readonly sourceInfoById: Map<bigint, schema.Node_SourceInfo>;
   readonly imports: schema.CodeGeneratorRequest_RequestedFile_Import[];
 
   // outputs
@@ -109,14 +138,45 @@ export class CodeGeneratorFileContext {
   codeParts: string[] = [];
 
   constructor(
-    public readonly req: schema.CodeGeneratorRequest,
+    public readonly context: CodeGeneratorContext,
     public readonly file: schema.CodeGeneratorRequest_RequestedFile,
   ) {
-    this.nodes = req.nodes.toArray();
+    this.nodes = context.nodes;
+    this.nodeById = context.nodeById;
+    this.nodesByScopeId = context.nodesByScopeId;
+    this.localNodeIds = collectLocalNodeIds(context.nodesByScopeId, file.id);
+    this.schemaDisplayName =
+      context.nodeById.get(file.id)?.displayName ?? file.filename;
+    this.sourceInfo = context.sourceInfo;
+    this.sourceInfoById = context.sourceInfoById;
     this.imports = file.imports.toArray();
+  }
+
+  get req(): schema.CodeGeneratorRequest {
+    return this.context.req;
   }
 
   toString(): string {
     return this.file?.filename ?? "CodeGeneratorFileContext()";
   }
+}
+
+function collectLocalNodeIds(
+  nodesByScopeId: Map<bigint, schema.Node[]>,
+  fileId: bigint,
+): Set<bigint> {
+  const localNodeIds = new Set<bigint>();
+  const visit = (id: bigint) => {
+    if (localNodeIds.has(id)) {
+      return;
+    }
+
+    localNodeIds.add(id);
+    for (const child of nodesByScopeId.get(id) ?? []) {
+      visit(child.id);
+    }
+  };
+
+  visit(fileId);
+  return localNodeIds;
 }

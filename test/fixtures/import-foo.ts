@@ -7,7 +7,12 @@ export class Foo extends $.Struct {
   static readonly _capnp = {
     displayName: "Foo",
     id: "f92e265d07c50136",
+    typeId: 0xf92e265d07c50136n,
+    typeIdHex: "f92e265d07c50136",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "baz", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xf2f28862b8e82db7n, typeIdHex: "f2f28862b8e82db7", displayName: "Baz" } }
+    ] as const,
   };
   _adoptBaz(value: $.Orphan<Baz>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));

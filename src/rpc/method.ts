@@ -1,6 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { Struct, StructCtor } from "../serialization/pointers/struct";
+import type { CapnpFieldMetadata } from "../metadata";
 
 // A Method identifies a method along with an optional
 // human-readable description of the method
@@ -15,4 +16,6 @@ export interface Method<P extends Struct, R extends Struct> {
 
   ParamsClass: StructCtor<P>;
   ResultsClass: StructCtor<R>;
+  paramFields?: readonly CapnpFieldMetadata[];
+  resultFields?: readonly CapnpFieldMetadata[];
 }

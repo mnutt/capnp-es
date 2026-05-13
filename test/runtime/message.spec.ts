@@ -11,6 +11,7 @@ import {
 } from "src/serialization/message";
 
 import { Person } from "test/fixtures/serialization-demo";
+import { TestAllTypes } from "test/fixtures/test";
 
 const SEGMENTED_PACKED = readFileBuffer(
   "test/fixtures/data/segmented-packed.bin",
@@ -222,6 +223,17 @@ test("Message.toArrayBuffer()", () => {
   );
 });
 
+test("Message.toUint8Array()", () => {
+  const message = new Message(SEGMENTED_UNPACKED, false);
+  const bytes = message.toUint8Array();
+
+  t.instanceOf(bytes, Uint8Array);
+  compareBuffers(bytes.buffer, SEGMENTED_UNPACKED, "should copy message bytes");
+
+  bytes[0] = 0xff;
+  t.notEqual(message.toUint8Array()[0], 0xff);
+});
+
 test("Message.toPackedArrayBuffer()", () => {
   const message = new Message(SEGMENTED_UNPACKED, false);
 
@@ -230,6 +242,31 @@ test("Message.toPackedArrayBuffer()", () => {
     SEGMENTED_PACKED,
     "should pack messages properly",
   );
+});
+
+test("Message.toPackedUint8Array()", () => {
+  const message = new Message(SEGMENTED_UNPACKED, false);
+  const bytes = message.toPackedUint8Array();
+
+  t.instanceOf(bytes, Uint8Array);
+  compareBuffers(bytes.buffer, SEGMENTED_PACKED, "should pack messages");
+});
+
+test("Data.copyToUint8Array()", () => {
+  const message = new Message();
+  const root = message.initRoot(TestAllTypes);
+  const data = root._initDataField(3);
+
+  data.copyBuffer(new Uint8Array([1, 2, 3]));
+
+  const copy = data.copyToUint8Array();
+  const view = data.toUint8Array();
+
+  t.deepEqual([...copy], [1, 2, 3]);
+  copy[0] = 9;
+  t.equal(data.get(0), 1);
+  view[0] = 8;
+  t.equal(data.get(0), 8);
 });
 
 test("preallocateSegments()", () => {

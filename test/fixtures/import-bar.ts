@@ -7,7 +7,12 @@ export class Baz extends $.Struct {
   static readonly _capnp = {
     displayName: "Baz",
     id: "f2f28862b8e82db7",
+    typeId: 0xf2f28862b8e82db7n,
+    typeIdHex: "f2f28862b8e82db7",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "bar", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get bar(): string {
     return $.utils.getText(0, this);

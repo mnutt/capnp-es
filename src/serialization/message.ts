@@ -38,6 +38,8 @@ export class Message {
   static readonly readRawPointer = readRawPointer;
   static readonly toArrayBuffer = toArrayBuffer;
   static readonly toPackedArrayBuffer = toPackedArrayBuffer;
+  static readonly toPackedUint8Array = toPackedUint8Array;
+  static readonly toUint8Array = toUint8Array;
 
   readonly _capnp: _Message;
 
@@ -159,6 +161,17 @@ export class Message {
   }
 
   /**
+   * Combine the contents of this message's segments into a stream-framed byte array.
+   *
+   * The returned Uint8Array is a **copy** of the message bytes. Mutating it will not mutate this message.
+   *
+   * @returns A Uint8Array containing the stream-framed message.
+   */
+  toUint8Array(): Uint8Array {
+    return toUint8Array(this);
+  }
+
+  /**
    * Like `toArrayBuffer()`, but also applies the packing algorithm to the output. This is typically what you want to
    * use if you're sending the message over a network link or other slow I/O interface where size matters.
    *
@@ -166,6 +179,17 @@ export class Message {
    */
   toPackedArrayBuffer(): ArrayBuffer {
     return toPackedArrayBuffer(this);
+  }
+
+  /**
+   * Like `toUint8Array()`, but applies the packing algorithm to the output.
+   *
+   * The returned Uint8Array is a **copy** of the message bytes. Mutating it will not mutate this message.
+   *
+   * @returns A Uint8Array containing the packed message.
+   */
+  toPackedUint8Array(): Uint8Array {
+    return toPackedUint8Array(this);
   }
 
   addCap(client: Client | null): number {
@@ -503,6 +527,14 @@ export function toPackedArrayBuffer(m: Message): ArrayBuffer {
   }
 
   return out.buffer;
+}
+
+export function toUint8Array(m: Message): Uint8Array {
+  return new Uint8Array(toArrayBuffer(m));
+}
+
+export function toPackedUint8Array(m: Message): Uint8Array {
+  return new Uint8Array(toPackedArrayBuffer(m));
 }
 
 export function getStreamFrame(m: Message): ArrayBuffer {

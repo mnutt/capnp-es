@@ -1,6 +1,7 @@
-import type { Message, Struct } from "capnp-es";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
+import type { Message } from "../serialization/message";
+import type { Struct } from "../serialization/pointers/struct";
 
 /**
  * Converts a Cap'n Proto message to a human-readable string representation.

@@ -3,7 +3,10 @@
 import * as schema from "../capnp/schema";
 import { format } from "../util";
 
-import { CodeGeneratorFileContext } from "./generators";
+import {
+  CodeGeneratorFileContext,
+  type CodeGeneratorContext,
+} from "./generators";
 import { ConcreteListType } from "./constants";
 import * as E from "./errors";
 import * as util from "./util";
@@ -158,20 +161,37 @@ export function hasNode(
 ): boolean {
   const id = typeof lookup === "bigint" ? lookup : lookup.id;
 
-  return ctx.nodes.some((n) => n.id === id);
+  return ctx.nodeById.has(id);
+}
+
+export function isLocalNode(
+  ctx: CodeGeneratorFileContext,
+  lookup: { readonly id: bigint } | bigint,
+): boolean {
+  const id = typeof lookup === "bigint" ? lookup : lookup.id;
+  const node = ctx.nodeById.get(id);
+
+  return (
+    ctx.localNodeIds.has(id) ||
+    node?.displayName.startsWith(`${ctx.schemaDisplayName}:`) === true
+  );
 }
 
 export function loadRequestedFile(
-  req: schema.CodeGeneratorRequest,
+  genCtx: CodeGeneratorContext,
   file: schema.CodeGeneratorRequest_RequestedFile,
 ): CodeGeneratorFileContext {
-  const ctx = new CodeGeneratorFileContext(req, file);
+  const ctx = new CodeGeneratorFileContext(genCtx, file);
 
   const schema = lookupNode(ctx, file.id);
 
-  ctx.tsPath = schema.displayName.replace(/\.capnp$/, "") + ".ts";
+  ctx.tsPath = schemaDisplayNameToTsPath(schema.displayName);
 
   return ctx;
+}
+
+export function schemaDisplayNameToTsPath(displayName: string): string {
+  return displayName.replace(/^\//, "").replace(/\.capnp$/, "") + ".ts";
 }
 
 /**
@@ -187,7 +207,7 @@ export function lookupNode(
   lookup: { readonly id: bigint } | bigint,
 ): schema.Node {
   const id = typeof lookup === "bigint" ? lookup : lookup.id;
-  const node = ctx.nodes.find((n) => n.id === id);
+  const node = ctx.nodeById.get(id);
 
   if (node === undefined) {
     throw new Error(format(E.GEN_NODE_LOOKUP_FAIL, id));
@@ -211,7 +231,7 @@ export function lookupNodeSourceInfo(
   lookup: { readonly id: bigint } | bigint,
 ): schema.Node_SourceInfo | undefined {
   const id = typeof lookup === "bigint" ? lookup : lookup.id;
-  return ctx.req.sourceInfo.find((s) => s.id === id);
+  return ctx.sourceInfoById.get(id);
 }
 
 /**

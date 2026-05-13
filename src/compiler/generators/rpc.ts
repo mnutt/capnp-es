@@ -5,6 +5,7 @@ import {
   compareCodeOrder,
   getFullClassName,
   getJsType,
+  isLocalNode,
   lookupNode,
   lookupNodeSourceInfo,
 } from "../node-util";
@@ -55,9 +56,20 @@ export function generateMethodStructs(
   for (const method of node.interface.methods) {
     const paramNode = lookupNode(ctx, method.paramStructType);
     const resultNode = lookupNode(ctx, method.resultStructType);
-    generateNode(ctx, paramNode);
-    generateNode(ctx, resultNode);
-    generateResultPromise(ctx, resultNode);
+    const localParamNode = isLocalNode(ctx, paramNode);
+    const localResultNode = isLocalNode(ctx, resultNode);
+
+    if (localParamNode) {
+      generateNode(ctx, paramNode);
+    }
+
+    if (localResultNode) {
+      generateNode(ctx, resultNode);
+    }
+
+    generateResultPromise(ctx, resultNode, {
+      pipelineFields: localResultNode,
+    });
   }
 }
 
@@ -76,11 +88,11 @@ export function generateServer(
   ctx: CodeGeneratorFileContext,
   node: schema.Node,
 ): void {
-  // TODO: handle superclasses
   const fullClassName = getFullClassName(node);
   const serverName = `${fullClassName}$Server`;
   const serverTargetName = `${serverName}$Target`;
   const clientName = `${fullClassName}$Client`;
+  const superclasses = getInterfaceSuperclasses(ctx, node);
 
   const methodSignatures = node.interface.methods
     .map((method) => {
@@ -94,8 +106,13 @@ export function generateServer(
     })
     .join("\n");
 
+  const extendsClause =
+    superclasses.length === 0
+      ? ""
+      : ` extends ${superclasses.map((node) => `${getFullClassName(node)}$Server$Target`).join(", ")}`;
+
   ctx.codeParts.push(`
-  export interface ${serverTargetName} {
+  export interface ${serverTargetName}${extendsClause} {
     ${methodSignatures}
   }`);
 
@@ -105,6 +122,16 @@ export function generateServer(
 
   // Generate server constructor
   const codeServerMethods: string[] = [];
+
+  for (const superclass of superclasses) {
+    const superClientName = `${getFullClassName(superclass)}$Client`;
+    codeServerMethods.push(
+      `...${superClientName}.methods.map((method) => ({
+        ...method,
+        impl: target[method.methodName as keyof ${serverTargetName}] as any
+      }))`,
+    );
+  }
 
   let index = 0;
   for (const method of node.interface.methods) {
@@ -153,8 +180,8 @@ export function generateClient(
 ): void {
   const fullClassName = getFullClassName(node);
   const clientName = `${fullClassName}$Client`;
+  const superclasses = getInterfaceSuperclasses(ctx, node);
 
-  // TODO: handle superclasses
   const members: string[] = [];
 
   // Add client property
@@ -169,6 +196,18 @@ export function generateClient(
   const methods: string[] = [];
   const methodDefs: string[] = [];
   const methodDefTypes: string[] = [];
+  const inheritedMethodNames = new Set<string>();
+
+  for (const superclass of superclasses) {
+    generateInheritedClientMethods(
+      ctx,
+      superclass,
+      methods,
+      inheritedMethodNames,
+    );
+  }
+
+  const ownMethodsName = superclasses.length === 0 ? "methods" : "ownMethods";
 
   for (let index = 0; index < node.interface.methods.length; index++) {
     generateClientMethod(
@@ -179,15 +218,24 @@ export function generateClient(
       methodDefs,
       methodDefTypes,
       index,
+      ownMethodsName,
     );
   }
 
   members.push(`
-    static readonly methods:[
+    static readonly ${ownMethodsName}: [
       ${methodDefTypes.join(",\n")}
     ] = [
       ${methodDefs.join(",\n")}
     ];
+    ${
+      superclasses.length === 0
+        ? ""
+        : `static readonly methods: $.Method<any, any>[] = [
+      ${superclasses.map((node) => `...${getFullClassName(node)}$Client.methods`).join(",\n")},
+      ...${clientName}.ownMethods
+    ];`
+    }
     ${methods.join("\n")}
     `);
 
@@ -197,6 +245,42 @@ export function generateClient(
     }
     $.Registry.register(${clientName}.interfaceId, ${clientName});
   `);
+}
+
+function getInterfaceSuperclasses(
+  ctx: CodeGeneratorFileContext,
+  node: schema.Node,
+): schema.Node[] {
+  return node.interface.superclasses
+    .toArray()
+    .map((superclass) => lookupNode(ctx, superclass.id));
+}
+
+function generateInheritedClientMethods(
+  ctx: CodeGeneratorFileContext,
+  node: schema.Node,
+  methodsCode: string[],
+  seenNames = new Set<string>(),
+): void {
+  for (const superclass of getInterfaceSuperclasses(ctx, node)) {
+    generateInheritedClientMethods(ctx, superclass, methodsCode, seenNames);
+  }
+
+  const superClientName = `${getFullClassName(node)}$Client`;
+  for (const method of node.interface.methods) {
+    if (seenNames.has(method.name)) {
+      continue;
+    }
+
+    seenNames.add(method.name);
+    methodsCode.push(`
+      ${method.name}(
+        ...args: Parameters<${superClientName}["${method.name}"]>
+      ): ReturnType<${superClientName}["${method.name}"]> {
+        return ${superClientName}.prototype.${method.name}.apply(this, args);
+      }
+    `);
+  }
 }
 
 /**
@@ -213,6 +297,7 @@ export function generateClient(
 export function generateResultPromise(
   ctx: CodeGeneratorFileContext,
   node: schema.Node,
+  options: { readonly pipelineFields?: boolean } = {},
 ): void {
   const nodeId = node.id;
 
@@ -235,7 +320,10 @@ export function generateResultPromise(
   `);
 
   const { struct } = node;
-  const fields = struct.fields.toArray().sort(compareCodeOrder);
+  const fields =
+    options.pipelineFields === false
+      ? []
+      : struct.fields.toArray().sort(compareCodeOrder);
 
   const generatePromiseFieldMethod = (field: schema.Field) => {
     let jsType: string;
@@ -315,6 +403,7 @@ export function generateClientMethod(
   methodDefs: string[],
   methodDefTypes: string[],
   index: number,
+  methodArrayName = "methods",
 ): void {
   const method = node.interface.methods[index];
   const { name } = method;
@@ -336,7 +425,9 @@ export function generateClientMethod(
     interfaceId: ${clientName}.interfaceId,
     methodId: ${index},
     interfaceName: "${node.displayName}",
-    methodName: "${method.name}"
+    methodName: "${method.name}",
+    paramFields: ${paramTypeName}._capnp.fields,
+    resultFields: ${resultTypeName}._capnp.fields
   }`);
 
   const docComment = extractJSDocs(
@@ -349,6 +440,7 @@ export function generateClientMethod(
     ${name}(paramsFunc?: (params: ${paramTypeName}) => void): ${resultTypeName}$Promise {
       const answer = this.client.call({
         method: ${clientName}.methods[${index}],
+        method: ${clientName}.${methodArrayName}[${index}],
         paramsFunc: paramsFunc
       });
       const pipeline = new $.Pipeline(${resultTypeName}, answer);

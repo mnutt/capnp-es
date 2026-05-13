@@ -5,7 +5,27 @@ export class ListMania extends $.Struct {
   static readonly _capnp = {
     displayName: "ListMania",
     id: "d0a988493b63e78b",
+    typeId: 0xd0a988493b63e78bn,
+    typeIdHex: "d0a988493b63e78b",
     size: new $.ObjectSize(0, 16),
+    fields: [
+      { name: "boolList", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "bool" } } },
+      { name: "compositeList", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0x9e1eb66286605522n, typeIdHex: "9e1eb66286605522", displayName: "ListManiaStruct" } } },
+      { name: "dataList", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "data" } } },
+      { name: "float32List", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "float32" } } },
+      { name: "float64List", codeOrder: 4, ordinal: 4, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "float64" } } },
+      { name: "int8List", codeOrder: 5, ordinal: 5, kind: "slot", offset: 5, type: { kind: "list", elementType: { kind: "int8" } } },
+      { name: "int16List", codeOrder: 6, ordinal: 6, kind: "slot", offset: 6, type: { kind: "list", elementType: { kind: "int16" } } },
+      { name: "int32List", codeOrder: 7, ordinal: 7, kind: "slot", offset: 7, type: { kind: "list", elementType: { kind: "int32" } } },
+      { name: "int64List", codeOrder: 8, ordinal: 8, kind: "slot", offset: 8, type: { kind: "list", elementType: { kind: "int64" } } },
+      { name: "interfaceList", codeOrder: 9, ordinal: 9, kind: "slot", offset: 9, type: { kind: "list", elementType: { kind: "interface", typeId: 0x8a94079c3c57204fn, typeIdHex: "8a94079c3c57204f", displayName: "ListManiaInterface" } } },
+      { name: "textList", codeOrder: 10, ordinal: 10, kind: "slot", offset: 10, type: { kind: "list", elementType: { kind: "text" } } },
+      { name: "uint8List", codeOrder: 11, ordinal: 11, kind: "slot", offset: 11, type: { kind: "list", elementType: { kind: "uint8" } } },
+      { name: "uint16List", codeOrder: 12, ordinal: 12, kind: "slot", offset: 12, type: { kind: "list", elementType: { kind: "uint16" } } },
+      { name: "uint32List", codeOrder: 13, ordinal: 13, kind: "slot", offset: 13, type: { kind: "list", elementType: { kind: "uint32" } } },
+      { name: "uint64List", codeOrder: 14, ordinal: 14, kind: "slot", offset: 14, type: { kind: "list", elementType: { kind: "uint64" } } },
+      { name: "voidList", codeOrder: 15, ordinal: 15, kind: "slot", offset: 15, type: { kind: "list", elementType: { kind: "void" } } }
+    ] as const,
   };
   static _CompositeList: $.ListCtor<ListManiaStruct>;
   _adoptBoolList(value: $.Orphan<$.List<boolean>>): void {
@@ -302,7 +322,10 @@ export class ListManiaInterface_GetListMania$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getListMania$Params",
     id: "f7bf50e8ad110566",
+    typeId: 0xf7bf50e8ad110566n,
+    typeIdHex: "f7bf50e8ad110566",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "ListManiaInterface_GetListMania$Params_" + super.toString(); }
 }
@@ -310,7 +333,12 @@ export class ListManiaInterface_GetListMania$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getListMania$Results",
     id: "e89af40dc5417fee",
+    typeId: 0xe89af40dc5417feen,
+    typeIdHex: "e89af40dc5417fee",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "result", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "interface", typeId: 0x8a94079c3c57204fn, typeIdHex: "8a94079c3c57204f", displayName: "ListManiaInterface" } } }
+    ] as const,
   };
   _adoptResult(value: $.Orphan<$.List<ListManiaInterface>>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -356,7 +384,9 @@ export class ListManiaInterface$Client {
       interfaceId: ListManiaInterface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/list-mania.capnp:ListManiaInterface",
-      methodName: "getListMania"
+      methodName: "getListMania",
+      paramFields: ListManiaInterface_GetListMania$Params._capnp.fields,
+      resultFields: ListManiaInterface_GetListMania$Results._capnp.fields
     }
   ];
   getListMania(paramsFunc?: (params: ListManiaInterface_GetListMania$Params) => void): ListManiaInterface_GetListMania$Results$Promise {
@@ -393,7 +423,10 @@ export class ListManiaInterface extends $.Interface {
   static readonly _capnp = {
     displayName: "ListManiaInterface",
     id: "8a94079c3c57204f",
+    typeId: 0x8a94079c3c57204fn,
+    typeIdHex: "8a94079c3c57204f",
     size: new $.ObjectSize(0, 0),
+    methods: ListManiaInterface$Client.methods,
   };
   toString(): string { return "ListManiaInterface_" + super.toString(); }
 }
@@ -401,7 +434,13 @@ export class ListManiaStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "ListManiaStruct",
     id: "9e1eb66286605522",
+    typeId: 0x9e1eb66286605522n,
+    typeIdHex: "9e1eb66286605522",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "void", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "self", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd0a988493b63e78bn, typeIdHex: "d0a988493b63e78b", displayName: "ListMania" } }
+    ] as const,
   };
   _adoptSelf(value: $.Orphan<ListMania>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));

@@ -5,7 +5,13 @@ export class SimpleInterface_Subtract$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "subtract$Params",
     id: "888da0aceabad12a",
+    typeId: 0x888da0aceabad12an,
+    typeIdHex: "888da0aceabad12a",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "a", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "b", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "int32" } }
+    ] as const,
   };
   get a(): number {
     return $.utils.getInt32(0, this);
@@ -25,7 +31,12 @@ export class SimpleInterface_Subtract$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "subtract$Results",
     id: "b0164441a304b38f",
+    typeId: 0xb0164441a304b38fn,
+    typeIdHex: "b0164441a304b38f",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "result", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } }
+    ] as const,
   };
   get result(): number {
     return $.utils.getInt32(0, this);
@@ -59,7 +70,9 @@ export class SimpleInterface$Client {
       interfaceId: SimpleInterface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/simple-interface.capnp:SimpleInterface",
-      methodName: "subtract"
+      methodName: "subtract",
+      paramFields: SimpleInterface_Subtract$Params._capnp.fields,
+      resultFields: SimpleInterface_Subtract$Results._capnp.fields
     }
   ];
   subtract(paramsFunc?: (params: SimpleInterface_Subtract$Params) => void): SimpleInterface_Subtract$Results$Promise {
@@ -96,7 +109,10 @@ export class SimpleInterface extends $.Interface {
   static readonly _capnp = {
     displayName: "SimpleInterface",
     id: "daf73e960b8928d6",
+    typeId: 0xdaf73e960b8928d6n,
+    typeIdHex: "daf73e960b8928d6",
     size: new $.ObjectSize(0, 0),
+    methods: SimpleInterface$Client.methods,
   };
   toString(): string { return "SimpleInterface_" + super.toString(); }
 }

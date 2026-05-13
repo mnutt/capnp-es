@@ -93,6 +93,18 @@ export class Data extends List<number> {
   }
 
   /**
+   * Creates a **copy** of the underlying buffer data and returns it as a Uint8Array.
+   *
+   * To obtain a live reference to the underlying buffer instead, use `toUint8Array()`.
+   *
+   * @returns A Uint8Array copy of this data buffer.
+   */
+
+  copyToUint8Array(): Uint8Array {
+    return new Uint8Array(this.toArrayBuffer());
+  }
+
+  /**
    * Convert this Data pointer to a DataView representing the pointer's contents.
    *
    * WARNING: The DataView references memory from a message segment, so do not venture outside the bounds of the

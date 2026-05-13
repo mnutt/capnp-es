@@ -1,6 +1,7 @@
 import net from "node:net";
 import type { Duplex } from "node:stream";
 import { Message } from "../serialization/message";
+import type { Data } from "../serialization/pointers/data";
 import { Message as RPCMessage } from "../capnp/rpc";
 import { DeferredTransport } from "../rpc/transport/deferred-transport";
 import { Conn } from "../rpc/conn";
@@ -9,6 +10,7 @@ import { CapnpRpcError } from "../rpc/rpc-error";
 
 export interface NodeRpcTransportOptions {
   maxQueuedBytes?: number;
+  signal?: AbortSignal;
 }
 
 export interface ConnectNodeRpcOptions extends NodeRpcTransportOptions {
@@ -17,8 +19,11 @@ export interface ConnectNodeRpcOptions extends NodeRpcTransportOptions {
   host?: string;
   port?: number;
   stream?: Duplex;
-  signal?: AbortSignal;
   finalize?: Finalize;
+}
+
+export interface MessageToBufferOptions {
+  packed?: boolean;
 }
 
 const DEFAULT_MAX_QUEUED_BYTES = 16 * 1024 * 1024;
@@ -101,6 +106,7 @@ export class NodeRpcTransport extends DeferredTransport {
   private waitingForDrain = false;
   private writeQueue: Buffer[] = [];
   private queuedBytes = 0;
+  private readonly signal?: AbortSignal;
 
   constructor(
     private readonly stream: Duplex,
@@ -108,11 +114,20 @@ export class NodeRpcTransport extends DeferredTransport {
   ) {
     super();
     this.maxQueuedBytes = options.maxQueuedBytes ?? DEFAULT_MAX_QUEUED_BYTES;
+    this.signal = options.signal;
 
     this.stream.on("data", this.onData);
     this.stream.once("error", this.onError);
     this.stream.once("close", this.onClose);
     this.stream.once("end", this.onEnd);
+
+    if (this.signal?.aborted) {
+      this.fail(
+        disconnected("transport aborted", abortError(this.signal.reason)),
+      );
+    } else {
+      this.signal?.addEventListener("abort", this.onAbort, { once: true });
+    }
   }
 
   sendMessage(msg: RPCMessage): void {
@@ -190,6 +205,7 @@ export class NodeRpcTransport extends DeferredTransport {
     this.stream.off("close", this.onClose);
     this.stream.off("end", this.onEnd);
     this.stream.off("drain", this.onDrain);
+    this.signal?.removeEventListener("abort", this.onAbort);
   }
 
   private readonly onData = (chunk: Buffer | Uint8Array | string): void => {
@@ -228,6 +244,12 @@ export class NodeRpcTransport extends DeferredTransport {
   private readonly onEnd = (): void => {
     this.fail(disconnected("transport stream ended"));
   };
+
+  private readonly onAbort = (): void => {
+    this.fail(
+      disconnected("transport aborted", abortError(this.signal?.reason)),
+    );
+  };
 }
 
 export function transportFromDuplex(
@@ -235,6 +257,41 @@ export function transportFromDuplex(
   options?: NodeRpcTransportOptions,
 ): NodeRpcTransport {
   return new NodeRpcTransport(stream, options);
+}
+
+/**
+ * Serialize a message into a Node Buffer.
+ *
+ * The returned Buffer is backed by a new ArrayBuffer containing a serialized copy of the message bytes. Mutating the
+ * Buffer will not mutate the message.
+ */
+export function messageToBuffer(
+  message: Message,
+  options: MessageToBufferOptions = {},
+): Buffer {
+  return Buffer.from(
+    options.packed ? message.toPackedArrayBuffer() : message.toArrayBuffer(),
+  );
+}
+
+/**
+ * Copy a Cap'n Proto Data pointer into a Node Buffer.
+ *
+ * Mutating the returned Buffer will not mutate the message.
+ */
+export function copyDataToBuffer(data: Data): Buffer {
+  return Buffer.from(data.toArrayBuffer());
+}
+
+/**
+ * Create a Node Buffer view over a Cap'n Proto Data pointer.
+ *
+ * The returned Buffer references the message segment. Mutating the Buffer mutates the message, and the view must not be
+ * used after the message storage is discarded.
+ */
+export function viewDataAsBuffer(data: Data): Buffer {
+  const view = data.toUint8Array();
+  return Buffer.from(view.buffer, view.byteOffset, view.byteLength);
 }
 
 export async function connectNodeRpc(

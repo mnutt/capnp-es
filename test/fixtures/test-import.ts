@@ -6,7 +6,13 @@ export class TestImport extends $.Struct {
   static readonly _capnp = {
     displayName: "TestImport",
     id: "bc55b08b672b5d97",
+    typeId: 0xbc55b08b672b5d97n,
+    typeIdHex: "bc55b08b672b5d97",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "field", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } },
+      { name: "enumField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0x9c8e9318b29d9cd3n, typeIdHex: "9c8e9318b29d9cd3", displayName: "TestEnum" } }
+    ] as const,
   };
   _adoptField(value: $.Orphan<TestAllTypes>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));

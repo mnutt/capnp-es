@@ -7,7 +7,10 @@ export class Void extends Struct {
   static readonly _capnp: _StructCtor = {
     displayName: "Void",
     id: "0",
+    typeId: 0n,
+    typeIdHex: "0",
     size: new ObjectSize(0, 0),
+    fields: [],
   };
 }
 

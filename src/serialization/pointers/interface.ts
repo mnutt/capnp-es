@@ -7,16 +7,13 @@ import { format } from "../../util";
 import { MAX_DEPTH } from "../../constants";
 import { Pointer, PointerType } from "./pointer";
 import { getTargetPointerType } from "./pointer.utils";
+import type { CapnpSchemaMetadata } from "../../metadata";
 
 export type ServerTarget<S extends InterfaceCtor<unknown, Server>> =
   ConstructorParameters<S["Server"]>[0];
 
 export interface InterfaceCtor<C, S extends Server> {
-  readonly _capnp: {
-    displayName: string;
-    id: string;
-    size: ObjectSize;
-  };
+  readonly _capnp: CapnpSchemaMetadata & { id: string; size: ObjectSize };
   readonly Client: { new (client: Client): C };
 
   readonly Server: { new (target: any): S };

@@ -12,28 +12,35 @@ export type CapnpRpcErrorCode =
 
 export function exceptionTypeToCode(type: Exception_Type): CapnpRpcErrorCode {
   switch (type) {
-    case Exception.Type.OVERLOADED:
+    case Exception.Type.OVERLOADED: {
       return "overloaded";
-    case Exception.Type.DISCONNECTED:
+    }
+    case Exception.Type.DISCONNECTED: {
       return "disconnected";
-    case Exception.Type.UNIMPLEMENTED:
+    }
+    case Exception.Type.UNIMPLEMENTED: {
       return "unimplemented";
-    case Exception.Type.FAILED:
-    default:
+    }
+    default: {
       return "failed";
+    }
   }
 }
 
 export function codeToExceptionType(code: CapnpRpcErrorCode): Exception_Type {
   switch (code) {
-    case "overloaded":
+    case "overloaded": {
       return Exception.Type.OVERLOADED;
-    case "disconnected":
+    }
+    case "disconnected": {
       return Exception.Type.DISCONNECTED;
-    case "unimplemented":
+    }
+    case "unimplemented": {
       return Exception.Type.UNIMPLEMENTED;
-    case "failed":
+    }
+    case "failed": {
       return Exception.Type.FAILED;
+    }
   }
 }
 

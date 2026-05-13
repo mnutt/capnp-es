@@ -8,7 +8,19 @@ export class TestImport2 extends $.Struct {
   static readonly _capnp = {
     displayName: "TestImport2",
     id: "f6bd77f100ecb0ff",
+    typeId: 0xf6bd77f100ecb0ffn,
+    typeIdHex: "f6bd77f100ecb0ff",
     size: new $.ObjectSize(8, 7),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xe682ab4cf923a417n, typeIdHex: "e682ab4cf923a417", displayName: "Node" } },
+      { name: "baz", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xbc55b08b672b5d97n, typeIdHex: "bc55b08b672b5d97", displayName: "TestImport" } },
+      { name: "box", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xb9521bccf10fa3b1n, typeIdHex: "b9521bccf10fa3b1", displayName: "Parameter" } },
+      { name: "bee", codeOrder: 4, ordinal: 4, kind: "slot", offset: 4, type: { kind: "struct", typeId: 0xdebf55bbfa0fc242n, typeIdHex: "debf55bbfa0fc242", displayName: "NestedNode" } },
+      { name: "bok", codeOrder: 5, ordinal: 5, kind: "slot", offset: 5, type: { kind: "struct", typeId: 0xabd73485a9636bc9n, typeIdHex: "abd73485a9636bc9", displayName: "Scope" } },
+      { name: "bip", codeOrder: 6, ordinal: 6, kind: "slot", offset: 6, type: { kind: "struct", typeId: 0xc863cd16969ee7fcn, typeIdHex: "c863cd16969ee7fc", displayName: "Binding" } },
+      { name: "bep", codeOrder: 7, ordinal: 7, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xd1958f7dba521926n, typeIdHex: "d1958f7dba521926", displayName: "ElementSize" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<TestAllTypes>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));

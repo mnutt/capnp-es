@@ -1,9 +1,15 @@
 import { Duplex, PassThrough } from "node:stream";
 import { describe, test, assert as t } from "vitest";
 import { CapnpRpcError } from "capnp-es";
-import { transportFromDuplex } from "capnp-es/node";
+import {
+  copyDataToBuffer,
+  messageToBuffer,
+  transportFromDuplex,
+  viewDataAsBuffer,
+} from "capnp-es/node";
 import { Message as RPCMessage } from "src/capnp/rpc";
 import { Message } from "src/serialization/message";
+import { TestAllTypes } from "test/fixtures/test";
 
 class MemoryDuplex extends Duplex {
   peer?: MemoryDuplex;
@@ -95,5 +101,52 @@ describe("Node RPC transport", () => {
       t.instanceOf(error_, CapnpRpcError);
       t.equal((error_ as CapnpRpcError).code, "disconnected");
     }
+  });
+
+  test("aborts an active Duplex transport", async () => {
+    const [a, b] = createDuplexPair();
+    const controller = new AbortController();
+    const transport = transportFromDuplex(b, { signal: controller.signal });
+    const pending = transport.recvMessage();
+
+    controller.abort();
+
+    try {
+      await pending;
+      throw new Error("expected recvMessage() to reject");
+    } catch (error_) {
+      t.instanceOf(error_, CapnpRpcError);
+      t.equal((error_ as CapnpRpcError).code, "disconnected");
+    }
+
+    t.equal(b.destroyed, true);
+    a.destroy();
+  });
+
+  test("serializes messages to Buffer copies", () => {
+    const { message } = bootstrapMessage(789);
+    const buffer = messageToBuffer(message);
+
+    t.instanceOf(buffer, Buffer);
+    t.deepEqual(buffer, Buffer.from(message.toArrayBuffer()));
+
+    buffer[0] = 0xff;
+    t.notEqual(messageToBuffer(message)[0], 0xff);
+  });
+
+  test("copies and views Data pointers as Buffers", () => {
+    const message = new Message();
+    const root = message.initRoot(TestAllTypes);
+    const data = root._initDataField(3);
+    data.copyBuffer(new Uint8Array([1, 2, 3]));
+
+    const copy = copyDataToBuffer(data);
+    const view = viewDataAsBuffer(data);
+
+    copy[0] = 9;
+    t.equal(data.get(0), 1);
+
+    view[0] = 8;
+    t.equal(data.get(0), 8);
   });
 });

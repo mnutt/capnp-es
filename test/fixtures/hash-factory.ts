@@ -5,7 +5,10 @@ export class HashFactory_NewSha1$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "newSha1$Params",
     id: "82994ca98e892c55",
+    typeId: 0x82994ca98e892c55n,
+    typeIdHex: "82994ca98e892c55",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "HashFactory_NewSha1$Params_" + super.toString(); }
 }
@@ -13,7 +16,12 @@ export class HashFactory_NewSha1$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "newSha1$Results",
     id: "9ad1223357407533",
+    typeId: 0x9ad1223357407533n,
+    typeIdHex: "9ad1223357407533",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "hash", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xe9620cda4245af9an, typeIdHex: "e9620cda4245af9a", displayName: "Hash" } }
+    ] as const,
   };
   get hash(): Hash$Client {
     return new Hash$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -50,7 +58,9 @@ export class HashFactory$Client {
       interfaceId: HashFactory$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/hash-factory.capnp:HashFactory",
-      methodName: "newSha1"
+      methodName: "newSha1",
+      paramFields: HashFactory_NewSha1$Params._capnp.fields,
+      resultFields: HashFactory_NewSha1$Results._capnp.fields
     }
   ];
   newSha1(paramsFunc?: (params: HashFactory_NewSha1$Params) => void): HashFactory_NewSha1$Results$Promise {
@@ -87,7 +97,10 @@ export class HashFactory extends $.Interface {
   static readonly _capnp = {
     displayName: "HashFactory",
     id: "cb1e6205ea21d707",
+    typeId: 0xcb1e6205ea21d707n,
+    typeIdHex: "cb1e6205ea21d707",
     size: new $.ObjectSize(0, 0),
+    methods: HashFactory$Client.methods,
   };
   toString(): string { return "HashFactory_" + super.toString(); }
 }
@@ -95,7 +108,12 @@ export class Hash_Write$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "write$Params",
     id: "f65501e064be5175",
+    typeId: 0xf65501e064be5175n,
+    typeIdHex: "f65501e064be5175",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "data", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
+    ] as const,
   };
   _adoptData(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -121,7 +139,10 @@ export class Hash_Write$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "write$Results",
     id: "dffb54fe160f874c",
+    typeId: 0xdffb54fe160f874cn,
+    typeIdHex: "dffb54fe160f874c",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "Hash_Write$Results_" + super.toString(); }
 }
@@ -138,7 +159,10 @@ export class Hash_Sum$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "sum$Params",
     id: "b494960a8116663b",
+    typeId: 0xb494960a8116663bn,
+    typeIdHex: "b494960a8116663b",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "Hash_Sum$Params_" + super.toString(); }
 }
@@ -146,7 +170,12 @@ export class Hash_Sum$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "sum$Results",
     id: "e9098d3e3e6517b0",
+    typeId: 0xe9098d3e3e6517b0n,
+    typeIdHex: "e9098d3e3e6517b0",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "hash", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
+    ] as const,
   };
   _adoptHash(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -193,7 +222,9 @@ export class Hash$Client {
       interfaceId: Hash$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/hash-factory.capnp:Hash",
-      methodName: "write"
+      methodName: "write",
+      paramFields: Hash_Write$Params._capnp.fields,
+      resultFields: Hash_Write$Results._capnp.fields
     },
     {
       ParamsClass: Hash_Sum$Params,
@@ -201,7 +232,9 @@ export class Hash$Client {
       interfaceId: Hash$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/hash-factory.capnp:Hash",
-      methodName: "sum"
+      methodName: "sum",
+      paramFields: Hash_Sum$Params._capnp.fields,
+      resultFields: Hash_Sum$Results._capnp.fields
     }
   ];
   write(paramsFunc?: (params: Hash_Write$Params) => void): Hash_Write$Results$Promise {
@@ -251,7 +284,10 @@ export class Hash extends $.Interface {
   static readonly _capnp = {
     displayName: "Hash",
     id: "e9620cda4245af9a",
+    typeId: 0xe9620cda4245af9an,
+    typeIdHex: "e9620cda4245af9a",
     size: new $.ObjectSize(0, 0),
+    methods: Hash$Client.methods,
   };
   toString(): string { return "Hash_" + super.toString(); }
 }

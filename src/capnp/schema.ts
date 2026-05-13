@@ -9,7 +9,12 @@ export class Node_Parameter extends $.Struct {
   static readonly _capnp = {
     displayName: "Parameter",
     id: "b9521bccf10fa3b1",
+    typeId: 0xb9521bccf10fa3b1n,
+    typeIdHex: "b9521bccf10fa3b1",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "name", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get name(): string {
     return $.utils.getText(0, this);
@@ -23,7 +28,13 @@ export class Node_NestedNode extends $.Struct {
   static readonly _capnp = {
     displayName: "NestedNode",
     id: "debf55bbfa0fc242",
+    typeId: 0xdebf55bbfa0fc242n,
+    typeIdHex: "debf55bbfa0fc242",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "name", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "id", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint64" } }
+    ] as const,
   };
   /**
 * Unqualified symbol name.  Unlike Node.displayName, this *can* be used programmatically.
@@ -54,7 +65,12 @@ export class Node_SourceInfo_Member extends $.Struct {
   static readonly _capnp = {
     displayName: "Member",
     id: "c2ba9038898e1fa2",
+    typeId: 0xc2ba9038898e1fa2n,
+    typeIdHex: "c2ba9038898e1fa2",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "docComment", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   /**
 * Doc comment on the member.
@@ -80,7 +96,14 @@ export class Node_SourceInfo extends $.Struct {
   static readonly _capnp = {
     displayName: "SourceInfo",
     id: "f38e1de3041357ae",
+    typeId: 0xf38e1de3041357aen,
+    typeIdHex: "f38e1de3041357ae",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "docComment", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "members", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xc2ba9038898e1fa2n, typeIdHex: "c2ba9038898e1fa2", displayName: "Member" } } }
+    ] as const,
   };
   static _Members: $.ListCtor<Node_SourceInfo_Member>;
   /**
@@ -135,7 +158,18 @@ export class Node_Struct extends $.Struct {
   static readonly _capnp = {
     displayName: "struct",
     id: "9ea0b19b37fb4435",
+    typeId: 0x9ea0b19b37fb4435n,
+    typeIdHex: "9ea0b19b37fb4435",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "dataWordCount", codeOrder: 0, ordinal: 7, kind: "slot", offset: 7, type: { kind: "uint16" } },
+      { name: "pointerCount", codeOrder: 1, ordinal: 8, kind: "slot", offset: 12, type: { kind: "uint16" } },
+      { name: "preferredListEncoding", codeOrder: 2, ordinal: 9, kind: "slot", offset: 13, type: { kind: "enum", typeId: 0xd1958f7dba521926n, typeIdHex: "d1958f7dba521926", displayName: "ElementSize" } },
+      { name: "isGroup", codeOrder: 3, ordinal: 10, kind: "slot", offset: 224, type: { kind: "bool" } },
+      { name: "discriminantCount", codeOrder: 4, ordinal: 11, kind: "slot", offset: 15, type: { kind: "uint16" } },
+      { name: "discriminantOffset", codeOrder: 5, ordinal: 12, kind: "slot", offset: 8, type: { kind: "uint32" } },
+      { name: "fields", codeOrder: 6, ordinal: 13, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "struct", typeId: 0x9aad50a41f4af45fn, typeIdHex: "9aad50a41f4af45f", displayName: "Field" } } }
+    ] as const,
   };
   static _Fields: $.ListCtor<Field>;
   /**
@@ -255,7 +289,12 @@ export class Node_Enum extends $.Struct {
   static readonly _capnp = {
     displayName: "enum",
     id: "b54ab3364333f598",
+    typeId: 0xb54ab3364333f598n,
+    typeIdHex: "b54ab3364333f598",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "enumerants", codeOrder: 0, ordinal: 14, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "struct", typeId: 0x978a7cebdc549a4dn, typeIdHex: "978a7cebdc549a4d", displayName: "Enumerant" } } }
+    ] as const,
   };
   static _Enumerants: $.ListCtor<Enumerant>;
   _adoptEnumerants(value: $.Orphan<$.List<Enumerant>>): void {
@@ -286,7 +325,13 @@ export class Node_Interface extends $.Struct {
   static readonly _capnp = {
     displayName: "interface",
     id: "e82753cff0c2218f",
+    typeId: 0xe82753cff0c2218fn,
+    typeIdHex: "e82753cff0c2218f",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "methods", codeOrder: 0, ordinal: 15, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "struct", typeId: 0x9500cce23b334d80n, typeIdHex: "9500cce23b334d80", displayName: "Method" } } },
+      { name: "superclasses", codeOrder: 1, ordinal: 31, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "struct", typeId: 0xa9962a9ed0a4d7f8n, typeIdHex: "a9962a9ed0a4d7f8", displayName: "Superclass" } } }
+    ] as const,
   };
   static _Methods: $.ListCtor<Method>;
   static _Superclasses: $.ListCtor<Superclass>;
@@ -340,7 +385,13 @@ export class Node_Const extends $.Struct {
   static readonly _capnp = {
     displayName: "const",
     id: "b18aa5ac7a0d9420",
+    typeId: 0xb18aa5ac7a0d9420n,
+    typeIdHex: "b18aa5ac7a0d9420",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "type", codeOrder: 0, ordinal: 16, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xd07378ede1f9cc60n, typeIdHex: "d07378ede1f9cc60", displayName: "Type" } },
+      { name: "value", codeOrder: 1, ordinal: 17, kind: "slot", offset: 4, type: { kind: "struct", typeId: 0xce23dcd2d7b00c9bn, typeIdHex: "ce23dcd2d7b00c9b", displayName: "Value" } }
+    ] as const,
   };
   _adoptType(value: $.Orphan<Type>): void {
     $.utils.adopt(value, $.utils.getPointer(3, this));
@@ -384,7 +435,24 @@ export class Node_Annotation extends $.Struct {
   static readonly _capnp = {
     displayName: "annotation",
     id: "ec1619d4400a0290",
+    typeId: 0xec1619d4400a0290n,
+    typeIdHex: "ec1619d4400a0290",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "type", codeOrder: 0, ordinal: 18, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xd07378ede1f9cc60n, typeIdHex: "d07378ede1f9cc60", displayName: "Type" } },
+      { name: "targetsFile", codeOrder: 1, ordinal: 19, kind: "slot", offset: 112, type: { kind: "bool" } },
+      { name: "targetsConst", codeOrder: 2, ordinal: 20, kind: "slot", offset: 113, type: { kind: "bool" } },
+      { name: "targetsEnum", codeOrder: 3, ordinal: 21, kind: "slot", offset: 114, type: { kind: "bool" } },
+      { name: "targetsEnumerant", codeOrder: 4, ordinal: 22, kind: "slot", offset: 115, type: { kind: "bool" } },
+      { name: "targetsStruct", codeOrder: 5, ordinal: 23, kind: "slot", offset: 116, type: { kind: "bool" } },
+      { name: "targetsField", codeOrder: 6, ordinal: 24, kind: "slot", offset: 117, type: { kind: "bool" } },
+      { name: "targetsUnion", codeOrder: 7, ordinal: 25, kind: "slot", offset: 118, type: { kind: "bool" } },
+      { name: "targetsGroup", codeOrder: 8, ordinal: 26, kind: "slot", offset: 119, type: { kind: "bool" } },
+      { name: "targetsInterface", codeOrder: 9, ordinal: 27, kind: "slot", offset: 120, type: { kind: "bool" } },
+      { name: "targetsMethod", codeOrder: 10, ordinal: 28, kind: "slot", offset: 121, type: { kind: "bool" } },
+      { name: "targetsParam", codeOrder: 11, ordinal: 29, kind: "slot", offset: 122, type: { kind: "bool" } },
+      { name: "targetsAnnotation", codeOrder: 12, ordinal: 30, kind: "slot", offset: 123, type: { kind: "bool" } }
+    ] as const,
   };
   _adoptType(value: $.Orphan<Type>): void {
     $.utils.adopt(value, $.utils.getPointer(3, this));
@@ -528,7 +596,25 @@ export class Node extends $.Struct {
   static readonly _capnp = {
     displayName: "Node",
     id: "e682ab4cf923a417",
+    typeId: 0xe682ab4cf923a417n,
+    typeIdHex: "e682ab4cf923a417",
     size: new $.ObjectSize(40, 6),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "displayName", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "displayNamePrefixLength", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "uint32" } },
+      { name: "scopeId", codeOrder: 3, ordinal: 3, kind: "slot", offset: 2, type: { kind: "uint64" } },
+      { name: "parameters", codeOrder: 4, ordinal: 32, kind: "slot", offset: 5, type: { kind: "list", elementType: { kind: "struct", typeId: 0xb9521bccf10fa3b1n, typeIdHex: "b9521bccf10fa3b1", displayName: "Parameter" } } },
+      { name: "isGeneric", codeOrder: 5, ordinal: 33, kind: "slot", offset: 288, type: { kind: "bool" } },
+      { name: "nestedNodes", codeOrder: 6, ordinal: 4, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xdebf55bbfa0fc242n, typeIdHex: "debf55bbfa0fc242", displayName: "NestedNode" } } },
+      { name: "annotations", codeOrder: 7, ordinal: 5, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf1c8950dab257542n, typeIdHex: "f1c8950dab257542", displayName: "Annotation" } } },
+      { name: "file", codeOrder: 8, ordinal: 6, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "struct", codeOrder: 9, ordinal: 7, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0x9ea0b19b37fb4435n, typeIdHex: "9ea0b19b37fb4435", displayName: "struct" } },
+      { name: "enum", codeOrder: 10, ordinal: 8, discriminantValue: 2, kind: "group", type: { kind: "group", typeId: 0xb54ab3364333f598n, typeIdHex: "b54ab3364333f598", displayName: "enum" } },
+      { name: "interface", codeOrder: 11, ordinal: 9, discriminantValue: 3, kind: "group", type: { kind: "group", typeId: 0xe82753cff0c2218fn, typeIdHex: "e82753cff0c2218f", displayName: "interface" } },
+      { name: "const", codeOrder: 12, ordinal: 10, discriminantValue: 4, kind: "group", type: { kind: "group", typeId: 0xb18aa5ac7a0d9420n, typeIdHex: "b18aa5ac7a0d9420", displayName: "const" } },
+      { name: "annotation", codeOrder: 13, ordinal: 11, discriminantValue: 5, kind: "group", type: { kind: "group", typeId: 0xec1619d4400a0290n, typeIdHex: "ec1619d4400a0290", displayName: "annotation" } }
+    ] as const,
   };
   static _Parameters: $.ListCtor<Node_Parameter>;
   static _NestedNodes: $.ListCtor<Node_NestedNode>;
@@ -743,7 +829,15 @@ export class Field_Slot extends $.Struct {
   static readonly _capnp = {
     displayName: "slot",
     id: "c42305476bb4746f",
+    typeId: 0xc42305476bb4746fn,
+    typeIdHex: "c42305476bb4746f",
     size: new $.ObjectSize(24, 4),
+    fields: [
+      { name: "offset", codeOrder: 0, ordinal: 4, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "type", codeOrder: 1, ordinal: 5, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xd07378ede1f9cc60n, typeIdHex: "d07378ede1f9cc60", displayName: "Type" } },
+      { name: "defaultValue", codeOrder: 2, ordinal: 6, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xce23dcd2d7b00c9bn, typeIdHex: "ce23dcd2d7b00c9b", displayName: "Value" } },
+      { name: "hadExplicitDefault", codeOrder: 3, ordinal: 10, kind: "slot", offset: 128, type: { kind: "bool" } }
+    ] as const,
   };
   /**
 * Offset, in units of the field's size, from the beginning of the section in which the field
@@ -816,7 +910,12 @@ export class Field_Group extends $.Struct {
   static readonly _capnp = {
     displayName: "group",
     id: "cafccddb68db1d11",
+    typeId: 0xcafccddb68db1d11n,
+    typeIdHex: "cafccddb68db1d11",
     size: new $.ObjectSize(24, 4),
+    fields: [
+      { name: "typeId", codeOrder: 0, ordinal: 7, kind: "slot", offset: 2, type: { kind: "uint64" } }
+    ] as const,
   };
   /**
 * The ID of the group's node.
@@ -848,7 +947,13 @@ export class Field_Ordinal extends $.Struct {
   static readonly _capnp = {
     displayName: "ordinal",
     id: "bb90d5c287870be6",
+    typeId: 0xbb90d5c287870be6n,
+    typeIdHex: "bb90d5c287870be6",
     size: new $.ObjectSize(24, 4),
+    fields: [
+      { name: "implicit", codeOrder: 0, ordinal: 8, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "explicit", codeOrder: 1, ordinal: 9, discriminantValue: 1, kind: "slot", offset: 6, type: { kind: "uint16" } }
+    ] as const,
   };
   get _isImplicit(): boolean {
     return $.utils.getUint16(10, this) === 0;
@@ -904,7 +1009,18 @@ export class Field extends $.Struct {
   static readonly _capnp = {
     displayName: "Field",
     id: "9aad50a41f4af45f",
+    typeId: 0x9aad50a41f4af45fn,
+    typeIdHex: "9aad50a41f4af45f",
     size: new $.ObjectSize(24, 4),
+    fields: [
+      { name: "name", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "codeOrder", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "annotations", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf1c8950dab257542n, typeIdHex: "f1c8950dab257542", displayName: "Annotation" } } },
+      { name: "discriminantValue", codeOrder: 3, ordinal: 3, kind: "slot", offset: 1, type: { kind: "uint16" } },
+      { name: "slot", codeOrder: 4, ordinal: 4, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0xc42305476bb4746fn, typeIdHex: "c42305476bb4746f", displayName: "slot" } },
+      { name: "group", codeOrder: 5, ordinal: 5, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xcafccddb68db1d11n, typeIdHex: "cafccddb68db1d11", displayName: "group" } },
+      { name: "ordinal", codeOrder: 6, ordinal: 6, kind: "group", type: { kind: "group", typeId: 0xbb90d5c287870be6n, typeIdHex: "bb90d5c287870be6", displayName: "ordinal" } }
+    ] as const,
     defaultDiscriminantValue: $.getUint16Mask(65535)
   };
   static _Annotations: $.ListCtor<Annotation>;
@@ -1013,7 +1129,14 @@ export class Enumerant extends $.Struct {
   static readonly _capnp = {
     displayName: "Enumerant",
     id: "978a7cebdc549a4d",
+    typeId: 0x978a7cebdc549a4dn,
+    typeIdHex: "978a7cebdc549a4d",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "name", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "codeOrder", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "annotations", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf1c8950dab257542n, typeIdHex: "f1c8950dab257542", displayName: "Annotation" } } }
+    ] as const,
   };
   static _Annotations: $.ListCtor<Annotation>;
   get name(): string {
@@ -1057,7 +1180,13 @@ export class Superclass extends $.Struct {
   static readonly _capnp = {
     displayName: "Superclass",
     id: "a9962a9ed0a4d7f8",
+    typeId: 0xa9962a9ed0a4d7f8n,
+    typeIdHex: "a9962a9ed0a4d7f8",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "brand", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } }
+    ] as const,
   };
   get id(): bigint {
     return $.utils.getUint64(0, this);
@@ -1093,7 +1222,19 @@ export class Method extends $.Struct {
   static readonly _capnp = {
     displayName: "Method",
     id: "9500cce23b334d80",
+    typeId: 0x9500cce23b334d80n,
+    typeIdHex: "9500cce23b334d80",
     size: new $.ObjectSize(24, 5),
+    fields: [
+      { name: "name", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "codeOrder", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "implicitParameters", codeOrder: 2, ordinal: 7, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "struct", typeId: 0xb9521bccf10fa3b1n, typeIdHex: "b9521bccf10fa3b1", displayName: "Parameter" } } },
+      { name: "paramStructType", codeOrder: 3, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "paramBrand", codeOrder: 4, ordinal: 5, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } },
+      { name: "resultStructType", codeOrder: 5, ordinal: 3, kind: "slot", offset: 2, type: { kind: "uint64" } },
+      { name: "resultBrand", codeOrder: 6, ordinal: 6, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } },
+      { name: "annotations", codeOrder: 7, ordinal: 4, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf1c8950dab257542n, typeIdHex: "f1c8950dab257542", displayName: "Annotation" } } }
+    ] as const,
   };
   static _ImplicitParameters: $.ListCtor<Node_Parameter>;
   static _Annotations: $.ListCtor<Annotation>;
@@ -1231,7 +1372,12 @@ export class Type_List extends $.Struct {
   static readonly _capnp = {
     displayName: "list",
     id: "87e739250a60ea97",
+    typeId: 0x87e739250a60ea97n,
+    typeIdHex: "87e739250a60ea97",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "elementType", codeOrder: 0, ordinal: 14, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd07378ede1f9cc60n, typeIdHex: "d07378ede1f9cc60", displayName: "Type" } }
+    ] as const,
   };
   _adoptElementType(value: $.Orphan<Type>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -1257,7 +1403,13 @@ export class Type_Enum extends $.Struct {
   static readonly _capnp = {
     displayName: "enum",
     id: "9e0e78711a7f87a9",
+    typeId: 0x9e0e78711a7f87a9n,
+    typeIdHex: "9e0e78711a7f87a9",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "typeId", codeOrder: 0, ordinal: 15, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "brand", codeOrder: 1, ordinal: 21, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } }
+    ] as const,
   };
   get typeId(): bigint {
     return $.utils.getUint64(8, this);
@@ -1289,7 +1441,13 @@ export class Type_Struct extends $.Struct {
   static readonly _capnp = {
     displayName: "struct",
     id: "ac3a6f60ef4cc6d3",
+    typeId: 0xac3a6f60ef4cc6d3n,
+    typeIdHex: "ac3a6f60ef4cc6d3",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "typeId", codeOrder: 0, ordinal: 16, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "brand", codeOrder: 1, ordinal: 22, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } }
+    ] as const,
   };
   get typeId(): bigint {
     return $.utils.getUint64(8, this);
@@ -1321,7 +1479,13 @@ export class Type_Interface extends $.Struct {
   static readonly _capnp = {
     displayName: "interface",
     id: "ed8bca69f7fb0cbf",
+    typeId: 0xed8bca69f7fb0cbfn,
+    typeIdHex: "ed8bca69f7fb0cbf",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "typeId", codeOrder: 0, ordinal: 17, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "brand", codeOrder: 1, ordinal: 23, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } }
+    ] as const,
   };
   get typeId(): bigint {
     return $.utils.getUint64(8, this);
@@ -1388,7 +1552,15 @@ export class Type_AnyPointer_Unconstrained extends $.Struct {
   static readonly _capnp = {
     displayName: "unconstrained",
     id: "8e3b5f79fe593656",
+    typeId: 0x8e3b5f79fe593656n,
+    typeIdHex: "8e3b5f79fe593656",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "anyKind", codeOrder: 0, ordinal: 18, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "struct", codeOrder: 1, ordinal: 25, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "list", codeOrder: 2, ordinal: 26, discriminantValue: 2, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "capability", codeOrder: 3, ordinal: 27, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "void" } }
+    ] as const,
   };
   get _isAnyKind(): boolean {
     return $.utils.getUint16(10, this) === 0;
@@ -1427,7 +1599,13 @@ export class Type_AnyPointer_Parameter extends $.Struct {
   static readonly _capnp = {
     displayName: "parameter",
     id: "9dd1f724f4614a85",
+    typeId: 0x9dd1f724f4614a85n,
+    typeIdHex: "9dd1f724f4614a85",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "scopeId", codeOrder: 0, ordinal: 19, kind: "slot", offset: 2, type: { kind: "uint64" } },
+      { name: "parameterIndex", codeOrder: 1, ordinal: 20, kind: "slot", offset: 5, type: { kind: "uint16" } }
+    ] as const,
   };
   /**
 * ID of the generic type whose parameter we're referencing. This should be a parent of the
@@ -1461,7 +1639,12 @@ export class Type_AnyPointer_ImplicitMethodParameter extends $.Struct {
   static readonly _capnp = {
     displayName: "implicitMethodParameter",
     id: "baefc9120c56e274",
+    typeId: 0xbaefc9120c56e274n,
+    typeIdHex: "baefc9120c56e274",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "parameterIndex", codeOrder: 0, ordinal: 24, kind: "slot", offset: 5, type: { kind: "uint16" } }
+    ] as const,
   };
   get parameterIndex(): number {
     return $.utils.getUint16(10, this);
@@ -1501,7 +1684,14 @@ export class Type_AnyPointer extends $.Struct {
   static readonly _capnp = {
     displayName: "anyPointer",
     id: "c2573fe8a23e49f1",
+    typeId: 0xc2573fe8a23e49f1n,
+    typeIdHex: "c2573fe8a23e49f1",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "unconstrained", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0x8e3b5f79fe593656n, typeIdHex: "8e3b5f79fe593656", displayName: "unconstrained" } },
+      { name: "parameter", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0x9dd1f724f4614a85n, typeIdHex: "9dd1f724f4614a85", displayName: "parameter" } },
+      { name: "implicitMethodParameter", codeOrder: 2, ordinal: 2, discriminantValue: 2, kind: "group", type: { kind: "group", typeId: 0xbaefc9120c56e274n, typeIdHex: "baefc9120c56e274", displayName: "implicitMethodParameter" } }
+    ] as const,
   };
   /**
 * A regular AnyPointer.
@@ -1616,7 +1806,30 @@ export class Type extends $.Struct {
   static readonly _capnp = {
     displayName: "Type",
     id: "d07378ede1f9cc60",
+    typeId: 0xd07378ede1f9cc60n,
+    typeIdHex: "d07378ede1f9cc60",
     size: new $.ObjectSize(24, 1),
+    fields: [
+      { name: "void", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "bool", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "int8", codeOrder: 2, ordinal: 2, discriminantValue: 2, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "int16", codeOrder: 3, ordinal: 3, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "int32", codeOrder: 4, ordinal: 4, discriminantValue: 4, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "int64", codeOrder: 5, ordinal: 5, discriminantValue: 5, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "uint8", codeOrder: 6, ordinal: 6, discriminantValue: 6, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "uint16", codeOrder: 7, ordinal: 7, discriminantValue: 7, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "uint32", codeOrder: 8, ordinal: 8, discriminantValue: 8, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "uint64", codeOrder: 9, ordinal: 9, discriminantValue: 9, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "float32", codeOrder: 10, ordinal: 10, discriminantValue: 10, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "float64", codeOrder: 11, ordinal: 11, discriminantValue: 11, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "text", codeOrder: 12, ordinal: 12, discriminantValue: 12, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "data", codeOrder: 13, ordinal: 13, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "list", codeOrder: 14, ordinal: 14, discriminantValue: 14, kind: "group", type: { kind: "group", typeId: 0x87e739250a60ea97n, typeIdHex: "87e739250a60ea97", displayName: "list" } },
+      { name: "enum", codeOrder: 15, ordinal: 15, discriminantValue: 15, kind: "group", type: { kind: "group", typeId: 0x9e0e78711a7f87a9n, typeIdHex: "9e0e78711a7f87a9", displayName: "enum" } },
+      { name: "struct", codeOrder: 16, ordinal: 16, discriminantValue: 16, kind: "group", type: { kind: "group", typeId: 0xac3a6f60ef4cc6d3n, typeIdHex: "ac3a6f60ef4cc6d3", displayName: "struct" } },
+      { name: "interface", codeOrder: 17, ordinal: 17, discriminantValue: 17, kind: "group", type: { kind: "group", typeId: 0xed8bca69f7fb0cbfn, typeIdHex: "ed8bca69f7fb0cbf", displayName: "interface" } },
+      { name: "anyPointer", codeOrder: 18, ordinal: 18, discriminantValue: 18, kind: "group", type: { kind: "group", typeId: 0xc2573fe8a23e49f1n, typeIdHex: "c2573fe8a23e49f1", displayName: "anyPointer" } }
+    ] as const,
   };
   get _isVoid(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -1796,7 +2009,14 @@ export class Brand_Scope extends $.Struct {
   static readonly _capnp = {
     displayName: "Scope",
     id: "abd73485a9636bc9",
+    typeId: 0xabd73485a9636bc9n,
+    typeIdHex: "abd73485a9636bc9",
     size: new $.ObjectSize(16, 1),
+    fields: [
+      { name: "scopeId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "bind", codeOrder: 1, ordinal: 1, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xc863cd16969ee7fcn, typeIdHex: "c863cd16969ee7fc", displayName: "Binding" } } },
+      { name: "inherit", codeOrder: 2, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "void" } }
+    ] as const,
   };
   static _Bind: $.ListCtor<Brand_Binding>;
   /**
@@ -1860,7 +2080,13 @@ export class Brand_Binding extends $.Struct {
   static readonly _capnp = {
     displayName: "Binding",
     id: "c863cd16969ee7fc",
+    typeId: 0xc863cd16969ee7fcn,
+    typeIdHex: "c863cd16969ee7fc",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "unbound", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "type", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd07378ede1f9cc60n, typeIdHex: "d07378ede1f9cc60", displayName: "Type" } }
+    ] as const,
   };
   get _isUnbound(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -1909,7 +2135,12 @@ export class Brand extends $.Struct {
   static readonly _capnp = {
     displayName: "Brand",
     id: "903455f06065422b",
+    typeId: 0x903455f06065422bn,
+    typeIdHex: "903455f06065422b",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "scopes", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xabd73485a9636bc9n, typeIdHex: "abd73485a9636bc9", displayName: "Scope" } } }
+    ] as const,
   };
   static _Scopes: $.ListCtor<Brand_Scope>;
   _adoptScopes(value: $.Orphan<$.List<Brand_Scope>>): void {
@@ -1992,7 +2223,30 @@ export class Value extends $.Struct {
   static readonly _capnp = {
     displayName: "Value",
     id: "ce23dcd2d7b00c9b",
+    typeId: 0xce23dcd2d7b00c9bn,
+    typeIdHex: "ce23dcd2d7b00c9b",
     size: new $.ObjectSize(16, 1),
+    fields: [
+      { name: "void", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "bool", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 16, type: { kind: "bool" } },
+      { name: "int8", codeOrder: 2, ordinal: 2, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "int8" } },
+      { name: "int16", codeOrder: 3, ordinal: 3, discriminantValue: 3, kind: "slot", offset: 1, type: { kind: "int16" } },
+      { name: "int32", codeOrder: 4, ordinal: 4, discriminantValue: 4, kind: "slot", offset: 1, type: { kind: "int32" } },
+      { name: "int64", codeOrder: 5, ordinal: 5, discriminantValue: 5, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "uint8", codeOrder: 6, ordinal: 6, discriminantValue: 6, kind: "slot", offset: 2, type: { kind: "uint8" } },
+      { name: "uint16", codeOrder: 7, ordinal: 7, discriminantValue: 7, kind: "slot", offset: 1, type: { kind: "uint16" } },
+      { name: "uint32", codeOrder: 8, ordinal: 8, discriminantValue: 8, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "uint64", codeOrder: 9, ordinal: 9, discriminantValue: 9, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "float32", codeOrder: 10, ordinal: 10, discriminantValue: 10, kind: "slot", offset: 1, type: { kind: "float32" } },
+      { name: "float64", codeOrder: 11, ordinal: 11, discriminantValue: 11, kind: "slot", offset: 1, type: { kind: "float64" } },
+      { name: "text", codeOrder: 12, ordinal: 12, discriminantValue: 12, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "data", codeOrder: 13, ordinal: 13, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "data" } },
+      { name: "list", codeOrder: 14, ordinal: 14, discriminantValue: 14, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "enum", codeOrder: 15, ordinal: 15, discriminantValue: 15, kind: "slot", offset: 1, type: { kind: "uint16" } },
+      { name: "struct", codeOrder: 16, ordinal: 16, discriminantValue: 16, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "interface", codeOrder: 17, ordinal: 17, discriminantValue: 17, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "anyPointer", codeOrder: 18, ordinal: 18, discriminantValue: 18, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   get _isVoid(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -2251,7 +2505,14 @@ export class Annotation extends $.Struct {
   static readonly _capnp = {
     displayName: "Annotation",
     id: "f1c8950dab257542",
+    typeId: 0xf1c8950dab257542n,
+    typeIdHex: "f1c8950dab257542",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "brand", codeOrder: 1, ordinal: 2, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x903455f06065422bn, typeIdHex: "903455f06065422b", displayName: "Brand" } },
+      { name: "value", codeOrder: 2, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xce23dcd2d7b00c9bn, typeIdHex: "ce23dcd2d7b00c9b", displayName: "Value" } }
+    ] as const,
   };
   /**
 * ID of the annotation node.
@@ -2326,7 +2587,14 @@ export class CapnpVersion extends $.Struct {
   static readonly _capnp = {
     displayName: "CapnpVersion",
     id: "d85d305b7d839963",
+    typeId: 0xd85d305b7d839963n,
+    typeIdHex: "d85d305b7d839963",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "major", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "minor", codeOrder: 1, ordinal: 1, kind: "slot", offset: 2, type: { kind: "uint8" } },
+      { name: "micro", codeOrder: 2, ordinal: 2, kind: "slot", offset: 3, type: { kind: "uint8" } }
+    ] as const,
   };
   get major(): number {
     return $.utils.getUint16(0, this);
@@ -2352,7 +2620,13 @@ export class CodeGeneratorRequest_RequestedFile_Import extends $.Struct {
   static readonly _capnp = {
     displayName: "Import",
     id: "ae504193122357e5",
+    typeId: 0xae504193122357e5n,
+    typeIdHex: "ae504193122357e5",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "name", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   /**
 * ID of the imported file.
@@ -2386,7 +2660,14 @@ export class CodeGeneratorRequest_RequestedFile extends $.Struct {
   static readonly _capnp = {
     displayName: "RequestedFile",
     id: "cfea0eb02e810062",
+    typeId: 0xcfea0eb02e810062n,
+    typeIdHex: "cfea0eb02e810062",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "filename", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "imports", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xae504193122357e5n, typeIdHex: "ae504193122357e5", displayName: "Import" } } }
+    ] as const,
   };
   static _Imports: $.ListCtor<CodeGeneratorRequest_RequestedFile_Import>;
   /**
@@ -2439,7 +2720,15 @@ export class CodeGeneratorRequest extends $.Struct {
   static readonly _capnp = {
     displayName: "CodeGeneratorRequest",
     id: "bfc546f6210ad7ce",
+    typeId: 0xbfc546f6210ad7cen,
+    typeIdHex: "bfc546f6210ad7ce",
     size: new $.ObjectSize(0, 4),
+    fields: [
+      { name: "capnpVersion", codeOrder: 0, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xd85d305b7d839963n, typeIdHex: "d85d305b7d839963", displayName: "CapnpVersion" } },
+      { name: "nodes", codeOrder: 1, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xe682ab4cf923a417n, typeIdHex: "e682ab4cf923a417", displayName: "Node" } } },
+      { name: "sourceInfo", codeOrder: 2, ordinal: 3, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "struct", typeId: 0xf38e1de3041357aen, typeIdHex: "f38e1de3041357ae", displayName: "SourceInfo" } } },
+      { name: "requestedFiles", codeOrder: 3, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xcfea0eb02e810062n, typeIdHex: "cfea0eb02e810062", displayName: "RequestedFile" } } }
+    ] as const,
   };
   static _Nodes: $.ListCtor<Node>;
   static _SourceInfo: $.ListCtor<Node_SourceInfo>;

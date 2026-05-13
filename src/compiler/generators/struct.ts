@@ -105,7 +105,12 @@ export function generateStructNode(
       static readonly _capnp = {
         displayName: "${displayNamePrefix}",
         id: "${nodeIdHex}",
+        typeId: ${createBigInt(nodeId)},
+        typeIdHex: "${nodeIdHex}",
         size: new $.ObjectSize(${dataByteLength}, ${pointerCount}),
+        fields: [
+          ${fieldIndexInCodeOrder.map((index) => createFieldMetadata(ctx, node, fields[index], index)).join(",\n")}
+        ] as const,
         ${defaultValues.join(",")}
       }`,
     ...concreteLists.map((field) => createConcreteListProperty(ctx, field)),
@@ -482,6 +487,119 @@ export function createUnionConstProperty(
   const initializer = `${fullClassName}_Which.${name}`;
 
   return `static readonly ${name} = ${initializer};`;
+}
+
+function createFieldMetadata(
+  ctx: CodeGeneratorFileContext,
+  node: schema.Node,
+  field: schema.Field,
+  fieldIndex: number,
+): string {
+  const discriminant =
+    field.discriminantValue === schema.Field.NO_DISCRIMINANT
+      ? ""
+      : `, discriminantValue: ${field.discriminantValue}`;
+  const common = `name: ${JSON.stringify(field.name)}, codeOrder: ${field.codeOrder}, ordinal: ${getFieldOrdinal(field, fieldIndex)}${discriminant}`;
+
+  if (field._isSlot) {
+    return `{ ${common}, kind: "slot", offset: ${field.slot.offset}, type: ${createTypeMetadata(ctx, field.slot.type)} }`;
+  }
+
+  if (field._isGroup) {
+    const groupNode = lookupNode(ctx, field.group.typeId);
+    const groupType = createNodeTypeMetadata("group", groupNode);
+    return `{ ${common}, kind: "group", type: ${groupType} }`;
+  }
+
+  throw new Error(format(E.GEN_UNKNOWN_STRUCT_FIELD, field.which()));
+}
+
+function getFieldOrdinal(field: schema.Field, fallback: number): number {
+  return field.ordinal.which() === schema.Field_Ordinal.EXPLICIT
+    ? field.ordinal.explicit
+    : fallback;
+}
+
+function createTypeMetadata(
+  ctx: CodeGeneratorFileContext,
+  type: schema.Type,
+): string {
+  switch (type.which()) {
+    case schema.Type.ANY_POINTER: {
+      return `{ kind: "anyPointer" }`;
+    }
+    case schema.Type.BOOL: {
+      return `{ kind: "bool" }`;
+    }
+    case schema.Type.DATA: {
+      return `{ kind: "data" }`;
+    }
+    case schema.Type.ENUM: {
+      return createNodeTypeMetadata("enum", lookupNode(ctx, type.enum.typeId));
+    }
+    case schema.Type.FLOAT32: {
+      return `{ kind: "float32" }`;
+    }
+    case schema.Type.FLOAT64: {
+      return `{ kind: "float64" }`;
+    }
+    case schema.Type.INT16: {
+      return `{ kind: "int16" }`;
+    }
+    case schema.Type.INT32: {
+      return `{ kind: "int32" }`;
+    }
+    case schema.Type.INT64: {
+      return `{ kind: "int64" }`;
+    }
+    case schema.Type.INT8: {
+      return `{ kind: "int8" }`;
+    }
+    case schema.Type.INTERFACE: {
+      return createNodeTypeMetadata(
+        "interface",
+        lookupNode(ctx, type.interface.typeId),
+      );
+    }
+    case schema.Type.LIST: {
+      return `{ kind: "list", elementType: ${createTypeMetadata(ctx, type.list.elementType)} }`;
+    }
+    case schema.Type.STRUCT: {
+      return createNodeTypeMetadata(
+        "struct",
+        lookupNode(ctx, type.struct.typeId),
+      );
+    }
+    case schema.Type.TEXT: {
+      return `{ kind: "text" }`;
+    }
+    case schema.Type.UINT16: {
+      return `{ kind: "uint16" }`;
+    }
+    case schema.Type.UINT32: {
+      return `{ kind: "uint32" }`;
+    }
+    case schema.Type.UINT64: {
+      return `{ kind: "uint64" }`;
+    }
+    case schema.Type.UINT8: {
+      return `{ kind: "uint8" }`;
+    }
+    case schema.Type.VOID: {
+      return `{ kind: "void" }`;
+    }
+    default: {
+      throw new Error(format(E.GEN_UNKNOWN_TYPE, type.which()));
+    }
+  }
+}
+
+function createNodeTypeMetadata(
+  kind: "enum" | "group" | "interface" | "struct",
+  node: schema.Node,
+): string {
+  const idHex = node.id.toString(16);
+  return `{ kind: "${kind}", typeId: ${createBigInt(node.id)}, typeIdHex: "${idHex}", displayName: ${JSON.stringify(getDisplayNamePrefix(node))} }`;
 }
 
 export function createValue(value: schema.Value): string {

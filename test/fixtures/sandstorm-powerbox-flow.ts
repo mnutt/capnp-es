@@ -5,7 +5,10 @@ export class AppPersistent_Save$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "save$Params",
     id: "bb124a76f24faf90",
+    typeId: 0xbb124a76f24faf90n,
+    typeIdHex: "bb124a76f24faf90",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "AppPersistent_Save$Params_" + super.toString(); }
 }
@@ -13,7 +16,12 @@ export class AppPersistent_Save$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "save$Results",
     id: "c76e8d6ea6ecaca9",
+    typeId: 0xc76e8d6ea6ecaca9n,
+    typeIdHex: "c76e8d6ea6ecaca9",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
+    ] as const,
   };
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -59,7 +67,9 @@ export class AppPersistent$Client {
       interfaceId: AppPersistent$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:AppPersistent",
-      methodName: "save"
+      methodName: "save",
+      paramFields: AppPersistent_Save$Params._capnp.fields,
+      resultFields: AppPersistent_Save$Results._capnp.fields
     }
   ];
   save(paramsFunc?: (params: AppPersistent_Save$Params) => void): AppPersistent_Save$Results$Promise {
@@ -96,7 +106,10 @@ export class AppPersistent extends $.Interface {
   static readonly _capnp = {
     displayName: "AppPersistent",
     id: "94d3ee75eb8a7016",
+    typeId: 0x94d3ee75eb8a7016n,
+    typeIdHex: "94d3ee75eb8a7016",
     size: new $.ObjectSize(0, 0),
+    methods: AppPersistent$Client.methods,
   };
   toString(): string { return "AppPersistent_" + super.toString(); }
 }
@@ -104,7 +117,10 @@ export class Node_Stat$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "stat$Params",
     id: "bfb4c532efe76573",
+    typeId: 0xbfb4c532efe76573n,
+    typeIdHex: "bfb4c532efe76573",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "Node_Stat$Params_" + super.toString(); }
 }
@@ -112,7 +128,12 @@ export class Node_Stat$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "stat$Results",
     id: "ff853c77c4117b43",
+    typeId: 0xff853c77c4117b43n,
+    typeIdHex: "ff853c77c4117b43",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "isDir", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
+    ] as const,
   };
   get isDir(): boolean {
     return $.utils.getBit(0, this);
@@ -146,7 +167,9 @@ export class Node$Client {
       interfaceId: Node$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:Node",
-      methodName: "stat"
+      methodName: "stat",
+      paramFields: Node_Stat$Params._capnp.fields,
+      resultFields: Node_Stat$Results._capnp.fields
     }
   ];
   stat(paramsFunc?: (params: Node_Stat$Params) => void): Node_Stat$Results$Promise {
@@ -183,7 +206,10 @@ export class Node extends $.Interface {
   static readonly _capnp = {
     displayName: "Node",
     id: "d17a48af23601b7c",
+    typeId: 0xd17a48af23601b7cn,
+    typeIdHex: "d17a48af23601b7c",
     size: new $.ObjectSize(0, 0),
+    methods: Node$Client.methods,
   };
   toString(): string { return "Node_" + super.toString(); }
 }
@@ -191,7 +217,10 @@ export class AppHooks_GetViewInfo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getViewInfo$Params",
     id: "868b5b92c9347347",
+    typeId: 0x868b5b92c9347347n,
+    typeIdHex: "868b5b92c9347347",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "AppHooks_GetViewInfo$Params_" + super.toString(); }
 }
@@ -199,7 +228,12 @@ export class AppHooks_GetViewInfo$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getViewInfo$Results",
     id: "a80a104d8a8a616f",
+    typeId: 0xa80a104d8a8a616fn,
+    typeIdHex: "a80a104d8a8a616f",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "supportsNode", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
+    ] as const,
   };
   get supportsNode(): boolean {
     return $.utils.getBit(0, this);
@@ -222,7 +256,12 @@ export class AppHooks_Restore$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Params",
     id: "ea0b23950ff318d6",
+    typeId: 0xea0b23950ff318d6n,
+    typeIdHex: "ea0b23950ff318d6",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
+    ] as const,
   };
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -248,7 +287,12 @@ export class AppHooks_Restore$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "restore$Results",
     id: "a660c3ced1a268a5",
+    typeId: 0xa660c3ced1a268a5n,
+    typeIdHex: "a660c3ced1a268a5",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
+    ] as const,
   };
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -274,7 +318,12 @@ export class AppHooks_Drop$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "drop$Params",
     id: "d3abb96331d2e243",
+    typeId: 0xd3abb96331d2e243n,
+    typeIdHex: "d3abb96331d2e243",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
+    ] as const,
   };
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -300,7 +349,10 @@ export class AppHooks_Drop$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "drop$Results",
     id: "b34e9b18133a8ea2",
+    typeId: 0xb34e9b18133a8ea2n,
+    typeIdHex: "b34e9b18133a8ea2",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "AppHooks_Drop$Results_" + super.toString(); }
 }
@@ -330,7 +382,9 @@ export class AppHooks$Client {
       interfaceId: AppHooks$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:AppHooks",
-      methodName: "getViewInfo"
+      methodName: "getViewInfo",
+      paramFields: AppHooks_GetViewInfo$Params._capnp.fields,
+      resultFields: AppHooks_GetViewInfo$Results._capnp.fields
     },
     {
       ParamsClass: AppHooks_Restore$Params,
@@ -338,7 +392,9 @@ export class AppHooks$Client {
       interfaceId: AppHooks$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:AppHooks",
-      methodName: "restore"
+      methodName: "restore",
+      paramFields: AppHooks_Restore$Params._capnp.fields,
+      resultFields: AppHooks_Restore$Results._capnp.fields
     },
     {
       ParamsClass: AppHooks_Drop$Params,
@@ -346,7 +402,9 @@ export class AppHooks$Client {
       interfaceId: AppHooks$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:AppHooks",
-      methodName: "drop"
+      methodName: "drop",
+      paramFields: AppHooks_Drop$Params._capnp.fields,
+      resultFields: AppHooks_Drop$Results._capnp.fields
     }
   ];
   getViewInfo(paramsFunc?: (params: AppHooks_GetViewInfo$Params) => void): AppHooks_GetViewInfo$Results$Promise {
@@ -409,7 +467,10 @@ export class AppHooks extends $.Interface {
   static readonly _capnp = {
     displayName: "AppHooks",
     id: "a3da9e3e6f3e32cb",
+    typeId: 0xa3da9e3e6f3e32cbn,
+    typeIdHex: "a3da9e3e6f3e32cb",
     size: new $.ObjectSize(0, 0),
+    methods: AppHooks$Client.methods,
   };
   toString(): string { return "AppHooks_" + super.toString(); }
 }
@@ -417,7 +478,12 @@ export class SessionContext_FulfillRequest$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "fulfillRequest$Params",
     id: "dad774a13a5ea885",
+    typeId: 0xdad774a13a5ea885n,
+    typeIdHex: "dad774a13a5ea885",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
+    ] as const,
   };
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -431,7 +497,10 @@ export class SessionContext_FulfillRequest$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "fulfillRequest$Results",
     id: "fedf2733a226251b",
+    typeId: 0xfedf2733a226251bn,
+    typeIdHex: "fedf2733a226251b",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "SessionContext_FulfillRequest$Results_" + super.toString(); }
 }
@@ -448,7 +517,10 @@ export class SessionContext_ClaimRequest$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "claimRequest$Params",
     id: "d77f7210aff2abc8",
+    typeId: 0xd77f7210aff2abc8n,
+    typeIdHex: "d77f7210aff2abc8",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "SessionContext_ClaimRequest$Params_" + super.toString(); }
 }
@@ -456,7 +528,12 @@ export class SessionContext_ClaimRequest$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "claimRequest$Results",
     id: "cc12bb836653bd0a",
+    typeId: 0xcc12bb836653bd0an,
+    typeIdHex: "cc12bb836653bd0a",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
+    ] as const,
   };
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -494,7 +571,9 @@ export class SessionContext$Client {
       interfaceId: SessionContext$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:SessionContext",
-      methodName: "fulfillRequest"
+      methodName: "fulfillRequest",
+      paramFields: SessionContext_FulfillRequest$Params._capnp.fields,
+      resultFields: SessionContext_FulfillRequest$Results._capnp.fields
     },
     {
       ParamsClass: SessionContext_ClaimRequest$Params,
@@ -502,7 +581,9 @@ export class SessionContext$Client {
       interfaceId: SessionContext$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:SessionContext",
-      methodName: "claimRequest"
+      methodName: "claimRequest",
+      paramFields: SessionContext_ClaimRequest$Params._capnp.fields,
+      resultFields: SessionContext_ClaimRequest$Results._capnp.fields
     }
   ];
   fulfillRequest(paramsFunc?: (params: SessionContext_FulfillRequest$Params) => void): SessionContext_FulfillRequest$Results$Promise {
@@ -552,7 +633,10 @@ export class SessionContext extends $.Interface {
   static readonly _capnp = {
     displayName: "SessionContext",
     id: "b82638dbadc07fe5",
+    typeId: 0xb82638dbadc07fe5n,
+    typeIdHex: "b82638dbadc07fe5",
     size: new $.ObjectSize(0, 0),
+    methods: SessionContext$Client.methods,
   };
   toString(): string { return "SessionContext_" + super.toString(); }
 }
@@ -560,7 +644,10 @@ export class SandstormBridge_GetSessionContext$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getSessionContext$Params",
     id: "d6185b98019425b7",
+    typeId: 0xd6185b98019425b7n,
+    typeIdHex: "d6185b98019425b7",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "SandstormBridge_GetSessionContext$Params_" + super.toString(); }
 }
@@ -568,7 +655,12 @@ export class SandstormBridge_GetSessionContext$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getSessionContext$Results",
     id: "87c8ebb952dee654",
+    typeId: 0x87c8ebb952dee654n,
+    typeIdHex: "87c8ebb952dee654",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "context", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xb82638dbadc07fe5n, typeIdHex: "b82638dbadc07fe5", displayName: "SessionContext" } }
+    ] as const,
   };
   get context(): SessionContext$Client {
     return new SessionContext$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -605,7 +697,9 @@ export class SandstormBridge$Client {
       interfaceId: SandstormBridge$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/sandstorm-powerbox-flow.capnp:SandstormBridge",
-      methodName: "getSessionContext"
+      methodName: "getSessionContext",
+      paramFields: SandstormBridge_GetSessionContext$Params._capnp.fields,
+      resultFields: SandstormBridge_GetSessionContext$Results._capnp.fields
     }
   ];
   getSessionContext(paramsFunc?: (params: SandstormBridge_GetSessionContext$Params) => void): SandstormBridge_GetSessionContext$Results$Promise {
@@ -642,7 +736,10 @@ export class SandstormBridge extends $.Interface {
   static readonly _capnp = {
     displayName: "SandstormBridge",
     id: "924ba13008df5c6f",
+    typeId: 0x924ba13008df5c6fn,
+    typeIdHex: "924ba13008df5c6f",
     size: new $.ObjectSize(0, 0),
+    methods: SandstormBridge$Client.methods,
   };
   toString(): string { return "SandstormBridge_" + super.toString(); }
 }

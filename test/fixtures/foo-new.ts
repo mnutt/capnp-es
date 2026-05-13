@@ -5,7 +5,13 @@ export class Foo extends $.Struct {
   static readonly _capnp = {
     displayName: "Foo",
     id: "ebf41ad8c4cd4576",
+    typeId: 0xebf41ad8c4cd4576n,
+    typeIdHex: "ebf41ad8c4cd4576",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "bar", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "baz", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get bar(): string {
     return $.utils.getText(0, this);

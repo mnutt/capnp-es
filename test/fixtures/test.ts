@@ -28,7 +28,45 @@ export class TestAllTypes extends $.Struct {
   static readonly _capnp = {
     displayName: "TestAllTypes",
     id: "a0a8f314b80b63fd",
+    typeId: 0xa0a8f314b80b63fdn,
+    typeIdHex: "a0a8f314b80b63fd",
     size: new $.ObjectSize(48, 20),
+    fields: [
+      { name: "voidField", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "boolField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "int8Field", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "int8" } },
+      { name: "int16Field", codeOrder: 3, ordinal: 3, kind: "slot", offset: 1, type: { kind: "int16" } },
+      { name: "int32Field", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "int32" } },
+      { name: "int64Field", codeOrder: 5, ordinal: 5, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "uInt8Field", codeOrder: 6, ordinal: 6, kind: "slot", offset: 16, type: { kind: "uint8" } },
+      { name: "uInt16Field", codeOrder: 7, ordinal: 7, kind: "slot", offset: 9, type: { kind: "uint16" } },
+      { name: "uInt32Field", codeOrder: 8, ordinal: 8, kind: "slot", offset: 5, type: { kind: "uint32" } },
+      { name: "uInt64Field", codeOrder: 9, ordinal: 9, kind: "slot", offset: 3, type: { kind: "uint64" } },
+      { name: "float32Field", codeOrder: 10, ordinal: 10, kind: "slot", offset: 8, type: { kind: "float32" } },
+      { name: "float64Field", codeOrder: 11, ordinal: 11, kind: "slot", offset: 5, type: { kind: "float64" } },
+      { name: "textField", codeOrder: 12, ordinal: 12, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "dataField", codeOrder: 13, ordinal: 13, kind: "slot", offset: 1, type: { kind: "data" } },
+      { name: "structField", codeOrder: 14, ordinal: 14, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } },
+      { name: "enumField", codeOrder: 15, ordinal: 15, kind: "slot", offset: 18, type: { kind: "enum", typeId: 0x9c8e9318b29d9cd3n, typeIdHex: "9c8e9318b29d9cd3", displayName: "TestEnum" } },
+      { name: "interfaceField", codeOrder: 16, ordinal: 16, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "voidList", codeOrder: 17, ordinal: 17, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "void" } } },
+      { name: "boolList", codeOrder: 18, ordinal: 18, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "bool" } } },
+      { name: "int8List", codeOrder: 19, ordinal: 19, kind: "slot", offset: 5, type: { kind: "list", elementType: { kind: "int8" } } },
+      { name: "int16List", codeOrder: 20, ordinal: 20, kind: "slot", offset: 6, type: { kind: "list", elementType: { kind: "int16" } } },
+      { name: "int32List", codeOrder: 21, ordinal: 21, kind: "slot", offset: 7, type: { kind: "list", elementType: { kind: "int32" } } },
+      { name: "int64List", codeOrder: 22, ordinal: 22, kind: "slot", offset: 8, type: { kind: "list", elementType: { kind: "int64" } } },
+      { name: "uInt8List", codeOrder: 23, ordinal: 23, kind: "slot", offset: 9, type: { kind: "list", elementType: { kind: "uint8" } } },
+      { name: "uInt16List", codeOrder: 24, ordinal: 24, kind: "slot", offset: 10, type: { kind: "list", elementType: { kind: "uint16" } } },
+      { name: "uInt32List", codeOrder: 25, ordinal: 25, kind: "slot", offset: 11, type: { kind: "list", elementType: { kind: "uint32" } } },
+      { name: "uInt64List", codeOrder: 26, ordinal: 26, kind: "slot", offset: 12, type: { kind: "list", elementType: { kind: "uint64" } } },
+      { name: "float32List", codeOrder: 27, ordinal: 27, kind: "slot", offset: 13, type: { kind: "list", elementType: { kind: "float32" } } },
+      { name: "float64List", codeOrder: 28, ordinal: 28, kind: "slot", offset: 14, type: { kind: "list", elementType: { kind: "float64" } } },
+      { name: "textList", codeOrder: 29, ordinal: 29, kind: "slot", offset: 15, type: { kind: "list", elementType: { kind: "text" } } },
+      { name: "dataList", codeOrder: 30, ordinal: 30, kind: "slot", offset: 16, type: { kind: "list", elementType: { kind: "data" } } },
+      { name: "structList", codeOrder: 31, ordinal: 31, kind: "slot", offset: 17, type: { kind: "list", elementType: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } } },
+      { name: "enumList", codeOrder: 32, ordinal: 32, kind: "slot", offset: 18, type: { kind: "list", elementType: { kind: "enum", typeId: 0x9c8e9318b29d9cd3n, typeIdHex: "9c8e9318b29d9cd3", displayName: "TestEnum" } } },
+      { name: "interfaceList", codeOrder: 33, ordinal: 33, kind: "slot", offset: 19, type: { kind: "list", elementType: { kind: "void" } } }
+    ] as const,
   };
   static _StructList: $.ListCtor<TestAllTypes>;
   get boolField(): boolean {
@@ -461,7 +499,45 @@ export class TestDefaults extends $.Struct {
   static readonly _capnp = {
     displayName: "TestDefaults",
     id: "eb3f9ebe98c73cb6",
+    typeId: 0xeb3f9ebe98c73cb6n,
+    typeIdHex: "eb3f9ebe98c73cb6",
     size: new $.ObjectSize(48, 20),
+    fields: [
+      { name: "voidField", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "boolField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "int8Field", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "int8" } },
+      { name: "int16Field", codeOrder: 3, ordinal: 3, kind: "slot", offset: 1, type: { kind: "int16" } },
+      { name: "int32Field", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "int32" } },
+      { name: "int64Field", codeOrder: 5, ordinal: 5, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "uInt8Field", codeOrder: 6, ordinal: 6, kind: "slot", offset: 16, type: { kind: "uint8" } },
+      { name: "uInt16Field", codeOrder: 7, ordinal: 7, kind: "slot", offset: 9, type: { kind: "uint16" } },
+      { name: "uInt32Field", codeOrder: 8, ordinal: 8, kind: "slot", offset: 5, type: { kind: "uint32" } },
+      { name: "uInt64Field", codeOrder: 9, ordinal: 9, kind: "slot", offset: 3, type: { kind: "uint64" } },
+      { name: "float32Field", codeOrder: 10, ordinal: 10, kind: "slot", offset: 8, type: { kind: "float32" } },
+      { name: "float64Field", codeOrder: 11, ordinal: 11, kind: "slot", offset: 5, type: { kind: "float64" } },
+      { name: "textField", codeOrder: 12, ordinal: 12, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "dataField", codeOrder: 13, ordinal: 13, kind: "slot", offset: 1, type: { kind: "data" } },
+      { name: "structField", codeOrder: 14, ordinal: 14, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } },
+      { name: "enumField", codeOrder: 15, ordinal: 15, kind: "slot", offset: 18, type: { kind: "enum", typeId: 0x9c8e9318b29d9cd3n, typeIdHex: "9c8e9318b29d9cd3", displayName: "TestEnum" } },
+      { name: "interfaceField", codeOrder: 16, ordinal: 16, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "voidList", codeOrder: 17, ordinal: 17, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "void" } } },
+      { name: "boolList", codeOrder: 18, ordinal: 18, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "bool" } } },
+      { name: "int8List", codeOrder: 19, ordinal: 19, kind: "slot", offset: 5, type: { kind: "list", elementType: { kind: "int8" } } },
+      { name: "int16List", codeOrder: 20, ordinal: 20, kind: "slot", offset: 6, type: { kind: "list", elementType: { kind: "int16" } } },
+      { name: "int32List", codeOrder: 21, ordinal: 21, kind: "slot", offset: 7, type: { kind: "list", elementType: { kind: "int32" } } },
+      { name: "int64List", codeOrder: 22, ordinal: 22, kind: "slot", offset: 8, type: { kind: "list", elementType: { kind: "int64" } } },
+      { name: "uInt8List", codeOrder: 23, ordinal: 23, kind: "slot", offset: 9, type: { kind: "list", elementType: { kind: "uint8" } } },
+      { name: "uInt16List", codeOrder: 24, ordinal: 24, kind: "slot", offset: 10, type: { kind: "list", elementType: { kind: "uint16" } } },
+      { name: "uInt32List", codeOrder: 25, ordinal: 25, kind: "slot", offset: 11, type: { kind: "list", elementType: { kind: "uint32" } } },
+      { name: "uInt64List", codeOrder: 26, ordinal: 26, kind: "slot", offset: 12, type: { kind: "list", elementType: { kind: "uint64" } } },
+      { name: "float32List", codeOrder: 27, ordinal: 27, kind: "slot", offset: 13, type: { kind: "list", elementType: { kind: "float32" } } },
+      { name: "float64List", codeOrder: 28, ordinal: 28, kind: "slot", offset: 14, type: { kind: "list", elementType: { kind: "float64" } } },
+      { name: "textList", codeOrder: 29, ordinal: 29, kind: "slot", offset: 15, type: { kind: "list", elementType: { kind: "text" } } },
+      { name: "dataList", codeOrder: 30, ordinal: 30, kind: "slot", offset: 16, type: { kind: "list", elementType: { kind: "data" } } },
+      { name: "structList", codeOrder: 31, ordinal: 31, kind: "slot", offset: 17, type: { kind: "list", elementType: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } } },
+      { name: "enumList", codeOrder: 32, ordinal: 32, kind: "slot", offset: 18, type: { kind: "list", elementType: { kind: "enum", typeId: 0x9c8e9318b29d9cd3n, typeIdHex: "9c8e9318b29d9cd3", displayName: "TestEnum" } } },
+      { name: "interfaceList", codeOrder: 33, ordinal: 33, kind: "slot", offset: 19, type: { kind: "list", elementType: { kind: "void" } } }
+    ] as const,
     defaultBoolField: $.getBitMask(true, 0),
     defaultInt8Field: $.getInt8Mask(-123),
     defaultInt16Field: $.getInt16Mask(-12345),
@@ -929,7 +1005,12 @@ export class TestAnyPointer extends $.Struct {
   static readonly _capnp = {
     displayName: "TestAnyPointer",
     id: "e3da5a2ccd28c0d8",
+    typeId: 0xe3da5a2ccd28c0d8n,
+    typeIdHex: "e3da5a2ccd28c0d8",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "anyPointerField", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptAnyPointerField(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -952,7 +1033,14 @@ export class TestAnyOthers extends $.Struct {
   static readonly _capnp = {
     displayName: "TestAnyOthers",
     id: "f49850f63c2bfa59",
+    typeId: 0xf49850f63c2bfa59n,
+    typeIdHex: "f49850f63c2bfa59",
     size: new $.ObjectSize(0, 3),
+    fields: [
+      { name: "anyStructField", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "anyListField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } },
+      { name: "capabilityField", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptAnyStructField(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -1005,7 +1093,20 @@ export class TestOutOfOrder extends $.Struct {
   static readonly _capnp = {
     displayName: "TestOutOfOrder",
     id: "a9d5f8efe770022b",
+    typeId: 0xa9d5f8efe770022bn,
+    typeIdHex: "a9d5f8efe770022b",
     size: new $.ObjectSize(0, 9),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 3, kind: "slot", offset: 3, type: { kind: "text" } },
+      { name: "bar", codeOrder: 1, ordinal: 2, kind: "slot", offset: 2, type: { kind: "text" } },
+      { name: "baz", codeOrder: 2, ordinal: 8, kind: "slot", offset: 8, type: { kind: "text" } },
+      { name: "qux", codeOrder: 3, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "quux", codeOrder: 4, ordinal: 6, kind: "slot", offset: 6, type: { kind: "text" } },
+      { name: "corge", codeOrder: 5, ordinal: 4, kind: "slot", offset: 4, type: { kind: "text" } },
+      { name: "grault", codeOrder: 6, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } },
+      { name: "garply", codeOrder: 7, ordinal: 7, kind: "slot", offset: 7, type: { kind: "text" } },
+      { name: "waldo", codeOrder: 8, ordinal: 5, kind: "slot", offset: 5, type: { kind: "text" } }
+    ] as const,
   };
   get foo(): string {
     return $.utils.getText(3, this);
@@ -1102,7 +1203,25 @@ export class TestUnion_Union0 extends $.Struct {
   static readonly _capnp = {
     displayName: "union0",
     id: "fc76a82eecb7a718",
+    typeId: 0xfc76a82eecb7a718n,
+    typeIdHex: "fc76a82eecb7a718",
     size: new $.ObjectSize(64, 2),
+    fields: [
+      { name: "u0f0s0", codeOrder: 0, ordinal: 4, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "u0f0s1", codeOrder: 1, ordinal: 5, discriminantValue: 1, kind: "slot", offset: 64, type: { kind: "bool" } },
+      { name: "u0f0s8", codeOrder: 2, ordinal: 6, discriminantValue: 2, kind: "slot", offset: 8, type: { kind: "int8" } },
+      { name: "u0f0s16", codeOrder: 3, ordinal: 7, discriminantValue: 3, kind: "slot", offset: 4, type: { kind: "int16" } },
+      { name: "u0f0s32", codeOrder: 4, ordinal: 8, discriminantValue: 4, kind: "slot", offset: 2, type: { kind: "int32" } },
+      { name: "u0f0s64", codeOrder: 5, ordinal: 9, discriminantValue: 5, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "u0f0sp", codeOrder: 6, ordinal: 10, discriminantValue: 6, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "u0f1s0", codeOrder: 7, ordinal: 11, discriminantValue: 7, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "u0f1s1", codeOrder: 8, ordinal: 12, discriminantValue: 8, kind: "slot", offset: 64, type: { kind: "bool" } },
+      { name: "u0f1s8", codeOrder: 9, ordinal: 13, discriminantValue: 9, kind: "slot", offset: 8, type: { kind: "int8" } },
+      { name: "u0f1s16", codeOrder: 10, ordinal: 14, discriminantValue: 10, kind: "slot", offset: 4, type: { kind: "int16" } },
+      { name: "u0f1s32", codeOrder: 11, ordinal: 15, discriminantValue: 11, kind: "slot", offset: 2, type: { kind: "int32" } },
+      { name: "u0f1s64", codeOrder: 12, ordinal: 16, discriminantValue: 12, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "u0f1sp", codeOrder: 13, ordinal: 17, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get _isU0f0s0(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -1304,7 +1423,31 @@ export class TestUnion_Union1 extends $.Struct {
   static readonly _capnp = {
     displayName: "union1",
     id: "ee0a6b99b7dc7ab2",
+    typeId: 0xee0a6b99b7dc7ab2n,
+    typeIdHex: "ee0a6b99b7dc7ab2",
     size: new $.ObjectSize(64, 2),
+    fields: [
+      { name: "u1f0s0", codeOrder: 0, ordinal: 19, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "u1f0s1", codeOrder: 1, ordinal: 20, discriminantValue: 1, kind: "slot", offset: 129, type: { kind: "bool" } },
+      { name: "u1f1s1", codeOrder: 2, ordinal: 21, discriminantValue: 2, kind: "slot", offset: 129, type: { kind: "bool" } },
+      { name: "u1f0s8", codeOrder: 3, ordinal: 22, discriminantValue: 3, kind: "slot", offset: 17, type: { kind: "int8" } },
+      { name: "u1f1s8", codeOrder: 4, ordinal: 23, discriminantValue: 4, kind: "slot", offset: 17, type: { kind: "int8" } },
+      { name: "u1f0s16", codeOrder: 5, ordinal: 24, discriminantValue: 5, kind: "slot", offset: 9, type: { kind: "int16" } },
+      { name: "u1f1s16", codeOrder: 6, ordinal: 25, discriminantValue: 6, kind: "slot", offset: 9, type: { kind: "int16" } },
+      { name: "u1f0s32", codeOrder: 7, ordinal: 26, discriminantValue: 7, kind: "slot", offset: 5, type: { kind: "int32" } },
+      { name: "u1f1s32", codeOrder: 8, ordinal: 27, discriminantValue: 8, kind: "slot", offset: 5, type: { kind: "int32" } },
+      { name: "u1f0s64", codeOrder: 9, ordinal: 28, discriminantValue: 9, kind: "slot", offset: 3, type: { kind: "int64" } },
+      { name: "u1f1s64", codeOrder: 10, ordinal: 29, discriminantValue: 10, kind: "slot", offset: 3, type: { kind: "int64" } },
+      { name: "u1f0sp", codeOrder: 11, ordinal: 30, discriminantValue: 11, kind: "slot", offset: 1, type: { kind: "text" } },
+      { name: "u1f1sp", codeOrder: 12, ordinal: 31, discriminantValue: 12, kind: "slot", offset: 1, type: { kind: "text" } },
+      { name: "u1f2s0", codeOrder: 13, ordinal: 32, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "u1f2s1", codeOrder: 14, ordinal: 33, discriminantValue: 14, kind: "slot", offset: 129, type: { kind: "bool" } },
+      { name: "u1f2s8", codeOrder: 15, ordinal: 34, discriminantValue: 15, kind: "slot", offset: 17, type: { kind: "int8" } },
+      { name: "u1f2s16", codeOrder: 16, ordinal: 35, discriminantValue: 16, kind: "slot", offset: 9, type: { kind: "int16" } },
+      { name: "u1f2s32", codeOrder: 17, ordinal: 36, discriminantValue: 17, kind: "slot", offset: 5, type: { kind: "int32" } },
+      { name: "u1f2s64", codeOrder: 18, ordinal: 37, discriminantValue: 18, kind: "slot", offset: 3, type: { kind: "int64" } },
+      { name: "u1f2sp", codeOrder: 19, ordinal: 38, discriminantValue: 19, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get _isU1f0s0(): boolean {
     return $.utils.getUint16(2, this) === 0;
@@ -1538,7 +1681,16 @@ export class TestUnion_Union2 extends $.Struct {
   static readonly _capnp = {
     displayName: "union2",
     id: "afc5fd419f0d66d4",
+    typeId: 0xafc5fd419f0d66d4n,
+    typeIdHex: "afc5fd419f0d66d4",
     size: new $.ObjectSize(64, 2),
+    fields: [
+      { name: "u2f0s64", codeOrder: 0, ordinal: 54, discriminantValue: 4, kind: "slot", offset: 6, type: { kind: "int64" } },
+      { name: "u2f0s32", codeOrder: 1, ordinal: 52, discriminantValue: 3, kind: "slot", offset: 10, type: { kind: "int32" } },
+      { name: "u2f0s16", codeOrder: 2, ordinal: 50, discriminantValue: 2, kind: "slot", offset: 18, type: { kind: "int16" } },
+      { name: "u2f0s8", codeOrder: 3, ordinal: 47, discriminantValue: 1, kind: "slot", offset: 33, type: { kind: "int8" } },
+      { name: "u2f0s1", codeOrder: 4, ordinal: 45, discriminantValue: 0, kind: "slot", offset: 256, type: { kind: "bool" } }
+    ] as const,
   };
   get u2f0s64(): bigint {
     $.utils.testWhich("u2f0s64", $.utils.getUint16(4, this), 4, this);
@@ -1617,7 +1769,16 @@ export class TestUnion_Union3 extends $.Struct {
   static readonly _capnp = {
     displayName: "union3",
     id: "a2fb022ec7f30053",
+    typeId: 0xa2fb022ec7f30053n,
+    typeIdHex: "a2fb022ec7f30053",
     size: new $.ObjectSize(64, 2),
+    fields: [
+      { name: "u3f0s64", codeOrder: 0, ordinal: 55, discriminantValue: 4, kind: "slot", offset: 7, type: { kind: "int64" } },
+      { name: "u3f0s32", codeOrder: 1, ordinal: 53, discriminantValue: 3, kind: "slot", offset: 11, type: { kind: "int32" } },
+      { name: "u3f0s16", codeOrder: 2, ordinal: 51, discriminantValue: 2, kind: "slot", offset: 19, type: { kind: "int16" } },
+      { name: "u3f0s8", codeOrder: 3, ordinal: 48, discriminantValue: 1, kind: "slot", offset: 34, type: { kind: "int8" } },
+      { name: "u3f0s1", codeOrder: 4, ordinal: 46, discriminantValue: 0, kind: "slot", offset: 257, type: { kind: "bool" } }
+    ] as const,
   };
   get u3f0s64(): bigint {
     $.utils.testWhich("u3f0s64", $.utils.getUint16(6, this), 4, this);
@@ -1683,7 +1844,23 @@ export class TestUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUnion",
     id: "f47697362233ce52",
+    typeId: 0xf47697362233ce52n,
+    typeIdHex: "f47697362233ce52",
     size: new $.ObjectSize(64, 2),
+    fields: [
+      { name: "union0", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xfc76a82eecb7a718n, typeIdHex: "fc76a82eecb7a718", displayName: "union0" } },
+      { name: "bit0", codeOrder: 1, ordinal: 18, kind: "slot", offset: 128, type: { kind: "bool" } },
+      { name: "union1", codeOrder: 2, ordinal: 1, kind: "group", type: { kind: "group", typeId: 0xee0a6b99b7dc7ab2n, typeIdHex: "ee0a6b99b7dc7ab2", displayName: "union1" } },
+      { name: "bit2", codeOrder: 3, ordinal: 39, kind: "slot", offset: 130, type: { kind: "bool" } },
+      { name: "bit3", codeOrder: 4, ordinal: 40, kind: "slot", offset: 131, type: { kind: "bool" } },
+      { name: "bit4", codeOrder: 5, ordinal: 41, kind: "slot", offset: 132, type: { kind: "bool" } },
+      { name: "bit5", codeOrder: 6, ordinal: 42, kind: "slot", offset: 133, type: { kind: "bool" } },
+      { name: "bit6", codeOrder: 7, ordinal: 43, kind: "slot", offset: 134, type: { kind: "bool" } },
+      { name: "bit7", codeOrder: 8, ordinal: 44, kind: "slot", offset: 135, type: { kind: "bool" } },
+      { name: "union2", codeOrder: 9, ordinal: 2, kind: "group", type: { kind: "group", typeId: 0xafc5fd419f0d66d4n, typeIdHex: "afc5fd419f0d66d4", displayName: "union2" } },
+      { name: "union3", codeOrder: 10, ordinal: 3, kind: "group", type: { kind: "group", typeId: 0xa2fb022ec7f30053n, typeIdHex: "a2fb022ec7f30053", displayName: "union3" } },
+      { name: "byte0", codeOrder: 11, ordinal: 49, kind: "slot", offset: 35, type: { kind: "uint8" } }
+    ] as const,
   };
   /**
 * Pack union 0 under ideal conditions: there is no unused padding space prior to it.
@@ -1778,7 +1955,16 @@ export class TestUnnamedUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUnnamedUnion",
     id: "9e2e784c915329b6",
+    typeId: 0x9e2e784c915329b6n,
+    typeIdHex: "9e2e784c915329b6",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "before", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "foo", codeOrder: 1, ordinal: 1, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "bar", codeOrder: 2, ordinal: 3, discriminantValue: 1, kind: "slot", offset: 2, type: { kind: "uint32" } },
+      { name: "middle", codeOrder: 3, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint16" } },
+      { name: "after", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get before(): string {
     return $.utils.getText(0, this);
@@ -1836,7 +2022,13 @@ export class TestUnionInUnion_Outer_Inner extends $.Struct {
   static readonly _capnp = {
     displayName: "inner",
     id: "ff9ce111c6f8e5db",
+    typeId: 0xff9ce111c6f8e5dbn,
+    typeIdHex: "ff9ce111c6f8e5db",
     size: new $.ObjectSize(16, 0),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "int32" } }
+    ] as const,
   };
   get foo(): number {
     $.utils.testWhich("foo", $.utils.getUint16(4, this), 0, this);
@@ -1876,7 +2068,13 @@ export class TestUnionInUnion_Outer extends $.Struct {
   static readonly _capnp = {
     displayName: "outer",
     id: "d005f6c63707670c",
+    typeId: 0xd005f6c63707670cn,
+    typeIdHex: "d005f6c63707670c",
     size: new $.ObjectSize(16, 0),
+    fields: [
+      { name: "inner", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0xff9ce111c6f8e5dbn, typeIdHex: "ff9ce111c6f8e5db", displayName: "inner" } },
+      { name: "baz", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "int32" } }
+    ] as const,
   };
   get inner(): TestUnionInUnion_Outer_Inner {
     $.utils.testWhich("inner", $.utils.getUint16(8, this), 0, this);
@@ -1916,7 +2114,12 @@ export class TestUnionInUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUnionInUnion",
     id: "89a9494f1b900f22",
+    typeId: 0x89a9494f1b900f22n,
+    typeIdHex: "89a9494f1b900f22",
     size: new $.ObjectSize(16, 0),
+    fields: [
+      { name: "outer", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xd005f6c63707670cn, typeIdHex: "d005f6c63707670c", displayName: "outer" } }
+    ] as const,
   };
   get outer(): TestUnionInUnion_Outer {
     return $.utils.getAs(TestUnionInUnion_Outer, this);
@@ -1930,7 +2133,14 @@ export class TestGroups_Groups_Foo extends $.Struct {
   static readonly _capnp = {
     displayName: "foo",
     id: "f5fcba89c0c1196f",
+    typeId: 0xf5fcba89c0c1196fn,
+    typeIdHex: "f5fcba89c0c1196f",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "corge", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "grault", codeOrder: 1, ordinal: 2, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "garply", codeOrder: 2, ordinal: 8, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get corge(): number {
     return $.utils.getInt32(0, this);
@@ -1956,7 +2166,14 @@ export class TestGroups_Groups_Baz extends $.Struct {
   static readonly _capnp = {
     displayName: "baz",
     id: "f0fa30304066a4b3",
+    typeId: 0xf0fa30304066a4b3n,
+    typeIdHex: "f0fa30304066a4b3",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "corge", codeOrder: 0, ordinal: 1, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "grault", codeOrder: 1, ordinal: 6, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "garply", codeOrder: 2, ordinal: 7, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get corge(): number {
     return $.utils.getInt32(0, this);
@@ -1982,7 +2199,14 @@ export class TestGroups_Groups_Bar extends $.Struct {
   static readonly _capnp = {
     displayName: "bar",
     id: "b727c0d0091a001d",
+    typeId: 0xb727c0d0091a001dn,
+    typeIdHex: "b727c0d0091a001d",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "corge", codeOrder: 0, ordinal: 3, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "grault", codeOrder: 1, ordinal: 4, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "garply", codeOrder: 2, ordinal: 5, kind: "slot", offset: 1, type: { kind: "int64" } }
+    ] as const,
   };
   get corge(): number {
     return $.utils.getInt32(0, this);
@@ -2017,7 +2241,14 @@ export class TestGroups_Groups extends $.Struct {
   static readonly _capnp = {
     displayName: "groups",
     id: "e22ae74ff9113268",
+    typeId: 0xe22ae74ff9113268n,
+    typeIdHex: "e22ae74ff9113268",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0xf5fcba89c0c1196fn, typeIdHex: "f5fcba89c0c1196f", displayName: "foo" } },
+      { name: "bar", codeOrder: 1, ordinal: 2, discriminantValue: 2, kind: "group", type: { kind: "group", typeId: 0xb727c0d0091a001dn, typeIdHex: "b727c0d0091a001d", displayName: "bar" } },
+      { name: "baz", codeOrder: 2, ordinal: 1, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xf0fa30304066a4b3n, typeIdHex: "f0fa30304066a4b3", displayName: "baz" } }
+    ] as const,
   };
   get foo(): TestGroups_Groups_Foo {
     $.utils.testWhich("foo", $.utils.getUint16(4, this), 0, this);
@@ -2070,7 +2301,12 @@ export class TestGroups extends $.Struct {
   static readonly _capnp = {
     displayName: "TestGroups",
     id: "dc841556134c3103",
+    typeId: 0xdc841556134c3103n,
+    typeIdHex: "dc841556134c3103",
     size: new $.ObjectSize(16, 2),
+    fields: [
+      { name: "groups", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xe22ae74ff9113268n, typeIdHex: "e22ae74ff9113268", displayName: "groups" } }
+    ] as const,
   };
   get groups(): TestGroups_Groups {
     return $.utils.getAs(TestGroups_Groups, this);
@@ -2084,7 +2320,15 @@ export class TestInterleavedGroups_Group1_Corge extends $.Struct {
   static readonly _capnp = {
     displayName: "corge",
     id: "db0afd413f4a313a",
+    typeId: 0xdb0afd413f4a313an,
+    typeIdHex: "db0afd413f4a313a",
     size: new $.ObjectSize(48, 6),
+    fields: [
+      { name: "grault", codeOrder: 0, ordinal: 6, kind: "slot", offset: 4, type: { kind: "uint64" } },
+      { name: "garply", codeOrder: 1, ordinal: 8, kind: "slot", offset: 12, type: { kind: "uint16" } },
+      { name: "plugh", codeOrder: 2, ordinal: 14, kind: "slot", offset: 2, type: { kind: "text" } },
+      { name: "xyzzy", codeOrder: 3, ordinal: 16, kind: "slot", offset: 4, type: { kind: "text" } }
+    ] as const,
   };
   get grault(): bigint {
     return $.utils.getUint64(32, this);
@@ -2125,7 +2369,17 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
   static readonly _capnp = {
     displayName: "group1",
     id: "c7485a3516c7d3c8",
+    typeId: 0xc7485a3516c7d3c8n,
+    typeIdHex: "c7485a3516c7d3c8",
     size: new $.ObjectSize(48, 6),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "bar", codeOrder: 1, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint64" } },
+      { name: "qux", codeOrder: 2, ordinal: 4, discriminantValue: 0, kind: "slot", offset: 12, type: { kind: "uint16" } },
+      { name: "corge", codeOrder: 3, ordinal: 3, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xdb0afd413f4a313an, typeIdHex: "db0afd413f4a313a", displayName: "corge" } },
+      { name: "fred", codeOrder: 4, ordinal: 12, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "text" } },
+      { name: "waldo", codeOrder: 5, ordinal: 10, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get foo(): number {
     return $.utils.getUint32(0, this);
@@ -2190,7 +2444,15 @@ export class TestInterleavedGroups_Group2_Corge extends $.Struct {
   static readonly _capnp = {
     displayName: "corge",
     id: "a017f0366827ee37",
+    typeId: 0xa017f0366827ee37n,
+    typeIdHex: "a017f0366827ee37",
     size: new $.ObjectSize(48, 6),
+    fields: [
+      { name: "grault", codeOrder: 0, ordinal: 7, kind: "slot", offset: 5, type: { kind: "uint64" } },
+      { name: "garply", codeOrder: 1, ordinal: 9, kind: "slot", offset: 13, type: { kind: "uint16" } },
+      { name: "plugh", codeOrder: 2, ordinal: 15, kind: "slot", offset: 3, type: { kind: "text" } },
+      { name: "xyzzy", codeOrder: 3, ordinal: 17, kind: "slot", offset: 5, type: { kind: "text" } }
+    ] as const,
   };
   get grault(): bigint {
     return $.utils.getUint64(40, this);
@@ -2231,7 +2493,17 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
   static readonly _capnp = {
     displayName: "group2",
     id: "cc85a335569990e9",
+    typeId: 0xcc85a335569990e9n,
+    typeIdHex: "cc85a335569990e9",
     size: new $.ObjectSize(48, 6),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 1, kind: "slot", offset: 1, type: { kind: "uint32" } },
+      { name: "bar", codeOrder: 1, ordinal: 3, kind: "slot", offset: 2, type: { kind: "uint64" } },
+      { name: "qux", codeOrder: 2, ordinal: 5, discriminantValue: 0, kind: "slot", offset: 13, type: { kind: "uint16" } },
+      { name: "corge", codeOrder: 3, ordinal: 3, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xa017f0366827ee37n, typeIdHex: "a017f0366827ee37", displayName: "corge" } },
+      { name: "fred", codeOrder: 4, ordinal: 13, discriminantValue: 2, kind: "slot", offset: 3, type: { kind: "text" } },
+      { name: "waldo", codeOrder: 5, ordinal: 11, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get foo(): number {
     return $.utils.getUint32(4, this);
@@ -2296,7 +2568,13 @@ export class TestInterleavedGroups extends $.Struct {
   static readonly _capnp = {
     displayName: "TestInterleavedGroups",
     id: "f77ed6f7454eec40",
+    typeId: 0xf77ed6f7454eec40n,
+    typeIdHex: "f77ed6f7454eec40",
     size: new $.ObjectSize(48, 6),
+    fields: [
+      { name: "group1", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xc7485a3516c7d3c8n, typeIdHex: "c7485a3516c7d3c8", displayName: "group1" } },
+      { name: "group2", codeOrder: 1, ordinal: 1, kind: "group", type: { kind: "group", typeId: 0xcc85a335569990e9n, typeIdHex: "cc85a335569990e9", displayName: "group2" } }
+    ] as const,
   };
   get group1(): TestInterleavedGroups_Group1 {
     return $.utils.getAs(TestInterleavedGroups_Group1, this);
@@ -2316,7 +2594,15 @@ export class TestUnionDefaults extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUnionDefaults",
     id: "94f7e0b103b4b718",
+    typeId: 0x94f7e0b103b4b718n,
+    typeIdHex: "94f7e0b103b4b718",
     size: new $.ObjectSize(0, 4),
+    fields: [
+      { name: "s16s8s64s8Set", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xf47697362233ce52n, typeIdHex: "f47697362233ce52", displayName: "TestUnion" } },
+      { name: "s0sps1s32Set", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xf47697362233ce52n, typeIdHex: "f47697362233ce52", displayName: "TestUnion" } },
+      { name: "unnamed1", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0x9e2e784c915329b6n, typeIdHex: "9e2e784c915329b6", displayName: "TestUnnamedUnion" } },
+      { name: "unnamed2", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0x9e2e784c915329b6n, typeIdHex: "9e2e784c915329b6", displayName: "TestUnnamedUnion" } }
+    ] as const,
     defaultS16s8s64s8Set: $.readRawPointer(new Uint8Array([16, 11, 80, 8, 2, 85, 3, 3, 4, 1, 3, 65, 1, 2, 123, 0, 0, 4, 55, 0, 0, 127, 135, 75, 107, 93, 84, 220, 43, 0, 2]).buffer),
     defaultS0sps1s32Set: $.readRawPointer(new Uint8Array([16, 12, 80, 8, 2, 69, 7, 11, 3, 0, 2, 1, 1, 112, 78, 97, 188, 0, 2, 17, 1, 34, 7, 102, 111, 111]).buffer),
     defaultUnnamed1: $.readRawPointer(new Uint8Array([16, 5, 80, 2, 2, 1, 123, 0, 2]).buffer),
@@ -2412,7 +2698,13 @@ export class TestNestedTypes_NestedStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "NestedStruct",
     id: "82cd03a53b29d76b",
+    typeId: 0x82cd03a53b29d76bn,
+    typeIdHex: "82cd03a53b29d76b",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "outerNestedEnum", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xb651d2fba42056d4n, typeIdHex: "b651d2fba42056d4", displayName: "NestedEnum" } },
+      { name: "innerNestedEnum", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "enum", typeId: 0xcfa0d546993a3df3n, typeIdHex: "cfa0d546993a3df3", displayName: "NestedEnum" } }
+    ] as const,
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
@@ -2436,7 +2728,14 @@ export class TestNestedTypes extends $.Struct {
   static readonly _capnp = {
     displayName: "TestNestedTypes",
     id: "d9f2b5941a343bcd",
+    typeId: 0xd9f2b5941a343bcdn,
+    typeIdHex: "d9f2b5941a343bcd",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "nestedStruct", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x82cd03a53b29d76bn, typeIdHex: "82cd03a53b29d76b", displayName: "NestedStruct" } },
+      { name: "outerNestedEnum", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xb651d2fba42056d4n, typeIdHex: "b651d2fba42056d4", displayName: "NestedEnum" } },
+      { name: "innerNestedEnum", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "enum", typeId: 0xcfa0d546993a3df3n, typeIdHex: "cfa0d546993a3df3", displayName: "NestedEnum" } }
+    ] as const,
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
@@ -2476,7 +2775,13 @@ export class TestUsing extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUsing",
     id: "e78aac389e77b065",
+    typeId: 0xe78aac389e77b065n,
+    typeIdHex: "e78aac389e77b065",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "outerNestedEnum", codeOrder: 0, ordinal: 1, kind: "slot", offset: 1, type: { kind: "enum", typeId: 0xb651d2fba42056d4n, typeIdHex: "b651d2fba42056d4", displayName: "NestedEnum" } },
+      { name: "innerNestedEnum", codeOrder: 1, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xcfa0d546993a3df3n, typeIdHex: "cfa0d546993a3df3", displayName: "NestedEnum" } }
+    ] as const,
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
@@ -2498,7 +2803,12 @@ export class TestLists_Struct0 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct0",
     id: "8412c03b75b2cfee",
+    typeId: 0x8412c03b75b2cfeen,
+    typeIdHex: "8412c03b75b2cfee",
     size: new $.ObjectSize(0, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } }
+    ] as const,
   };
   toString(): string { return "TestLists_Struct0_" + super.toString(); }
 }
@@ -2506,7 +2816,12 @@ export class TestLists_Struct1 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct1",
     id: "e0fe5870b141ad69",
+    typeId: 0xe0fe5870b141ad69n,
+    typeIdHex: "e0fe5870b141ad69",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
+    ] as const,
   };
   get f(): boolean {
     return $.utils.getBit(0, this);
@@ -2520,7 +2835,12 @@ export class TestLists_Struct8 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct8",
     id: "a6411a353090145b",
+    typeId: 0xa6411a353090145bn,
+    typeIdHex: "a6411a353090145b",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint8" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint8(0, this);
@@ -2534,7 +2854,12 @@ export class TestLists_Struct16 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct16",
     id: "a8abf7a82928986c",
+    typeId: 0xa8abf7a82928986cn,
+    typeIdHex: "a8abf7a82928986c",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint16" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint16(0, this);
@@ -2548,7 +2873,12 @@ export class TestLists_Struct32 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct32",
     id: "ad7beedc4ed30742",
+    typeId: 0xad7beedc4ed30742n,
+    typeIdHex: "ad7beedc4ed30742",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint32(0, this);
@@ -2562,7 +2892,12 @@ export class TestLists_Struct64 extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct64",
     id: "ef9a34f2ff7cc646",
+    typeId: 0xef9a34f2ff7cc646n,
+    typeIdHex: "ef9a34f2ff7cc646",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } }
+    ] as const,
   };
   get f(): bigint {
     return $.utils.getUint64(0, this);
@@ -2576,7 +2911,12 @@ export class TestLists_StructP extends $.Struct {
   static readonly _capnp = {
     displayName: "StructP",
     id: "c6abf1b0329e6227",
+    typeId: 0xc6abf1b0329e6227n,
+    typeIdHex: "c6abf1b0329e6227",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): string {
     return $.utils.getText(0, this);
@@ -2590,7 +2930,13 @@ export class TestLists_Struct0c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct0c",
     id: "943a234ca336b16a",
+    typeId: 0x943a234ca336b16an,
+    typeIdHex: "943a234ca336b16a",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get pad(): string {
     return $.utils.getText(0, this);
@@ -2604,7 +2950,13 @@ export class TestLists_Struct1c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct1c",
     id: "8991bc0e74a594cd",
+    typeId: 0x8991bc0e74a594cdn,
+    typeIdHex: "8991bc0e74a594cd",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): boolean {
     return $.utils.getBit(0, this);
@@ -2624,7 +2976,13 @@ export class TestLists_Struct8c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct8c",
     id: "ed267416528c7a24",
+    typeId: 0xed267416528c7a24n,
+    typeIdHex: "ed267416528c7a24",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint8" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint8(0, this);
@@ -2644,7 +3002,13 @@ export class TestLists_Struct16c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct16c",
     id: "9978837b037d58e6",
+    typeId: 0x9978837b037d58e6n,
+    typeIdHex: "9978837b037d58e6",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint16" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint16(0, this);
@@ -2664,7 +3028,13 @@ export class TestLists_Struct32c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct32c",
     id: "ed5fa940f54a7904",
+    typeId: 0xed5fa940f54a7904n,
+    typeIdHex: "ed5fa940f54a7904",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): number {
     return $.utils.getUint32(0, this);
@@ -2684,7 +3054,13 @@ export class TestLists_Struct64c extends $.Struct {
   static readonly _capnp = {
     displayName: "Struct64c",
     id: "bc743778f2597c7d",
+    typeId: 0xbc743778f2597c7dn,
+    typeIdHex: "bc743778f2597c7d",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get f(): bigint {
     return $.utils.getUint64(0, this);
@@ -2704,7 +3080,13 @@ export class TestLists_StructPc extends $.Struct {
   static readonly _capnp = {
     displayName: "StructPc",
     id: "c2e364a40182013d",
+    typeId: 0xc2e364a40182013dn,
+    typeIdHex: "c2e364a40182013d",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint64" } }
+    ] as const,
   };
   get f(): string {
     return $.utils.getText(0, this);
@@ -2743,7 +3125,21 @@ export class TestLists extends $.Struct {
   static readonly _capnp = {
     displayName: "TestLists",
     id: "e41885c94393277e",
+    typeId: 0xe41885c94393277en,
+    typeIdHex: "e41885c94393277e",
     size: new $.ObjectSize(0, 10),
+    fields: [
+      { name: "list0", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0x8412c03b75b2cfeen, typeIdHex: "8412c03b75b2cfee", displayName: "Struct0" } } },
+      { name: "list1", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0xe0fe5870b141ad69n, typeIdHex: "e0fe5870b141ad69", displayName: "Struct1" } } },
+      { name: "list8", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "struct", typeId: 0xa6411a353090145bn, typeIdHex: "a6411a353090145b", displayName: "Struct8" } } },
+      { name: "list16", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "list", elementType: { kind: "struct", typeId: 0xa8abf7a82928986cn, typeIdHex: "a8abf7a82928986c", displayName: "Struct16" } } },
+      { name: "list32", codeOrder: 4, ordinal: 4, kind: "slot", offset: 4, type: { kind: "list", elementType: { kind: "struct", typeId: 0xad7beedc4ed30742n, typeIdHex: "ad7beedc4ed30742", displayName: "Struct32" } } },
+      { name: "list64", codeOrder: 5, ordinal: 5, kind: "slot", offset: 5, type: { kind: "list", elementType: { kind: "struct", typeId: 0xef9a34f2ff7cc646n, typeIdHex: "ef9a34f2ff7cc646", displayName: "Struct64" } } },
+      { name: "listP", codeOrder: 6, ordinal: 6, kind: "slot", offset: 6, type: { kind: "list", elementType: { kind: "struct", typeId: 0xc6abf1b0329e6227n, typeIdHex: "c6abf1b0329e6227", displayName: "StructP" } } },
+      { name: "int32ListList", codeOrder: 7, ordinal: 7, kind: "slot", offset: 7, type: { kind: "list", elementType: { kind: "list", elementType: { kind: "int32" } } } },
+      { name: "textListList", codeOrder: 8, ordinal: 8, kind: "slot", offset: 8, type: { kind: "list", elementType: { kind: "list", elementType: { kind: "text" } } } },
+      { name: "structListList", codeOrder: 9, ordinal: 9, kind: "slot", offset: 9, type: { kind: "list", elementType: { kind: "list", elementType: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } } } }
+    ] as const,
   };
   static _List0: $.ListCtor<TestLists_Struct0>;
   static _List1: $.ListCtor<TestLists_Struct1>;
@@ -2941,7 +3337,14 @@ export class TestFieldZeroIsBit extends $.Struct {
   static readonly _capnp = {
     displayName: "TestFieldZeroIsBit",
     id: "92fc29a80f3ddd5c",
+    typeId: 0x92fc29a80f3ddd5cn,
+    typeIdHex: "92fc29a80f3ddd5c",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "bit", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "secondBit", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "bool" } },
+      { name: "thirdField", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "uint8" } }
+    ] as const,
     defaultSecondBit: $.getBitMask(true, 1),
     defaultThirdField: $.getUint8Mask(123)
   };
@@ -2969,7 +3372,12 @@ export class TestListDefaults extends $.Struct {
   static readonly _capnp = {
     displayName: "TestListDefaults",
     id: "a851ad32cbc2ffea",
+    typeId: 0xa851ad32cbc2ffean,
+    typeIdHex: "a851ad32cbc2ffea",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "lists", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xe41885c94393277en, typeIdHex: "e41885c94393277e", displayName: "TestLists" } }
+    ] as const,
     defaultLists: $.readRawPointer(new Uint8Array([16, 136, 64, 10, 17, 37, 7, 17, 37, 39, 17, 53, 23, 17, 61, 23, 17, 69, 23, 17, 77, 23, 17, 85, 23, 17, 101, 30, 17, 125, 30, 17, 173, 22, 1, 8, 17, 16, 1, 1, 1, 0, 0, 1, 1, 1, 1, 17, 8, 1, 1, 123, 1, 45, 17, 8, 1, 3, 57, 48, 3, 133, 26, 17, 8, 1, 15, 21, 205, 91, 7, 15, 210, 56, 251, 13, 17, 8, 1, 127, 192, 186, 138, 60, 213, 98, 4, 127, 135, 75, 170, 237, 97, 85, 8, 65, 8, 1, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 9, 28, 17, 13, 20, 17, 13, 12, 17, 1, 2, 1, 3, 17, 4, 5, 7, 242, 79, 188, 17, 9, 22, 17, 21, 14, 17, 25, 22, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 1, 34, 7, 98, 97, 122, 17, 5, 34, 17, 5, 50, 7, 113, 117, 120, 31, 99, 111, 114, 103, 101, 49, 5, 167, 1, 17, 213, 215, 81, 8, 6, 20, 16, 123, 0, 24, 48, 200, 1, 0, 24, 81, 4, 6, 20, 48, 21, 3, 0, 24]).buffer)
   };
   _adoptLists(value: $.Orphan<TestLists>): void {
@@ -3005,7 +3413,14 @@ export class TestLateUnion_TheUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "theUnion",
     id: "807280a2901aa079",
+    typeId: 0x807280a2901aa079n,
+    typeIdHex: "807280a2901aa079",
     size: new $.ObjectSize(24, 3),
+    fields: [
+      { name: "qux", codeOrder: 0, ordinal: 4, discriminantValue: 0, kind: "slot", offset: 1, type: { kind: "text" } },
+      { name: "corge", codeOrder: 1, ordinal: 5, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "int32" } } },
+      { name: "grault", codeOrder: 2, ordinal: 6, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "float32" } }
+    ] as const,
   };
   get qux(): string {
     $.utils.testWhich("qux", $.utils.getUint16(6, this), 0, this);
@@ -3072,7 +3487,14 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "anotherUnion",
     id: "c1973984dee98e3a",
+    typeId: 0xc1973984dee98e3an,
+    typeIdHex: "c1973984dee98e3a",
     size: new $.ObjectSize(24, 3),
+    fields: [
+      { name: "qux", codeOrder: 0, ordinal: 8, discriminantValue: 0, kind: "slot", offset: 2, type: { kind: "text" } },
+      { name: "corge", codeOrder: 1, ordinal: 9, discriminantValue: 1, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "int32" } } },
+      { name: "grault", codeOrder: 2, ordinal: 10, discriminantValue: 2, kind: "slot", offset: 4, type: { kind: "float32" } }
+    ] as const,
   };
   get qux(): string {
     $.utils.testWhich("qux", $.utils.getUint16(12, this), 0, this);
@@ -3135,7 +3557,16 @@ export class TestLateUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestLateUnion",
     id: "a76e3c9bb7fd56d3",
+    typeId: 0xa76e3c9bb7fd56d3n,
+    typeIdHex: "a76e3c9bb7fd56d3",
     size: new $.ObjectSize(24, 3),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "baz", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "int16" } },
+      { name: "theUnion", codeOrder: 3, ordinal: 3, kind: "group", type: { kind: "group", typeId: 0x807280a2901aa079n, typeIdHex: "807280a2901aa079", displayName: "theUnion" } },
+      { name: "anotherUnion", codeOrder: 4, ordinal: 7, kind: "group", type: { kind: "group", typeId: 0xc1973984dee98e3an, typeIdHex: "c1973984dee98e3a", displayName: "anotherUnion" } }
+    ] as const,
   };
   get foo(): number {
     return $.utils.getInt32(0, this);
@@ -3177,7 +3608,14 @@ export class TestOldVersion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestOldVersion",
     id: "95b30dd14e01dda8",
+    typeId: 0x95b30dd14e01dda8n,
+    typeIdHex: "95b30dd14e01dda8",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "old1", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int64" } },
+      { name: "old2", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "old3", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x95b30dd14e01dda8n, typeIdHex: "95b30dd14e01dda8", displayName: "TestOldVersion" } }
+    ] as const,
   };
   get old1(): bigint {
     return $.utils.getInt64(0, this);
@@ -3219,7 +3657,16 @@ export class TestNewVersion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestNewVersion",
     id: "8ed75a7469f04ce3",
+    typeId: 0x8ed75a7469f04ce3n,
+    typeIdHex: "8ed75a7469f04ce3",
     size: new $.ObjectSize(16, 3),
+    fields: [
+      { name: "old1", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int64" } },
+      { name: "old2", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "old3", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x8ed75a7469f04ce3n, typeIdHex: "8ed75a7469f04ce3", displayName: "TestNewVersion" } },
+      { name: "new1", codeOrder: 3, ordinal: 3, kind: "slot", offset: 1, type: { kind: "int64" } },
+      { name: "new2", codeOrder: 4, ordinal: 4, kind: "slot", offset: 2, type: { kind: "text" } }
+    ] as const,
     defaultNew1: $.getInt64Mask(0x3dbn),
     defaultNew2: "baz"
   };
@@ -3278,7 +3725,13 @@ export class TestOldUnionVersion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestOldUnionVersion",
     id: "bd5fe16e5170c492",
+    typeId: 0xbd5fe16e5170c492n,
+    typeIdHex: "bd5fe16e5170c492",
     size: new $.ObjectSize(16, 0),
+    fields: [
+      { name: "a", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "b", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint64" } }
+    ] as const,
   };
   get _isA(): boolean {
     return $.utils.getUint16(0, this) === 0;
@@ -3313,7 +3766,13 @@ export class TestNewUnionVersion_A extends $.Struct {
   static readonly _capnp = {
     displayName: "a",
     id: "86232c1de4513e84",
+    typeId: 0x86232c1de4513e84n,
+    typeIdHex: "86232c1de4513e84",
     size: new $.ObjectSize(24, 0),
+    fields: [
+      { name: "a0", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "a1", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 2, type: { kind: "uint64" } }
+    ] as const,
   };
   get _isA0(): boolean {
     return $.utils.getUint16(8, this) === 0;
@@ -3348,7 +3807,13 @@ export class TestNewUnionVersion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestNewUnionVersion",
     id: "c7e4c513a975492b",
+    typeId: 0xc7e4c513a975492bn,
+    typeIdHex: "c7e4c513a975492b",
     size: new $.ObjectSize(24, 0),
+    fields: [
+      { name: "a", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0x86232c1de4513e84n, typeIdHex: "86232c1de4513e84", displayName: "a" } },
+      { name: "b", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint64" } }
+    ] as const,
   };
   get a(): TestNewUnionVersion_A {
     $.utils.testWhich("a", $.utils.getUint16(0, this), 0, this);
@@ -3384,7 +3849,13 @@ export class TestStructUnion_SomeStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "SomeStruct",
     id: "9daec9823f171085",
+    typeId: 0x9daec9823f171085n,
+    typeIdHex: "9daec9823f171085",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "someText", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "moreText", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
   };
   get someText(): string {
     return $.utils.getText(0, this);
@@ -3411,7 +3882,13 @@ export class TestStructUnion_Un extends $.Struct {
   static readonly _capnp = {
     displayName: "un",
     id: "992edc677bef5a3c",
+    typeId: 0x992edc677bef5a3cn,
+    typeIdHex: "992edc677bef5a3c",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "struct", codeOrder: 0, ordinal: 1, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9daec9823f171085n, typeIdHex: "9daec9823f171085", displayName: "SomeStruct" } },
+      { name: "object", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xe3da5a2ccd28c0d8n, typeIdHex: "e3da5a2ccd28c0d8", displayName: "TestAnyPointer" } }
+    ] as const,
   };
   _adoptStruct(value: $.Orphan<TestStructUnion_SomeStruct>): void {
     $.utils.setUint16(0, 0, this);
@@ -3473,7 +3950,12 @@ export class TestStructUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestStructUnion",
     id: "faf781ef89a00e39",
+    typeId: 0xfaf781ef89a00e39n,
+    typeIdHex: "faf781ef89a00e39",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "un", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0x992edc677bef5a3cn, typeIdHex: "992edc677bef5a3c", displayName: "un" } }
+    ] as const,
   };
   get un(): TestStructUnion_Un {
     return $.utils.getAs(TestStructUnion_Un, this);
@@ -3487,7 +3969,13 @@ export class TestPrintInlineStructs_InlineStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "InlineStruct",
     id: "8e4936003708dac2",
+    typeId: 0x8e4936003708dac2n,
+    typeIdHex: "8e4936003708dac2",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "int32Field", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "textField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get int32Field(): number {
     return $.utils.getInt32(0, this);
@@ -3508,7 +3996,13 @@ export class TestPrintInlineStructs extends $.Struct {
   static readonly _capnp = {
     displayName: "TestPrintInlineStructs",
     id: "dec497819d097c3c",
+    typeId: 0xdec497819d097c3cn,
+    typeIdHex: "dec497819d097c3c",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "someText", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "structList", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "struct", typeId: 0x8e4936003708dac2n, typeIdHex: "8e4936003708dac2", displayName: "InlineStruct" } } }
+    ] as const,
   };
   static _StructList: $.ListCtor<TestPrintInlineStructs_InlineStruct>;
   get someText(): string {
@@ -3548,7 +4042,13 @@ export class TestWholeFloatDefault extends $.Struct {
   static readonly _capnp = {
     displayName: "TestWholeFloatDefault",
     id: "91afd4a864dbb030",
+    typeId: 0x91afd4a864dbb030n,
+    typeIdHex: "91afd4a864dbb030",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "field", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "float32" } },
+      { name: "bigField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "float32" } }
+    ] as const,
     defaultField: $.getFloat32Mask(123),
     defaultBigField: $.getFloat32Mask(2.0000000300949324e+30)
   };
@@ -3570,7 +4070,13 @@ export class TestGenerics_Inner extends $.Struct {
   static readonly _capnp = {
     displayName: "Inner",
     id: "f6a841117e19ac73",
+    typeId: 0xf6a841117e19ac73n,
+    typeIdHex: "f6a841117e19ac73",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -3608,7 +4114,10 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params extends 
   static readonly _capnp = {
     displayName: "call$Params",
     id: "b84eecc799437049",
+    typeId: 0xb84eecc799437049n,
+    typeIdHex: "b84eecc799437049",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params_" + super.toString(); }
 }
@@ -3616,7 +4125,10 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results extends
   static readonly _capnp = {
     displayName: "call$Results",
     id: "e080f0fc54614f6f",
+    typeId: 0xe080f0fc54614f6fn,
+    typeIdHex: "e080f0fc54614f6f",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results_" + super.toString(); }
 }
@@ -3644,7 +4156,9 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Client {
       interfaceId: TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestGenerics.Inner2.DeepNest.DeepNestInterface",
-      methodName: "call"
+      methodName: "call",
+      paramFields: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params._capnp.fields,
+      resultFields: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results._capnp.fields
     }
   ];
   call(paramsFunc?: (params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => void): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise {
@@ -3685,7 +4199,10 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface extends $.Interface 
   static readonly _capnp = {
     displayName: "DeepNestInterface",
     id: "8839ed86c9794287",
+    typeId: 0x8839ed86c9794287n,
+    typeIdHex: "8839ed86c9794287",
     size: new $.ObjectSize(0, 0),
+    methods: TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.methods,
   };
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_" + super.toString(); }
 }
@@ -3694,7 +4211,15 @@ export class TestGenerics_Inner2_DeepNest extends $.Struct {
   static readonly _capnp = {
     displayName: "DeepNest",
     id: "b6a0829c762b06f3",
+    typeId: 0xb6a0829c762b06f3n,
+    typeIdHex: "b6a0829c762b06f3",
     size: new $.ObjectSize(0, 4),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } },
+      { name: "baz", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } },
+      { name: "qux", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -3763,7 +4288,15 @@ export class TestGenerics_Inner2 extends $.Struct {
   static readonly _capnp = {
     displayName: "Inner2",
     id: "a9ab42b118d6d435",
+    typeId: 0xa9ab42b118d6d435n,
+    typeIdHex: "a9ab42b118d6d435",
     size: new $.ObjectSize(0, 4),
+    fields: [
+      { name: "bar", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "baz", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } },
+      { name: "innerBound", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } },
+      { name: "innerUnbound", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } }
+    ] as const,
   };
   _adoptBar(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -3837,7 +4370,13 @@ export class TestGenerics_Interface_Call$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "call$Results",
     id: "a5b46224e33581ad",
+    typeId: 0xa5b46224e33581adn,
+    typeIdHex: "a5b46224e33581ad",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "qux", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "gen", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } }
+    ] as const,
   };
   _adoptQux(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -3898,7 +4437,9 @@ export class TestGenerics_Interface$Client {
       interfaceId: TestGenerics_Interface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestGenerics.Interface",
-      methodName: "call"
+      methodName: "call",
+      paramFields: TestGenerics_Inner2._capnp.fields,
+      resultFields: TestGenerics_Interface_Call$Results._capnp.fields
     }
   ];
   call(paramsFunc?: (params: TestGenerics_Inner2) => void): TestGenerics_Interface_Call$Results$Promise {
@@ -3935,7 +4476,10 @@ export class TestGenerics_Interface extends $.Interface {
   static readonly _capnp = {
     displayName: "Interface",
     id: "c9e749e8dd54da5c",
+    typeId: 0xc9e749e8dd54da5cn,
+    typeIdHex: "c9e749e8dd54da5c",
     size: new $.ObjectSize(0, 0),
+    methods: TestGenerics_Interface$Client.methods,
   };
   toString(): string { return "TestGenerics_Interface_" + super.toString(); }
 }
@@ -3943,7 +4487,17 @@ export class TestGenerics_UseAliases extends $.Struct {
   static readonly _capnp = {
     displayName: "UseAliases",
     id: "8e656edfb45ba6cf",
+    typeId: 0x8e656edfb45ba6cfn,
+    typeIdHex: "8e656edfb45ba6cf",
     size: new $.ObjectSize(0, 6),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "inner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } },
+      { name: "inner2", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "inner2Bind", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "inner2Text", codeOrder: 4, ordinal: 4, kind: "slot", offset: 4, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "revFoo", codeOrder: 5, ordinal: 5, kind: "slot", offset: 5, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4053,7 +4607,12 @@ export class TestGenerics_Ug extends $.Struct {
   static readonly _capnp = {
     displayName: "ug",
     id: "b46a779beaf3384e",
+    typeId: 0xb46a779beaf3384en,
+    typeIdHex: "b46a779beaf3384e",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "ugfoo", codeOrder: 0, ordinal: 3, kind: "slot", offset: 1, type: { kind: "int32" } }
+    ] as const,
   };
   get ugfoo(): number {
     return $.utils.getInt32(4, this);
@@ -4078,7 +4637,15 @@ export class TestGenerics extends $.Struct {
   static readonly _capnp = {
     displayName: "TestGenerics",
     id: "9d5b8cd8de9922eb",
+    typeId: 0x9d5b8cd8de9922ebn,
+    typeIdHex: "9d5b8cd8de9922eb",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "rev", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } },
+      { name: "uv", codeOrder: 2, ordinal: 2, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "ug", codeOrder: 3, ordinal: 3, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xb46a779beaf3384en, typeIdHex: "b46a779beaf3384e", displayName: "ug" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4142,7 +4709,12 @@ export class TestGenericsWrapper extends $.Struct {
   static readonly _capnp = {
     displayName: "TestGenericsWrapper",
     id: "a9b2b1f52dde845d",
+    typeId: 0xa9b2b1f52dde845dn,
+    typeIdHex: "a9b2b1f52dde845d",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "value", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } }
+    ] as const,
   };
   _adoptValue(value: $.Orphan<TestGenerics>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4168,7 +4740,12 @@ export class TestGenericsWrapper2 extends $.Struct {
   static readonly _capnp = {
     displayName: "TestGenericsWrapper2",
     id: "f28f83667a557a04",
+    typeId: 0xf28f83667a557a04n,
+    typeIdHex: "f28f83667a557a04",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "value", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa9b2b1f52dde845dn, typeIdHex: "a9b2b1f52dde845d", displayName: "TestGenericsWrapper" } }
+    ] as const,
   };
   _adoptValue(value: $.Orphan<TestGenericsWrapper>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4194,7 +4771,13 @@ export class TestImplicitMethodParams_Call$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "call$Params",
     id: "f83f8caf54bdc486",
+    typeId: 0xf83f8caf54bdc486n,
+    typeIdHex: "f83f8caf54bdc486",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4252,7 +4835,9 @@ export class TestImplicitMethodParams$Client {
       interfaceId: TestImplicitMethodParams$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestImplicitMethodParams",
-      methodName: "call"
+      methodName: "call",
+      paramFields: TestImplicitMethodParams_Call$Params._capnp.fields,
+      resultFields: TestGenerics._capnp.fields
     }
   ];
   call(paramsFunc?: (params: TestImplicitMethodParams_Call$Params) => void): TestGenerics$Promise {
@@ -4289,7 +4874,10 @@ export class TestImplicitMethodParams extends $.Interface {
   static readonly _capnp = {
     displayName: "TestImplicitMethodParams",
     id: "8b9717a3f8d85a9a",
+    typeId: 0x8b9717a3f8d85a9an,
+    typeIdHex: "8b9717a3f8d85a9a",
     size: new $.ObjectSize(0, 0),
+    methods: TestImplicitMethodParams$Client.methods,
   };
   toString(): string { return "TestImplicitMethodParams_" + super.toString(); }
 }
@@ -4297,7 +4885,13 @@ export class TestImplicitMethodParamsInGeneric_Call$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "call$Params",
     id: "9aab8e25c808d71e",
+    typeId: 0x9aab8e25c808d71en,
+    typeIdHex: "9aab8e25c808d71e",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4346,7 +4940,9 @@ export class TestImplicitMethodParamsInGeneric$Client {
       interfaceId: TestImplicitMethodParamsInGeneric$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestImplicitMethodParamsInGeneric",
-      methodName: "call"
+      methodName: "call",
+      paramFields: TestImplicitMethodParamsInGeneric_Call$Params._capnp.fields,
+      resultFields: TestGenerics._capnp.fields
     }
   ];
   call(paramsFunc?: (params: TestImplicitMethodParamsInGeneric_Call$Params) => void): TestGenerics$Promise {
@@ -4383,7 +4979,10 @@ export class TestImplicitMethodParamsInGeneric extends $.Interface {
   static readonly _capnp = {
     displayName: "TestImplicitMethodParamsInGeneric",
     id: "df9ccdeb81a704c9",
+    typeId: 0xdf9ccdeb81a704c9n,
+    typeIdHex: "df9ccdeb81a704c9",
     size: new $.ObjectSize(0, 0),
+    methods: TestImplicitMethodParamsInGeneric$Client.methods,
   };
   toString(): string { return "TestImplicitMethodParamsInGeneric_" + super.toString(); }
 }
@@ -4402,7 +5001,13 @@ export class TestGenericsUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "TestGenericsUnion",
     id: "a54870440e919063",
+    typeId: 0xa54870440e919063n,
+    typeIdHex: "a54870440e919063",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.setUint16(0, 0, this);
@@ -4455,7 +5060,31 @@ export class TestUseGenerics extends $.Struct {
   static readonly _capnp = {
     displayName: "TestUseGenerics",
     id: "9427b2a71030338f",
+    typeId: 0x9427b2a71030338fn,
+    typeIdHex: "9427b2a71030338f",
     size: new $.ObjectSize(0, 20),
+    fields: [
+      { name: "basic", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } },
+      { name: "inner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } },
+      { name: "inner2", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "unspecified", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } },
+      { name: "unspecifiedInner", codeOrder: 4, ordinal: 4, kind: "slot", offset: 4, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "wrapper", codeOrder: 5, ordinal: 8, kind: "slot", offset: 8, type: { kind: "struct", typeId: 0xa9b2b1f52dde845dn, typeIdHex: "a9b2b1f52dde845d", displayName: "TestGenericsWrapper" } },
+      { name: "cap", codeOrder: 6, ordinal: 18, kind: "slot", offset: 18, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } },
+      { name: "genericCap", codeOrder: 7, ordinal: 19, kind: "slot", offset: 19, type: { kind: "interface", typeId: 0xc9e749e8dd54da5cn, typeIdHex: "c9e749e8dd54da5c", displayName: "Interface" } },
+      { name: "default", codeOrder: 8, ordinal: 5, kind: "slot", offset: 5, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } },
+      { name: "defaultInner", codeOrder: 9, ordinal: 6, kind: "slot", offset: 6, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } },
+      { name: "defaultUser", codeOrder: 10, ordinal: 7, kind: "slot", offset: 7, type: { kind: "struct", typeId: 0x9427b2a71030338fn, typeIdHex: "9427b2a71030338f", displayName: "TestUseGenerics" } },
+      { name: "defaultWrapper", codeOrder: 11, ordinal: 9, kind: "slot", offset: 9, type: { kind: "struct", typeId: 0xa9b2b1f52dde845dn, typeIdHex: "a9b2b1f52dde845d", displayName: "TestGenericsWrapper" } },
+      { name: "defaultWrapper2", codeOrder: 12, ordinal: 10, kind: "slot", offset: 10, type: { kind: "struct", typeId: 0xf28f83667a557a04n, typeIdHex: "f28f83667a557a04", displayName: "TestGenericsWrapper2" } },
+      { name: "aliasFoo", codeOrder: 13, ordinal: 11, kind: "slot", offset: 11, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } },
+      { name: "aliasInner", codeOrder: 14, ordinal: 12, kind: "slot", offset: 12, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } },
+      { name: "aliasInner2", codeOrder: 15, ordinal: 13, kind: "slot", offset: 13, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "aliasInner2Bind", codeOrder: 16, ordinal: 14, kind: "slot", offset: 14, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "aliasInner2Text", codeOrder: 17, ordinal: 15, kind: "slot", offset: 15, type: { kind: "struct", typeId: 0xa9ab42b118d6d435n, typeIdHex: "a9ab42b118d6d435", displayName: "Inner2" } },
+      { name: "aliasRev", codeOrder: 18, ordinal: 16, kind: "slot", offset: 16, type: { kind: "text" } },
+      { name: "useAliases", codeOrder: 19, ordinal: 17, kind: "slot", offset: 17, type: { kind: "struct", typeId: 0x8e656edfb45ba6cfn, typeIdHex: "8e656edfb45ba6cf", displayName: "UseAliases" } }
+    ] as const,
     defaultDefault: $.readRawPointer(new Uint8Array([16, 63, 80, 1, 2, 0, 0, 81, 4, 6, 20, 81, 104, 1, 2, 4, 123, 0, 25, 17, 5, 42, 81, 4, 1, 2, 15, 116, 101, 120, 116, 0, 0, 81, 4, 6, 20, 0, 0, 12, 65, 1, 0, 24]).buffer),
     defaultDefaultInner: $.readRawPointer(new Uint8Array([16, 30, 64, 2, 81, 4, 6, 20, 17, 105, 42, 4, 123, 0, 24, 15, 116, 101, 120, 116]).buffer),
     defaultDefaultUser: $.readRawPointer(new Uint8Array([16, 50, 64, 20, 81, 76, 1, 2, 0, 19, 81, 4, 6, 20, 0, 0, 4, 123, 0, 24]).buffer),
@@ -4811,7 +5440,10 @@ export class TestEmptyStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "TestEmptyStruct",
     id: "c5598844441096dc",
+    typeId: 0xc5598844441096dcn,
+    typeIdHex: "c5598844441096dc",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestEmptyStruct_" + super.toString(); }
 }
@@ -4851,7 +5483,10 @@ export class TestConstants extends $.Struct {
   static readonly _capnp = {
     displayName: "TestConstants",
     id: "abed745cd8c92095",
+    typeId: 0xabed745cd8c92095n,
+    typeIdHex: "abed745cd8c92095",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestConstants_" + super.toString(); }
 }
@@ -4859,7 +5494,15 @@ export class TestAnyPointerConstants extends $.Struct {
   static readonly _capnp = {
     displayName: "TestAnyPointerConstants",
     id: "ddc280dbee9c99b3",
+    typeId: 0xddc280dbee9c99b3n,
+    typeIdHex: "ddc280dbee9c99b3",
     size: new $.ObjectSize(0, 4),
+    fields: [
+      { name: "anyKindAsStruct", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } },
+      { name: "anyStructAsStruct", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } },
+      { name: "anyKindAsList", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } },
+      { name: "anyListAsList", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptAnyKindAsStruct(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -4927,7 +5570,13 @@ export class TestInterface_Foo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "foo$Params",
     id: "b874edc0d559b391",
+    typeId: 0xb874edc0d559b391n,
+    typeIdHex: "b874edc0d559b391",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "i", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "j", codeOrder: 1, ordinal: 1, kind: "slot", offset: 32, type: { kind: "bool" } }
+    ] as const,
   };
   get i(): number {
     return $.utils.getUint32(0, this);
@@ -4947,7 +5596,12 @@ export class TestInterface_Foo$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "foo$Results",
     id: "b04fcaddab714ba4",
+    typeId: 0xb04fcaddab714ba4n,
+    typeIdHex: "b04fcaddab714ba4",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "x", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get x(): string {
     return $.utils.getText(0, this);
@@ -4970,7 +5624,10 @@ export class TestInterface_Bar$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "bar$Params",
     id: "d044893357b42568",
+    typeId: 0xd044893357b42568n,
+    typeIdHex: "d044893357b42568",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestInterface_Bar$Params_" + super.toString(); }
 }
@@ -4978,7 +5635,10 @@ export class TestInterface_Bar$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "bar$Results",
     id: "9bf141df4247d52f",
+    typeId: 0x9bf141df4247d52fn,
+    typeIdHex: "9bf141df4247d52f",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestInterface_Bar$Results_" + super.toString(); }
 }
@@ -4995,7 +5655,12 @@ export class TestInterface_Baz$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "baz$Params",
     id: "d9ac8abb2a91cfbc",
+    typeId: 0xd9ac8abb2a91cfbcn,
+    typeIdHex: "d9ac8abb2a91cfbc",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } }
+    ] as const,
   };
   _adoptS(value: $.Orphan<TestAllTypes>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -5021,7 +5686,10 @@ export class TestInterface_Baz$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "baz$Results",
     id: "9b99d14f2f375b2d",
+    typeId: 0x9b99d14f2f375b2dn,
+    typeIdHex: "9b99d14f2f375b2d",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestInterface_Baz$Results_" + super.toString(); }
 }
@@ -5051,7 +5719,9 @@ export class TestInterface$Client {
       interfaceId: TestInterface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestInterface",
-      methodName: "foo"
+      methodName: "foo",
+      paramFields: TestInterface_Foo$Params._capnp.fields,
+      resultFields: TestInterface_Foo$Results._capnp.fields
     },
     {
       ParamsClass: TestInterface_Bar$Params,
@@ -5059,7 +5729,9 @@ export class TestInterface$Client {
       interfaceId: TestInterface$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestInterface",
-      methodName: "bar"
+      methodName: "bar",
+      paramFields: TestInterface_Bar$Params._capnp.fields,
+      resultFields: TestInterface_Bar$Results._capnp.fields
     },
     {
       ParamsClass: TestInterface_Baz$Params,
@@ -5067,7 +5739,9 @@ export class TestInterface$Client {
       interfaceId: TestInterface$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestInterface",
-      methodName: "baz"
+      methodName: "baz",
+      paramFields: TestInterface_Baz$Params._capnp.fields,
+      resultFields: TestInterface_Baz$Results._capnp.fields
     }
   ];
   foo(paramsFunc?: (params: TestInterface_Foo$Params) => void): TestInterface_Foo$Results$Promise {
@@ -5130,7 +5804,10 @@ export class TestInterface extends $.Interface {
   static readonly _capnp = {
     displayName: "TestInterface",
     id: "88eb12a0e0af92b2",
+    typeId: 0x88eb12a0e0af92b2n,
+    typeIdHex: "88eb12a0e0af92b2",
     size: new $.ObjectSize(0, 0),
+    methods: TestInterface$Client.methods,
   };
   toString(): string { return "TestInterface_" + super.toString(); }
 }
@@ -5138,7 +5815,10 @@ export class TestExtends_Qux$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "qux$Params",
     id: "83a4bc5471363f17",
+    typeId: 0x83a4bc5471363f17n,
+    typeIdHex: "83a4bc5471363f17",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestExtends_Qux$Params_" + super.toString(); }
 }
@@ -5146,7 +5826,10 @@ export class TestExtends_Qux$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "qux$Results",
     id: "8e4b3d1a3e2753dd",
+    typeId: 0x8e4b3d1a3e2753ddn,
+    typeIdHex: "8e4b3d1a3e2753dd",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestExtends_Qux$Results_" + super.toString(); }
 }
@@ -5163,7 +5846,10 @@ export class TestExtends_Corge$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "corge$Results",
     id: "acf67532a7e7bad9",
+    typeId: 0xacf67532a7e7bad9n,
+    typeIdHex: "acf67532a7e7bad9",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestExtends_Corge$Results_" + super.toString(); }
 }
@@ -5180,7 +5866,10 @@ export class TestExtends_Grault$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "grault$Params",
     id: "f3b834e851ea8af6",
+    typeId: 0xf3b834e851ea8af6n,
+    typeIdHex: "f3b834e851ea8af6",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestExtends_Grault$Params_" + super.toString(); }
 }
@@ -5210,7 +5899,9 @@ export class TestExtends$Client {
       interfaceId: TestExtends$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestExtends",
-      methodName: "qux"
+      methodName: "qux",
+      paramFields: TestExtends_Qux$Params._capnp.fields,
+      resultFields: TestExtends_Qux$Results._capnp.fields
     },
     {
       ParamsClass: TestAllTypes,
@@ -5218,7 +5909,9 @@ export class TestExtends$Client {
       interfaceId: TestExtends$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestExtends",
-      methodName: "corge"
+      methodName: "corge",
+      paramFields: TestAllTypes._capnp.fields,
+      resultFields: TestExtends_Corge$Results._capnp.fields
     },
     {
       ParamsClass: TestExtends_Grault$Params,
@@ -5226,7 +5919,9 @@ export class TestExtends$Client {
       interfaceId: TestExtends$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestExtends",
-      methodName: "grault"
+      methodName: "grault",
+      paramFields: TestExtends_Grault$Params._capnp.fields,
+      resultFields: TestAllTypes._capnp.fields
     }
   ];
   qux(paramsFunc?: (params: TestExtends_Qux$Params) => void): TestExtends_Qux$Results$Promise {
@@ -5289,7 +5984,10 @@ export class TestExtends extends $.Interface {
   static readonly _capnp = {
     displayName: "TestExtends",
     id: "e4e9bac98670b748",
+    typeId: 0xe4e9bac98670b748n,
+    typeIdHex: "e4e9bac98670b748",
     size: new $.ObjectSize(0, 0),
+    methods: TestExtends$Client.methods,
   };
   toString(): string { return "TestExtends_" + super.toString(); }
 }
@@ -5321,7 +6019,10 @@ export class TestExtends2 extends $.Interface {
   static readonly _capnp = {
     displayName: "TestExtends2",
     id: "98d7e0ef61488783",
+    typeId: 0x98d7e0ef61488783n,
+    typeIdHex: "98d7e0ef61488783",
     size: new $.ObjectSize(0, 0),
+    methods: TestExtends2$Client.methods,
   };
   toString(): string { return "TestExtends2_" + super.toString(); }
 }
@@ -5329,7 +6030,12 @@ export class TestPipeline_Box extends $.Struct {
   static readonly _capnp = {
     displayName: "Box",
     id: "b0b29e51db0e26b1",
+    typeId: 0xb0b29e51db0e26b1n,
+    typeIdHex: "b0b29e51db0e26b1",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -5343,7 +6049,12 @@ export class TestPipeline_AnyBox extends $.Struct {
   static readonly _capnp = {
     displayName: "AnyBox",
     id: "9442ad5a1d2c8acb",
+    typeId: 0x9442ad5a1d2c8acbn,
+    typeIdHex: "9442ad5a1d2c8acb",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptCap(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -5366,7 +6077,13 @@ export class TestPipeline_GetCap$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getCap$Params",
     id: "c7e8df5096257034",
+    typeId: 0xc7e8df5096257034n,
+    typeIdHex: "c7e8df5096257034",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "n", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "inCap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get n(): number {
     return $.utils.getUint32(0, this);
@@ -5386,7 +6103,13 @@ export class TestPipeline_GetCap$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getCap$Results",
     id: "b2442a9e0ba28fdf",
+    typeId: 0xb2442a9e0ba28fdfn,
+    typeIdHex: "b2442a9e0ba28fdf",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "outBox", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xb0b29e51db0e26b1n, typeIdHex: "b0b29e51db0e26b1", displayName: "Box" } }
+    ] as const,
   };
   get s(): string {
     return $.utils.getText(0, this);
@@ -5427,7 +6150,14 @@ export class TestPipeline_TestPointers$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "testPointers$Params",
     id: "a604ee63cf37819f",
+    typeId: 0xa604ee63cf37819fn,
+    typeIdHex: "a604ee63cf37819f",
     size: new $.ObjectSize(0, 3),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } },
+      { name: "obj", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } },
+      { name: "list", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -5474,7 +6204,10 @@ export class TestPipeline_TestPointers$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "testPointers$Results",
     id: "8eda54756c6070d6",
+    typeId: 0x8eda54756c6070d6n,
+    typeIdHex: "8eda54756c6070d6",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestPipeline_TestPointers$Results_" + super.toString(); }
 }
@@ -5491,7 +6224,13 @@ export class TestPipeline_GetAnyCap$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getAnyCap$Params",
     id: "f8e36b53ab093d4e",
+    typeId: 0xf8e36b53ab093d4en,
+    typeIdHex: "f8e36b53ab093d4e",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "n", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "inCap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   get n(): number {
     return $.utils.getUint32(0, this);
@@ -5520,7 +6259,13 @@ export class TestPipeline_GetAnyCap$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getAnyCap$Results",
     id: "bf44b4c94c26ef79",
+    typeId: 0xbf44b4c94c26ef79n,
+    typeIdHex: "bf44b4c94c26ef79",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "outBox", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9442ad5a1d2c8acbn, typeIdHex: "9442ad5a1d2c8acb", displayName: "AnyBox" } }
+    ] as const,
   };
   get s(): string {
     return $.utils.getText(0, this);
@@ -5574,7 +6319,9 @@ export class TestPipeline$Client {
       interfaceId: TestPipeline$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestPipeline",
-      methodName: "getCap"
+      methodName: "getCap",
+      paramFields: TestPipeline_GetCap$Params._capnp.fields,
+      resultFields: TestPipeline_GetCap$Results._capnp.fields
     },
     {
       ParamsClass: TestPipeline_TestPointers$Params,
@@ -5582,7 +6329,9 @@ export class TestPipeline$Client {
       interfaceId: TestPipeline$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestPipeline",
-      methodName: "testPointers"
+      methodName: "testPointers",
+      paramFields: TestPipeline_TestPointers$Params._capnp.fields,
+      resultFields: TestPipeline_TestPointers$Results._capnp.fields
     },
     {
       ParamsClass: TestPipeline_GetAnyCap$Params,
@@ -5590,7 +6339,9 @@ export class TestPipeline$Client {
       interfaceId: TestPipeline$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestPipeline",
-      methodName: "getAnyCap"
+      methodName: "getAnyCap",
+      paramFields: TestPipeline_GetAnyCap$Params._capnp.fields,
+      resultFields: TestPipeline_GetAnyCap$Results._capnp.fields
     }
   ];
   getCap(paramsFunc?: (params: TestPipeline_GetCap$Params) => void): TestPipeline_GetCap$Results$Promise {
@@ -5655,7 +6406,10 @@ export class TestPipeline extends $.Interface {
   static readonly _capnp = {
     displayName: "TestPipeline",
     id: "a5a404caa61d4cd0",
+    typeId: 0xa5a404caa61d4cd0n,
+    typeIdHex: "a5a404caa61d4cd0",
     size: new $.ObjectSize(0, 0),
+    methods: TestPipeline$Client.methods,
   };
   toString(): string { return "TestPipeline_" + super.toString(); }
 }
@@ -5663,7 +6417,12 @@ export class TestCallOrder_GetCallSequence$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getCallSequence$Params",
     id: "8f1e8cd56ceb74dc",
+    typeId: 0x8f1e8cd56ceb74dcn,
+    typeIdHex: "8f1e8cd56ceb74dc",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "expected", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   get expected(): number {
     return $.utils.getUint32(0, this);
@@ -5677,7 +6436,12 @@ export class TestCallOrder_GetCallSequence$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getCallSequence$Results",
     id: "dedbb6bf3810eab7",
+    typeId: 0xdedbb6bf3810eab7n,
+    typeIdHex: "dedbb6bf3810eab7",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "n", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
+    ] as const,
   };
   get n(): number {
     return $.utils.getUint32(0, this);
@@ -5711,7 +6475,9 @@ export class TestCallOrder$Client {
       interfaceId: TestCallOrder$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestCallOrder",
-      methodName: "getCallSequence"
+      methodName: "getCallSequence",
+      paramFields: TestCallOrder_GetCallSequence$Params._capnp.fields,
+      resultFields: TestCallOrder_GetCallSequence$Results._capnp.fields
     }
   ];
   /**
@@ -5754,7 +6520,10 @@ export class TestCallOrder extends $.Interface {
   static readonly _capnp = {
     displayName: "TestCallOrder",
     id: "a0e77035bdff0051",
+    typeId: 0xa0e77035bdff0051n,
+    typeIdHex: "a0e77035bdff0051",
     size: new $.ObjectSize(0, 0),
+    methods: TestCallOrder$Client.methods,
   };
   toString(): string { return "TestCallOrder_" + super.toString(); }
 }
@@ -5762,7 +6531,14 @@ export class TestTailCallee_TailResult extends $.Struct {
   static readonly _capnp = {
     displayName: "TailResult",
     id: "a9ed2e5a9fd53d19",
+    typeId: 0xa9ed2e5a9fd53d19n,
+    typeIdHex: "a9ed2e5a9fd53d19",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "i", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "t", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "c", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
+    ] as const,
   };
   get i(): number {
     return $.utils.getUint32(0, this);
@@ -5788,7 +6564,13 @@ export class TestTailCallee_Foo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "foo$Params",
     id: "c5e1efc325614957",
+    typeId: 0xc5e1efc325614957n,
+    typeIdHex: "c5e1efc325614957",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "i", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "t", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get i(): number {
     return $.utils.getInt32(0, this);
@@ -5831,7 +6613,9 @@ export class TestTailCallee$Client {
       interfaceId: TestTailCallee$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestTailCallee",
-      methodName: "foo"
+      methodName: "foo",
+      paramFields: TestTailCallee_Foo$Params._capnp.fields,
+      resultFields: TestTailCallee_TailResult._capnp.fields
     }
   ];
   foo(paramsFunc?: (params: TestTailCallee_Foo$Params) => void): TestTailCallee_TailResult$Promise {
@@ -5869,7 +6653,10 @@ export class TestTailCallee extends $.Interface {
   static readonly _capnp = {
     displayName: "TestTailCallee",
     id: "ddd699207eb8e23b",
+    typeId: 0xddd699207eb8e23bn,
+    typeIdHex: "ddd699207eb8e23b",
     size: new $.ObjectSize(0, 0),
+    methods: TestTailCallee$Client.methods,
   };
   toString(): string { return "TestTailCallee_" + super.toString(); }
 }
@@ -5877,7 +6664,13 @@ export class TestTailCaller_Foo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "foo$Params",
     id: "b07a279515dc8ac5",
+    typeId: 0xb07a279515dc8ac5n,
+    typeIdHex: "b07a279515dc8ac5",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "i", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } },
+      { name: "callee", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xddd699207eb8e23bn, typeIdHex: "ddd699207eb8e23b", displayName: "TestTailCallee" } }
+    ] as const,
   };
   get i(): number {
     return $.utils.getInt32(0, this);
@@ -5908,7 +6701,9 @@ export class TestTailCaller$Client {
       interfaceId: TestTailCaller$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestTailCaller",
-      methodName: "foo"
+      methodName: "foo",
+      paramFields: TestTailCaller_Foo$Params._capnp.fields,
+      resultFields: TestTailCallee_TailResult._capnp.fields
     }
   ];
   foo(paramsFunc?: (params: TestTailCaller_Foo$Params) => void): TestTailCallee_TailResult$Promise {
@@ -5945,7 +6740,10 @@ export class TestTailCaller extends $.Interface {
   static readonly _capnp = {
     displayName: "TestTailCaller",
     id: "870bf40110ce3035",
+    typeId: 0x870bf40110ce3035n,
+    typeIdHex: "870bf40110ce3035",
     size: new $.ObjectSize(0, 0),
+    methods: TestTailCaller$Client.methods,
   };
   toString(): string { return "TestTailCaller_" + super.toString(); }
 }
@@ -5977,7 +6775,10 @@ export class TestHandle extends $.Interface {
   static readonly _capnp = {
     displayName: "TestHandle",
     id: "a38e5efe41e53a15",
+    typeId: 0xa38e5efe41e53a15n,
+    typeIdHex: "a38e5efe41e53a15",
     size: new $.ObjectSize(0, 0),
+    methods: TestHandle$Client.methods,
   };
   toString(): string { return "TestHandle_" + super.toString(); }
 }
@@ -5985,7 +6786,12 @@ export class TestMoreStuff_CallFoo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "callFoo$Params",
     id: "931ba418da60f6e4",
+    typeId: 0x931ba418da60f6e4n,
+    typeIdHex: "931ba418da60f6e4",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -5999,7 +6805,12 @@ export class TestMoreStuff_CallFoo$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "callFoo$Results",
     id: "9a28970beccecdd0",
+    typeId: 0x9a28970beccecdd0n,
+    typeIdHex: "9a28970beccecdd0",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get s(): string {
     return $.utils.getText(0, this);
@@ -6022,7 +6833,12 @@ export class TestMoreStuff_CallFooWhenResolved$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "callFooWhenResolved$Params",
     id: "fabc700c2ebe6378",
+    typeId: 0xfabc700c2ebe6378n,
+    typeIdHex: "fabc700c2ebe6378",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6036,7 +6852,12 @@ export class TestMoreStuff_CallFooWhenResolved$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "callFooWhenResolved$Results",
     id: "a54ce1e9aa822f90",
+    typeId: 0xa54ce1e9aa822f90n,
+    typeIdHex: "a54ce1e9aa822f90",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get s(): string {
     return $.utils.getText(0, this);
@@ -6059,7 +6880,12 @@ export class TestMoreStuff_NeverReturn$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "neverReturn$Params",
     id: "94fe60465c95182b",
+    typeId: 0x94fe60465c95182bn,
+    typeIdHex: "94fe60465c95182b",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6073,7 +6899,12 @@ export class TestMoreStuff_NeverReturn$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "neverReturn$Results",
     id: "def4e5fa6999c5dc",
+    typeId: 0xdef4e5fa6999c5dcn,
+    typeIdHex: "def4e5fa6999c5dc",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "capCopy", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get capCopy(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6099,7 +6930,12 @@ export class TestMoreStuff_Hold$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "hold$Params",
     id: "fe7c8fbb769d8e58",
+    typeId: 0xfe7c8fbb769d8e58n,
+    typeIdHex: "fe7c8fbb769d8e58",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6113,7 +6949,10 @@ export class TestMoreStuff_Hold$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "hold$Results",
     id: "f839fb1374d003c9",
+    typeId: 0xf839fb1374d003c9n,
+    typeIdHex: "f839fb1374d003c9",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_Hold$Results_" + super.toString(); }
 }
@@ -6130,7 +6969,10 @@ export class TestMoreStuff_CallHeld$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "callHeld$Params",
     id: "f8c5e5ef1edf83be",
+    typeId: 0xf8c5e5ef1edf83ben,
+    typeIdHex: "f8c5e5ef1edf83be",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_CallHeld$Params_" + super.toString(); }
 }
@@ -6138,7 +6980,12 @@ export class TestMoreStuff_CallHeld$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "callHeld$Results",
     id: "e59935f160ac7578",
+    typeId: 0xe59935f160ac7578n,
+    typeIdHex: "e59935f160ac7578",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get s(): string {
     return $.utils.getText(0, this);
@@ -6161,7 +7008,10 @@ export class TestMoreStuff_GetHeld$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getHeld$Params",
     id: "feffc025fce317e3",
+    typeId: 0xfeffc025fce317e3n,
+    typeIdHex: "feffc025fce317e3",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_GetHeld$Params_" + super.toString(); }
 }
@@ -6169,7 +7019,12 @@ export class TestMoreStuff_GetHeld$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getHeld$Results",
     id: "ef4e146185af67ce",
+    typeId: 0xef4e146185af67cen,
+    typeIdHex: "ef4e146185af67ce",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6195,7 +7050,12 @@ export class TestMoreStuff_Echo$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "echo$Params",
     id: "c07526f7e2e533b9",
+    typeId: 0xc07526f7e2e533b9n,
+    typeIdHex: "c07526f7e2e533b9",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
+    ] as const,
   };
   get cap(): TestCallOrder$Client {
     return new TestCallOrder$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6209,7 +7069,12 @@ export class TestMoreStuff_Echo$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "echo$Results",
     id: "a6224536593d5b92",
+    typeId: 0xa6224536593d5b92n,
+    typeIdHex: "a6224536593d5b92",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
+    ] as const,
   };
   get cap(): TestCallOrder$Client {
     return new TestCallOrder$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6235,7 +7100,12 @@ export class TestMoreStuff_ExpectCancel$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "expectCancel$Params",
     id: "a1cc32d87f3edeb1",
+    typeId: 0xa1cc32d87f3edeb1n,
+    typeIdHex: "a1cc32d87f3edeb1",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6249,7 +7119,10 @@ export class TestMoreStuff_ExpectCancel$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "expectCancel$Results",
     id: "8a3eba1758c0916e",
+    typeId: 0x8a3eba1758c0916en,
+    typeIdHex: "8a3eba1758c0916e",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_ExpectCancel$Results_" + super.toString(); }
 }
@@ -6266,7 +7139,14 @@ export class TestMoreStuff_MethodWithDefaults$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "methodWithDefaults$Params",
     id: "99160a25fa50fbf1",
+    typeId: 0x99160a25fa50fbf1n,
+    typeIdHex: "99160a25fa50fbf1",
     size: new $.ObjectSize(8, 2),
+    fields: [
+      { name: "a", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "b", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint32" } },
+      { name: "c", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
     defaultB: $.getUint32Mask(123),
     defaultC: "foo"
   };
@@ -6294,7 +7174,13 @@ export class TestMoreStuff_MethodWithDefaults$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "methodWithDefaults$Results",
     id: "9c7e066f845a6c56",
+    typeId: 0x9c7e066f845a6c56n,
+    typeIdHex: "9c7e066f845a6c56",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "d", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "e", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } }
+    ] as const,
     defaultE: "bar"
   };
   get d(): string {
@@ -6324,7 +7210,10 @@ export class TestMoreStuff_GetHandle$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getHandle$Params",
     id: "ead024a301a092a1",
+    typeId: 0xead024a301a092a1n,
+    typeIdHex: "ead024a301a092a1",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_GetHandle$Params_" + super.toString(); }
 }
@@ -6332,7 +7221,12 @@ export class TestMoreStuff_GetHandle$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getHandle$Results",
     id: "c3490d75420a1fe8",
+    typeId: 0xc3490d75420a1fe8n,
+    typeIdHex: "c3490d75420a1fe8",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "handle", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa38e5efe41e53a15n, typeIdHex: "a38e5efe41e53a15", displayName: "TestHandle" } }
+    ] as const,
   };
   get handle(): TestHandle$Client {
     return new TestHandle$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6358,7 +7252,10 @@ export class TestMoreStuff_GetNull$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getNull$Params",
     id: "d8493f0e175d61f2",
+    typeId: 0xd8493f0e175d61f2n,
+    typeIdHex: "d8493f0e175d61f2",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_GetNull$Params_" + super.toString(); }
 }
@@ -6366,7 +7263,12 @@ export class TestMoreStuff_GetNull$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getNull$Results",
     id: "e6955d8ef1023671",
+    typeId: 0xe6955d8ef1023671n,
+    typeIdHex: "e6955d8ef1023671",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "nullCap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xddc70bf9784133cfn, typeIdHex: "ddc70bf9784133cf", displayName: "TestMoreStuff" } }
+    ] as const,
   };
   get nullCap(): TestMoreStuff$Client {
     return new TestMoreStuff$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6392,7 +7294,10 @@ export class TestMoreStuff_GetEnormousString$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getEnormousString$Params",
     id: "805df436f55dd07a",
+    typeId: 0x805df436f55dd07an,
+    typeIdHex: "805df436f55dd07a",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_GetEnormousString$Params_" + super.toString(); }
 }
@@ -6400,7 +7305,12 @@ export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getEnormousString$Results",
     id: "860e7512dc3925b0",
+    typeId: 0x860e7512dc3925b0n,
+    typeIdHex: "860e7512dc3925b0",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "str", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get str(): string {
     return $.utils.getText(0, this);
@@ -6423,7 +7333,13 @@ export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "methodWithNullDefault$Params",
     id: "fb92899aeb0ee74f",
+    typeId: 0xfb92899aeb0ee74fn,
+    typeIdHex: "fb92899aeb0ee74f",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "a", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "b", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
     defaultB: $.readRawPointer(new Uint8Array([16, 1, 0, 0]).buffer)
   };
   get a(): string {
@@ -6444,7 +7360,10 @@ export class TestMoreStuff_MethodWithNullDefault$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "methodWithNullDefault$Results",
     id: "8467348247305cf7",
+    typeId: 0x8467348247305cf7n,
+    typeIdHex: "8467348247305cf7",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMoreStuff_MethodWithNullDefault$Results_" + super.toString(); }
 }
@@ -6484,7 +7403,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "callFoo"
+      methodName: "callFoo",
+      paramFields: TestMoreStuff_CallFoo$Params._capnp.fields,
+      resultFields: TestMoreStuff_CallFoo$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_CallFooWhenResolved$Params,
@@ -6492,7 +7413,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "callFooWhenResolved"
+      methodName: "callFooWhenResolved",
+      paramFields: TestMoreStuff_CallFooWhenResolved$Params._capnp.fields,
+      resultFields: TestMoreStuff_CallFooWhenResolved$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_NeverReturn$Params,
@@ -6500,7 +7423,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "neverReturn"
+      methodName: "neverReturn",
+      paramFields: TestMoreStuff_NeverReturn$Params._capnp.fields,
+      resultFields: TestMoreStuff_NeverReturn$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_Hold$Params,
@@ -6508,7 +7433,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 3,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "hold"
+      methodName: "hold",
+      paramFields: TestMoreStuff_Hold$Params._capnp.fields,
+      resultFields: TestMoreStuff_Hold$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_CallHeld$Params,
@@ -6516,7 +7443,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 4,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "callHeld"
+      methodName: "callHeld",
+      paramFields: TestMoreStuff_CallHeld$Params._capnp.fields,
+      resultFields: TestMoreStuff_CallHeld$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_GetHeld$Params,
@@ -6524,7 +7453,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 5,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "getHeld"
+      methodName: "getHeld",
+      paramFields: TestMoreStuff_GetHeld$Params._capnp.fields,
+      resultFields: TestMoreStuff_GetHeld$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_Echo$Params,
@@ -6532,7 +7463,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 6,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "echo"
+      methodName: "echo",
+      paramFields: TestMoreStuff_Echo$Params._capnp.fields,
+      resultFields: TestMoreStuff_Echo$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_ExpectCancel$Params,
@@ -6540,7 +7473,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 7,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "expectCancel"
+      methodName: "expectCancel",
+      paramFields: TestMoreStuff_ExpectCancel$Params._capnp.fields,
+      resultFields: TestMoreStuff_ExpectCancel$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_MethodWithDefaults$Params,
@@ -6548,7 +7483,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 8,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "methodWithDefaults"
+      methodName: "methodWithDefaults",
+      paramFields: TestMoreStuff_MethodWithDefaults$Params._capnp.fields,
+      resultFields: TestMoreStuff_MethodWithDefaults$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_GetHandle$Params,
@@ -6556,7 +7493,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 9,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "getHandle"
+      methodName: "getHandle",
+      paramFields: TestMoreStuff_GetHandle$Params._capnp.fields,
+      resultFields: TestMoreStuff_GetHandle$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_GetNull$Params,
@@ -6564,7 +7503,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 10,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "getNull"
+      methodName: "getNull",
+      paramFields: TestMoreStuff_GetNull$Params._capnp.fields,
+      resultFields: TestMoreStuff_GetNull$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_GetEnormousString$Params,
@@ -6572,7 +7513,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 11,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "getEnormousString"
+      methodName: "getEnormousString",
+      paramFields: TestMoreStuff_GetEnormousString$Params._capnp.fields,
+      resultFields: TestMoreStuff_GetEnormousString$Results._capnp.fields
     },
     {
       ParamsClass: TestMoreStuff_MethodWithNullDefault$Params,
@@ -6580,7 +7523,9 @@ export class TestMoreStuff$Client {
       interfaceId: TestMoreStuff$Client.interfaceId,
       methodId: 12,
       interfaceName: "test/fixtures/test.capnp:TestMoreStuff",
-      methodName: "methodWithNullDefault"
+      methodName: "methodWithNullDefault",
+      paramFields: TestMoreStuff_MethodWithNullDefault$Params._capnp.fields,
+      resultFields: TestMoreStuff_MethodWithNullDefault$Results._capnp.fields
     }
   ];
   /**
@@ -6822,7 +7767,10 @@ export class TestMoreStuff extends $.Interface {
   static readonly _capnp = {
     displayName: "TestMoreStuff",
     id: "ddc70bf9784133cf",
+    typeId: 0xddc70bf9784133cfn,
+    typeIdHex: "ddc70bf9784133cf",
     size: new $.ObjectSize(0, 0),
+    methods: TestMoreStuff$Client.methods,
   };
   toString(): string { return "TestMoreStuff_" + super.toString(); }
 }
@@ -6830,7 +7778,10 @@ export class TestMembrane_Thing_PassThrough$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "passThrough$Params",
     id: "ff9bdcd05085d786",
+    typeId: 0xff9bdcd05085d786n,
+    typeIdHex: "ff9bdcd05085d786",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMembrane_Thing_PassThrough$Params_" + super.toString(); }
 }
@@ -6838,7 +7789,12 @@ export class TestMembrane_Result extends $.Struct {
   static readonly _capnp = {
     displayName: "Result",
     id: "b0c6163faf291965",
+    typeId: 0xb0c6163faf291965n,
+    typeIdHex: "b0c6163faf291965",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "text", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get text(): string {
     return $.utils.getText(0, this);
@@ -6861,7 +7817,10 @@ export class TestMembrane_Thing_Intercept$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "intercept$Params",
     id: "ee94bed3615ee745",
+    typeId: 0xee94bed3615ee745n,
+    typeIdHex: "ee94bed3615ee745",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMembrane_Thing_Intercept$Params_" + super.toString(); }
 }
@@ -6881,7 +7840,9 @@ export class TestMembrane_Thing$Client {
       interfaceId: TestMembrane_Thing$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestMembrane.Thing",
-      methodName: "passThrough"
+      methodName: "passThrough",
+      paramFields: TestMembrane_Thing_PassThrough$Params._capnp.fields,
+      resultFields: TestMembrane_Result._capnp.fields
     },
     {
       ParamsClass: TestMembrane_Thing_Intercept$Params,
@@ -6889,7 +7850,9 @@ export class TestMembrane_Thing$Client {
       interfaceId: TestMembrane_Thing$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestMembrane.Thing",
-      methodName: "intercept"
+      methodName: "intercept",
+      paramFields: TestMembrane_Thing_Intercept$Params._capnp.fields,
+      resultFields: TestMembrane_Result._capnp.fields
     }
   ];
   passThrough(paramsFunc?: (params: TestMembrane_Thing_PassThrough$Params) => void): TestMembrane_Result$Promise {
@@ -6939,7 +7902,10 @@ export class TestMembrane_Thing extends $.Interface {
   static readonly _capnp = {
     displayName: "Thing",
     id: "9352e4e41f173917",
+    typeId: 0x9352e4e41f173917n,
+    typeIdHex: "9352e4e41f173917",
     size: new $.ObjectSize(0, 0),
+    methods: TestMembrane_Thing$Client.methods,
   };
   toString(): string { return "TestMembrane_Thing_" + super.toString(); }
 }
@@ -6947,7 +7913,10 @@ export class TestMembrane_MakeThing$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "makeThing$Params",
     id: "d8ac2acc3ece6556",
+    typeId: 0xd8ac2acc3ece6556n,
+    typeIdHex: "d8ac2acc3ece6556",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestMembrane_MakeThing$Params_" + super.toString(); }
 }
@@ -6955,7 +7924,12 @@ export class TestMembrane_MakeThing$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "makeThing$Results",
     id: "e5d4904814ccbf29",
+    typeId: 0xe5d4904814ccbf29n,
+    typeIdHex: "e5d4904814ccbf29",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
+    ] as const,
   };
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -6981,7 +7955,13 @@ export class TestMembrane_CallPassThrough$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "callPassThrough$Params",
     id: "945d9f634a6a29da",
+    typeId: 0x945d9f634a6a29dan,
+    typeIdHex: "945d9f634a6a29da",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } },
+      { name: "tailCall", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } }
+    ] as const,
   };
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -7001,7 +7981,13 @@ export class TestMembrane_CallIntercept$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "callIntercept$Params",
     id: "8749aac3375c5c71",
+    typeId: 0x8749aac3375c5c71n,
+    typeIdHex: "8749aac3375c5c71",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } },
+      { name: "tailCall", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } }
+    ] as const,
   };
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -7021,7 +8007,12 @@ export class TestMembrane_Loopback$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "loopback$Params",
     id: "869a1b7ab34b42c9",
+    typeId: 0x869a1b7ab34b42c9n,
+    typeIdHex: "869a1b7ab34b42c9",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
+    ] as const,
   };
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -7035,7 +8026,12 @@ export class TestMembrane_Loopback$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "loopback$Results",
     id: "ecd19398fd88ab5c",
+    typeId: 0xecd19398fd88ab5cn,
+    typeIdHex: "ecd19398fd88ab5c",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
+    ] as const,
   };
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -7075,7 +8071,9 @@ export class TestMembrane$Client {
       interfaceId: TestMembrane$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestMembrane",
-      methodName: "makeThing"
+      methodName: "makeThing",
+      paramFields: TestMembrane_MakeThing$Params._capnp.fields,
+      resultFields: TestMembrane_MakeThing$Results._capnp.fields
     },
     {
       ParamsClass: TestMembrane_CallPassThrough$Params,
@@ -7083,7 +8081,9 @@ export class TestMembrane$Client {
       interfaceId: TestMembrane$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestMembrane",
-      methodName: "callPassThrough"
+      methodName: "callPassThrough",
+      paramFields: TestMembrane_CallPassThrough$Params._capnp.fields,
+      resultFields: TestMembrane_Result._capnp.fields
     },
     {
       ParamsClass: TestMembrane_CallIntercept$Params,
@@ -7091,7 +8091,9 @@ export class TestMembrane$Client {
       interfaceId: TestMembrane$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestMembrane",
-      methodName: "callIntercept"
+      methodName: "callIntercept",
+      paramFields: TestMembrane_CallIntercept$Params._capnp.fields,
+      resultFields: TestMembrane_Result._capnp.fields
     },
     {
       ParamsClass: TestMembrane_Loopback$Params,
@@ -7099,7 +8101,9 @@ export class TestMembrane$Client {
       interfaceId: TestMembrane$Client.interfaceId,
       methodId: 3,
       interfaceName: "test/fixtures/test.capnp:TestMembrane",
-      methodName: "loopback"
+      methodName: "loopback",
+      paramFields: TestMembrane_Loopback$Params._capnp.fields,
+      resultFields: TestMembrane_Loopback$Results._capnp.fields
     }
   ];
   makeThing(paramsFunc?: (params: TestMembrane_MakeThing$Params) => void): TestMembrane_MakeThing$Results$Promise {
@@ -7177,7 +8181,10 @@ export class TestMembrane extends $.Interface {
   static readonly _capnp = {
     displayName: "TestMembrane",
     id: "c07d8dcd80a69c0c",
+    typeId: 0xc07d8dcd80a69c0cn,
+    typeIdHex: "c07d8dcd80a69c0c",
     size: new $.ObjectSize(0, 0),
+    methods: TestMembrane$Client.methods,
   };
   toString(): string { return "TestMembrane_" + super.toString(); }
 }
@@ -7185,7 +8192,13 @@ export class TestContainMembrane extends $.Struct {
   static readonly _capnp = {
     displayName: "TestContainMembrane",
     id: "949449ad7c11fa5c",
+    typeId: 0x949449ad7c11fa5cn,
+    typeIdHex: "949449ad7c11fa5c",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } },
+      { name: "list", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } } }
+    ] as const,
   };
   get cap(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
@@ -7217,7 +8230,12 @@ export class TestContructorName extends $.Struct {
   static readonly _capnp = {
     displayName: "TestContructorName",
     id: "c16f644772532755",
+    typeId: 0xc16f644772532755n,
+    typeIdHex: "c16f644772532755",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "constructor", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get $constructor(): string {
     return $.utils.getText(0, this);
@@ -7231,7 +8249,13 @@ export class TestTransferCap_Element extends $.Struct {
   static readonly _capnp = {
     displayName: "Element",
     id: "c7263e8f88844abc",
+    typeId: 0xc7263e8f88844abcn,
+    typeIdHex: "c7263e8f88844abc",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "text", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "cap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
+    ] as const,
   };
   get text(): string {
     return $.utils.getText(0, this);
@@ -7252,7 +8276,12 @@ export class TestTransferCap extends $.Struct {
   static readonly _capnp = {
     displayName: "TestTransferCap",
     id: "dd2b66a791a279f0",
+    typeId: 0xdd2b66a791a279f0n,
+    typeIdHex: "dd2b66a791a279f0",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "list", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "list", elementType: { kind: "struct", typeId: 0xc7263e8f88844abcn, typeIdHex: "c7263e8f88844abc", displayName: "Element" } } }
+    ] as const,
   };
   static _List: $.ListCtor<TestTransferCap_Element>;
   _adoptList(value: $.Orphan<$.List<TestTransferCap_Element>>): void {
@@ -7279,7 +8308,10 @@ export class TestKeywordMethods_Delete$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "delete$Params",
     id: "ca3a89cdeb6bd6b7",
+    typeId: 0xca3a89cdeb6bd6b7n,
+    typeIdHex: "ca3a89cdeb6bd6b7",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Delete$Params_" + super.toString(); }
 }
@@ -7287,7 +8319,10 @@ export class TestKeywordMethods_Delete$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "delete$Results",
     id: "eeb5843598307592",
+    typeId: 0xeeb5843598307592n,
+    typeIdHex: "eeb5843598307592",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Delete$Results_" + super.toString(); }
 }
@@ -7304,7 +8339,10 @@ export class TestKeywordMethods_Class$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "class$Params",
     id: "9cf5a8313c5db036",
+    typeId: 0x9cf5a8313c5db036n,
+    typeIdHex: "9cf5a8313c5db036",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Class$Params_" + super.toString(); }
 }
@@ -7312,7 +8350,10 @@ export class TestKeywordMethods_Class$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "class$Results",
     id: "c0253868ac12e7d8",
+    typeId: 0xc0253868ac12e7d8n,
+    typeIdHex: "c0253868ac12e7d8",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Class$Results_" + super.toString(); }
 }
@@ -7329,7 +8370,10 @@ export class TestKeywordMethods_Void$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "void$Params",
     id: "a4a08763833c7757",
+    typeId: 0xa4a08763833c7757n,
+    typeIdHex: "a4a08763833c7757",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Void$Params_" + super.toString(); }
 }
@@ -7337,7 +8381,10 @@ export class TestKeywordMethods_Void$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "void$Results",
     id: "de82773089c0aeab",
+    typeId: 0xde82773089c0aeabn,
+    typeIdHex: "de82773089c0aeab",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Void$Results_" + super.toString(); }
 }
@@ -7354,7 +8401,10 @@ export class TestKeywordMethods_Return$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "return$Params",
     id: "99817360625e8ca3",
+    typeId: 0x99817360625e8ca3n,
+    typeIdHex: "99817360625e8ca3",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Return$Params_" + super.toString(); }
 }
@@ -7362,7 +8412,10 @@ export class TestKeywordMethods_Return$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "return$Results",
     id: "b70872e07eaa992f",
+    typeId: 0xb70872e07eaa992fn,
+    typeIdHex: "b70872e07eaa992f",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestKeywordMethods_Return$Results_" + super.toString(); }
 }
@@ -7393,7 +8446,9 @@ export class TestKeywordMethods$Client {
       interfaceId: TestKeywordMethods$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestKeywordMethods",
-      methodName: "delete"
+      methodName: "delete",
+      paramFields: TestKeywordMethods_Delete$Params._capnp.fields,
+      resultFields: TestKeywordMethods_Delete$Results._capnp.fields
     },
     {
       ParamsClass: TestKeywordMethods_Class$Params,
@@ -7401,7 +8456,9 @@ export class TestKeywordMethods$Client {
       interfaceId: TestKeywordMethods$Client.interfaceId,
       methodId: 1,
       interfaceName: "test/fixtures/test.capnp:TestKeywordMethods",
-      methodName: "class"
+      methodName: "class",
+      paramFields: TestKeywordMethods_Class$Params._capnp.fields,
+      resultFields: TestKeywordMethods_Class$Results._capnp.fields
     },
     {
       ParamsClass: TestKeywordMethods_Void$Params,
@@ -7409,7 +8466,9 @@ export class TestKeywordMethods$Client {
       interfaceId: TestKeywordMethods$Client.interfaceId,
       methodId: 2,
       interfaceName: "test/fixtures/test.capnp:TestKeywordMethods",
-      methodName: "void"
+      methodName: "void",
+      paramFields: TestKeywordMethods_Void$Params._capnp.fields,
+      resultFields: TestKeywordMethods_Void$Results._capnp.fields
     },
     {
       ParamsClass: TestKeywordMethods_Return$Params,
@@ -7417,7 +8476,9 @@ export class TestKeywordMethods$Client {
       interfaceId: TestKeywordMethods$Client.interfaceId,
       methodId: 3,
       interfaceName: "test/fixtures/test.capnp:TestKeywordMethods",
-      methodName: "return"
+      methodName: "return",
+      paramFields: TestKeywordMethods_Return$Params._capnp.fields,
+      resultFields: TestKeywordMethods_Return$Results._capnp.fields
     }
   ];
   delete(paramsFunc?: (params: TestKeywordMethods_Delete$Params) => void): TestKeywordMethods_Delete$Results$Promise {
@@ -7493,7 +8554,10 @@ export class TestKeywordMethods extends $.Interface {
   static readonly _capnp = {
     displayName: "TestKeywordMethods",
     id: "9ae342d394247cfc",
+    typeId: 0x9ae342d394247cfcn,
+    typeIdHex: "9ae342d394247cfc",
     size: new $.ObjectSize(0, 0),
+    methods: TestKeywordMethods$Client.methods,
   };
   toString(): string { return "TestKeywordMethods_" + super.toString(); }
 }
@@ -7501,7 +8565,10 @@ export class TestAuthenticatedBootstrap_GetCallerId$Params extends $.Struct {
   static readonly _capnp = {
     displayName: "getCallerId$Params",
     id: "8ec30e2451f1cffe",
+    typeId: 0x8ec30e2451f1cffen,
+    typeIdHex: "8ec30e2451f1cffe",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestAuthenticatedBootstrap_GetCallerId$Params_" + super.toString(); }
 }
@@ -7509,7 +8576,12 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
   static readonly _capnp = {
     displayName: "getCallerId$Results",
     id: "c71cf776034a3e67",
+    typeId: 0xc71cf776034a3e67n,
+    typeIdHex: "c71cf776034a3e67",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "caller", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptCaller(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -7552,7 +8624,9 @@ export class TestAuthenticatedBootstrap$Client {
       interfaceId: TestAuthenticatedBootstrap$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestAuthenticatedBootstrap",
-      methodName: "getCallerId"
+      methodName: "getCallerId",
+      paramFields: TestAuthenticatedBootstrap_GetCallerId$Params._capnp.fields,
+      resultFields: TestAuthenticatedBootstrap_GetCallerId$Results._capnp.fields
     }
   ];
   getCallerId(paramsFunc?: (params: TestAuthenticatedBootstrap_GetCallerId$Params) => void): TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
@@ -7589,7 +8663,10 @@ export class TestAuthenticatedBootstrap extends $.Interface {
   static readonly _capnp = {
     displayName: "TestAuthenticatedBootstrap",
     id: "ea72cc77253798cd",
+    typeId: 0xea72cc77253798cdn,
+    typeIdHex: "ea72cc77253798cd",
     size: new $.ObjectSize(0, 0),
+    methods: TestAuthenticatedBootstrap$Client.methods,
   };
   toString(): string { return "TestAuthenticatedBootstrap_" + super.toString(); }
 }
@@ -7597,7 +8674,13 @@ export class TestSturdyRef extends $.Struct {
   static readonly _capnp = {
     displayName: "TestSturdyRef",
     id: "ceba982cb629f6c2",
+    typeId: 0xceba982cb629f6c2n,
+    typeIdHex: "ceba982cb629f6c2",
     size: new $.ObjectSize(0, 2),
+    fields: [
+      { name: "hostId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xe02d3bbe1010e342n, typeIdHex: "e02d3bbe1010e342", displayName: "TestSturdyRefHostId" } },
+      { name: "objectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
+    ] as const,
   };
   _adoptHostId(value: $.Orphan<TestSturdyRefHostId>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -7638,7 +8721,12 @@ export class TestSturdyRefHostId extends $.Struct {
   static readonly _capnp = {
     displayName: "TestSturdyRefHostId",
     id: "e02d3bbe1010e342",
+    typeId: 0xe02d3bbe1010e342n,
+    typeIdHex: "e02d3bbe1010e342",
     size: new $.ObjectSize(0, 1),
+    fields: [
+      { name: "host", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
   };
   get host(): string {
     return $.utils.getText(0, this);
@@ -7670,7 +8758,12 @@ export class TestSturdyRefObjectId extends $.Struct {
   static readonly _capnp = {
     displayName: "TestSturdyRefObjectId",
     id: "aeb2ad168e2f5697",
+    typeId: 0xaeb2ad168e2f5697n,
+    typeIdHex: "aeb2ad168e2f5697",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "tag", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xef428f2f67c4d439n, typeIdHex: "ef428f2f67c4d439", displayName: "Tag" } }
+    ] as const,
   };
   get tag(): TestSturdyRefObjectId_Tag {
     return $.utils.getUint16(0, this) as TestSturdyRefObjectId_Tag;
@@ -7684,7 +8777,10 @@ export class TestProvisionId extends $.Struct {
   static readonly _capnp = {
     displayName: "TestProvisionId",
     id: "9e5c574772b1d462",
+    typeId: 0x9e5c574772b1d462n,
+    typeIdHex: "9e5c574772b1d462",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestProvisionId_" + super.toString(); }
 }
@@ -7692,7 +8788,10 @@ export class TestRecipientId extends $.Struct {
   static readonly _capnp = {
     displayName: "TestRecipientId",
     id: "ea2fb7dca9cdbdea",
+    typeId: 0xea2fb7dca9cdbdean,
+    typeIdHex: "ea2fb7dca9cdbdea",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestRecipientId_" + super.toString(); }
 }
@@ -7700,7 +8799,10 @@ export class TestThirdPartyCapId extends $.Struct {
   static readonly _capnp = {
     displayName: "TestThirdPartyCapId",
     id: "a805157b98b65469",
+    typeId: 0xa805157b98b65469n,
+    typeIdHex: "a805157b98b65469",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestThirdPartyCapId_" + super.toString(); }
 }
@@ -7708,7 +8810,10 @@ export class TestJoinResult extends $.Struct {
   static readonly _capnp = {
     displayName: "TestJoinResult",
     id: "f4c58a8ebcd0f600",
+    typeId: 0xf4c58a8ebcd0f600n,
+    typeIdHex: "f4c58a8ebcd0f600",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestJoinResult_" + super.toString(); }
 }
@@ -7729,7 +8834,13 @@ export class TestNameAnnotation_NestedStruct extends $.Struct {
   static readonly _capnp = {
     displayName: "NestedStruct",
     id: "be406b6341d52284",
+    typeId: 0xbe406b6341d52284n,
+    typeIdHex: "be406b6341d52284",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "badNestedFieldName", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "anotherBadNestedFieldName", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xbe406b6341d52284n, typeIdHex: "be406b6341d52284", displayName: "NestedStruct" } }
+    ] as const,
   };
   get badNestedFieldName(): boolean {
     return $.utils.getBit(0, this);
@@ -7761,7 +8872,13 @@ export class TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup extends $.Struct
   static readonly _capnp = {
     displayName: "badlyNamedGroup",
     id: "c3594bce5b24b722",
+    typeId: 0xc3594bce5b24b722n,
+    typeIdHex: "c3594bce5b24b722",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "foo", codeOrder: 0, ordinal: 3, kind: "slot", offset: 0, type: { kind: "void" } },
+      { name: "bar", codeOrder: 1, ordinal: 4, kind: "slot", offset: 0, type: { kind: "void" } }
+    ] as const,
   };
   toString(): string { return "TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup_" + super.toString(); }
 }
@@ -7776,7 +8893,13 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
   static readonly _capnp = {
     displayName: "badlyNamedUnion",
     id: "89d9d1626b34017c",
+    typeId: 0x89d9d1626b34017cn,
+    typeIdHex: "89d9d1626b34017c",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "badlyNamedGroup", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "group", type: { kind: "group", typeId: 0xc3594bce5b24b722n, typeIdHex: "c3594bce5b24b722", displayName: "badlyNamedGroup" } },
+      { name: "baz", codeOrder: 1, ordinal: 5, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xbe406b6341d52284n, typeIdHex: "be406b6341d52284", displayName: "NestedStruct" } }
+    ] as const,
   };
   get badlyNamedGroup(): TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup {
     $.utils.testWhich("badlyNamedGroup", $.utils.getUint16(6, this), 0, this);
@@ -7835,7 +8958,15 @@ export class TestNameAnnotation extends $.Struct {
   static readonly _capnp = {
     displayName: "TestNameAnnotation",
     id: "d1fd8e9caf2a5d58",
+    typeId: 0xd1fd8e9caf2a5d58n,
+    typeIdHex: "d1fd8e9caf2a5d58",
     size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "badFieldName", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "bool" } },
+      { name: "bar", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "int8" } },
+      { name: "anotherBadFieldName", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "enum", typeId: 0xf610d1deb4c9e84an, typeIdHex: "f610d1deb4c9e84a", displayName: "BadlyNamedEnum" } },
+      { name: "badlyNamedUnion", codeOrder: 3, ordinal: 3, kind: "group", type: { kind: "group", typeId: 0x89d9d1626b34017cn, typeIdHex: "89d9d1626b34017c", displayName: "badlyNamedUnion" } }
+    ] as const,
   };
   get badFieldName(): boolean {
     $.utils.testWhich("badFieldName", $.utils.getUint16(2, this), 0, this);
@@ -7880,7 +9011,12 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Params extends $.Struc
   static readonly _capnp = {
     displayName: "badlyNamedMethod$Params",
     id: "c12efc3b075adfe9",
+    typeId: 0xc12efc3b075adfe9n,
+    typeIdHex: "c12efc3b075adfe9",
     size: new $.ObjectSize(8, 0),
+    fields: [
+      { name: "badlyNamedParam", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint8" } }
+    ] as const,
   };
   get badlyNamedParam(): number {
     return $.utils.getUint8(0, this);
@@ -7894,7 +9030,10 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Results extends $.Stru
   static readonly _capnp = {
     displayName: "badlyNamedMethod$Results",
     id: "dcc3cdb4b28f6c86",
+    typeId: 0xdcc3cdb4b28f6c86n,
+    typeIdHex: "dcc3cdb4b28f6c86",
     size: new $.ObjectSize(0, 0),
+    fields: [] as const,
   };
   toString(): string { return "TestNameAnnotationInterface_BadlyNamedMethod$Results_" + super.toString(); }
 }
@@ -7922,7 +9061,9 @@ export class TestNameAnnotationInterface$Client {
       interfaceId: TestNameAnnotationInterface$Client.interfaceId,
       methodId: 0,
       interfaceName: "test/fixtures/test.capnp:TestNameAnnotationInterface",
-      methodName: "badlyNamedMethod"
+      methodName: "badlyNamedMethod",
+      paramFields: TestNameAnnotationInterface_BadlyNamedMethod$Params._capnp.fields,
+      resultFields: TestNameAnnotationInterface_BadlyNamedMethod$Results._capnp.fields
     }
   ];
   badlyNamedMethod(paramsFunc?: (params: TestNameAnnotationInterface_BadlyNamedMethod$Params) => void): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
@@ -7959,7 +9100,10 @@ export class TestNameAnnotationInterface extends $.Interface {
   static readonly _capnp = {
     displayName: "TestNameAnnotationInterface",
     id: "d112a69d31ed918b",
+    typeId: 0xd112a69d31ed918bn,
+    typeIdHex: "d112a69d31ed918b",
     size: new $.ObjectSize(0, 0),
+    methods: TestNameAnnotationInterface$Client.methods,
   };
   toString(): string { return "TestNameAnnotationInterface_" + super.toString(); }
 }

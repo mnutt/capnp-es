@@ -5,10 +5,14 @@ import { ObjectSize } from "../object-size";
 import { Segment } from "../segment";
 import { _Pointer, _PointerCtor, Pointer } from "./pointer";
 import { getContent } from "./pointer.utils";
+import type { CapnpFieldMetadata } from "../../metadata";
 
 export interface _StructCtor extends _PointerCtor {
   readonly id: string;
+  readonly typeId?: bigint;
+  readonly typeIdHex?: string;
   readonly size: ObjectSize;
+  readonly fields?: readonly CapnpFieldMetadata[];
 }
 
 export interface StructCtor<T extends Struct> {
@@ -71,6 +75,9 @@ export class AnyStruct extends Struct {
   static readonly _capnp = {
     displayName: "AnyStruct",
     id: "0",
+    typeId: 0n,
+    typeIdHex: "0",
     size: new ObjectSize(0, 0),
+    fields: [],
   };
 }
