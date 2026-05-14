@@ -126,17 +126,20 @@ export function generateServer(
   for (const superclass of superclasses) {
     const superClientName = `${getFullClassName(superclass)}$Client`;
     codeServerMethods.push(
-      `...${superClientName}.methods.map((method) => ({
-        ...method,
+      `...(${superClientName}.methods as $.Method<any, any>[]).map((method) => ({
+        ...(method as any),
         impl: target[method.methodName as keyof ${serverTargetName}] as any
       }))`,
     );
   }
 
+  const ownMethodsTable = superclasses.length === 0
+    ? `${clientName}.methods`
+    : `${clientName}.ownMethods`;
   let index = 0;
   for (const method of node.interface.methods) {
     codeServerMethods.push(`{
-        ...${clientName}.methods[${index}],
+        ...${ownMethodsTable}[${index}],
         impl: target.${method.name}
       }`);
 
@@ -208,7 +211,6 @@ export function generateClient(
   }
 
   const ownMethodsName = superclasses.length === 0 ? "methods" : "ownMethods";
-
   for (let index = 0; index < node.interface.methods.length; index++) {
     generateClientMethod(
       ctx,
@@ -262,12 +264,8 @@ function generateInheritedClientMethods(
   methodsCode: string[],
   seenNames = new Set<string>(),
 ): void {
-  for (const superclass of getInterfaceSuperclasses(ctx, node)) {
-    generateInheritedClientMethods(ctx, superclass, methodsCode, seenNames);
-  }
-
   const superClientName = `${getFullClassName(node)}$Client`;
-  for (const method of node.interface.methods) {
+  for (const method of collectInterfaceMethods(ctx, node)) {
     if (seenNames.has(method.name)) {
       continue;
     }
@@ -281,6 +279,24 @@ function generateInheritedClientMethods(
       }
     `);
   }
+}
+
+function collectInterfaceMethods(
+  ctx: CodeGeneratorFileContext,
+  node: schema.Node,
+  methods: schema.Method[] = [],
+  seenNodes = new Set<bigint>(),
+): schema.Method[] {
+  if (seenNodes.has(node.id)) {
+    return methods;
+  }
+
+  seenNodes.add(node.id);
+  for (const superclass of getInterfaceSuperclasses(ctx, node)) {
+    collectInterfaceMethods(ctx, superclass, methods, seenNodes);
+  }
+  methods.push(...node.interface.methods.toArray().sort(compareCodeOrder));
+  return methods;
 }
 
 /**
@@ -439,7 +455,6 @@ export function generateClientMethod(
     ${docComment}
     ${name}(paramsFunc?: (params: ${paramTypeName}) => void): ${resultTypeName}$Promise {
       const answer = this.client.call({
-        method: ${clientName}.methods[${index}],
         method: ${clientName}.${methodArrayName}[${index}],
         paramsFunc: paramsFunc
       });

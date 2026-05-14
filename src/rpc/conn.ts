@@ -241,7 +241,7 @@ export class Conn {
           break;
         }
         importClient.setResolved(client);
-        if (wasPromise) {
+        if (wasPromise && this.capDescriptorNeedsSenderLoopback(resolve.cap)) {
           const embargoId = this.registerDisembargo(importClient);
           importClient.activateEmbargo(embargoId);
           const out = newDisembargoMessage(
@@ -265,6 +265,13 @@ export class Conn {
         importClient.setResolved(new ErrorClient(new Error(RPC_UNIMPLEMENTED)));
       }
     }
+  }
+
+  capDescriptorNeedsSenderLoopback(desc: CapDescriptor): boolean {
+    return (
+      desc.which() === CapDescriptor.RECEIVER_HOSTED ||
+      desc.which() === CapDescriptor.RECEIVER_ANSWER
+    );
   }
 
   handleReleaseMessage(m: RPCMessage): void {
@@ -445,26 +452,24 @@ export class Conn {
 
   handleCallMessage(m: RPCMessage): void {
     const mcall = m.call;
+    const id = mcall.questionId;
     const mt = mcall.target;
     if (
       mt.which() !== MessageTarget.IMPORTED_CAP &&
       mt.which() !== MessageTarget.PROMISED_ANSWER
     ) {
-      const um = newUnimplementedMessage(m);
-      this.sendMessage(um);
+      this.sendReturnException(id, new Error(RPC_BAD_TARGET));
       return;
     }
 
     const mparams = mcall.params;
     try {
       this.populateMessageCapTable(mparams);
-    } catch {
-      const um = newUnimplementedMessage(m);
-      this.sendMessage(um);
+    } catch (error_) {
+      this.sendReturnException(id, error_ as Error);
       return;
     }
 
-    const id = mcall.questionId;
     const a = this.insertAnswer(id);
     if (!a) {
       this.shutdown(new Error(format(RPC_QUESTION_ID_REUSED, id)));
@@ -480,8 +485,7 @@ export class Conn {
       }
       default: {
         this.popAnswer(id);
-        const um = newUnimplementedMessage(m);
-        this.sendMessage(um);
+        this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
         return;
       }
     }
@@ -489,16 +493,17 @@ export class Conn {
     const interfaceDef = Registry.lookup(mcall.interfaceId);
     if (!interfaceDef) {
       this.popAnswer(id);
-      const um = newUnimplementedMessage(m);
-      this.sendMessage(um);
+      this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
       return;
     }
 
-    const method = interfaceDef.methods[mcall.methodId];
+    const methodTable: typeof interfaceDef.methods = "ownMethods" in interfaceDef
+      ? (interfaceDef.ownMethods as typeof interfaceDef.methods)
+      : interfaceDef.methods;
+    const method = methodTable[mcall.methodId];
     if (!method) {
       this.popAnswer(id);
-      const um = newUnimplementedMessage(m);
-      this.sendMessage(um);
+      this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
       return;
     }
 

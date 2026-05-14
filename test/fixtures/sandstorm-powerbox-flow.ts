@@ -158,7 +158,7 @@ export class Node$Client {
   constructor(client: $.Client) {
     this.client = client;
   }
-  static readonly methods: [
+  static readonly ownMethods: [
     $.Method<Node_Stat$Params, Node_Stat$Results>
   ] = [
     {
@@ -172,9 +172,16 @@ export class Node$Client {
       resultFields: Node_Stat$Results._capnp.fields
     }
   ];
+  static readonly methods: $.Method<any, any>[] = [
+    ...AppPersistent$Client.methods,
+    ...Node$Client.ownMethods
+  ];
+  save(...args: Parameters<AppPersistent$Client["save"]>): ReturnType<AppPersistent$Client["save"]> {
+    return AppPersistent$Client.prototype.save.apply(this, args);
+  }
   stat(paramsFunc?: (params: Node_Stat$Params) => void): Node_Stat$Results$Promise {
     const answer = this.client.call({
-      method: Node$Client.methods[0],
+      method: Node$Client.ownMethods[0],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(Node_Stat$Results, answer);
@@ -182,15 +189,19 @@ export class Node$Client {
   }
 }
 $.Registry.register(Node$Client.interfaceId, Node$Client);
-export interface Node$Server$Target {
+export interface Node$Server$Target extends AppPersistent$Server$Target {
   stat(params: Node_Stat$Params, results: Node_Stat$Results): Promise<void>;
 }
 export class Node$Server extends $.Server {
   readonly target: Node$Server$Target;
   constructor(target: Node$Server$Target) {
     super(target, [
+      ...(AppPersistent$Client.methods as $.Method<any, any>[]).map((method) => ({
+        ...(method as any),
+        impl: target[method.methodName as keyof Node$Server$Target] as any
+      })),
       {
-        ...Node$Client.methods[0],
+        ...Node$Client.ownMethods[0],
         impl: target.stat
       }
     ]);

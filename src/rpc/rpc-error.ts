@@ -95,6 +95,6 @@ export function toException(exc: Exception, err: Error): void {
     }
     return;
   }
-  exc.reason = err.message;
+  exc.reason = err.toString();
   exc.type = Exception.Type.FAILED;
 }

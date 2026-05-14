@@ -1579,6 +1579,54 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[0].finish.questionId, q.id);
   });
 
+  test("question.pipelineClose for derived pipeline does not cancel parent question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion(TEST_METHOD);
+    const transform = [{ field: 0 }];
+    q.start();
+    q.addPromise(transform);
+
+    q.pipelineClose(transform);
+
+    t.equal(transport.sent.length, 0);
+    t.equal(conn.findQuestion(q.id), q);
+
+    const msg = new Message();
+    const result = msg.initRoot(AnyStruct);
+    q.fulfill(result as any);
+
+    t.ok(await q.struct());
+  });
+
+  test("question.pipelineClose cancels after root and last derived close", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion(TEST_METHOD);
+    const transform = [{ field: 0 }];
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected pipeline close rejection");
+      })
+      .catch((error_) => error_ as Error);
+    q.start();
+    q.addPromise(transform);
+
+    q.pipelineClose([]);
+    t.equal(transport.sent.length, 0);
+    t.equal(conn.findQuestion(q.id), q);
+
+    q.pipelineClose(transform);
+
+    const err = await wait;
+    t.ok(err.message.includes("pipeline closed"));
+    t.equal(conn.findQuestion(q.id), null);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+    t.equal(transport.sent[0].finish.questionId, q.id);
+  });
+
   test("question.pipelineClose is idempotent", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);

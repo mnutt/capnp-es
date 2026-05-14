@@ -28,6 +28,7 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   obj?: R;
   err?: Error;
   derived: PipelineOp[][] = [];
+  rootClosePending = false;
   deferred = new Deferred<R>();
 
   constructor(
@@ -143,34 +144,61 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
   pipelineClose(transform: PipelineOp[]): void {
     if (transform.length > 0) {
       this.derived = this.derived.filter((d) => !transformsEqual(transform, d));
-      if (this.derived.length > 0) {
+
+      // Closing a derived pipeline only releases that derived capability. It must not cancel the
+      // root question, since other calls may already be pipelined through the same promised answer.
+      if (this.state === QuestionState.IN_PROGRESS) {
+        if (
+          this.rootClosePending &&
+          this.derived.length === 0 &&
+          this.closePendingRoot()
+        ) {
+          return;
+        }
         return;
       }
-    }
 
-    // Closing the root pipeline cancels the outstanding question.
-    if (this.state === QuestionState.IN_PROGRESS) {
-      if (this.conn.findQuestion(this.id)) {
-        const fin = newFinishMessage(this.id, true);
-        this.conn.sendMessage(fin);
-        this.conn.popQuestion(this.id);
-      }
-      this.err = new Error("pipeline closed");
-      this.state = QuestionState.CANCELED;
-      this.deferred.reject(this.err);
-      return;
-    }
-
-    // Closing a derived pipeline should only close the derived capability once
-    // resolution arrives; it must not cancel the parent question.
-    const closeResolved = () => {
       try {
         clientFromResolution(transform, this.obj, this.err).close();
       } catch {
         // Ignore close races while question is settling.
       }
-    };
-    closeResolved();
+      return;
+    }
+
+    // Closing the root pipeline cancels the outstanding question unless derived pipelines still
+    // need its eventual resolution.
+    if (this.derived.length > 0) {
+      this.rootClosePending = true;
+      return;
+    }
+    if (this.state === QuestionState.IN_PROGRESS) {
+      this.closePendingRoot();
+      return;
+    }
+
+    try {
+      clientFromResolution(transform, this.obj, this.err).close();
+    } catch {
+      // Ignore close races while question is settling.
+    }
+  }
+
+  private closePendingRoot(): boolean {
+    if (this.state !== QuestionState.IN_PROGRESS) {
+      return false;
+    }
+
+    if (this.conn.findQuestion(this.id)) {
+      const fin = newFinishMessage(this.id, true);
+      this.conn.sendMessage(fin);
+      this.conn.popQuestion(this.id);
+    }
+    this.rootClosePending = false;
+    this.err = new Error("pipeline closed");
+    this.state = QuestionState.CANCELED;
+    this.deferred.reject(this.err);
+    return true;
   }
 }
 

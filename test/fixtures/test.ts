@@ -5888,7 +5888,7 @@ export class TestExtends$Client {
   constructor(client: $.Client) {
     this.client = client;
   }
-  static readonly methods: [
+  static readonly ownMethods: [
     $.Method<TestExtends_Qux$Params, TestExtends_Qux$Results>,
     $.Method<TestAllTypes, TestExtends_Corge$Results>,
     $.Method<TestExtends_Grault$Params, TestAllTypes>
@@ -5924,9 +5924,22 @@ export class TestExtends$Client {
       resultFields: TestAllTypes._capnp.fields
     }
   ];
+  static readonly methods: $.Method<any, any>[] = [
+    ...TestInterface$Client.methods,
+    ...TestExtends$Client.ownMethods
+  ];
+  foo(...args: Parameters<TestInterface$Client["foo"]>): ReturnType<TestInterface$Client["foo"]> {
+    return TestInterface$Client.prototype.foo.apply(this, args);
+  }
+  bar(...args: Parameters<TestInterface$Client["bar"]>): ReturnType<TestInterface$Client["bar"]> {
+    return TestInterface$Client.prototype.bar.apply(this, args);
+  }
+  baz(...args: Parameters<TestInterface$Client["baz"]>): ReturnType<TestInterface$Client["baz"]> {
+    return TestInterface$Client.prototype.baz.apply(this, args);
+  }
   qux(paramsFunc?: (params: TestExtends_Qux$Params) => void): TestExtends_Qux$Results$Promise {
     const answer = this.client.call({
-      method: TestExtends$Client.methods[0],
+      method: TestExtends$Client.ownMethods[0],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestExtends_Qux$Results, answer);
@@ -5934,7 +5947,7 @@ export class TestExtends$Client {
   }
   corge(paramsFunc?: (params: TestAllTypes) => void): TestExtends_Corge$Results$Promise {
     const answer = this.client.call({
-      method: TestExtends$Client.methods[1],
+      method: TestExtends$Client.ownMethods[1],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestExtends_Corge$Results, answer);
@@ -5942,7 +5955,7 @@ export class TestExtends$Client {
   }
   grault(paramsFunc?: (params: TestExtends_Grault$Params) => void): TestAllTypes$Promise {
     const answer = this.client.call({
-      method: TestExtends$Client.methods[2],
+      method: TestExtends$Client.ownMethods[2],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestAllTypes, answer);
@@ -5950,7 +5963,7 @@ export class TestExtends$Client {
   }
 }
 $.Registry.register(TestExtends$Client.interfaceId, TestExtends$Client);
-export interface TestExtends$Server$Target {
+export interface TestExtends$Server$Target extends TestInterface$Server$Target {
   qux(params: TestExtends_Qux$Params, results: TestExtends_Qux$Results): Promise<void>;
   corge(params: TestAllTypes, results: TestExtends_Corge$Results): Promise<void>;
   grault(params: TestExtends_Grault$Params, results: TestAllTypes): Promise<void>;
@@ -5959,16 +5972,20 @@ export class TestExtends$Server extends $.Server {
   readonly target: TestExtends$Server$Target;
   constructor(target: TestExtends$Server$Target) {
     super(target, [
+      ...(TestInterface$Client.methods as $.Method<any, any>[]).map((method) => ({
+        ...(method as any),
+        impl: target[method.methodName as keyof TestExtends$Server$Target] as any
+      })),
       {
-        ...TestExtends$Client.methods[0],
+        ...TestExtends$Client.ownMethods[0],
         impl: target.qux
       },
       {
-        ...TestExtends$Client.methods[1],
+        ...TestExtends$Client.ownMethods[1],
         impl: target.corge
       },
       {
-        ...TestExtends$Client.methods[2],
+        ...TestExtends$Client.ownMethods[2],
         impl: target.grault
       }
     ]);
@@ -5997,16 +6014,43 @@ export class TestExtends2$Client {
   constructor(client: $.Client) {
     this.client = client;
   }
-  static readonly methods: [
+  static readonly ownMethods: [
   ] = [];
+  static readonly methods: $.Method<any, any>[] = [
+    ...TestExtends$Client.methods,
+    ...TestExtends2$Client.ownMethods
+  ];
+  foo(...args: Parameters<TestExtends$Client["foo"]>): ReturnType<TestExtends$Client["foo"]> {
+    return TestExtends$Client.prototype.foo.apply(this, args);
+  }
+  bar(...args: Parameters<TestExtends$Client["bar"]>): ReturnType<TestExtends$Client["bar"]> {
+    return TestExtends$Client.prototype.bar.apply(this, args);
+  }
+  baz(...args: Parameters<TestExtends$Client["baz"]>): ReturnType<TestExtends$Client["baz"]> {
+    return TestExtends$Client.prototype.baz.apply(this, args);
+  }
+  qux(...args: Parameters<TestExtends$Client["qux"]>): ReturnType<TestExtends$Client["qux"]> {
+    return TestExtends$Client.prototype.qux.apply(this, args);
+  }
+  corge(...args: Parameters<TestExtends$Client["corge"]>): ReturnType<TestExtends$Client["corge"]> {
+    return TestExtends$Client.prototype.corge.apply(this, args);
+  }
+  grault(...args: Parameters<TestExtends$Client["grault"]>): ReturnType<TestExtends$Client["grault"]> {
+    return TestExtends$Client.prototype.grault.apply(this, args);
+  }
 }
 $.Registry.register(TestExtends2$Client.interfaceId, TestExtends2$Client);
-export interface TestExtends2$Server$Target {
+export interface TestExtends2$Server$Target extends TestExtends$Server$Target {
 }
 export class TestExtends2$Server extends $.Server {
   readonly target: TestExtends2$Server$Target;
   constructor(target: TestExtends2$Server$Target) {
-    super(target, []);
+    super(target, [
+      ...(TestExtends$Client.methods as $.Method<any, any>[]).map((method) => ({
+        ...(method as any),
+        impl: target[method.methodName as keyof TestExtends2$Server$Target] as any
+      }))
+    ]);
     this.target = target;
   }
   client(): TestExtends2$Client {
@@ -7382,7 +7426,7 @@ export class TestMoreStuff$Client {
   constructor(client: $.Client) {
     this.client = client;
   }
-  static readonly methods: [
+  static readonly ownMethods: [
     $.Method<TestMoreStuff_CallFoo$Params, TestMoreStuff_CallFoo$Results>,
     $.Method<TestMoreStuff_CallFooWhenResolved$Params, TestMoreStuff_CallFooWhenResolved$Results>,
     $.Method<TestMoreStuff_NeverReturn$Params, TestMoreStuff_NeverReturn$Results>,
@@ -7528,13 +7572,20 @@ export class TestMoreStuff$Client {
       resultFields: TestMoreStuff_MethodWithNullDefault$Results._capnp.fields
     }
   ];
+  static readonly methods: $.Method<any, any>[] = [
+    ...TestCallOrder$Client.methods,
+    ...TestMoreStuff$Client.ownMethods
+  ];
+  getCallSequence(...args: Parameters<TestCallOrder$Client["getCallSequence"]>): ReturnType<TestCallOrder$Client["getCallSequence"]> {
+    return TestCallOrder$Client.prototype.getCallSequence.apply(this, args);
+  }
   /**
 * Call `cap.foo()`, check the result, and return "bar".
 *
 */
   callFoo(paramsFunc?: (params: TestMoreStuff_CallFoo$Params) => void): TestMoreStuff_CallFoo$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[0],
+      method: TestMoreStuff$Client.ownMethods[0],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFoo$Results, answer);
@@ -7546,7 +7597,7 @@ export class TestMoreStuff$Client {
 */
   callFooWhenResolved(paramsFunc?: (params: TestMoreStuff_CallFooWhenResolved$Params) => void): TestMoreStuff_CallFooWhenResolved$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[1],
+      method: TestMoreStuff$Client.ownMethods[1],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFooWhenResolved$Results, answer);
@@ -7558,7 +7609,7 @@ export class TestMoreStuff$Client {
 */
   neverReturn(paramsFunc?: (params: TestMoreStuff_NeverReturn$Params) => void): TestMoreStuff_NeverReturn$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[2],
+      method: TestMoreStuff$Client.ownMethods[2],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_NeverReturn$Results, answer);
@@ -7570,7 +7621,7 @@ export class TestMoreStuff$Client {
 */
   hold(paramsFunc?: (params: TestMoreStuff_Hold$Params) => void): TestMoreStuff_Hold$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[3],
+      method: TestMoreStuff$Client.ownMethods[3],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Hold$Results, answer);
@@ -7582,7 +7633,7 @@ export class TestMoreStuff$Client {
 */
   callHeld(paramsFunc?: (params: TestMoreStuff_CallHeld$Params) => void): TestMoreStuff_CallHeld$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[4],
+      method: TestMoreStuff$Client.ownMethods[4],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallHeld$Results, answer);
@@ -7594,7 +7645,7 @@ export class TestMoreStuff$Client {
 */
   getHeld(paramsFunc?: (params: TestMoreStuff_GetHeld$Params) => void): TestMoreStuff_GetHeld$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[5],
+      method: TestMoreStuff$Client.ownMethods[5],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHeld$Results, answer);
@@ -7606,7 +7657,7 @@ export class TestMoreStuff$Client {
 */
   echo(paramsFunc?: (params: TestMoreStuff_Echo$Params) => void): TestMoreStuff_Echo$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[6],
+      method: TestMoreStuff$Client.ownMethods[6],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Echo$Results, answer);
@@ -7618,7 +7669,7 @@ export class TestMoreStuff$Client {
 */
   expectCancel(paramsFunc?: (params: TestMoreStuff_ExpectCancel$Params) => void): TestMoreStuff_ExpectCancel$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[7],
+      method: TestMoreStuff$Client.ownMethods[7],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_ExpectCancel$Results, answer);
@@ -7626,7 +7677,7 @@ export class TestMoreStuff$Client {
   }
   methodWithDefaults(paramsFunc?: (params: TestMoreStuff_MethodWithDefaults$Params) => void): TestMoreStuff_MethodWithDefaults$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[8],
+      method: TestMoreStuff$Client.ownMethods[8],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithDefaults$Results, answer);
@@ -7639,7 +7690,7 @@ export class TestMoreStuff$Client {
 */
   getHandle(paramsFunc?: (params: TestMoreStuff_GetHandle$Params) => void): TestMoreStuff_GetHandle$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[9],
+      method: TestMoreStuff$Client.ownMethods[9],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHandle$Results, answer);
@@ -7651,7 +7702,7 @@ export class TestMoreStuff$Client {
 */
   getNull(paramsFunc?: (params: TestMoreStuff_GetNull$Params) => void): TestMoreStuff_GetNull$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[10],
+      method: TestMoreStuff$Client.ownMethods[10],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetNull$Results, answer);
@@ -7663,7 +7714,7 @@ export class TestMoreStuff$Client {
 */
   getEnormousString(paramsFunc?: (params: TestMoreStuff_GetEnormousString$Params) => void): TestMoreStuff_GetEnormousString$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[11],
+      method: TestMoreStuff$Client.ownMethods[11],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetEnormousString$Results, answer);
@@ -7671,7 +7722,7 @@ export class TestMoreStuff$Client {
   }
   methodWithNullDefault(paramsFunc?: (params: TestMoreStuff_MethodWithNullDefault$Params) => void): TestMoreStuff_MethodWithNullDefault$Results$Promise {
     const answer = this.client.call({
-      method: TestMoreStuff$Client.methods[12],
+      method: TestMoreStuff$Client.ownMethods[12],
       paramsFunc: paramsFunc
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithNullDefault$Results, answer);
@@ -7679,7 +7730,7 @@ export class TestMoreStuff$Client {
   }
 }
 $.Registry.register(TestMoreStuff$Client.interfaceId, TestMoreStuff$Client);
-export interface TestMoreStuff$Server$Target {
+export interface TestMoreStuff$Server$Target extends TestCallOrder$Server$Target {
   callFoo(params: TestMoreStuff_CallFoo$Params, results: TestMoreStuff_CallFoo$Results): Promise<void>;
   callFooWhenResolved(params: TestMoreStuff_CallFooWhenResolved$Params, results: TestMoreStuff_CallFooWhenResolved$Results): Promise<void>;
   neverReturn(params: TestMoreStuff_NeverReturn$Params, results: TestMoreStuff_NeverReturn$Results): Promise<void>;
@@ -7698,56 +7749,60 @@ export class TestMoreStuff$Server extends $.Server {
   readonly target: TestMoreStuff$Server$Target;
   constructor(target: TestMoreStuff$Server$Target) {
     super(target, [
+      ...(TestCallOrder$Client.methods as $.Method<any, any>[]).map((method) => ({
+        ...(method as any),
+        impl: target[method.methodName as keyof TestMoreStuff$Server$Target] as any
+      })),
       {
-        ...TestMoreStuff$Client.methods[0],
+        ...TestMoreStuff$Client.ownMethods[0],
         impl: target.callFoo
       },
       {
-        ...TestMoreStuff$Client.methods[1],
+        ...TestMoreStuff$Client.ownMethods[1],
         impl: target.callFooWhenResolved
       },
       {
-        ...TestMoreStuff$Client.methods[2],
+        ...TestMoreStuff$Client.ownMethods[2],
         impl: target.neverReturn
       },
       {
-        ...TestMoreStuff$Client.methods[3],
+        ...TestMoreStuff$Client.ownMethods[3],
         impl: target.hold
       },
       {
-        ...TestMoreStuff$Client.methods[4],
+        ...TestMoreStuff$Client.ownMethods[4],
         impl: target.callHeld
       },
       {
-        ...TestMoreStuff$Client.methods[5],
+        ...TestMoreStuff$Client.ownMethods[5],
         impl: target.getHeld
       },
       {
-        ...TestMoreStuff$Client.methods[6],
+        ...TestMoreStuff$Client.ownMethods[6],
         impl: target.echo
       },
       {
-        ...TestMoreStuff$Client.methods[7],
+        ...TestMoreStuff$Client.ownMethods[7],
         impl: target.expectCancel
       },
       {
-        ...TestMoreStuff$Client.methods[8],
+        ...TestMoreStuff$Client.ownMethods[8],
         impl: target.methodWithDefaults
       },
       {
-        ...TestMoreStuff$Client.methods[9],
+        ...TestMoreStuff$Client.ownMethods[9],
         impl: target.getHandle
       },
       {
-        ...TestMoreStuff$Client.methods[10],
+        ...TestMoreStuff$Client.ownMethods[10],
         impl: target.getNull
       },
       {
-        ...TestMoreStuff$Client.methods[11],
+        ...TestMoreStuff$Client.ownMethods[11],
         impl: target.getEnormousString
       },
       {
-        ...TestMoreStuff$Client.methods[12],
+        ...TestMoreStuff$Client.ownMethods[12],
         impl: target.methodWithNullDefault
       }
     ]);

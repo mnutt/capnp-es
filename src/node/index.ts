@@ -1,5 +1,8 @@
-import net from "node:net";
-import type { Duplex } from "node:stream";
+// Meteor's Node 14 module resolver does not understand node: specifiers.
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import net from "net";
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import type { Duplex } from "stream";
 import { Message } from "../serialization/message";
 import type { Data } from "../serialization/pointers/data";
 import { Message as RPCMessage } from "../capnp/rpc";
@@ -135,9 +138,15 @@ export class NodeRpcTransport extends DeferredTransport {
       throw disconnected("transport closed", this.closeError);
     }
 
-    const m = new Message();
-    m.setRoot(msg);
-    const frame = Buffer.from(m.toArrayBuffer());
+    let frame: Buffer;
+    if (msg.segment.id === 0 && msg.byteOffset === 0) {
+      frame = Buffer.from(msg.segment.message.toArrayBuffer());
+    } else {
+      const m = new Message();
+      m.setRoot(msg);
+      frame = Buffer.from(m.toArrayBuffer());
+    }
+
     this.enqueueWrite(frame);
   }
 

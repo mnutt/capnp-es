@@ -11,6 +11,8 @@ import { ErrorAnswer } from "./error-answer";
 import { MethodError } from "./method-error";
 import { RPC_METHOD_NOT_IMPLEMENTED } from "../errors";
 
+const disposeSymbol = Symbol.for("capnp-es.dispose");
+
 export interface ServerMethod<
   P extends Struct,
   R extends Struct,
@@ -28,10 +30,16 @@ export interface ServerCall<
 
 // A server is a locally implemented interface
 export class Server implements Client {
+  readonly #methodsById = new Map<string, ServerMethod<any, any>>();
+
   constructor(
     public target: any,
     public methods: Array<ServerMethod<any, any>>,
-  ) {}
+  ) {
+    for (const method of methods) {
+      this.#methodsById.set(methodKey(method.interfaceId, method.methodId), method);
+    }
+  }
 
   startCall<P extends Struct, R extends Struct>(call: ServerCall<P, R>): void {
     const msg = new Message();
@@ -51,8 +59,10 @@ export class Server implements Client {
   }
 
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
-    const serverMethod = this.methods[call.method.methodId];
-    if (!serverMethod || serverMethod.interfaceId !== call.method.interfaceId) {
+    const serverMethod = this.#methodsById.get(
+      methodKey(call.method.interfaceId, call.method.methodId),
+    );
+    if (!serverMethod) {
       return new ErrorAnswer(
         new MethodError(call.method, RPC_METHOD_NOT_IMPLEMENTED),
       );
@@ -67,6 +77,21 @@ export class Server implements Client {
   }
 
   close(): void {
-    // No transport resources are owned by Server itself.
+    const dispose = this.target?.[disposeSymbol];
+    if (typeof dispose !== "function") {
+      return;
+    }
+
+    try {
+      void Promise.resolve(dispose.call(this.target)).catch((err: unknown) => {
+        console.error("Error disposing capnp server target:", err);
+      });
+    } catch (err) {
+      console.error("Error disposing capnp server target:", err);
+    }
   }
+}
+
+function methodKey(interfaceId: bigint, methodId: number): string {
+  return `${interfaceId}:${methodId}`;
 }

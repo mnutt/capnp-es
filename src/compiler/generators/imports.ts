@@ -53,6 +53,8 @@ export function generateCapnpImport(ctx: CodeGeneratorFileContext): void {
  * @param ctx.statements - Collection of TypeScript statements being generated
  */
 export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
+  const importedSuperclassIds = collectImportedSuperclassIds(ctx);
+
   for (const imp of ctx.imports) {
     const { name } = imp;
     const importNode = lookupNode(ctx, imp);
@@ -68,13 +70,14 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
       .flatMap((node) => {
         const fullClassName = getFullClassName(node);
         if (node._isInterface) {
-          // The client and server target are required when another interface
-          // inherits imported methods.
-          return [
-            fullClassName,
-            `${fullClassName}$Client`,
-            `${fullClassName}$Server$Target`,
-          ];
+          // The client is required for imported interfaces. Superclass server
+          // target names are used in TypeScript interface clauses and should
+          // not be emitted as runtime imports.
+          const imports = [fullClassName, `${fullClassName}$Client`];
+          if (importedSuperclassIds.has(node.id)) {
+            imports.push(`type ${fullClassName}$Server$Target`);
+          }
+          return imports;
         }
         return fullClassName;
       })
@@ -87,6 +90,25 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
 
     ctx.codeParts.push(`import { ${imports} } from "${importPath}";`);
   }
+}
+
+function collectImportedSuperclassIds(
+  ctx: CodeGeneratorFileContext,
+): Set<bigint> {
+  const ids = new Set<bigint>();
+  for (const nodeId of ctx.localNodeIds) {
+    const node = ctx.nodeById.get(nodeId);
+    if (!node?._isInterface) {
+      continue;
+    }
+
+    for (const superclass of node.interface.superclasses) {
+      if (!ctx.localNodeIds.has(superclass.id)) {
+        ids.add(superclass.id);
+      }
+    }
+  }
+  return ids;
 }
 
 export function generatedImportPath(
