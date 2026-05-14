@@ -60,8 +60,8 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
     return this.answer;
   }
 
-  async struct(): Promise<R> {
-    return await this.deferred.promise;
+  struct(): Promise<R> {
+    return this.deferred.promise;
   }
 
   // pipelineCall calls pipelineCall on the fulfilled answer or

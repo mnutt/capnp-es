@@ -6,7 +6,7 @@ const tmpWord = new DataView(new ArrayBuffer(8));
 new Uint16Array(tmpWord.buffer)[0] = 0x01_02;
 
 /** Default size (in bytes) for newly allocated segments. */
-export const DEFAULT_BUFFER_SIZE = 4096;
+export const DEFAULT_BUFFER_SIZE = 256;
 
 export const DEFAULT_DECODE_LIMIT = 64 << 20; // 64 MiB
 
@@ -57,7 +57,7 @@ export const MAX_STREAM_SEGMENTS = 512;
 export const MIN_SAFE_INTEGER = -9_007_199_254_740_991;
 
 /** Minimum growth increment for a SingleSegmentArena. */
-export const MIN_SINGLE_SEGMENT_GROWTH = 4096;
+export const MIN_SINGLE_SEGMENT_GROWTH = 1024;
 
 /**
  * This will be `true` if the machine running this code stores numbers natively in little-endian format. This is useful

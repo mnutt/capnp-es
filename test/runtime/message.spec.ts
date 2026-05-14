@@ -38,6 +38,25 @@ test("new Message(Buffer, false)", () => {
   );
 });
 
+test("new Message(Buffer subarray, false)", () => {
+  const frame = Buffer.from(SEGMENTED_UNPACKED);
+  const source = Buffer.concat([
+    Buffer.from([0xaa]),
+    frame,
+    Buffer.from([0xbb]),
+  ]);
+  const view = source.subarray(1, 1 + frame.byteLength);
+  const message = new Message(view, false);
+
+  source.fill(0);
+
+  compareBuffers(
+    message.toArrayBuffer(),
+    SEGMENTED_UNPACKED,
+    "should copy segment data from a Buffer view",
+  );
+});
+
 test("new Message(ArrayBuffer)", () => {
   const message = new Message(SEGMENTED_PACKED);
 
@@ -137,7 +156,7 @@ test("Message.allocateSegment()", () => {
 
   t.equal(
     m1.getSegment(0).buffer.byteLength,
-    length * 2 + C.MIN_SINGLE_SEGMENT_GROWTH,
+    C.DEFAULT_BUFFER_SIZE + C.MIN_SINGLE_SEGMENT_GROWTH * 2,
     "should replace existing segments",
   );
 

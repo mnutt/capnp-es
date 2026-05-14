@@ -3,13 +3,14 @@
 import net from "net";
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import type { Duplex } from "stream";
-import { Message } from "../serialization/message";
+import { Message, getStreamFrame } from "../serialization/message";
 import type { Data } from "../serialization/pointers/data";
 import { Message as RPCMessage } from "../capnp/rpc";
 import { DeferredTransport } from "../rpc/transport/deferred-transport";
 import { Conn } from "../rpc/conn";
 import type { Finalize } from "../rpc/finalize";
 import { CapnpRpcError } from "../rpc/rpc-error";
+import { padToWord } from "../util";
 
 export interface NodeRpcTransportOptions {
   maxQueuedBytes?: number;
@@ -31,12 +32,7 @@ export interface MessageToBufferOptions {
 
 const DEFAULT_MAX_QUEUED_BYTES = 16 * 1024 * 1024;
 const MAX_SEGMENT_COUNT = 4096;
-
-function copyArrayBuffer(buf: Buffer): ArrayBuffer {
-  const out = new Uint8Array(buf.byteLength);
-  out.set(buf);
-  return out.buffer;
-}
+const CONCAT_SMALL_FRAME_BYTES = 1024;
 
 function disconnected(reason: string, cause?: unknown): CapnpRpcError {
   return new CapnpRpcError(reason, {
@@ -57,14 +53,14 @@ function abortError(reason?: unknown): Error {
 class CapnpFrameDecoder {
   private pending: Buffer = Buffer.alloc(0);
 
-  push(chunk: Buffer | Uint8Array): ArrayBuffer[] {
+  push(chunk: Buffer | Uint8Array): Buffer[] {
     const buf = Buffer.isBuffer(chunk)
       ? chunk
       : Buffer.from(chunk.buffer, chunk.byteOffset, chunk.byteLength);
     this.pending =
       this.pending.length === 0 ? buf : Buffer.concat([this.pending, buf]);
 
-    const frames: ArrayBuffer[] = [];
+    const frames: Buffer[] = [];
 
     while (true) {
       if (this.pending.length < 8) {
@@ -94,12 +90,31 @@ class CapnpFrameDecoder {
       }
 
       const frame = this.pending.subarray(0, frameBytes);
-      frames.push(copyArrayBuffer(frame));
+      frames.push(frame);
       this.pending = this.pending.subarray(frameBytes);
     }
 
     return frames;
   }
+}
+
+function messageToBufferChunks(message: Message): Buffer[] {
+  if (message._capnp.segments.length === 0) {
+    message.getSegment(0);
+  }
+
+  const chunks = [Buffer.from(getStreamFrame(message))];
+  let byteLength = chunks[0].byteLength;
+
+  for (const segment of message._capnp.segments) {
+    const chunk = Buffer.from(segment.buffer, 0, padToWord(segment.byteLength));
+    chunks.push(chunk);
+    byteLength += chunk.byteLength;
+  }
+
+  return byteLength <= CONCAT_SMALL_FRAME_BYTES
+    ? [Buffer.concat(chunks, byteLength)]
+    : chunks;
 }
 
 export class NodeRpcTransport extends DeferredTransport {
@@ -138,16 +153,16 @@ export class NodeRpcTransport extends DeferredTransport {
       throw disconnected("transport closed", this.closeError);
     }
 
-    let frame: Buffer;
+    let chunks: Buffer[];
     if (msg.segment.id === 0 && msg.byteOffset === 0) {
-      frame = Buffer.from(msg.segment.message.toArrayBuffer());
+      chunks = messageToBufferChunks(msg.segment.message);
     } else {
       const m = new Message();
       m.setRoot(msg);
-      frame = Buffer.from(m.toArrayBuffer());
+      chunks = messageToBufferChunks(m);
     }
 
-    this.enqueueWrite(frame);
+    this.enqueueWrite(chunks);
   }
 
   override close(): void {
@@ -160,15 +175,17 @@ export class NodeRpcTransport extends DeferredTransport {
     super.close();
   }
 
-  private enqueueWrite(frame: Buffer): void {
-    if (this.queuedBytes + frame.byteLength > this.maxQueuedBytes) {
+  private enqueueWrite(chunks: Buffer[]): void {
+    const byteLength = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0);
+
+    if (this.queuedBytes + byteLength > this.maxQueuedBytes) {
       const err = disconnected("transport write queue limit exceeded");
       this.fail(err);
       throw err;
     }
 
-    this.writeQueue.push(frame);
-    this.queuedBytes += frame.byteLength;
+    this.writeQueue.push(...chunks);
+    this.queuedBytes += byteLength;
     this.flushWrites();
   }
 

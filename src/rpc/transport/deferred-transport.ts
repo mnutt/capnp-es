@@ -42,7 +42,7 @@ export abstract class DeferredTransport implements Transport {
     }
   };
 
-  protected resolve = (buf: ArrayBuffer): void => {
+  protected resolve = (buf: ArrayBuffer | ArrayBufferView): void => {
     try {
       const msg = new Message(buf, false).getRoot(RPCMessage);
       if (this.d) {

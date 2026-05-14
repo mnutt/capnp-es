@@ -34,6 +34,25 @@ class MemoryDuplex extends Duplex {
   }
 }
 
+class RecordingDuplex extends Duplex {
+  readonly chunks: Buffer[] = [];
+
+  _read(): void {
+    // Data is captured by _write().
+  }
+
+  _write(
+    chunk: Buffer | string,
+    encoding: BufferEncoding,
+    callback: (error?: Error | null) => void,
+  ): void {
+    this.chunks.push(
+      Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding),
+    );
+    callback();
+  }
+}
+
 function createDuplexPair(): [MemoryDuplex, MemoryDuplex] {
   const a = new MemoryDuplex();
   const b = new MemoryDuplex();
@@ -67,6 +86,42 @@ describe("Node RPC transport", () => {
 
     tx.close();
     rx.close();
+  });
+
+  test("coalesces small stream frame chunks", () => {
+    const stream = new RecordingDuplex();
+    const transport = transportFromDuplex(stream);
+    const { message, root } = bootstrapMessage(321);
+
+    transport.sendMessage(root);
+
+    t.lengthOf(stream.chunks, 1);
+    t.deepEqual(
+      Buffer.concat(stream.chunks),
+      Buffer.from(message.toArrayBuffer()),
+    );
+
+    transport.close();
+  });
+
+  test("writes large stream frames without concatenating segment chunks", () => {
+    const stream = new RecordingDuplex();
+    const transport = transportFromDuplex(stream);
+    const message = new Message();
+    const root = message.initRoot(RPCMessage);
+    const call = root._initCall();
+    call.questionId = 654;
+    call._initParams()._initCapTable(200);
+
+    transport.sendMessage(root);
+
+    t.isAbove(stream.chunks.length, 1);
+    t.deepEqual(
+      Buffer.concat(stream.chunks),
+      Buffer.from(message.toArrayBuffer()),
+    );
+
+    transport.close();
   });
 
   test("decodes fragmented stream frames", async () => {

@@ -230,20 +230,13 @@ export function initMessage(
 
   let buf = src;
 
-  if (isArrayBufferView(buf)) {
-    buf = buf.buffer.slice(
-      buf.byteOffset,
-      buf.byteOffset + buf.byteLength,
-    ) as ArrayBuffer;
-  }
-
   if (packed) {
-    buf = unpack(buf);
+    buf = unpack(copyToArrayBuffer(buf));
   }
 
   if (singleSegment) {
     return {
-      arena: new SingleSegmentArena(buf),
+      arena: new SingleSegmentArena(copyToArrayBuffer(buf)),
       segments: [],
       traversalLimit: DEFAULT_TRAVERSE_LIMIT,
     };
@@ -265,8 +258,10 @@ export function initMessage(
  * @param message An unpacked message with a framing header.
  * @returns An array of buffers containing the segment data.
  */
-export function getFramedSegments(message: ArrayBuffer): ArrayBuffer[] {
-  const dv = new DataView(message);
+export function getFramedSegments(
+  message: ArrayBuffer | ArrayBufferView,
+): ArrayBuffer[] {
+  const dv = toDataView(message);
 
   const segmentCount = dv.getUint32(0, true) + 1;
 
@@ -286,12 +281,44 @@ export function getFramedSegments(message: ArrayBuffer): ArrayBuffer[] {
       throw new Error(MSG_INVALID_FRAME_HEADER);
     }
 
-    segments[i] = message.slice(byteOffset, byteOffset + byteLength);
+    segments[i] = sliceArrayBuffer(
+      message,
+      byteOffset,
+      byteOffset + byteLength,
+    );
 
     byteOffset += byteLength;
   }
 
   return segments;
+}
+
+function copyToArrayBuffer(buf: ArrayBuffer | ArrayBufferView): ArrayBuffer {
+  return isArrayBufferView(buf)
+    ? (buf.buffer.slice(
+        buf.byteOffset,
+        buf.byteOffset + buf.byteLength,
+      ) as ArrayBuffer)
+    : buf;
+}
+
+function toDataView(buf: ArrayBuffer | ArrayBufferView): DataView {
+  return isArrayBufferView(buf)
+    ? new DataView(buf.buffer, buf.byteOffset, buf.byteLength)
+    : new DataView(buf);
+}
+
+function sliceArrayBuffer(
+  buf: ArrayBuffer | ArrayBufferView,
+  start: number,
+  end: number,
+): ArrayBuffer {
+  return isArrayBufferView(buf)
+    ? (buf.buffer.slice(
+        buf.byteOffset + start,
+        buf.byteOffset + end,
+      ) as ArrayBuffer)
+    : buf.slice(start, end);
 }
 
 /**

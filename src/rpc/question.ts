@@ -37,8 +37,8 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     public method?: Method<P, R>,
   ) {}
 
-  async struct(): Promise<R> {
-    return await this.deferred.promise;
+  struct(): Promise<R> {
+    return this.deferred.promise;
   }
 
   // start signals the question has been sent
