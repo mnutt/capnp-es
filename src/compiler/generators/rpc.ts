@@ -131,7 +131,7 @@ export function generateServer(
         impl: async (params: any, results: any) => {
           const value = await (target[method.methodName as keyof ${serverTargetName}] as any).call(target, params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as any);
+            (method.ResultsClass as any)._applyInit(results, value);
           }
         }
       }))`,
@@ -149,7 +149,7 @@ export function generateServer(
         impl: async (params: ${getFullClassName(lookupNode(ctx, method.paramStructType))}, results: ${getFullClassName(lookupNode(ctx, method.resultStructType))}) => {
           const value = await target.${method.name}(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<${getFullClassName(lookupNode(ctx, method.resultStructType))}>);
+            ${getFullClassName(lookupNode(ctx, method.resultStructType))}._applyInit(results, value as $.Init<${getFullClassName(lookupNode(ctx, method.resultStructType))}>);
           }
         }
       }`);
@@ -486,7 +486,9 @@ export function generateClientMethod(
         method: ${clientName}.${methodArrayName}[${index}],
         paramsFunc: params === undefined
           ? undefined
-          : (target: ${paramTypeName}) => $.applyInit(target, params)
+          : typeof params === "function"
+            ? params as (target: ${paramTypeName}) => void
+            : (target: ${paramTypeName}) => ${paramTypeName}._applyInit(target, params)
       });
       const pipeline = new $.Pipeline(${resultTypeName}, answer);
       return new ${resultTypeName}$Promise(pipeline);

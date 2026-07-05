@@ -15,11 +15,17 @@ export class SimpleInterface_Subtract$Params extends $.Struct {
   };
   static _applyInit(target: SimpleInterface_Subtract$Params, value: $.Init<SimpleInterface_Subtract$Params>): void {
     const init = value as any;
-    if (init["a"] !== undefined) {
-      target.a = init["a"] as any;
+    {
+      const value = init["a"];
+      if (value !== undefined) {
+        target.a = value as any;
+      }
     }
-    if (init["b"] !== undefined) {
-      target.b = init["b"] as any;
+    {
+      const value = init["b"];
+      if (value !== undefined) {
+        target.b = value as any;
+      }
     }
   }
   get a(): number {
@@ -49,8 +55,11 @@ export class SimpleInterface_Subtract$Results extends $.Struct {
   };
   static _applyInit(target: SimpleInterface_Subtract$Results, value: $.Init<SimpleInterface_Subtract$Results>): void {
     const init = value as any;
-    if (init["result"] !== undefined) {
-      target.result = init["result"] as any;
+    {
+      const value = init["result"];
+      if (value !== undefined) {
+        target.result = value as any;
+      }
     }
   }
   get result(): number {
@@ -107,7 +116,9 @@ export class SimpleInterface$Client {
       method: SimpleInterface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: SimpleInterface_Subtract$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: SimpleInterface_Subtract$Params) => void
+          : (target: SimpleInterface_Subtract$Params) => SimpleInterface_Subtract$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SimpleInterface_Subtract$Results, answer);
     return new SimpleInterface_Subtract$Results$Promise(pipeline);
@@ -126,7 +137,7 @@ export class SimpleInterface$Server extends $.Server {
         impl: async (params: SimpleInterface_Subtract$Params, results: SimpleInterface_Subtract$Results) => {
           const value = await target.subtract(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<SimpleInterface_Subtract$Results>);
+            SimpleInterface_Subtract$Results._applyInit(results, value as $.Init<SimpleInterface_Subtract$Results>);
           }
         }
       }

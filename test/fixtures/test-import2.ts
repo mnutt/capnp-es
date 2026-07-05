@@ -24,64 +24,88 @@ export class TestImport2 extends $.Struct {
   };
   static _applyInit(target: TestImport2, value: $.Init<TestImport2>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      if (init["foo"] instanceof TestAllTypes) {
-        target.foo = init["foo"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initFoo(), init["foo"] as $.Init<TestAllTypes>);
-      }
-    }
-    if (init["bar"] !== undefined) {
-      if (init["bar"] instanceof Node) {
-        target.bar = init["bar"] as Node;
-      }
-      else {
-        Node._applyInit(target._initBar(), init["bar"] as $.Init<Node>);
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.foo = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initFoo(), value as $.Init<TestAllTypes>);
+        }
       }
     }
-    if (init["baz"] !== undefined) {
-      if (init["baz"] instanceof TestImport) {
-        target.baz = init["baz"] as TestImport;
-      }
-      else {
-        TestImport._applyInit(target._initBaz(), init["baz"] as $.Init<TestImport>);
-      }
-    }
-    if (init["box"] !== undefined) {
-      if (init["box"] instanceof Node_Parameter) {
-        target.box = init["box"] as Node_Parameter;
-      }
-      else {
-        Node_Parameter._applyInit(target._initBox(), init["box"] as $.Init<Node_Parameter>);
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        if (value instanceof Node) {
+          target.bar = value as Node;
+        }
+        else {
+          Node._applyInit(target._initBar(), value as $.Init<Node>);
+        }
       }
     }
-    if (init["bee"] !== undefined) {
-      if (init["bee"] instanceof Node_NestedNode) {
-        target.bee = init["bee"] as Node_NestedNode;
-      }
-      else {
-        Node_NestedNode._applyInit(target._initBee(), init["bee"] as $.Init<Node_NestedNode>);
-      }
-    }
-    if (init["bok"] !== undefined) {
-      if (init["bok"] instanceof Brand_Scope) {
-        target.bok = init["bok"] as Brand_Scope;
-      }
-      else {
-        Brand_Scope._applyInit(target._initBok(), init["bok"] as $.Init<Brand_Scope>);
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        if (value instanceof TestImport) {
+          target.baz = value as TestImport;
+        }
+        else {
+          TestImport._applyInit(target._initBaz(), value as $.Init<TestImport>);
+        }
       }
     }
-    if (init["bip"] !== undefined) {
-      if (init["bip"] instanceof Brand_Binding) {
-        target.bip = init["bip"] as Brand_Binding;
-      }
-      else {
-        Brand_Binding._applyInit(target._initBip(), init["bip"] as $.Init<Brand_Binding>);
+    {
+      const value = init["box"];
+      if (value !== undefined) {
+        if (value instanceof Node_Parameter) {
+          target.box = value as Node_Parameter;
+        }
+        else {
+          Node_Parameter._applyInit(target._initBox(), value as $.Init<Node_Parameter>);
+        }
       }
     }
-    if (init["bep"] !== undefined) {
-      target.bep = init["bep"] as any;
+    {
+      const value = init["bee"];
+      if (value !== undefined) {
+        if (value instanceof Node_NestedNode) {
+          target.bee = value as Node_NestedNode;
+        }
+        else {
+          Node_NestedNode._applyInit(target._initBee(), value as $.Init<Node_NestedNode>);
+        }
+      }
+    }
+    {
+      const value = init["bok"];
+      if (value !== undefined) {
+        if (value instanceof Brand_Scope) {
+          target.bok = value as Brand_Scope;
+        }
+        else {
+          Brand_Scope._applyInit(target._initBok(), value as $.Init<Brand_Scope>);
+        }
+      }
+    }
+    {
+      const value = init["bip"];
+      if (value !== undefined) {
+        if (value instanceof Brand_Binding) {
+          target.bip = value as Brand_Binding;
+        }
+        else {
+          Brand_Binding._applyInit(target._initBip(), value as $.Init<Brand_Binding>);
+        }
+      }
+    }
+    {
+      const value = init["bep"];
+      if (value !== undefined) {
+        target.bep = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<TestAllTypes>): void {

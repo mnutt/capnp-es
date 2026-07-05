@@ -20,43 +20,61 @@ export class Upgrade extends $.Struct {
   static _SelfReferences: $.ListCtor<Upgrade>;
   static _applyInit(target: Upgrade, value: $.Init<Upgrade>): void {
     const init = value as any;
-    if (init["legacyName"] !== undefined) {
-      target.legacyName = init["legacyName"] as any;
-    }
-    if (init["legacyId"] !== undefined) {
-      target.legacyId = init["legacyId"] as any;
-    }
-    if (init["selfReference"] !== undefined) {
-      if (init["selfReference"] instanceof Upgrade) {
-        target.selfReference = init["selfReference"] as Upgrade;
-      }
-      else {
-        Upgrade._applyInit(target._initSelfReference(), init["selfReference"] as $.Init<Upgrade>);
+    {
+      const value = init["legacyName"];
+      if (value !== undefined) {
+        target.legacyName = value as any;
       }
     }
-    if (init["selfReferences"] !== undefined) {
-      if (init["selfReferences"] instanceof $.List) {
-        target.selfReferences = init["selfReferences"] as any;
+    {
+      const value = init["legacyId"];
+      if (value !== undefined) {
+        target.legacyId = value as any;
       }
-      else {
-        const values = Array.isArray(init["selfReferences"]) ? init["selfReferences"] : Array.from(init["selfReferences"] as Iterable<any>);
-        const list = target._initSelfReferences(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Upgrade) {
-            list.set(index, item);
-          }
-          else {
-            Upgrade._applyInit(list.get(index), item as $.Init<Upgrade>);
+    }
+    {
+      const value = init["selfReference"];
+      if (value !== undefined) {
+        if (value instanceof Upgrade) {
+          target.selfReference = value as Upgrade;
+        }
+        else {
+          Upgrade._applyInit(target._initSelfReference(), value as $.Init<Upgrade>);
+        }
+      }
+    }
+    {
+      const value = init["selfReferences"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.selfReferences = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initSelfReferences(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Upgrade) {
+              list.set(index, item);
+            }
+            else {
+              Upgrade._applyInit(list.get(index), item as $.Init<Upgrade>);
+            }
           }
         }
       }
     }
-    if (init["newHotnessName"] !== undefined) {
-      target.newHotnessName = init["newHotnessName"] as any;
+    {
+      const value = init["newHotnessName"];
+      if (value !== undefined) {
+        target.newHotnessName = value as any;
+      }
     }
-    if (init["newHotnessId"] !== undefined) {
-      target.newHotnessId = init["newHotnessId"] as any;
+    {
+      const value = init["newHotnessId"];
+      if (value !== undefined) {
+        target.newHotnessId = value as any;
+      }
     }
   }
   get legacyName(): string {

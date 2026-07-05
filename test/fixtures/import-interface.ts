@@ -15,8 +15,11 @@ export class ReturnCapability_Get$Params extends $.Struct {
   };
   static _applyInit(target: ReturnCapability_Get$Params, value: $.Init<ReturnCapability_Get$Params>): void {
     const init = value as any;
-    if (init["index"] !== undefined) {
-      target.index = init["index"] as any;
+    {
+      const value = init["index"];
+      if (value !== undefined) {
+        target.index = value as any;
+      }
     }
   }
   get index(): number {
@@ -40,8 +43,11 @@ export class ReturnCapability_Get$Results extends $.Struct {
   };
   static _applyInit(target: ReturnCapability_Get$Results, value: $.Init<ReturnCapability_Get$Results>): void {
     const init = value as any;
-    if (init["capability"] !== undefined) {
-      target.capability = init["capability"] as any;
+    {
+      const value = init["capability"];
+      if (value !== undefined) {
+        target.capability = value as any;
+      }
     }
   }
   get capability(): SimpleInterface$Client {
@@ -113,7 +119,9 @@ export class ReturnCapability$Client {
       method: ReturnCapability$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: ReturnCapability_Get$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: ReturnCapability_Get$Params) => void
+          : (target: ReturnCapability_Get$Params) => ReturnCapability_Get$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(ReturnCapability_Get$Results, answer);
     return new ReturnCapability_Get$Results$Promise(pipeline);
@@ -132,7 +140,7 @@ export class ReturnCapability$Server extends $.Server {
         impl: async (params: ReturnCapability_Get$Params, results: ReturnCapability_Get$Results) => {
           const value = await target.get(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<ReturnCapability_Get$Results>);
+            ReturnCapability_Get$Results._applyInit(results, value as $.Init<ReturnCapability_Get$Results>);
           }
         }
       }

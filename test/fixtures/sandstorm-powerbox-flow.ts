@@ -28,13 +28,16 @@ export class AppPersistent_Save$Results extends $.Struct {
   };
   static _applyInit(target: AppPersistent_Save$Results, value: $.Init<AppPersistent_Save$Results>): void {
     const init = value as any;
-    if (init["objectId"] !== undefined) {
-      if (init["objectId"] instanceof $.Data) {
-        target.objectId = init["objectId"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["objectId"]);
-        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["objectId"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.objectId = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+        }
       }
     }
   }
@@ -104,7 +107,9 @@ export class AppPersistent$Client {
       method: AppPersistent$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: AppPersistent_Save$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: AppPersistent_Save$Params) => void
+          : (target: AppPersistent_Save$Params) => AppPersistent_Save$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppPersistent_Save$Results, answer);
     return new AppPersistent_Save$Results$Promise(pipeline);
@@ -123,7 +128,7 @@ export class AppPersistent$Server extends $.Server {
         impl: async (params: AppPersistent_Save$Params, results: AppPersistent_Save$Results) => {
           const value = await target.save(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<AppPersistent_Save$Results>);
+            AppPersistent_Save$Results._applyInit(results, value as $.Init<AppPersistent_Save$Results>);
           }
         }
       }
@@ -174,8 +179,11 @@ export class Node_Stat$Results extends $.Struct {
   };
   static _applyInit(target: Node_Stat$Results, value: $.Init<Node_Stat$Results>): void {
     const init = value as any;
-    if (init["isDir"] !== undefined) {
-      target.isDir = init["isDir"] as any;
+    {
+      const value = init["isDir"];
+      if (value !== undefined) {
+        target.isDir = value as any;
+      }
     }
   }
   get isDir(): boolean {
@@ -239,7 +247,9 @@ export class Node$Client {
       method: Node$Client.ownMethods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: Node_Stat$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: Node_Stat$Params) => void
+          : (target: Node_Stat$Params) => Node_Stat$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Node_Stat$Results, answer);
     return new Node_Stat$Results$Promise(pipeline);
@@ -258,7 +268,7 @@ export class Node$Server extends $.Server {
         impl: async (params: any, results: any) => {
           const value = await (target[method.methodName as keyof Node$Server$Target] as any).call(target, params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as any);
+            (method.ResultsClass as any)._applyInit(results, value);
           }
         }
       })),
@@ -267,7 +277,7 @@ export class Node$Server extends $.Server {
         impl: async (params: Node_Stat$Params, results: Node_Stat$Results) => {
           const value = await target.stat(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<Node_Stat$Results>);
+            Node_Stat$Results._applyInit(results, value as $.Init<Node_Stat$Results>);
           }
         }
       }
@@ -318,8 +328,11 @@ export class AppHooks_GetViewInfo$Results extends $.Struct {
   };
   static _applyInit(target: AppHooks_GetViewInfo$Results, value: $.Init<AppHooks_GetViewInfo$Results>): void {
     const init = value as any;
-    if (init["supportsNode"] !== undefined) {
-      target.supportsNode = init["supportsNode"] as any;
+    {
+      const value = init["supportsNode"];
+      if (value !== undefined) {
+        target.supportsNode = value as any;
+      }
     }
   }
   get supportsNode(): boolean {
@@ -361,13 +374,16 @@ export class AppHooks_Restore$Params extends $.Struct {
   };
   static _applyInit(target: AppHooks_Restore$Params, value: $.Init<AppHooks_Restore$Params>): void {
     const init = value as any;
-    if (init["objectId"] !== undefined) {
-      if (init["objectId"] instanceof $.Data) {
-        target.objectId = init["objectId"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["objectId"]);
-        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["objectId"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.objectId = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+        }
       }
     }
   }
@@ -404,8 +420,11 @@ export class AppHooks_Restore$Results extends $.Struct {
   };
   static _applyInit(target: AppHooks_Restore$Results, value: $.Init<AppHooks_Restore$Results>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): Node$Client {
@@ -462,13 +481,16 @@ export class AppHooks_Drop$Params extends $.Struct {
   };
   static _applyInit(target: AppHooks_Drop$Params, value: $.Init<AppHooks_Drop$Params>): void {
     const init = value as any;
-    if (init["objectId"] !== undefined) {
-      if (init["objectId"] instanceof $.Data) {
-        target.objectId = init["objectId"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["objectId"]);
-        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["objectId"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.objectId = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+        }
       }
     }
   }
@@ -574,7 +596,9 @@ export class AppHooks$Client {
       method: AppHooks$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: AppHooks_GetViewInfo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: AppHooks_GetViewInfo$Params) => void
+          : (target: AppHooks_GetViewInfo$Params) => AppHooks_GetViewInfo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_GetViewInfo$Results, answer);
     return new AppHooks_GetViewInfo$Results$Promise(pipeline);
@@ -587,7 +611,9 @@ export class AppHooks$Client {
       method: AppHooks$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: AppHooks_Restore$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: AppHooks_Restore$Params) => void
+          : (target: AppHooks_Restore$Params) => AppHooks_Restore$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_Restore$Results, answer);
     return new AppHooks_Restore$Results$Promise(pipeline);
@@ -600,7 +626,9 @@ export class AppHooks$Client {
       method: AppHooks$Client.methods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: AppHooks_Drop$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: AppHooks_Drop$Params) => void
+          : (target: AppHooks_Drop$Params) => AppHooks_Drop$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_Drop$Results, answer);
     return new AppHooks_Drop$Results$Promise(pipeline);
@@ -621,7 +649,7 @@ export class AppHooks$Server extends $.Server {
         impl: async (params: AppHooks_GetViewInfo$Params, results: AppHooks_GetViewInfo$Results) => {
           const value = await target.getViewInfo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<AppHooks_GetViewInfo$Results>);
+            AppHooks_GetViewInfo$Results._applyInit(results, value as $.Init<AppHooks_GetViewInfo$Results>);
           }
         }
       },
@@ -630,7 +658,7 @@ export class AppHooks$Server extends $.Server {
         impl: async (params: AppHooks_Restore$Params, results: AppHooks_Restore$Results) => {
           const value = await target.restore(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<AppHooks_Restore$Results>);
+            AppHooks_Restore$Results._applyInit(results, value as $.Init<AppHooks_Restore$Results>);
           }
         }
       },
@@ -639,7 +667,7 @@ export class AppHooks$Server extends $.Server {
         impl: async (params: AppHooks_Drop$Params, results: AppHooks_Drop$Results) => {
           const value = await target.drop(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<AppHooks_Drop$Results>);
+            AppHooks_Drop$Results._applyInit(results, value as $.Init<AppHooks_Drop$Results>);
           }
         }
       }
@@ -676,8 +704,11 @@ export class SessionContext_FulfillRequest$Params extends $.Struct {
   };
   static _applyInit(target: SessionContext_FulfillRequest$Params, value: $.Init<SessionContext_FulfillRequest$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): Node$Client {
@@ -759,8 +790,11 @@ export class SessionContext_ClaimRequest$Results extends $.Struct {
   };
   static _applyInit(target: SessionContext_ClaimRequest$Results, value: $.Init<SessionContext_ClaimRequest$Results>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): Node$Client {
@@ -843,7 +877,9 @@ export class SessionContext$Client {
       method: SessionContext$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: SessionContext_FulfillRequest$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: SessionContext_FulfillRequest$Params) => void
+          : (target: SessionContext_FulfillRequest$Params) => SessionContext_FulfillRequest$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SessionContext_FulfillRequest$Results, answer);
     return new SessionContext_FulfillRequest$Results$Promise(pipeline);
@@ -856,7 +892,9 @@ export class SessionContext$Client {
       method: SessionContext$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: SessionContext_ClaimRequest$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: SessionContext_ClaimRequest$Params) => void
+          : (target: SessionContext_ClaimRequest$Params) => SessionContext_ClaimRequest$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SessionContext_ClaimRequest$Results, answer);
     return new SessionContext_ClaimRequest$Results$Promise(pipeline);
@@ -876,7 +914,7 @@ export class SessionContext$Server extends $.Server {
         impl: async (params: SessionContext_FulfillRequest$Params, results: SessionContext_FulfillRequest$Results) => {
           const value = await target.fulfillRequest(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<SessionContext_FulfillRequest$Results>);
+            SessionContext_FulfillRequest$Results._applyInit(results, value as $.Init<SessionContext_FulfillRequest$Results>);
           }
         }
       },
@@ -885,7 +923,7 @@ export class SessionContext$Server extends $.Server {
         impl: async (params: SessionContext_ClaimRequest$Params, results: SessionContext_ClaimRequest$Results) => {
           const value = await target.claimRequest(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<SessionContext_ClaimRequest$Results>);
+            SessionContext_ClaimRequest$Results._applyInit(results, value as $.Init<SessionContext_ClaimRequest$Results>);
           }
         }
       }
@@ -936,8 +974,11 @@ export class SandstormBridge_GetSessionContext$Results extends $.Struct {
   };
   static _applyInit(target: SandstormBridge_GetSessionContext$Results, value: $.Init<SandstormBridge_GetSessionContext$Results>): void {
     const init = value as any;
-    if (init["context"] !== undefined) {
-      target.context = init["context"] as any;
+    {
+      const value = init["context"];
+      if (value !== undefined) {
+        target.context = value as any;
+      }
     }
   }
   get context(): SessionContext$Client {
@@ -1009,7 +1050,9 @@ export class SandstormBridge$Client {
       method: SandstormBridge$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: SandstormBridge_GetSessionContext$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: SandstormBridge_GetSessionContext$Params) => void
+          : (target: SandstormBridge_GetSessionContext$Params) => SandstormBridge_GetSessionContext$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SandstormBridge_GetSessionContext$Results, answer);
     return new SandstormBridge_GetSessionContext$Results$Promise(pipeline);
@@ -1028,7 +1071,7 @@ export class SandstormBridge$Server extends $.Server {
         impl: async (params: SandstormBridge_GetSessionContext$Params, results: SandstormBridge_GetSessionContext$Results) => {
           const value = await target.getSessionContext(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<SandstormBridge_GetSessionContext$Results>);
+            SandstormBridge_GetSessionContext$Results._applyInit(results, value as $.Init<SandstormBridge_GetSessionContext$Results>);
           }
         }
       }

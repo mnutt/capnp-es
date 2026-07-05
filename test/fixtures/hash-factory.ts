@@ -28,8 +28,11 @@ export class HashFactory_NewSha1$Results extends $.Struct {
   };
   static _applyInit(target: HashFactory_NewSha1$Results, value: $.Init<HashFactory_NewSha1$Results>): void {
     const init = value as any;
-    if (init["hash"] !== undefined) {
-      target.hash = init["hash"] as any;
+    {
+      const value = init["hash"];
+      if (value !== undefined) {
+        target.hash = value as any;
+      }
     }
   }
   get hash(): Hash$Client {
@@ -101,7 +104,9 @@ export class HashFactory$Client {
       method: HashFactory$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: HashFactory_NewSha1$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: HashFactory_NewSha1$Params) => void
+          : (target: HashFactory_NewSha1$Params) => HashFactory_NewSha1$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(HashFactory_NewSha1$Results, answer);
     return new HashFactory_NewSha1$Results$Promise(pipeline);
@@ -120,7 +125,7 @@ export class HashFactory$Server extends $.Server {
         impl: async (params: HashFactory_NewSha1$Params, results: HashFactory_NewSha1$Results) => {
           const value = await target.newSha1(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<HashFactory_NewSha1$Results>);
+            HashFactory_NewSha1$Results._applyInit(results, value as $.Init<HashFactory_NewSha1$Results>);
           }
         }
       }
@@ -157,13 +162,16 @@ export class Hash_Write$Params extends $.Struct {
   };
   static _applyInit(target: Hash_Write$Params, value: $.Init<Hash_Write$Params>): void {
     const init = value as any;
-    if (init["data"] !== undefined) {
-      if (init["data"] instanceof $.Data) {
-        target.data = init["data"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["data"]);
-        target._initData(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["data"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.data = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initData(bytes.byteLength).copyBuffer(bytes);
+        }
       }
     }
   }
@@ -246,13 +254,16 @@ export class Hash_Sum$Results extends $.Struct {
   };
   static _applyInit(target: Hash_Sum$Results, value: $.Init<Hash_Sum$Results>): void {
     const init = value as any;
-    if (init["hash"] !== undefined) {
-      if (init["hash"] instanceof $.Data) {
-        target.hash = init["hash"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["hash"]);
-        target._initHash(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["hash"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.hash = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initHash(bytes.byteLength).copyBuffer(bytes);
+        }
       }
     }
   }
@@ -333,7 +344,9 @@ export class Hash$Client {
       method: Hash$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: Hash_Write$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: Hash_Write$Params) => void
+          : (target: Hash_Write$Params) => Hash_Write$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Hash_Write$Results, answer);
     return new Hash_Write$Results$Promise(pipeline);
@@ -346,7 +359,9 @@ export class Hash$Client {
       method: Hash$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: Hash_Sum$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: Hash_Sum$Params) => void
+          : (target: Hash_Sum$Params) => Hash_Sum$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Hash_Sum$Results, answer);
     return new Hash_Sum$Results$Promise(pipeline);
@@ -366,7 +381,7 @@ export class Hash$Server extends $.Server {
         impl: async (params: Hash_Write$Params, results: Hash_Write$Results) => {
           const value = await target.write(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<Hash_Write$Results>);
+            Hash_Write$Results._applyInit(results, value as $.Init<Hash_Write$Results>);
           }
         }
       },
@@ -375,7 +390,7 @@ export class Hash$Server extends $.Server {
         impl: async (params: Hash_Sum$Params, results: Hash_Sum$Results) => {
           const value = await target.sum(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<Hash_Sum$Results>);
+            Hash_Sum$Results._applyInit(results, value as $.Init<Hash_Sum$Results>);
           }
         }
       }

@@ -14,8 +14,11 @@ export class Persistent_SaveParams extends $.Struct {
   };
   static _applyInit(target: Persistent_SaveParams, value: $.Init<Persistent_SaveParams>): void {
     const init = value as any;
-    if (init["sealFor"] !== undefined) {
-      target.sealFor = init["sealFor"] as any;
+    {
+      const value = init["sealFor"];
+      if (value !== undefined) {
+        target.sealFor = value as any;
+      }
     }
   }
   _adoptSealFor(value: $.Orphan<$.Pointer>): void {
@@ -57,8 +60,11 @@ export class Persistent_SaveResults extends $.Struct {
   };
   static _applyInit(target: Persistent_SaveResults, value: $.Init<Persistent_SaveResults>): void {
     const init = value as any;
-    if (init["sturdyRef"] !== undefined) {
-      target.sturdyRef = init["sturdyRef"] as any;
+    {
+      const value = init["sturdyRef"];
+      if (value !== undefined) {
+        target.sturdyRef = value as any;
+      }
     }
   }
   _adoptSturdyRef(value: $.Orphan<$.Pointer>): void {
@@ -130,7 +136,9 @@ export class Persistent$Client {
       method: Persistent$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: Persistent_SaveParams) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: Persistent_SaveParams) => void
+          : (target: Persistent_SaveParams) => Persistent_SaveParams._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Persistent_SaveResults, answer);
     return new Persistent_SaveResults$Promise(pipeline);
@@ -149,7 +157,7 @@ export class Persistent$Server extends $.Server {
         impl: async (params: Persistent_SaveParams, results: Persistent_SaveResults) => {
           const value = await target.save(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<Persistent_SaveResults>);
+            Persistent_SaveResults._applyInit(results, value as $.Init<Persistent_SaveResults>);
           }
         }
       }

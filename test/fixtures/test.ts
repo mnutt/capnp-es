@@ -71,295 +71,397 @@ export class TestAllTypes extends $.Struct {
   static _StructList: $.ListCtor<TestAllTypes>;
   static _applyInit(target: TestAllTypes, value: $.Init<TestAllTypes>): void {
     const init = value as any;
-    if (init["voidField"] !== undefined) {
-    }
-    if (init["boolField"] !== undefined) {
-      target.boolField = init["boolField"] as any;
-    }
-    if (init["int8Field"] !== undefined) {
-      target.int8Field = init["int8Field"] as any;
-    }
-    if (init["int16Field"] !== undefined) {
-      target.int16Field = init["int16Field"] as any;
-    }
-    if (init["int32Field"] !== undefined) {
-      target.int32Field = init["int32Field"] as any;
-    }
-    if (init["int64Field"] !== undefined) {
-      target.int64Field = init["int64Field"] as any;
-    }
-    if (init["uInt8Field"] !== undefined) {
-      target.uInt8Field = init["uInt8Field"] as any;
-    }
-    if (init["uInt16Field"] !== undefined) {
-      target.uInt16Field = init["uInt16Field"] as any;
-    }
-    if (init["uInt32Field"] !== undefined) {
-      target.uInt32Field = init["uInt32Field"] as any;
-    }
-    if (init["uInt64Field"] !== undefined) {
-      target.uInt64Field = init["uInt64Field"] as any;
-    }
-    if (init["float32Field"] !== undefined) {
-      target.float32Field = init["float32Field"] as any;
-    }
-    if (init["float64Field"] !== undefined) {
-      target.float64Field = init["float64Field"] as any;
-    }
-    if (init["textField"] !== undefined) {
-      target.textField = init["textField"] as any;
-    }
-    if (init["dataField"] !== undefined) {
-      if (init["dataField"] instanceof $.Data) {
-        target.dataField = init["dataField"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["dataField"]);
-        target._initDataField(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["voidField"];
+      if (value !== undefined) {
       }
     }
-    if (init["structField"] !== undefined) {
-      if (init["structField"] instanceof TestAllTypes) {
-        target.structField = init["structField"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initStructField(), init["structField"] as $.Init<TestAllTypes>);
+    {
+      const value = init["boolField"];
+      if (value !== undefined) {
+        target.boolField = value as any;
       }
     }
-    if (init["enumField"] !== undefined) {
-      target.enumField = init["enumField"] as any;
-    }
-    if (init["interfaceField"] !== undefined) {
-    }
-    if (init["voidList"] !== undefined) {
-      if (init["voidList"] instanceof $.List) {
-        target.voidList = init["voidList"] as any;
+    {
+      const value = init["int8Field"];
+      if (value !== undefined) {
+        target.int8Field = value as any;
       }
-      else {
-        const values = Array.isArray(init["voidList"]) ? init["voidList"] : Array.from(init["voidList"] as Iterable<any>);
-        const list = target._initVoidList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["int16Field"];
+      if (value !== undefined) {
+        target.int16Field = value as any;
+      }
+    }
+    {
+      const value = init["int32Field"];
+      if (value !== undefined) {
+        target.int32Field = value as any;
+      }
+    }
+    {
+      const value = init["int64Field"];
+      if (value !== undefined) {
+        target.int64Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt8Field"];
+      if (value !== undefined) {
+        target.uInt8Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt16Field"];
+      if (value !== undefined) {
+        target.uInt16Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt32Field"];
+      if (value !== undefined) {
+        target.uInt32Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt64Field"];
+      if (value !== undefined) {
+        target.uInt64Field = value as any;
+      }
+    }
+    {
+      const value = init["float32Field"];
+      if (value !== undefined) {
+        target.float32Field = value as any;
+      }
+    }
+    {
+      const value = init["float64Field"];
+      if (value !== undefined) {
+        target.float64Field = value as any;
+      }
+    }
+    {
+      const value = init["textField"];
+      if (value !== undefined) {
+        target.textField = value as any;
+      }
+    }
+    {
+      const value = init["dataField"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.dataField = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initDataField(bytes.byteLength).copyBuffer(bytes);
         }
       }
     }
-    if (init["boolList"] !== undefined) {
-      if (init["boolList"] instanceof $.List) {
-        target.boolList = init["boolList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["boolList"]) ? init["boolList"] : Array.from(init["boolList"] as Iterable<any>);
-        const list = target._initBoolList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["structField"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.structField = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initStructField(), value as $.Init<TestAllTypes>);
         }
       }
     }
-    if (init["int8List"] !== undefined) {
-      if (init["int8List"] instanceof $.List) {
-        target.int8List = init["int8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int8List"]) ? init["int8List"] : Array.from(init["int8List"] as Iterable<any>);
-        const list = target._initInt8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
+    {
+      const value = init["enumField"];
+      if (value !== undefined) {
+        target.enumField = value as any;
       }
     }
-    if (init["int16List"] !== undefined) {
-      if (init["int16List"] instanceof $.List) {
-        target.int16List = init["int16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int16List"]) ? init["int16List"] : Array.from(init["int16List"] as Iterable<any>);
-        const list = target._initInt16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
+    {
+      const value = init["interfaceField"];
+      if (value !== undefined) {
       }
     }
-    if (init["int32List"] !== undefined) {
-      if (init["int32List"] instanceof $.List) {
-        target.int32List = init["int32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int32List"]) ? init["int32List"] : Array.from(init["int32List"] as Iterable<any>);
-        const list = target._initInt32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["voidList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.voidList = value as any;
         }
-      }
-    }
-    if (init["int64List"] !== undefined) {
-      if (init["int64List"] instanceof $.List) {
-        target.int64List = init["int64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int64List"]) ? init["int64List"] : Array.from(init["int64List"] as Iterable<any>);
-        const list = target._initInt64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt8List"] !== undefined) {
-      if (init["uInt8List"] instanceof $.List) {
-        target.uInt8List = init["uInt8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt8List"]) ? init["uInt8List"] : Array.from(init["uInt8List"] as Iterable<any>);
-        const list = target._initUInt8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt16List"] !== undefined) {
-      if (init["uInt16List"] instanceof $.List) {
-        target.uInt16List = init["uInt16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt16List"]) ? init["uInt16List"] : Array.from(init["uInt16List"] as Iterable<any>);
-        const list = target._initUInt16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt32List"] !== undefined) {
-      if (init["uInt32List"] instanceof $.List) {
-        target.uInt32List = init["uInt32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt32List"]) ? init["uInt32List"] : Array.from(init["uInt32List"] as Iterable<any>);
-        const list = target._initUInt32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt64List"] !== undefined) {
-      if (init["uInt64List"] instanceof $.List) {
-        target.uInt64List = init["uInt64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt64List"]) ? init["uInt64List"] : Array.from(init["uInt64List"] as Iterable<any>);
-        const list = target._initUInt64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["float32List"] !== undefined) {
-      if (init["float32List"] instanceof $.List) {
-        target.float32List = init["float32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float32List"]) ? init["float32List"] : Array.from(init["float32List"] as Iterable<any>);
-        const list = target._initFloat32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["float64List"] !== undefined) {
-      if (init["float64List"] instanceof $.List) {
-        target.float64List = init["float64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float64List"]) ? init["float64List"] : Array.from(init["float64List"] as Iterable<any>);
-        const list = target._initFloat64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["textList"] !== undefined) {
-      if (init["textList"] instanceof $.List) {
-        target.textList = init["textList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["textList"]) ? init["textList"] : Array.from(init["textList"] as Iterable<any>);
-        const list = target._initTextList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["dataList"] !== undefined) {
-      if (init["dataList"] instanceof $.List) {
-        target.dataList = init["dataList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["dataList"]) ? init["dataList"] : Array.from(init["dataList"] as Iterable<any>);
-        const list = target._initDataList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.Data) {
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initVoidList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            const bytes = $.dataBytes(item);
-            $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
-          }
         }
       }
     }
-    if (init["structList"] !== undefined) {
-      if (init["structList"] instanceof $.List) {
-        target.structList = init["structList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
-        const list = target._initStructList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestAllTypes) {
+    {
+      const value = init["boolList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.boolList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initBoolList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+        }
+      }
+    }
+    {
+      const value = init["int8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
           }
         }
       }
     }
-    if (init["enumList"] !== undefined) {
-      if (init["enumList"] instanceof $.List) {
-        target.enumList = init["enumList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["enumList"]) ? init["enumList"] : Array.from(init["enumList"] as Iterable<any>);
-        const list = target._initEnumList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["interfaceList"] !== undefined) {
-      if (init["interfaceList"] instanceof $.List) {
-        target.interfaceList = init["interfaceList"] as any;
+    {
+      const value = init["int32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
       }
-      else {
-        const values = Array.isArray(init["interfaceList"]) ? init["interfaceList"] : Array.from(init["interfaceList"] as Iterable<any>);
-        const list = target._initInterfaceList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["int64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["float32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["float64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["textList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.textList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initTextList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["dataList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.dataList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initDataList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.Data) {
+              list.set(index, item);
+            }
+            else {
+              const bytes = $.dataBytes(item);
+              $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["structList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.structList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initStructList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestAllTypes) {
+              list.set(index, item);
+            }
+            else {
+              TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["enumList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.enumList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initEnumList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["interfaceList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.interfaceList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInterfaceList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -868,295 +970,397 @@ export class TestDefaults extends $.Struct {
   static _StructList: $.ListCtor<TestAllTypes>;
   static _applyInit(target: TestDefaults, value: $.Init<TestDefaults>): void {
     const init = value as any;
-    if (init["voidField"] !== undefined) {
-    }
-    if (init["boolField"] !== undefined) {
-      target.boolField = init["boolField"] as any;
-    }
-    if (init["int8Field"] !== undefined) {
-      target.int8Field = init["int8Field"] as any;
-    }
-    if (init["int16Field"] !== undefined) {
-      target.int16Field = init["int16Field"] as any;
-    }
-    if (init["int32Field"] !== undefined) {
-      target.int32Field = init["int32Field"] as any;
-    }
-    if (init["int64Field"] !== undefined) {
-      target.int64Field = init["int64Field"] as any;
-    }
-    if (init["uInt8Field"] !== undefined) {
-      target.uInt8Field = init["uInt8Field"] as any;
-    }
-    if (init["uInt16Field"] !== undefined) {
-      target.uInt16Field = init["uInt16Field"] as any;
-    }
-    if (init["uInt32Field"] !== undefined) {
-      target.uInt32Field = init["uInt32Field"] as any;
-    }
-    if (init["uInt64Field"] !== undefined) {
-      target.uInt64Field = init["uInt64Field"] as any;
-    }
-    if (init["float32Field"] !== undefined) {
-      target.float32Field = init["float32Field"] as any;
-    }
-    if (init["float64Field"] !== undefined) {
-      target.float64Field = init["float64Field"] as any;
-    }
-    if (init["textField"] !== undefined) {
-      target.textField = init["textField"] as any;
-    }
-    if (init["dataField"] !== undefined) {
-      if (init["dataField"] instanceof $.Data) {
-        target.dataField = init["dataField"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["dataField"]);
-        target._initDataField(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["voidField"];
+      if (value !== undefined) {
       }
     }
-    if (init["structField"] !== undefined) {
-      if (init["structField"] instanceof TestAllTypes) {
-        target.structField = init["structField"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initStructField(), init["structField"] as $.Init<TestAllTypes>);
+    {
+      const value = init["boolField"];
+      if (value !== undefined) {
+        target.boolField = value as any;
       }
     }
-    if (init["enumField"] !== undefined) {
-      target.enumField = init["enumField"] as any;
-    }
-    if (init["interfaceField"] !== undefined) {
-    }
-    if (init["voidList"] !== undefined) {
-      if (init["voidList"] instanceof $.List) {
-        target.voidList = init["voidList"] as any;
+    {
+      const value = init["int8Field"];
+      if (value !== undefined) {
+        target.int8Field = value as any;
       }
-      else {
-        const values = Array.isArray(init["voidList"]) ? init["voidList"] : Array.from(init["voidList"] as Iterable<any>);
-        const list = target._initVoidList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["int16Field"];
+      if (value !== undefined) {
+        target.int16Field = value as any;
+      }
+    }
+    {
+      const value = init["int32Field"];
+      if (value !== undefined) {
+        target.int32Field = value as any;
+      }
+    }
+    {
+      const value = init["int64Field"];
+      if (value !== undefined) {
+        target.int64Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt8Field"];
+      if (value !== undefined) {
+        target.uInt8Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt16Field"];
+      if (value !== undefined) {
+        target.uInt16Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt32Field"];
+      if (value !== undefined) {
+        target.uInt32Field = value as any;
+      }
+    }
+    {
+      const value = init["uInt64Field"];
+      if (value !== undefined) {
+        target.uInt64Field = value as any;
+      }
+    }
+    {
+      const value = init["float32Field"];
+      if (value !== undefined) {
+        target.float32Field = value as any;
+      }
+    }
+    {
+      const value = init["float64Field"];
+      if (value !== undefined) {
+        target.float64Field = value as any;
+      }
+    }
+    {
+      const value = init["textField"];
+      if (value !== undefined) {
+        target.textField = value as any;
+      }
+    }
+    {
+      const value = init["dataField"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.dataField = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initDataField(bytes.byteLength).copyBuffer(bytes);
         }
       }
     }
-    if (init["boolList"] !== undefined) {
-      if (init["boolList"] instanceof $.List) {
-        target.boolList = init["boolList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["boolList"]) ? init["boolList"] : Array.from(init["boolList"] as Iterable<any>);
-        const list = target._initBoolList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["structField"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.structField = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initStructField(), value as $.Init<TestAllTypes>);
         }
       }
     }
-    if (init["int8List"] !== undefined) {
-      if (init["int8List"] instanceof $.List) {
-        target.int8List = init["int8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int8List"]) ? init["int8List"] : Array.from(init["int8List"] as Iterable<any>);
-        const list = target._initInt8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
+    {
+      const value = init["enumField"];
+      if (value !== undefined) {
+        target.enumField = value as any;
       }
     }
-    if (init["int16List"] !== undefined) {
-      if (init["int16List"] instanceof $.List) {
-        target.int16List = init["int16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int16List"]) ? init["int16List"] : Array.from(init["int16List"] as Iterable<any>);
-        const list = target._initInt16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
+    {
+      const value = init["interfaceField"];
+      if (value !== undefined) {
       }
     }
-    if (init["int32List"] !== undefined) {
-      if (init["int32List"] instanceof $.List) {
-        target.int32List = init["int32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int32List"]) ? init["int32List"] : Array.from(init["int32List"] as Iterable<any>);
-        const list = target._initInt32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["voidList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.voidList = value as any;
         }
-      }
-    }
-    if (init["int64List"] !== undefined) {
-      if (init["int64List"] instanceof $.List) {
-        target.int64List = init["int64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int64List"]) ? init["int64List"] : Array.from(init["int64List"] as Iterable<any>);
-        const list = target._initInt64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt8List"] !== undefined) {
-      if (init["uInt8List"] instanceof $.List) {
-        target.uInt8List = init["uInt8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt8List"]) ? init["uInt8List"] : Array.from(init["uInt8List"] as Iterable<any>);
-        const list = target._initUInt8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt16List"] !== undefined) {
-      if (init["uInt16List"] instanceof $.List) {
-        target.uInt16List = init["uInt16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt16List"]) ? init["uInt16List"] : Array.from(init["uInt16List"] as Iterable<any>);
-        const list = target._initUInt16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt32List"] !== undefined) {
-      if (init["uInt32List"] instanceof $.List) {
-        target.uInt32List = init["uInt32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt32List"]) ? init["uInt32List"] : Array.from(init["uInt32List"] as Iterable<any>);
-        const list = target._initUInt32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["uInt64List"] !== undefined) {
-      if (init["uInt64List"] instanceof $.List) {
-        target.uInt64List = init["uInt64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uInt64List"]) ? init["uInt64List"] : Array.from(init["uInt64List"] as Iterable<any>);
-        const list = target._initUInt64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["float32List"] !== undefined) {
-      if (init["float32List"] instanceof $.List) {
-        target.float32List = init["float32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float32List"]) ? init["float32List"] : Array.from(init["float32List"] as Iterable<any>);
-        const list = target._initFloat32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["float64List"] !== undefined) {
-      if (init["float64List"] instanceof $.List) {
-        target.float64List = init["float64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float64List"]) ? init["float64List"] : Array.from(init["float64List"] as Iterable<any>);
-        const list = target._initFloat64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["textList"] !== undefined) {
-      if (init["textList"] instanceof $.List) {
-        target.textList = init["textList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["textList"]) ? init["textList"] : Array.from(init["textList"] as Iterable<any>);
-        const list = target._initTextList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["dataList"] !== undefined) {
-      if (init["dataList"] instanceof $.List) {
-        target.dataList = init["dataList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["dataList"]) ? init["dataList"] : Array.from(init["dataList"] as Iterable<any>);
-        const list = target._initDataList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.Data) {
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initVoidList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            const bytes = $.dataBytes(item);
-            $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
-          }
         }
       }
     }
-    if (init["structList"] !== undefined) {
-      if (init["structList"] instanceof $.List) {
-        target.structList = init["structList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
-        const list = target._initStructList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestAllTypes) {
+    {
+      const value = init["boolList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.boolList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initBoolList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+        }
+      }
+    }
+    {
+      const value = init["int8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
           }
         }
       }
     }
-    if (init["enumList"] !== undefined) {
-      if (init["enumList"] instanceof $.List) {
-        target.enumList = init["enumList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["enumList"]) ? init["enumList"] : Array.from(init["enumList"] as Iterable<any>);
-        const list = target._initEnumList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["interfaceList"] !== undefined) {
-      if (init["interfaceList"] instanceof $.List) {
-        target.interfaceList = init["interfaceList"] as any;
+    {
+      const value = init["int32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
       }
-      else {
-        const values = Array.isArray(init["interfaceList"]) ? init["interfaceList"] : Array.from(init["interfaceList"] as Iterable<any>);
-        const list = target._initInterfaceList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["int64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["uInt64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uInt64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUInt64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["float32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["float64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["textList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.textList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initTextList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["dataList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.dataList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initDataList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.Data) {
+              list.set(index, item);
+            }
+            else {
+              const bytes = $.dataBytes(item);
+              $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["structList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.structList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initStructList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestAllTypes) {
+              list.set(index, item);
+            }
+            else {
+              TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["enumList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.enumList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initEnumList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
+        }
+      }
+    }
+    {
+      const value = init["interfaceList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.interfaceList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInterfaceList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -1604,8 +1808,11 @@ export class TestAnyPointer extends $.Struct {
   };
   static _applyInit(target: TestAnyPointer, value: $.Init<TestAnyPointer>): void {
     const init = value as any;
-    if (init["anyPointerField"] !== undefined) {
-      target.anyPointerField = init["anyPointerField"] as any;
+    {
+      const value = init["anyPointerField"];
+      if (value !== undefined) {
+        target.anyPointerField = value as any;
+      }
     }
   }
   _adoptAnyPointerField(value: $.Orphan<$.Pointer>): void {
@@ -1640,14 +1847,23 @@ export class TestAnyOthers extends $.Struct {
   };
   static _applyInit(target: TestAnyOthers, value: $.Init<TestAnyOthers>): void {
     const init = value as any;
-    if (init["anyStructField"] !== undefined) {
-      target.anyStructField = init["anyStructField"] as any;
+    {
+      const value = init["anyStructField"];
+      if (value !== undefined) {
+        target.anyStructField = value as any;
+      }
     }
-    if (init["anyListField"] !== undefined) {
-      target.anyListField = init["anyListField"] as any;
+    {
+      const value = init["anyListField"];
+      if (value !== undefined) {
+        target.anyListField = value as any;
+      }
     }
-    if (init["capabilityField"] !== undefined) {
-      target.capabilityField = init["capabilityField"] as any;
+    {
+      const value = init["capabilityField"];
+      if (value !== undefined) {
+        target.capabilityField = value as any;
+      }
     }
   }
   _adoptAnyStructField(value: $.Orphan<$.Pointer>): void {
@@ -1718,32 +1934,59 @@ export class TestOutOfOrder extends $.Struct {
   };
   static _applyInit(target: TestOutOfOrder, value: $.Init<TestOutOfOrder>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["baz"] !== undefined) {
-      target.baz = init["baz"] as any;
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        target.baz = value as any;
+      }
     }
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
+      }
     }
-    if (init["quux"] !== undefined) {
-      target.quux = init["quux"] as any;
+    {
+      const value = init["quux"];
+      if (value !== undefined) {
+        target.quux = value as any;
+      }
     }
-    if (init["corge"] !== undefined) {
-      target.corge = init["corge"] as any;
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        target.corge = value as any;
+      }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
-    if (init["waldo"] !== undefined) {
-      target.waldo = init["waldo"] as any;
+    {
+      const value = init["waldo"];
+      if (value !== undefined) {
+        target.waldo = value as any;
+      }
     }
   }
   get foo(): string {
@@ -1863,47 +2106,89 @@ export class TestUnion_Union0 extends $.Struct {
   };
   static _applyInit(target: TestUnion_Union0, value: $.Init<TestUnion_Union0>): void {
     const init = value as any;
-    if (init["u0f0s0"] !== undefined) {
-      target.u0f0s0 = true;
+    {
+      const value = init["u0f0s0"];
+      if (value !== undefined) {
+        target.u0f0s0 = true;
+      }
     }
-    if (init["u0f0s1"] !== undefined) {
-      target.u0f0s1 = init["u0f0s1"] as any;
+    {
+      const value = init["u0f0s1"];
+      if (value !== undefined) {
+        target.u0f0s1 = value as any;
+      }
     }
-    if (init["u0f0s8"] !== undefined) {
-      target.u0f0s8 = init["u0f0s8"] as any;
+    {
+      const value = init["u0f0s8"];
+      if (value !== undefined) {
+        target.u0f0s8 = value as any;
+      }
     }
-    if (init["u0f0s16"] !== undefined) {
-      target.u0f0s16 = init["u0f0s16"] as any;
+    {
+      const value = init["u0f0s16"];
+      if (value !== undefined) {
+        target.u0f0s16 = value as any;
+      }
     }
-    if (init["u0f0s32"] !== undefined) {
-      target.u0f0s32 = init["u0f0s32"] as any;
+    {
+      const value = init["u0f0s32"];
+      if (value !== undefined) {
+        target.u0f0s32 = value as any;
+      }
     }
-    if (init["u0f0s64"] !== undefined) {
-      target.u0f0s64 = init["u0f0s64"] as any;
+    {
+      const value = init["u0f0s64"];
+      if (value !== undefined) {
+        target.u0f0s64 = value as any;
+      }
     }
-    if (init["u0f0sp"] !== undefined) {
-      target.u0f0sp = init["u0f0sp"] as any;
+    {
+      const value = init["u0f0sp"];
+      if (value !== undefined) {
+        target.u0f0sp = value as any;
+      }
     }
-    if (init["u0f1s0"] !== undefined) {
-      target.u0f1s0 = true;
+    {
+      const value = init["u0f1s0"];
+      if (value !== undefined) {
+        target.u0f1s0 = true;
+      }
     }
-    if (init["u0f1s1"] !== undefined) {
-      target.u0f1s1 = init["u0f1s1"] as any;
+    {
+      const value = init["u0f1s1"];
+      if (value !== undefined) {
+        target.u0f1s1 = value as any;
+      }
     }
-    if (init["u0f1s8"] !== undefined) {
-      target.u0f1s8 = init["u0f1s8"] as any;
+    {
+      const value = init["u0f1s8"];
+      if (value !== undefined) {
+        target.u0f1s8 = value as any;
+      }
     }
-    if (init["u0f1s16"] !== undefined) {
-      target.u0f1s16 = init["u0f1s16"] as any;
+    {
+      const value = init["u0f1s16"];
+      if (value !== undefined) {
+        target.u0f1s16 = value as any;
+      }
     }
-    if (init["u0f1s32"] !== undefined) {
-      target.u0f1s32 = init["u0f1s32"] as any;
+    {
+      const value = init["u0f1s32"];
+      if (value !== undefined) {
+        target.u0f1s32 = value as any;
+      }
     }
-    if (init["u0f1s64"] !== undefined) {
-      target.u0f1s64 = init["u0f1s64"] as any;
+    {
+      const value = init["u0f1s64"];
+      if (value !== undefined) {
+        target.u0f1s64 = value as any;
+      }
     }
-    if (init["u0f1sp"] !== undefined) {
-      target.u0f1sp = init["u0f1sp"] as any;
+    {
+      const value = init["u0f1sp"];
+      if (value !== undefined) {
+        target.u0f1sp = value as any;
+      }
     }
   }
   get _isU0f0s0(): boolean {
@@ -2357,65 +2642,125 @@ export class TestUnion_Union1 extends $.Struct {
   };
   static _applyInit(target: TestUnion_Union1, value: $.Init<TestUnion_Union1>): void {
     const init = value as any;
-    if (init["u1f0s0"] !== undefined) {
-      target.u1f0s0 = true;
+    {
+      const value = init["u1f0s0"];
+      if (value !== undefined) {
+        target.u1f0s0 = true;
+      }
     }
-    if (init["u1f0s1"] !== undefined) {
-      target.u1f0s1 = init["u1f0s1"] as any;
+    {
+      const value = init["u1f0s1"];
+      if (value !== undefined) {
+        target.u1f0s1 = value as any;
+      }
     }
-    if (init["u1f1s1"] !== undefined) {
-      target.u1f1s1 = init["u1f1s1"] as any;
+    {
+      const value = init["u1f1s1"];
+      if (value !== undefined) {
+        target.u1f1s1 = value as any;
+      }
     }
-    if (init["u1f0s8"] !== undefined) {
-      target.u1f0s8 = init["u1f0s8"] as any;
+    {
+      const value = init["u1f0s8"];
+      if (value !== undefined) {
+        target.u1f0s8 = value as any;
+      }
     }
-    if (init["u1f1s8"] !== undefined) {
-      target.u1f1s8 = init["u1f1s8"] as any;
+    {
+      const value = init["u1f1s8"];
+      if (value !== undefined) {
+        target.u1f1s8 = value as any;
+      }
     }
-    if (init["u1f0s16"] !== undefined) {
-      target.u1f0s16 = init["u1f0s16"] as any;
+    {
+      const value = init["u1f0s16"];
+      if (value !== undefined) {
+        target.u1f0s16 = value as any;
+      }
     }
-    if (init["u1f1s16"] !== undefined) {
-      target.u1f1s16 = init["u1f1s16"] as any;
+    {
+      const value = init["u1f1s16"];
+      if (value !== undefined) {
+        target.u1f1s16 = value as any;
+      }
     }
-    if (init["u1f0s32"] !== undefined) {
-      target.u1f0s32 = init["u1f0s32"] as any;
+    {
+      const value = init["u1f0s32"];
+      if (value !== undefined) {
+        target.u1f0s32 = value as any;
+      }
     }
-    if (init["u1f1s32"] !== undefined) {
-      target.u1f1s32 = init["u1f1s32"] as any;
+    {
+      const value = init["u1f1s32"];
+      if (value !== undefined) {
+        target.u1f1s32 = value as any;
+      }
     }
-    if (init["u1f0s64"] !== undefined) {
-      target.u1f0s64 = init["u1f0s64"] as any;
+    {
+      const value = init["u1f0s64"];
+      if (value !== undefined) {
+        target.u1f0s64 = value as any;
+      }
     }
-    if (init["u1f1s64"] !== undefined) {
-      target.u1f1s64 = init["u1f1s64"] as any;
+    {
+      const value = init["u1f1s64"];
+      if (value !== undefined) {
+        target.u1f1s64 = value as any;
+      }
     }
-    if (init["u1f0sp"] !== undefined) {
-      target.u1f0sp = init["u1f0sp"] as any;
+    {
+      const value = init["u1f0sp"];
+      if (value !== undefined) {
+        target.u1f0sp = value as any;
+      }
     }
-    if (init["u1f1sp"] !== undefined) {
-      target.u1f1sp = init["u1f1sp"] as any;
+    {
+      const value = init["u1f1sp"];
+      if (value !== undefined) {
+        target.u1f1sp = value as any;
+      }
     }
-    if (init["u1f2s0"] !== undefined) {
-      target.u1f2s0 = true;
+    {
+      const value = init["u1f2s0"];
+      if (value !== undefined) {
+        target.u1f2s0 = true;
+      }
     }
-    if (init["u1f2s1"] !== undefined) {
-      target.u1f2s1 = init["u1f2s1"] as any;
+    {
+      const value = init["u1f2s1"];
+      if (value !== undefined) {
+        target.u1f2s1 = value as any;
+      }
     }
-    if (init["u1f2s8"] !== undefined) {
-      target.u1f2s8 = init["u1f2s8"] as any;
+    {
+      const value = init["u1f2s8"];
+      if (value !== undefined) {
+        target.u1f2s8 = value as any;
+      }
     }
-    if (init["u1f2s16"] !== undefined) {
-      target.u1f2s16 = init["u1f2s16"] as any;
+    {
+      const value = init["u1f2s16"];
+      if (value !== undefined) {
+        target.u1f2s16 = value as any;
+      }
     }
-    if (init["u1f2s32"] !== undefined) {
-      target.u1f2s32 = init["u1f2s32"] as any;
+    {
+      const value = init["u1f2s32"];
+      if (value !== undefined) {
+        target.u1f2s32 = value as any;
+      }
     }
-    if (init["u1f2s64"] !== undefined) {
-      target.u1f2s64 = init["u1f2s64"] as any;
+    {
+      const value = init["u1f2s64"];
+      if (value !== undefined) {
+        target.u1f2s64 = value as any;
+      }
     }
-    if (init["u1f2sp"] !== undefined) {
-      target.u1f2sp = init["u1f2sp"] as any;
+    {
+      const value = init["u1f2sp"];
+      if (value !== undefined) {
+        target.u1f2sp = value as any;
+      }
     }
   }
   get _isU1f0s0(): boolean {
@@ -2976,20 +3321,35 @@ export class TestUnion_Union2 extends $.Struct {
   };
   static _applyInit(target: TestUnion_Union2, value: $.Init<TestUnion_Union2>): void {
     const init = value as any;
-    if (init["u2f0s64"] !== undefined) {
-      target.u2f0s64 = init["u2f0s64"] as any;
+    {
+      const value = init["u2f0s64"];
+      if (value !== undefined) {
+        target.u2f0s64 = value as any;
+      }
     }
-    if (init["u2f0s32"] !== undefined) {
-      target.u2f0s32 = init["u2f0s32"] as any;
+    {
+      const value = init["u2f0s32"];
+      if (value !== undefined) {
+        target.u2f0s32 = value as any;
+      }
     }
-    if (init["u2f0s16"] !== undefined) {
-      target.u2f0s16 = init["u2f0s16"] as any;
+    {
+      const value = init["u2f0s16"];
+      if (value !== undefined) {
+        target.u2f0s16 = value as any;
+      }
     }
-    if (init["u2f0s8"] !== undefined) {
-      target.u2f0s8 = init["u2f0s8"] as any;
+    {
+      const value = init["u2f0s8"];
+      if (value !== undefined) {
+        target.u2f0s8 = value as any;
+      }
     }
-    if (init["u2f0s1"] !== undefined) {
-      target.u2f0s1 = init["u2f0s1"] as any;
+    {
+      const value = init["u2f0s1"];
+      if (value !== undefined) {
+        target.u2f0s1 = value as any;
+      }
     }
   }
   get u2f0s64(): bigint {
@@ -3172,20 +3532,35 @@ export class TestUnion_Union3 extends $.Struct {
   };
   static _applyInit(target: TestUnion_Union3, value: $.Init<TestUnion_Union3>): void {
     const init = value as any;
-    if (init["u3f0s64"] !== undefined) {
-      target.u3f0s64 = init["u3f0s64"] as any;
+    {
+      const value = init["u3f0s64"];
+      if (value !== undefined) {
+        target.u3f0s64 = value as any;
+      }
     }
-    if (init["u3f0s32"] !== undefined) {
-      target.u3f0s32 = init["u3f0s32"] as any;
+    {
+      const value = init["u3f0s32"];
+      if (value !== undefined) {
+        target.u3f0s32 = value as any;
+      }
     }
-    if (init["u3f0s16"] !== undefined) {
-      target.u3f0s16 = init["u3f0s16"] as any;
+    {
+      const value = init["u3f0s16"];
+      if (value !== undefined) {
+        target.u3f0s16 = value as any;
+      }
     }
-    if (init["u3f0s8"] !== undefined) {
-      target.u3f0s8 = init["u3f0s8"] as any;
+    {
+      const value = init["u3f0s8"];
+      if (value !== undefined) {
+        target.u3f0s8 = value as any;
+      }
     }
-    if (init["u3f0s1"] !== undefined) {
-      target.u3f0s1 = init["u3f0s1"] as any;
+    {
+      const value = init["u3f0s1"];
+      if (value !== undefined) {
+        target.u3f0s1 = value as any;
+      }
     }
   }
   get u3f0s64(): bigint {
@@ -3362,41 +3737,77 @@ export class TestUnion extends $.Struct {
   };
   static _applyInit(target: TestUnion, value: $.Init<TestUnion>): void {
     const init = value as any;
-    if (init["union0"] !== undefined) {
-      TestUnion_Union0._applyInit(target._initUnion0(), init["union0"] as $.Init<TestUnion_Union0>);
+    {
+      const value = init["union0"];
+      if (value !== undefined) {
+        TestUnion_Union0._applyInit(target._initUnion0(), value as $.Init<TestUnion_Union0>);
+      }
     }
-    if (init["bit0"] !== undefined) {
-      target.bit0 = init["bit0"] as any;
+    {
+      const value = init["bit0"];
+      if (value !== undefined) {
+        target.bit0 = value as any;
+      }
     }
-    if (init["union1"] !== undefined) {
-      TestUnion_Union1._applyInit(target._initUnion1(), init["union1"] as $.Init<TestUnion_Union1>);
+    {
+      const value = init["union1"];
+      if (value !== undefined) {
+        TestUnion_Union1._applyInit(target._initUnion1(), value as $.Init<TestUnion_Union1>);
+      }
     }
-    if (init["bit2"] !== undefined) {
-      target.bit2 = init["bit2"] as any;
+    {
+      const value = init["bit2"];
+      if (value !== undefined) {
+        target.bit2 = value as any;
+      }
     }
-    if (init["bit3"] !== undefined) {
-      target.bit3 = init["bit3"] as any;
+    {
+      const value = init["bit3"];
+      if (value !== undefined) {
+        target.bit3 = value as any;
+      }
     }
-    if (init["bit4"] !== undefined) {
-      target.bit4 = init["bit4"] as any;
+    {
+      const value = init["bit4"];
+      if (value !== undefined) {
+        target.bit4 = value as any;
+      }
     }
-    if (init["bit5"] !== undefined) {
-      target.bit5 = init["bit5"] as any;
+    {
+      const value = init["bit5"];
+      if (value !== undefined) {
+        target.bit5 = value as any;
+      }
     }
-    if (init["bit6"] !== undefined) {
-      target.bit6 = init["bit6"] as any;
+    {
+      const value = init["bit6"];
+      if (value !== undefined) {
+        target.bit6 = value as any;
+      }
     }
-    if (init["bit7"] !== undefined) {
-      target.bit7 = init["bit7"] as any;
+    {
+      const value = init["bit7"];
+      if (value !== undefined) {
+        target.bit7 = value as any;
+      }
     }
-    if (init["union2"] !== undefined) {
-      TestUnion_Union2._applyInit(target._initUnion2(), init["union2"] as $.Init<TestUnion_Union2>);
+    {
+      const value = init["union2"];
+      if (value !== undefined) {
+        TestUnion_Union2._applyInit(target._initUnion2(), value as $.Init<TestUnion_Union2>);
+      }
     }
-    if (init["union3"] !== undefined) {
-      TestUnion_Union3._applyInit(target._initUnion3(), init["union3"] as $.Init<TestUnion_Union3>);
+    {
+      const value = init["union3"];
+      if (value !== undefined) {
+        TestUnion_Union3._applyInit(target._initUnion3(), value as $.Init<TestUnion_Union3>);
+      }
     }
-    if (init["byte0"] !== undefined) {
-      target.byte0 = init["byte0"] as any;
+    {
+      const value = init["byte0"];
+      if (value !== undefined) {
+        target.byte0 = value as any;
+      }
     }
   }
   /**
@@ -3505,20 +3916,35 @@ export class TestUnnamedUnion extends $.Struct {
   };
   static _applyInit(target: TestUnnamedUnion, value: $.Init<TestUnnamedUnion>): void {
     const init = value as any;
-    if (init["before"] !== undefined) {
-      target.before = init["before"] as any;
+    {
+      const value = init["before"];
+      if (value !== undefined) {
+        target.before = value as any;
+      }
     }
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["middle"] !== undefined) {
-      target.middle = init["middle"] as any;
+    {
+      const value = init["middle"];
+      if (value !== undefined) {
+        target.middle = value as any;
+      }
     }
-    if (init["after"] !== undefined) {
-      target.after = init["after"] as any;
+    {
+      const value = init["after"];
+      if (value !== undefined) {
+        target.after = value as any;
+      }
     }
   }
   get before(): string {
@@ -3632,11 +4058,17 @@ export class TestUnionHelperNameCollision extends $.Struct {
   };
   static _applyInit(target: TestUnionHelperNameCollision, value: $.Init<TestUnionHelperNameCollision>): void {
     const init = value as any;
-    if (init["set"] !== undefined) {
-      target.set = init["set"] as any;
+    {
+      const value = init["set"];
+      if (value !== undefined) {
+        target.set = value as any;
+      }
     }
-    if (init["match"] !== undefined) {
-      target.match = init["match"] as any;
+    {
+      const value = init["match"];
+      if (value !== undefined) {
+        target.match = value as any;
+      }
     }
   }
   get set(): string {
@@ -3732,11 +4164,17 @@ export class TestUnionInUnion_Outer_Inner extends $.Struct {
   };
   static _applyInit(target: TestUnionInUnion_Outer_Inner, value: $.Init<TestUnionInUnion_Outer_Inner>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
   }
   get foo(): number {
@@ -3832,11 +4270,17 @@ export class TestUnionInUnion_Outer extends $.Struct {
   };
   static _applyInit(target: TestUnionInUnion_Outer, value: $.Init<TestUnionInUnion_Outer>): void {
     const init = value as any;
-    if (init["inner"] !== undefined) {
-      TestUnionInUnion_Outer_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestUnionInUnion_Outer_Inner>);
+    {
+      const value = init["inner"];
+      if (value !== undefined) {
+        TestUnionInUnion_Outer_Inner._applyInit(target._initInner(), value as $.Init<TestUnionInUnion_Outer_Inner>);
+      }
     }
-    if (init["baz"] !== undefined) {
-      target.baz = init["baz"] as any;
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        target.baz = value as any;
+      }
     }
   }
   get inner(): TestUnionInUnion_Outer_Inner {
@@ -3930,8 +4374,11 @@ export class TestUnionInUnion extends $.Struct {
   };
   static _applyInit(target: TestUnionInUnion, value: $.Init<TestUnionInUnion>): void {
     const init = value as any;
-    if (init["outer"] !== undefined) {
-      TestUnionInUnion_Outer._applyInit(target._initOuter(), init["outer"] as $.Init<TestUnionInUnion_Outer>);
+    {
+      const value = init["outer"];
+      if (value !== undefined) {
+        TestUnionInUnion_Outer._applyInit(target._initOuter(), value as $.Init<TestUnionInUnion_Outer>);
+      }
     }
   }
   get outer(): TestUnionInUnion_Outer {
@@ -3957,14 +4404,23 @@ export class TestGroups_Groups_Foo extends $.Struct {
   };
   static _applyInit(target: TestGroups_Groups_Foo, value: $.Init<TestGroups_Groups_Foo>): void {
     const init = value as any;
-    if (init["corge"] !== undefined) {
-      target.corge = init["corge"] as any;
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        target.corge = value as any;
+      }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
   }
   get corge(): number {
@@ -4002,14 +4458,23 @@ export class TestGroups_Groups_Baz extends $.Struct {
   };
   static _applyInit(target: TestGroups_Groups_Baz, value: $.Init<TestGroups_Groups_Baz>): void {
     const init = value as any;
-    if (init["corge"] !== undefined) {
-      target.corge = init["corge"] as any;
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        target.corge = value as any;
+      }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
   }
   get corge(): number {
@@ -4047,14 +4512,23 @@ export class TestGroups_Groups_Bar extends $.Struct {
   };
   static _applyInit(target: TestGroups_Groups_Bar, value: $.Init<TestGroups_Groups_Bar>): void {
     const init = value as any;
-    if (init["corge"] !== undefined) {
-      target.corge = init["corge"] as any;
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        target.corge = value as any;
+      }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
   }
   get corge(): number {
@@ -4101,14 +4575,23 @@ export class TestGroups_Groups extends $.Struct {
   };
   static _applyInit(target: TestGroups_Groups, value: $.Init<TestGroups_Groups>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      TestGroups_Groups_Foo._applyInit(target._initFoo(), init["foo"] as $.Init<TestGroups_Groups_Foo>);
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        TestGroups_Groups_Foo._applyInit(target._initFoo(), value as $.Init<TestGroups_Groups_Foo>);
+      }
     }
-    if (init["bar"] !== undefined) {
-      TestGroups_Groups_Bar._applyInit(target._initBar(), init["bar"] as $.Init<TestGroups_Groups_Bar>);
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        TestGroups_Groups_Bar._applyInit(target._initBar(), value as $.Init<TestGroups_Groups_Bar>);
+      }
     }
-    if (init["baz"] !== undefined) {
-      TestGroups_Groups_Baz._applyInit(target._initBaz(), init["baz"] as $.Init<TestGroups_Groups_Baz>);
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        TestGroups_Groups_Baz._applyInit(target._initBaz(), value as $.Init<TestGroups_Groups_Baz>);
+      }
     }
   }
   get foo(): TestGroups_Groups_Foo {
@@ -4228,8 +4711,11 @@ export class TestGroups extends $.Struct {
   };
   static _applyInit(target: TestGroups, value: $.Init<TestGroups>): void {
     const init = value as any;
-    if (init["groups"] !== undefined) {
-      TestGroups_Groups._applyInit(target._initGroups(), init["groups"] as $.Init<TestGroups_Groups>);
+    {
+      const value = init["groups"];
+      if (value !== undefined) {
+        TestGroups_Groups._applyInit(target._initGroups(), value as $.Init<TestGroups_Groups>);
+      }
     }
   }
   get groups(): TestGroups_Groups {
@@ -4256,17 +4742,29 @@ export class TestInterleavedGroups_Group1_Corge extends $.Struct {
   };
   static _applyInit(target: TestInterleavedGroups_Group1_Corge, value: $.Init<TestInterleavedGroups_Group1_Corge>): void {
     const init = value as any;
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
-    if (init["plugh"] !== undefined) {
-      target.plugh = init["plugh"] as any;
+    {
+      const value = init["plugh"];
+      if (value !== undefined) {
+        target.plugh = value as any;
+      }
     }
-    if (init["xyzzy"] !== undefined) {
-      target.xyzzy = init["xyzzy"] as any;
+    {
+      const value = init["xyzzy"];
+      if (value !== undefined) {
+        target.xyzzy = value as any;
+      }
     }
   }
   get grault(): bigint {
@@ -4322,23 +4820,41 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
   };
   static _applyInit(target: TestInterleavedGroups_Group1, value: $.Init<TestInterleavedGroups_Group1>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
+      }
     }
-    if (init["corge"] !== undefined) {
-      TestInterleavedGroups_Group1_Corge._applyInit(target._initCorge(), init["corge"] as $.Init<TestInterleavedGroups_Group1_Corge>);
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        TestInterleavedGroups_Group1_Corge._applyInit(target._initCorge(), value as $.Init<TestInterleavedGroups_Group1_Corge>);
+      }
     }
-    if (init["fred"] !== undefined) {
-      target.fred = init["fred"] as any;
+    {
+      const value = init["fred"];
+      if (value !== undefined) {
+        target.fred = value as any;
+      }
     }
-    if (init["waldo"] !== undefined) {
-      target.waldo = init["waldo"] as any;
+    {
+      const value = init["waldo"];
+      if (value !== undefined) {
+        target.waldo = value as any;
+      }
     }
   }
   get foo(): number {
@@ -4475,17 +4991,29 @@ export class TestInterleavedGroups_Group2_Corge extends $.Struct {
   };
   static _applyInit(target: TestInterleavedGroups_Group2_Corge, value: $.Init<TestInterleavedGroups_Group2_Corge>): void {
     const init = value as any;
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
-    if (init["garply"] !== undefined) {
-      target.garply = init["garply"] as any;
+    {
+      const value = init["garply"];
+      if (value !== undefined) {
+        target.garply = value as any;
+      }
     }
-    if (init["plugh"] !== undefined) {
-      target.plugh = init["plugh"] as any;
+    {
+      const value = init["plugh"];
+      if (value !== undefined) {
+        target.plugh = value as any;
+      }
     }
-    if (init["xyzzy"] !== undefined) {
-      target.xyzzy = init["xyzzy"] as any;
+    {
+      const value = init["xyzzy"];
+      if (value !== undefined) {
+        target.xyzzy = value as any;
+      }
     }
   }
   get grault(): bigint {
@@ -4541,23 +5069,41 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
   };
   static _applyInit(target: TestInterleavedGroups_Group2, value: $.Init<TestInterleavedGroups_Group2>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
+      }
     }
-    if (init["corge"] !== undefined) {
-      TestInterleavedGroups_Group2_Corge._applyInit(target._initCorge(), init["corge"] as $.Init<TestInterleavedGroups_Group2_Corge>);
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        TestInterleavedGroups_Group2_Corge._applyInit(target._initCorge(), value as $.Init<TestInterleavedGroups_Group2_Corge>);
+      }
     }
-    if (init["fred"] !== undefined) {
-      target.fred = init["fred"] as any;
+    {
+      const value = init["fred"];
+      if (value !== undefined) {
+        target.fred = value as any;
+      }
     }
-    if (init["waldo"] !== undefined) {
-      target.waldo = init["waldo"] as any;
+    {
+      const value = init["waldo"];
+      if (value !== undefined) {
+        target.waldo = value as any;
+      }
     }
   }
   get foo(): number {
@@ -4692,11 +5238,17 @@ export class TestInterleavedGroups extends $.Struct {
   };
   static _applyInit(target: TestInterleavedGroups, value: $.Init<TestInterleavedGroups>): void {
     const init = value as any;
-    if (init["group1"] !== undefined) {
-      TestInterleavedGroups_Group1._applyInit(target._initGroup1(), init["group1"] as $.Init<TestInterleavedGroups_Group1>);
+    {
+      const value = init["group1"];
+      if (value !== undefined) {
+        TestInterleavedGroups_Group1._applyInit(target._initGroup1(), value as $.Init<TestInterleavedGroups_Group1>);
+      }
     }
-    if (init["group2"] !== undefined) {
-      TestInterleavedGroups_Group2._applyInit(target._initGroup2(), init["group2"] as $.Init<TestInterleavedGroups_Group2>);
+    {
+      const value = init["group2"];
+      if (value !== undefined) {
+        TestInterleavedGroups_Group2._applyInit(target._initGroup2(), value as $.Init<TestInterleavedGroups_Group2>);
+      }
     }
   }
   get group1(): TestInterleavedGroups_Group1 {
@@ -4733,36 +5285,48 @@ export class TestUnionDefaults extends $.Struct {
   };
   static _applyInit(target: TestUnionDefaults, value: $.Init<TestUnionDefaults>): void {
     const init = value as any;
-    if (init["s16s8s64s8Set"] !== undefined) {
-      if (init["s16s8s64s8Set"] instanceof TestUnion) {
-        target.s16s8s64s8Set = init["s16s8s64s8Set"] as TestUnion;
-      }
-      else {
-        TestUnion._applyInit(target._initS16s8s64s8Set(), init["s16s8s64s8Set"] as $.Init<TestUnion>);
-      }
-    }
-    if (init["s0sps1s32Set"] !== undefined) {
-      if (init["s0sps1s32Set"] instanceof TestUnion) {
-        target.s0sps1s32Set = init["s0sps1s32Set"] as TestUnion;
-      }
-      else {
-        TestUnion._applyInit(target._initS0sps1s32Set(), init["s0sps1s32Set"] as $.Init<TestUnion>);
+    {
+      const value = init["s16s8s64s8Set"];
+      if (value !== undefined) {
+        if (value instanceof TestUnion) {
+          target.s16s8s64s8Set = value as TestUnion;
+        }
+        else {
+          TestUnion._applyInit(target._initS16s8s64s8Set(), value as $.Init<TestUnion>);
+        }
       }
     }
-    if (init["unnamed1"] !== undefined) {
-      if (init["unnamed1"] instanceof TestUnnamedUnion) {
-        target.unnamed1 = init["unnamed1"] as TestUnnamedUnion;
-      }
-      else {
-        TestUnnamedUnion._applyInit(target._initUnnamed1(), init["unnamed1"] as $.Init<TestUnnamedUnion>);
+    {
+      const value = init["s0sps1s32Set"];
+      if (value !== undefined) {
+        if (value instanceof TestUnion) {
+          target.s0sps1s32Set = value as TestUnion;
+        }
+        else {
+          TestUnion._applyInit(target._initS0sps1s32Set(), value as $.Init<TestUnion>);
+        }
       }
     }
-    if (init["unnamed2"] !== undefined) {
-      if (init["unnamed2"] instanceof TestUnnamedUnion) {
-        target.unnamed2 = init["unnamed2"] as TestUnnamedUnion;
+    {
+      const value = init["unnamed1"];
+      if (value !== undefined) {
+        if (value instanceof TestUnnamedUnion) {
+          target.unnamed1 = value as TestUnnamedUnion;
+        }
+        else {
+          TestUnnamedUnion._applyInit(target._initUnnamed1(), value as $.Init<TestUnnamedUnion>);
+        }
       }
-      else {
-        TestUnnamedUnion._applyInit(target._initUnnamed2(), init["unnamed2"] as $.Init<TestUnnamedUnion>);
+    }
+    {
+      const value = init["unnamed2"];
+      if (value !== undefined) {
+        if (value instanceof TestUnnamedUnion) {
+          target.unnamed2 = value as TestUnnamedUnion;
+        }
+        else {
+          TestUnnamedUnion._applyInit(target._initUnnamed2(), value as $.Init<TestUnnamedUnion>);
+        }
       }
     }
   }
@@ -4868,11 +5432,17 @@ export class TestNestedTypes_NestedStruct extends $.Struct {
   };
   static _applyInit(target: TestNestedTypes_NestedStruct, value: $.Init<TestNestedTypes_NestedStruct>): void {
     const init = value as any;
-    if (init["outerNestedEnum"] !== undefined) {
-      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    {
+      const value = init["outerNestedEnum"];
+      if (value !== undefined) {
+        target.outerNestedEnum = value as any;
+      }
     }
-    if (init["innerNestedEnum"] !== undefined) {
-      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    {
+      const value = init["innerNestedEnum"];
+      if (value !== undefined) {
+        target.innerNestedEnum = value as any;
+      }
     }
   }
   get outerNestedEnum(): TestNestedTypes_NestedEnum {
@@ -4908,19 +5478,28 @@ export class TestNestedTypes extends $.Struct {
   };
   static _applyInit(target: TestNestedTypes, value: $.Init<TestNestedTypes>): void {
     const init = value as any;
-    if (init["nestedStruct"] !== undefined) {
-      if (init["nestedStruct"] instanceof TestNestedTypes_NestedStruct) {
-        target.nestedStruct = init["nestedStruct"] as TestNestedTypes_NestedStruct;
-      }
-      else {
-        TestNestedTypes_NestedStruct._applyInit(target._initNestedStruct(), init["nestedStruct"] as $.Init<TestNestedTypes_NestedStruct>);
+    {
+      const value = init["nestedStruct"];
+      if (value !== undefined) {
+        if (value instanceof TestNestedTypes_NestedStruct) {
+          target.nestedStruct = value as TestNestedTypes_NestedStruct;
+        }
+        else {
+          TestNestedTypes_NestedStruct._applyInit(target._initNestedStruct(), value as $.Init<TestNestedTypes_NestedStruct>);
+        }
       }
     }
-    if (init["outerNestedEnum"] !== undefined) {
-      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    {
+      const value = init["outerNestedEnum"];
+      if (value !== undefined) {
+        target.outerNestedEnum = value as any;
+      }
     }
-    if (init["innerNestedEnum"] !== undefined) {
-      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    {
+      const value = init["innerNestedEnum"];
+      if (value !== undefined) {
+        target.innerNestedEnum = value as any;
+      }
     }
   }
   _adoptNestedStruct(value: $.Orphan<TestNestedTypes_NestedStruct>): void {
@@ -4971,11 +5550,17 @@ export class TestUsing extends $.Struct {
   };
   static _applyInit(target: TestUsing, value: $.Init<TestUsing>): void {
     const init = value as any;
-    if (init["outerNestedEnum"] !== undefined) {
-      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    {
+      const value = init["outerNestedEnum"];
+      if (value !== undefined) {
+        target.outerNestedEnum = value as any;
+      }
     }
-    if (init["innerNestedEnum"] !== undefined) {
-      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    {
+      const value = init["innerNestedEnum"];
+      if (value !== undefined) {
+        target.innerNestedEnum = value as any;
+      }
     }
   }
   get outerNestedEnum(): TestNestedTypes_NestedEnum {
@@ -5005,7 +5590,10 @@ export class TestLists_Struct0 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct0, value: $.Init<TestLists_Struct0>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+      }
     }
   }
   toString(): string { return "TestLists_Struct0_" + super.toString(); }
@@ -5023,8 +5611,11 @@ export class TestLists_Struct1 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct1, value: $.Init<TestLists_Struct1>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): boolean {
@@ -5048,8 +5639,11 @@ export class TestLists_Struct8 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct8, value: $.Init<TestLists_Struct8>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): number {
@@ -5073,8 +5667,11 @@ export class TestLists_Struct16 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct16, value: $.Init<TestLists_Struct16>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): number {
@@ -5098,8 +5695,11 @@ export class TestLists_Struct32 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct32, value: $.Init<TestLists_Struct32>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): number {
@@ -5123,8 +5723,11 @@ export class TestLists_Struct64 extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct64, value: $.Init<TestLists_Struct64>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): bigint {
@@ -5148,8 +5751,11 @@ export class TestLists_StructP extends $.Struct {
   };
   static _applyInit(target: TestLists_StructP, value: $.Init<TestLists_StructP>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
   }
   get f(): string {
@@ -5174,10 +5780,16 @@ export class TestLists_Struct0c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct0c, value: $.Init<TestLists_Struct0c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get pad(): string {
@@ -5202,11 +5814,17 @@ export class TestLists_Struct1c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct1c, value: $.Init<TestLists_Struct1c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): boolean {
@@ -5237,11 +5855,17 @@ export class TestLists_Struct8c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct8c, value: $.Init<TestLists_Struct8c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): number {
@@ -5272,11 +5896,17 @@ export class TestLists_Struct16c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct16c, value: $.Init<TestLists_Struct16c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): number {
@@ -5307,11 +5937,17 @@ export class TestLists_Struct32c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct32c, value: $.Init<TestLists_Struct32c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): number {
@@ -5342,11 +5978,17 @@ export class TestLists_Struct64c extends $.Struct {
   };
   static _applyInit(target: TestLists_Struct64c, value: $.Init<TestLists_Struct64c>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): bigint {
@@ -5377,11 +6019,17 @@ export class TestLists_StructPc extends $.Struct {
   };
   static _applyInit(target: TestLists_StructPc, value: $.Init<TestLists_StructPc>): void {
     const init = value as any;
-    if (init["f"] !== undefined) {
-      target.f = init["f"] as any;
+    {
+      const value = init["f"];
+      if (value !== undefined) {
+        target.f = value as any;
+      }
     }
-    if (init["pad"] !== undefined) {
-      target.pad = init["pad"] as any;
+    {
+      const value = init["pad"];
+      if (value !== undefined) {
+        target.pad = value as any;
+      }
     }
   }
   get f(): string {
@@ -5449,209 +6097,239 @@ export class TestLists extends $.Struct {
   static _StructListList: $.ListCtor<$.List<TestAllTypes>>;
   static _applyInit(target: TestLists, value: $.Init<TestLists>): void {
     const init = value as any;
-    if (init["list0"] !== undefined) {
-      if (init["list0"] instanceof $.List) {
-        target.list0 = init["list0"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list0"]) ? init["list0"] : Array.from(init["list0"] as Iterable<any>);
-        const list = target._initList0(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct0) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct0._applyInit(list.get(index), item as $.Init<TestLists_Struct0>);
-          }
+    {
+      const value = init["list0"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list0 = value as any;
         }
-      }
-    }
-    if (init["list1"] !== undefined) {
-      if (init["list1"] instanceof $.List) {
-        target.list1 = init["list1"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list1"]) ? init["list1"] : Array.from(init["list1"] as Iterable<any>);
-        const list = target._initList1(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct1) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct1._applyInit(list.get(index), item as $.Init<TestLists_Struct1>);
-          }
-        }
-      }
-    }
-    if (init["list8"] !== undefined) {
-      if (init["list8"] instanceof $.List) {
-        target.list8 = init["list8"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list8"]) ? init["list8"] : Array.from(init["list8"] as Iterable<any>);
-        const list = target._initList8(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct8) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct8._applyInit(list.get(index), item as $.Init<TestLists_Struct8>);
-          }
-        }
-      }
-    }
-    if (init["list16"] !== undefined) {
-      if (init["list16"] instanceof $.List) {
-        target.list16 = init["list16"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list16"]) ? init["list16"] : Array.from(init["list16"] as Iterable<any>);
-        const list = target._initList16(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct16) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct16._applyInit(list.get(index), item as $.Init<TestLists_Struct16>);
-          }
-        }
-      }
-    }
-    if (init["list32"] !== undefined) {
-      if (init["list32"] instanceof $.List) {
-        target.list32 = init["list32"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list32"]) ? init["list32"] : Array.from(init["list32"] as Iterable<any>);
-        const list = target._initList32(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct32) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct32._applyInit(list.get(index), item as $.Init<TestLists_Struct32>);
-          }
-        }
-      }
-    }
-    if (init["list64"] !== undefined) {
-      if (init["list64"] instanceof $.List) {
-        target.list64 = init["list64"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list64"]) ? init["list64"] : Array.from(init["list64"] as Iterable<any>);
-        const list = target._initList64(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_Struct64) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_Struct64._applyInit(list.get(index), item as $.Init<TestLists_Struct64>);
-          }
-        }
-      }
-    }
-    if (init["listP"] !== undefined) {
-      if (init["listP"] instanceof $.List) {
-        target.listP = init["listP"] as any;
-      }
-      else {
-        const values = Array.isArray(init["listP"]) ? init["listP"] : Array.from(init["listP"] as Iterable<any>);
-        const list = target._initListP(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestLists_StructP) {
-            list.set(index, item);
-          }
-          else {
-            TestLists_StructP._applyInit(list.get(index), item as $.Init<TestLists_StructP>);
-          }
-        }
-      }
-    }
-    if (init["int32ListList"] !== undefined) {
-      if (init["int32ListList"] instanceof $.List) {
-        target.int32ListList = init["int32ListList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int32ListList"]) ? init["int32ListList"] : Array.from(init["int32ListList"] as Iterable<any>);
-        const list = target._initInt32ListList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.List) {
-            list.set(index, item);
-          }
-          else {
-            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
-            const nested = list.get(index);
-            $.initListValue(nested, nestedValues.length);
-            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
-              const item = nestedValues[nestedIndex];
-              const index = nestedIndex;
-              const list = nested;
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList0(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct0) {
               list.set(index, item);
+            }
+            else {
+              TestLists_Struct0._applyInit(list.get(index), item as $.Init<TestLists_Struct0>);
             }
           }
         }
       }
     }
-    if (init["textListList"] !== undefined) {
-      if (init["textListList"] instanceof $.List) {
-        target.textListList = init["textListList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["textListList"]) ? init["textListList"] : Array.from(init["textListList"] as Iterable<any>);
-        const list = target._initTextListList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.List) {
-            list.set(index, item);
-          }
-          else {
-            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
-            const nested = list.get(index);
-            $.initListValue(nested, nestedValues.length);
-            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
-              const item = nestedValues[nestedIndex];
-              const index = nestedIndex;
-              const list = nested;
+    {
+      const value = init["list1"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list1 = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList1(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct1) {
               list.set(index, item);
+            }
+            else {
+              TestLists_Struct1._applyInit(list.get(index), item as $.Init<TestLists_Struct1>);
             }
           }
         }
       }
     }
-    if (init["structListList"] !== undefined) {
-      if (init["structListList"] instanceof $.List) {
-        target.structListList = init["structListList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["structListList"]) ? init["structListList"] : Array.from(init["structListList"] as Iterable<any>);
-        const list = target._initStructListList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.List) {
-            list.set(index, item);
+    {
+      const value = init["list8"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list8 = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList8(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct8) {
+              list.set(index, item);
+            }
+            else {
+              TestLists_Struct8._applyInit(list.get(index), item as $.Init<TestLists_Struct8>);
+            }
           }
-          else {
-            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
-            const nested = list.get(index);
-            $.initListValue(nested, nestedValues.length);
-            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
-              const item = nestedValues[nestedIndex];
-              const index = nestedIndex;
-              const list = nested;
-              if (item instanceof TestAllTypes) {
+        }
+      }
+    }
+    {
+      const value = init["list16"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list16 = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList16(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct16) {
+              list.set(index, item);
+            }
+            else {
+              TestLists_Struct16._applyInit(list.get(index), item as $.Init<TestLists_Struct16>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["list32"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list32 = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList32(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct32) {
+              list.set(index, item);
+            }
+            else {
+              TestLists_Struct32._applyInit(list.get(index), item as $.Init<TestLists_Struct32>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["list64"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list64 = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList64(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_Struct64) {
+              list.set(index, item);
+            }
+            else {
+              TestLists_Struct64._applyInit(list.get(index), item as $.Init<TestLists_Struct64>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["listP"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.listP = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initListP(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestLists_StructP) {
+              list.set(index, item);
+            }
+            else {
+              TestLists_StructP._applyInit(list.get(index), item as $.Init<TestLists_StructP>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["int32ListList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int32ListList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt32ListList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.List) {
+              list.set(index, item);
+            }
+            else {
+              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nested = list.get(index);
+              $.initListValue(nested, nestedValues.length);
+              for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+                const item = nestedValues[nestedIndex];
+                const index = nestedIndex;
+                const list = nested;
                 list.set(index, item);
               }
-              else {
-                TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["textListList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.textListList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initTextListList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.List) {
+              list.set(index, item);
+            }
+            else {
+              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nested = list.get(index);
+              $.initListValue(nested, nestedValues.length);
+              for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+                const item = nestedValues[nestedIndex];
+                const index = nestedIndex;
+                const list = nested;
+                list.set(index, item);
+              }
+            }
+          }
+        }
+      }
+    }
+    {
+      const value = init["structListList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.structListList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initStructListList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.List) {
+              list.set(index, item);
+            }
+            else {
+              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nested = list.get(index);
+              $.initListValue(nested, nestedValues.length);
+              for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+                const item = nestedValues[nestedIndex];
+                const index = nestedIndex;
+                const list = nested;
+                if (item instanceof TestAllTypes) {
+                  list.set(index, item);
+                }
+                else {
+                  TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+                }
               }
             }
           }
@@ -5858,14 +6536,23 @@ export class TestFieldZeroIsBit extends $.Struct {
   };
   static _applyInit(target: TestFieldZeroIsBit, value: $.Init<TestFieldZeroIsBit>): void {
     const init = value as any;
-    if (init["bit"] !== undefined) {
-      target.bit = init["bit"] as any;
+    {
+      const value = init["bit"];
+      if (value !== undefined) {
+        target.bit = value as any;
+      }
     }
-    if (init["secondBit"] !== undefined) {
-      target.secondBit = init["secondBit"] as any;
+    {
+      const value = init["secondBit"];
+      if (value !== undefined) {
+        target.secondBit = value as any;
+      }
     }
-    if (init["thirdField"] !== undefined) {
-      target.thirdField = init["thirdField"] as any;
+    {
+      const value = init["thirdField"];
+      if (value !== undefined) {
+        target.thirdField = value as any;
+      }
     }
   }
   get bit(): boolean {
@@ -5902,12 +6589,15 @@ export class TestListDefaults extends $.Struct {
   };
   static _applyInit(target: TestListDefaults, value: $.Init<TestListDefaults>): void {
     const init = value as any;
-    if (init["lists"] !== undefined) {
-      if (init["lists"] instanceof TestLists) {
-        target.lists = init["lists"] as TestLists;
-      }
-      else {
-        TestLists._applyInit(target._initLists(), init["lists"] as $.Init<TestLists>);
+    {
+      const value = init["lists"];
+      if (value !== undefined) {
+        if (value instanceof TestLists) {
+          target.lists = value as TestLists;
+        }
+        else {
+          TestLists._applyInit(target._initLists(), value as $.Init<TestLists>);
+        }
       }
     }
   }
@@ -5955,24 +6645,33 @@ export class TestLateUnion_TheUnion extends $.Struct {
   };
   static _applyInit(target: TestLateUnion_TheUnion, value: $.Init<TestLateUnion_TheUnion>): void {
     const init = value as any;
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
-    }
-    if (init["corge"] !== undefined) {
-      if (init["corge"] instanceof $.List) {
-        target.corge = init["corge"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
       }
-      else {
-        const values = Array.isArray(init["corge"]) ? init["corge"] : Array.from(init["corge"] as Iterable<any>);
-        const list = target._initCorge(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.corge = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initCorge(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
   }
   get qux(): string {
@@ -6111,24 +6810,33 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
   };
   static _applyInit(target: TestLateUnion_AnotherUnion, value: $.Init<TestLateUnion_AnotherUnion>): void {
     const init = value as any;
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
-    }
-    if (init["corge"] !== undefined) {
-      if (init["corge"] instanceof $.List) {
-        target.corge = init["corge"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
       }
-      else {
-        const values = Array.isArray(init["corge"]) ? init["corge"] : Array.from(init["corge"] as Iterable<any>);
-        const list = target._initCorge(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["corge"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.corge = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initCorge(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["grault"] !== undefined) {
-      target.grault = init["grault"] as any;
+    {
+      const value = init["grault"];
+      if (value !== undefined) {
+        target.grault = value as any;
+      }
     }
   }
   get qux(): string {
@@ -6265,20 +6973,35 @@ export class TestLateUnion extends $.Struct {
   };
   static _applyInit(target: TestLateUnion, value: $.Init<TestLateUnion>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["baz"] !== undefined) {
-      target.baz = init["baz"] as any;
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        target.baz = value as any;
+      }
     }
-    if (init["theUnion"] !== undefined) {
-      TestLateUnion_TheUnion._applyInit(target._initTheUnion(), init["theUnion"] as $.Init<TestLateUnion_TheUnion>);
+    {
+      const value = init["theUnion"];
+      if (value !== undefined) {
+        TestLateUnion_TheUnion._applyInit(target._initTheUnion(), value as $.Init<TestLateUnion_TheUnion>);
+      }
     }
-    if (init["anotherUnion"] !== undefined) {
-      TestLateUnion_AnotherUnion._applyInit(target._initAnotherUnion(), init["anotherUnion"] as $.Init<TestLateUnion_AnotherUnion>);
+    {
+      const value = init["anotherUnion"];
+      if (value !== undefined) {
+        TestLateUnion_AnotherUnion._applyInit(target._initAnotherUnion(), value as $.Init<TestLateUnion_AnotherUnion>);
+      }
     }
   }
   get foo(): number {
@@ -6332,18 +7055,27 @@ export class TestOldVersion extends $.Struct {
   };
   static _applyInit(target: TestOldVersion, value: $.Init<TestOldVersion>): void {
     const init = value as any;
-    if (init["old1"] !== undefined) {
-      target.old1 = init["old1"] as any;
-    }
-    if (init["old2"] !== undefined) {
-      target.old2 = init["old2"] as any;
-    }
-    if (init["old3"] !== undefined) {
-      if (init["old3"] instanceof TestOldVersion) {
-        target.old3 = init["old3"] as TestOldVersion;
+    {
+      const value = init["old1"];
+      if (value !== undefined) {
+        target.old1 = value as any;
       }
-      else {
-        TestOldVersion._applyInit(target._initOld3(), init["old3"] as $.Init<TestOldVersion>);
+    }
+    {
+      const value = init["old2"];
+      if (value !== undefined) {
+        target.old2 = value as any;
+      }
+    }
+    {
+      const value = init["old3"];
+      if (value !== undefined) {
+        if (value instanceof TestOldVersion) {
+          target.old3 = value as TestOldVersion;
+        }
+        else {
+          TestOldVersion._applyInit(target._initOld3(), value as $.Init<TestOldVersion>);
+        }
       }
     }
   }
@@ -6402,25 +7134,40 @@ export class TestNewVersion extends $.Struct {
   };
   static _applyInit(target: TestNewVersion, value: $.Init<TestNewVersion>): void {
     const init = value as any;
-    if (init["old1"] !== undefined) {
-      target.old1 = init["old1"] as any;
-    }
-    if (init["old2"] !== undefined) {
-      target.old2 = init["old2"] as any;
-    }
-    if (init["old3"] !== undefined) {
-      if (init["old3"] instanceof TestNewVersion) {
-        target.old3 = init["old3"] as TestNewVersion;
-      }
-      else {
-        TestNewVersion._applyInit(target._initOld3(), init["old3"] as $.Init<TestNewVersion>);
+    {
+      const value = init["old1"];
+      if (value !== undefined) {
+        target.old1 = value as any;
       }
     }
-    if (init["new1"] !== undefined) {
-      target.new1 = init["new1"] as any;
+    {
+      const value = init["old2"];
+      if (value !== undefined) {
+        target.old2 = value as any;
+      }
     }
-    if (init["new2"] !== undefined) {
-      target.new2 = init["new2"] as any;
+    {
+      const value = init["old3"];
+      if (value !== undefined) {
+        if (value instanceof TestNewVersion) {
+          target.old3 = value as TestNewVersion;
+        }
+        else {
+          TestNewVersion._applyInit(target._initOld3(), value as $.Init<TestNewVersion>);
+        }
+      }
+    }
+    {
+      const value = init["new1"];
+      if (value !== undefined) {
+        target.new1 = value as any;
+      }
+    }
+    {
+      const value = init["new2"];
+      if (value !== undefined) {
+        target.new2 = value as any;
+      }
     }
   }
   get old1(): bigint {
@@ -6488,11 +7235,17 @@ export class TestOldUnionVersion extends $.Struct {
   };
   static _applyInit(target: TestOldUnionVersion, value: $.Init<TestOldUnionVersion>): void {
     const init = value as any;
-    if (init["a"] !== undefined) {
-      target.a = true;
+    {
+      const value = init["a"];
+      if (value !== undefined) {
+        target.a = true;
+      }
     }
-    if (init["b"] !== undefined) {
-      target.b = init["b"] as any;
+    {
+      const value = init["b"];
+      if (value !== undefined) {
+        target.b = value as any;
+      }
     }
   }
   get _isA(): boolean {
@@ -6582,11 +7335,17 @@ export class TestNewUnionVersion_A extends $.Struct {
   };
   static _applyInit(target: TestNewUnionVersion_A, value: $.Init<TestNewUnionVersion_A>): void {
     const init = value as any;
-    if (init["a0"] !== undefined) {
-      target.a0 = true;
+    {
+      const value = init["a0"];
+      if (value !== undefined) {
+        target.a0 = true;
+      }
     }
-    if (init["a1"] !== undefined) {
-      target.a1 = init["a1"] as any;
+    {
+      const value = init["a1"];
+      if (value !== undefined) {
+        target.a1 = value as any;
+      }
     }
   }
   get _isA0(): boolean {
@@ -6676,11 +7435,17 @@ export class TestNewUnionVersion extends $.Struct {
   };
   static _applyInit(target: TestNewUnionVersion, value: $.Init<TestNewUnionVersion>): void {
     const init = value as any;
-    if (init["a"] !== undefined) {
-      TestNewUnionVersion_A._applyInit(target._initA(), init["a"] as $.Init<TestNewUnionVersion_A>);
+    {
+      const value = init["a"];
+      if (value !== undefined) {
+        TestNewUnionVersion_A._applyInit(target._initA(), value as $.Init<TestNewUnionVersion_A>);
+      }
     }
-    if (init["b"] !== undefined) {
-      target.b = init["b"] as any;
+    {
+      const value = init["b"];
+      if (value !== undefined) {
+        target.b = value as any;
+      }
     }
   }
   get a(): TestNewUnionVersion_A {
@@ -6771,11 +7536,17 @@ export class TestStructUnion_SomeStruct extends $.Struct {
   };
   static _applyInit(target: TestStructUnion_SomeStruct, value: $.Init<TestStructUnion_SomeStruct>): void {
     const init = value as any;
-    if (init["someText"] !== undefined) {
-      target.someText = init["someText"] as any;
+    {
+      const value = init["someText"];
+      if (value !== undefined) {
+        target.someText = value as any;
+      }
     }
-    if (init["moreText"] !== undefined) {
-      target.moreText = init["moreText"] as any;
+    {
+      const value = init["moreText"];
+      if (value !== undefined) {
+        target.moreText = value as any;
+      }
     }
   }
   get someText(): string {
@@ -6813,20 +7584,26 @@ export class TestStructUnion_Un extends $.Struct {
   };
   static _applyInit(target: TestStructUnion_Un, value: $.Init<TestStructUnion_Un>): void {
     const init = value as any;
-    if (init["struct"] !== undefined) {
-      if (init["struct"] instanceof TestStructUnion_SomeStruct) {
-        target.struct = init["struct"] as TestStructUnion_SomeStruct;
-      }
-      else {
-        TestStructUnion_SomeStruct._applyInit(target._initStruct(), init["struct"] as $.Init<TestStructUnion_SomeStruct>);
+    {
+      const value = init["struct"];
+      if (value !== undefined) {
+        if (value instanceof TestStructUnion_SomeStruct) {
+          target.struct = value as TestStructUnion_SomeStruct;
+        }
+        else {
+          TestStructUnion_SomeStruct._applyInit(target._initStruct(), value as $.Init<TestStructUnion_SomeStruct>);
+        }
       }
     }
-    if (init["object"] !== undefined) {
-      if (init["object"] instanceof TestAnyPointer) {
-        target.object = init["object"] as TestAnyPointer;
-      }
-      else {
-        TestAnyPointer._applyInit(target._initObject(), init["object"] as $.Init<TestAnyPointer>);
+    {
+      const value = init["object"];
+      if (value !== undefined) {
+        if (value instanceof TestAnyPointer) {
+          target.object = value as TestAnyPointer;
+        }
+        else {
+          TestAnyPointer._applyInit(target._initObject(), value as $.Init<TestAnyPointer>);
+        }
       }
     }
   }
@@ -6944,8 +7721,11 @@ export class TestStructUnion extends $.Struct {
   };
   static _applyInit(target: TestStructUnion, value: $.Init<TestStructUnion>): void {
     const init = value as any;
-    if (init["un"] !== undefined) {
-      TestStructUnion_Un._applyInit(target._initUn(), init["un"] as $.Init<TestStructUnion_Un>);
+    {
+      const value = init["un"];
+      if (value !== undefined) {
+        TestStructUnion_Un._applyInit(target._initUn(), value as $.Init<TestStructUnion_Un>);
+      }
     }
   }
   get un(): TestStructUnion_Un {
@@ -6970,11 +7750,17 @@ export class TestPrintInlineStructs_InlineStruct extends $.Struct {
   };
   static _applyInit(target: TestPrintInlineStructs_InlineStruct, value: $.Init<TestPrintInlineStructs_InlineStruct>): void {
     const init = value as any;
-    if (init["int32Field"] !== undefined) {
-      target.int32Field = init["int32Field"] as any;
+    {
+      const value = init["int32Field"];
+      if (value !== undefined) {
+        target.int32Field = value as any;
+      }
     }
-    if (init["textField"] !== undefined) {
-      target.textField = init["textField"] as any;
+    {
+      const value = init["textField"];
+      if (value !== undefined) {
+        target.textField = value as any;
+      }
     }
   }
   get int32Field(): number {
@@ -7007,23 +7793,29 @@ export class TestPrintInlineStructs extends $.Struct {
   static _StructList: $.ListCtor<TestPrintInlineStructs_InlineStruct>;
   static _applyInit(target: TestPrintInlineStructs, value: $.Init<TestPrintInlineStructs>): void {
     const init = value as any;
-    if (init["someText"] !== undefined) {
-      target.someText = init["someText"] as any;
-    }
-    if (init["structList"] !== undefined) {
-      if (init["structList"] instanceof $.List) {
-        target.structList = init["structList"] as any;
+    {
+      const value = init["someText"];
+      if (value !== undefined) {
+        target.someText = value as any;
       }
-      else {
-        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
-        const list = target._initStructList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestPrintInlineStructs_InlineStruct) {
-            list.set(index, item);
-          }
-          else {
-            TestPrintInlineStructs_InlineStruct._applyInit(list.get(index), item as $.Init<TestPrintInlineStructs_InlineStruct>);
+    }
+    {
+      const value = init["structList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.structList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initStructList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestPrintInlineStructs_InlineStruct) {
+              list.set(index, item);
+            }
+            else {
+              TestPrintInlineStructs_InlineStruct._applyInit(list.get(index), item as $.Init<TestPrintInlineStructs_InlineStruct>);
+            }
           }
         }
       }
@@ -7078,11 +7870,17 @@ export class TestWholeFloatDefault extends $.Struct {
   };
   static _applyInit(target: TestWholeFloatDefault, value: $.Init<TestWholeFloatDefault>): void {
     const init = value as any;
-    if (init["field"] !== undefined) {
-      target.field = init["field"] as any;
+    {
+      const value = init["field"];
+      if (value !== undefined) {
+        target.field = value as any;
+      }
     }
-    if (init["bigField"] !== undefined) {
-      target.bigField = init["bigField"] as any;
+    {
+      const value = init["bigField"];
+      if (value !== undefined) {
+        target.bigField = value as any;
+      }
     }
   }
   get field(): number {
@@ -7113,11 +7911,17 @@ export class TestGenerics_Inner extends $.Struct {
   };
   static _applyInit(target: TestGenerics_Inner, value: $.Init<TestGenerics_Inner>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -7226,7 +8030,9 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Client {
       method: TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => void
+          : (target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, answer);
     return new TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise(pipeline);
@@ -7245,7 +8051,7 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Server extends $.Ser
         impl: async (params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, results: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => {
           const value = await target.call(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>);
+            TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results._applyInit(results, value as $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>);
           }
         }
       }
@@ -7290,17 +8096,29 @@ export class TestGenerics_Inner2_DeepNest extends $.Struct {
   };
   static _applyInit(target: TestGenerics_Inner2_DeepNest, value: $.Init<TestGenerics_Inner2_DeepNest>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["baz"] !== undefined) {
-      target.baz = init["baz"] as any;
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        target.baz = value as any;
+      }
     }
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -7382,26 +8200,38 @@ export class TestGenerics_Inner2 extends $.Struct {
   };
   static _applyInit(target: TestGenerics_Inner2, value: $.Init<TestGenerics_Inner2>): void {
     const init = value as any;
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
-    }
-    if (init["baz"] !== undefined) {
-      target.baz = init["baz"] as any;
-    }
-    if (init["innerBound"] !== undefined) {
-      if (init["innerBound"] instanceof TestGenerics_Inner) {
-        target.innerBound = init["innerBound"] as TestGenerics_Inner;
-      }
-      else {
-        TestGenerics_Inner._applyInit(target._initInnerBound(), init["innerBound"] as $.Init<TestGenerics_Inner>);
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
       }
     }
-    if (init["innerUnbound"] !== undefined) {
-      if (init["innerUnbound"] instanceof TestGenerics_Inner) {
-        target.innerUnbound = init["innerUnbound"] as TestGenerics_Inner;
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        target.baz = value as any;
       }
-      else {
-        TestGenerics_Inner._applyInit(target._initInnerUnbound(), init["innerUnbound"] as $.Init<TestGenerics_Inner>);
+    }
+    {
+      const value = init["innerBound"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.innerBound = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initInnerBound(), value as $.Init<TestGenerics_Inner>);
+        }
+      }
+    }
+    {
+      const value = init["innerUnbound"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.innerUnbound = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initInnerUnbound(), value as $.Init<TestGenerics_Inner>);
+        }
       }
     }
   }
@@ -7487,15 +8317,21 @@ export class TestGenerics_Interface_Call$Results extends $.Struct {
   };
   static _applyInit(target: TestGenerics_Interface_Call$Results, value: $.Init<TestGenerics_Interface_Call$Results>): void {
     const init = value as any;
-    if (init["qux"] !== undefined) {
-      target.qux = init["qux"] as any;
-    }
-    if (init["gen"] !== undefined) {
-      if (init["gen"] instanceof TestGenerics) {
-        target.gen = init["gen"] as TestGenerics;
+    {
+      const value = init["qux"];
+      if (value !== undefined) {
+        target.qux = value as any;
       }
-      else {
-        TestGenerics._applyInit(target._initGen(), init["gen"] as $.Init<TestGenerics>);
+    }
+    {
+      const value = init["gen"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.gen = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initGen(), value as $.Init<TestGenerics>);
+        }
       }
     }
   }
@@ -7580,7 +8416,9 @@ export class TestGenerics_Interface$Client {
       method: TestGenerics_Interface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestGenerics_Inner2) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestGenerics_Inner2) => void
+          : (target: TestGenerics_Inner2) => TestGenerics_Inner2._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics_Interface_Call$Results, answer);
     return new TestGenerics_Interface_Call$Results$Promise(pipeline);
@@ -7599,7 +8437,7 @@ export class TestGenerics_Interface$Server extends $.Server {
         impl: async (params: TestGenerics_Inner2, results: TestGenerics_Interface_Call$Results) => {
           const value = await target.call(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestGenerics_Interface_Call$Results>);
+            TestGenerics_Interface_Call$Results._applyInit(results, value as $.Init<TestGenerics_Interface_Call$Results>);
           }
         }
       }
@@ -7641,43 +8479,61 @@ export class TestGenerics_UseAliases extends $.Struct {
   };
   static _applyInit(target: TestGenerics_UseAliases, value: $.Init<TestGenerics_UseAliases>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
-    }
-    if (init["inner"] !== undefined) {
-      if (init["inner"] instanceof TestGenerics_Inner) {
-        target.inner = init["inner"] as TestGenerics_Inner;
-      }
-      else {
-        TestGenerics_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestGenerics_Inner>);
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
       }
     }
-    if (init["inner2"] !== undefined) {
-      if (init["inner2"] instanceof TestGenerics_Inner2) {
-        target.inner2 = init["inner2"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initInner2(), init["inner2"] as $.Init<TestGenerics_Inner2>);
-      }
-    }
-    if (init["inner2Bind"] !== undefined) {
-      if (init["inner2Bind"] instanceof TestGenerics_Inner2) {
-        target.inner2Bind = init["inner2Bind"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initInner2Bind(), init["inner2Bind"] as $.Init<TestGenerics_Inner2>);
+    {
+      const value = init["inner"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.inner = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initInner(), value as $.Init<TestGenerics_Inner>);
+        }
       }
     }
-    if (init["inner2Text"] !== undefined) {
-      if (init["inner2Text"] instanceof TestGenerics_Inner2) {
-        target.inner2Text = init["inner2Text"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initInner2Text(), init["inner2Text"] as $.Init<TestGenerics_Inner2>);
+    {
+      const value = init["inner2"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.inner2 = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initInner2(), value as $.Init<TestGenerics_Inner2>);
+        }
       }
     }
-    if (init["revFoo"] !== undefined) {
-      target.revFoo = init["revFoo"] as any;
+    {
+      const value = init["inner2Bind"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.inner2Bind = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initInner2Bind(), value as $.Init<TestGenerics_Inner2>);
+        }
+      }
+    }
+    {
+      const value = init["inner2Text"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.inner2Text = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initInner2Text(), value as $.Init<TestGenerics_Inner2>);
+        }
+      }
+    }
+    {
+      const value = init["revFoo"];
+      if (value !== undefined) {
+        target.revFoo = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -7797,8 +8653,11 @@ export class TestGenerics_Ug extends $.Struct {
   };
   static _applyInit(target: TestGenerics_Ug, value: $.Init<TestGenerics_Ug>): void {
     const init = value as any;
-    if (init["ugfoo"] !== undefined) {
-      target.ugfoo = init["ugfoo"] as any;
+    {
+      const value = init["ugfoo"];
+      if (value !== undefined) {
+        target.ugfoo = value as any;
+      }
     }
   }
   get ugfoo(): number {
@@ -7836,22 +8695,34 @@ export class TestGenerics extends $.Struct {
   };
   static _applyInit(target: TestGenerics, value: $.Init<TestGenerics>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
-    }
-    if (init["rev"] !== undefined) {
-      if (init["rev"] instanceof TestGenerics) {
-        target.rev = init["rev"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initRev(), init["rev"] as $.Init<TestGenerics>);
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
       }
     }
-    if (init["uv"] !== undefined) {
-      target.uv = true;
+    {
+      const value = init["rev"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.rev = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initRev(), value as $.Init<TestGenerics>);
+        }
+      }
     }
-    if (init["ug"] !== undefined) {
-      TestGenerics_Ug._applyInit(target._initUg(), init["ug"] as $.Init<TestGenerics_Ug>);
+    {
+      const value = init["uv"];
+      if (value !== undefined) {
+        target.uv = true;
+      }
+    }
+    {
+      const value = init["ug"];
+      if (value !== undefined) {
+        TestGenerics_Ug._applyInit(target._initUg(), value as $.Init<TestGenerics_Ug>);
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -7968,12 +8839,15 @@ export class TestGenericsWrapper extends $.Struct {
   };
   static _applyInit(target: TestGenericsWrapper, value: $.Init<TestGenericsWrapper>): void {
     const init = value as any;
-    if (init["value"] !== undefined) {
-      if (init["value"] instanceof TestGenerics) {
-        target.value = init["value"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initValue(), init["value"] as $.Init<TestGenerics>);
+    {
+      const value = init["value"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.value = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initValue(), value as $.Init<TestGenerics>);
+        }
       }
     }
   }
@@ -8010,12 +8884,15 @@ export class TestGenericsWrapper2 extends $.Struct {
   };
   static _applyInit(target: TestGenericsWrapper2, value: $.Init<TestGenericsWrapper2>): void {
     const init = value as any;
-    if (init["value"] !== undefined) {
-      if (init["value"] instanceof TestGenericsWrapper) {
-        target.value = init["value"] as TestGenericsWrapper;
-      }
-      else {
-        TestGenericsWrapper._applyInit(target._initValue(), init["value"] as $.Init<TestGenericsWrapper>);
+    {
+      const value = init["value"];
+      if (value !== undefined) {
+        if (value instanceof TestGenericsWrapper) {
+          target.value = value as TestGenericsWrapper;
+        }
+        else {
+          TestGenericsWrapper._applyInit(target._initValue(), value as $.Init<TestGenericsWrapper>);
+        }
       }
     }
   }
@@ -8053,11 +8930,17 @@ export class TestImplicitMethodParams_Call$Params extends $.Struct {
   };
   static _applyInit(target: TestImplicitMethodParams_Call$Params, value: $.Init<TestImplicitMethodParams_Call$Params>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -8138,7 +9021,9 @@ export class TestImplicitMethodParams$Client {
       method: TestImplicitMethodParams$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestImplicitMethodParams_Call$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestImplicitMethodParams_Call$Params) => void
+          : (target: TestImplicitMethodParams_Call$Params) => TestImplicitMethodParams_Call$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics, answer);
     return new TestGenerics$Promise(pipeline);
@@ -8157,7 +9042,7 @@ export class TestImplicitMethodParams$Server extends $.Server {
         impl: async (params: TestImplicitMethodParams_Call$Params, results: TestGenerics) => {
           const value = await target.call(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestGenerics>);
+            TestGenerics._applyInit(results, value as $.Init<TestGenerics>);
           }
         }
       }
@@ -8195,11 +9080,17 @@ export class TestImplicitMethodParamsInGeneric_Call$Params extends $.Struct {
   };
   static _applyInit(target: TestImplicitMethodParamsInGeneric_Call$Params, value: $.Init<TestImplicitMethodParamsInGeneric_Call$Params>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -8262,7 +9153,9 @@ export class TestImplicitMethodParamsInGeneric$Client {
       method: TestImplicitMethodParamsInGeneric$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestImplicitMethodParamsInGeneric_Call$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestImplicitMethodParamsInGeneric_Call$Params) => void
+          : (target: TestImplicitMethodParamsInGeneric_Call$Params) => TestImplicitMethodParamsInGeneric_Call$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics, answer);
     return new TestGenerics$Promise(pipeline);
@@ -8281,7 +9174,7 @@ export class TestImplicitMethodParamsInGeneric$Server extends $.Server {
         impl: async (params: TestImplicitMethodParamsInGeneric_Call$Params, results: TestGenerics) => {
           const value = await target.call(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestGenerics>);
+            TestGenerics._applyInit(results, value as $.Init<TestGenerics>);
           }
         }
       }
@@ -8330,11 +9223,17 @@ export class TestGenericsUnion extends $.Struct {
   };
   static _applyInit(target: TestGenericsUnion, value: $.Init<TestGenericsUnion>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
-      target.foo = init["foo"] as any;
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+        target.foo = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
   }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
@@ -8473,154 +9372,214 @@ export class TestUseGenerics extends $.Struct {
   };
   static _applyInit(target: TestUseGenerics, value: $.Init<TestUseGenerics>): void {
     const init = value as any;
-    if (init["basic"] !== undefined) {
-      if (init["basic"] instanceof TestGenerics) {
-        target.basic = init["basic"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initBasic(), init["basic"] as $.Init<TestGenerics>);
-      }
-    }
-    if (init["inner"] !== undefined) {
-      if (init["inner"] instanceof TestGenerics_Inner) {
-        target.inner = init["inner"] as TestGenerics_Inner;
-      }
-      else {
-        TestGenerics_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestGenerics_Inner>);
+    {
+      const value = init["basic"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.basic = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initBasic(), value as $.Init<TestGenerics>);
+        }
       }
     }
-    if (init["inner2"] !== undefined) {
-      if (init["inner2"] instanceof TestGenerics_Inner2) {
-        target.inner2 = init["inner2"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initInner2(), init["inner2"] as $.Init<TestGenerics_Inner2>);
-      }
-    }
-    if (init["unspecified"] !== undefined) {
-      if (init["unspecified"] instanceof TestGenerics) {
-        target.unspecified = init["unspecified"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initUnspecified(), init["unspecified"] as $.Init<TestGenerics>);
+    {
+      const value = init["inner"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.inner = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initInner(), value as $.Init<TestGenerics_Inner>);
+        }
       }
     }
-    if (init["unspecifiedInner"] !== undefined) {
-      if (init["unspecifiedInner"] instanceof TestGenerics_Inner2) {
-        target.unspecifiedInner = init["unspecifiedInner"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initUnspecifiedInner(), init["unspecifiedInner"] as $.Init<TestGenerics_Inner2>);
-      }
-    }
-    if (init["wrapper"] !== undefined) {
-      if (init["wrapper"] instanceof TestGenericsWrapper) {
-        target.wrapper = init["wrapper"] as TestGenericsWrapper;
-      }
-      else {
-        TestGenericsWrapper._applyInit(target._initWrapper(), init["wrapper"] as $.Init<TestGenericsWrapper>);
+    {
+      const value = init["inner2"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.inner2 = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initInner2(), value as $.Init<TestGenerics_Inner2>);
+        }
       }
     }
-    if (init["cap"] !== undefined) {
-      if (init["cap"] instanceof TestGenerics) {
-        target.cap = init["cap"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initCap(), init["cap"] as $.Init<TestGenerics>);
-      }
-    }
-    if (init["genericCap"] !== undefined) {
-      target.genericCap = init["genericCap"] as any;
-    }
-    if (init["default"] !== undefined) {
-      if (init["default"] instanceof TestGenerics) {
-        target.default = init["default"] as TestGenerics;
-      }
-      else {
-        TestGenerics._applyInit(target._initDefault(), init["default"] as $.Init<TestGenerics>);
+    {
+      const value = init["unspecified"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.unspecified = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initUnspecified(), value as $.Init<TestGenerics>);
+        }
       }
     }
-    if (init["defaultInner"] !== undefined) {
-      if (init["defaultInner"] instanceof TestGenerics_Inner) {
-        target.defaultInner = init["defaultInner"] as TestGenerics_Inner;
-      }
-      else {
-        TestGenerics_Inner._applyInit(target._initDefaultInner(), init["defaultInner"] as $.Init<TestGenerics_Inner>);
-      }
-    }
-    if (init["defaultUser"] !== undefined) {
-      if (init["defaultUser"] instanceof TestUseGenerics) {
-        target.defaultUser = init["defaultUser"] as TestUseGenerics;
-      }
-      else {
-        TestUseGenerics._applyInit(target._initDefaultUser(), init["defaultUser"] as $.Init<TestUseGenerics>);
+    {
+      const value = init["unspecifiedInner"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.unspecifiedInner = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initUnspecifiedInner(), value as $.Init<TestGenerics_Inner2>);
+        }
       }
     }
-    if (init["defaultWrapper"] !== undefined) {
-      if (init["defaultWrapper"] instanceof TestGenericsWrapper) {
-        target.defaultWrapper = init["defaultWrapper"] as TestGenericsWrapper;
-      }
-      else {
-        TestGenericsWrapper._applyInit(target._initDefaultWrapper(), init["defaultWrapper"] as $.Init<TestGenericsWrapper>);
-      }
-    }
-    if (init["defaultWrapper2"] !== undefined) {
-      if (init["defaultWrapper2"] instanceof TestGenericsWrapper2) {
-        target.defaultWrapper2 = init["defaultWrapper2"] as TestGenericsWrapper2;
-      }
-      else {
-        TestGenericsWrapper2._applyInit(target._initDefaultWrapper2(), init["defaultWrapper2"] as $.Init<TestGenericsWrapper2>);
+    {
+      const value = init["wrapper"];
+      if (value !== undefined) {
+        if (value instanceof TestGenericsWrapper) {
+          target.wrapper = value as TestGenericsWrapper;
+        }
+        else {
+          TestGenericsWrapper._applyInit(target._initWrapper(), value as $.Init<TestGenericsWrapper>);
+        }
       }
     }
-    if (init["aliasFoo"] !== undefined) {
-      if (init["aliasFoo"] instanceof TestAllTypes) {
-        target.aliasFoo = init["aliasFoo"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initAliasFoo(), init["aliasFoo"] as $.Init<TestAllTypes>);
-      }
-    }
-    if (init["aliasInner"] !== undefined) {
-      if (init["aliasInner"] instanceof TestGenerics_Inner) {
-        target.aliasInner = init["aliasInner"] as TestGenerics_Inner;
-      }
-      else {
-        TestGenerics_Inner._applyInit(target._initAliasInner(), init["aliasInner"] as $.Init<TestGenerics_Inner>);
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.cap = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initCap(), value as $.Init<TestGenerics>);
+        }
       }
     }
-    if (init["aliasInner2"] !== undefined) {
-      if (init["aliasInner2"] instanceof TestGenerics_Inner2) {
-        target.aliasInner2 = init["aliasInner2"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initAliasInner2(), init["aliasInner2"] as $.Init<TestGenerics_Inner2>);
+    {
+      const value = init["genericCap"];
+      if (value !== undefined) {
+        target.genericCap = value as any;
       }
     }
-    if (init["aliasInner2Bind"] !== undefined) {
-      if (init["aliasInner2Bind"] instanceof TestGenerics_Inner2) {
-        target.aliasInner2Bind = init["aliasInner2Bind"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initAliasInner2Bind(), init["aliasInner2Bind"] as $.Init<TestGenerics_Inner2>);
-      }
-    }
-    if (init["aliasInner2Text"] !== undefined) {
-      if (init["aliasInner2Text"] instanceof TestGenerics_Inner2) {
-        target.aliasInner2Text = init["aliasInner2Text"] as TestGenerics_Inner2;
-      }
-      else {
-        TestGenerics_Inner2._applyInit(target._initAliasInner2Text(), init["aliasInner2Text"] as $.Init<TestGenerics_Inner2>);
+    {
+      const value = init["default"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics) {
+          target.default = value as TestGenerics;
+        }
+        else {
+          TestGenerics._applyInit(target._initDefault(), value as $.Init<TestGenerics>);
+        }
       }
     }
-    if (init["aliasRev"] !== undefined) {
-      target.aliasRev = init["aliasRev"] as any;
-    }
-    if (init["useAliases"] !== undefined) {
-      if (init["useAliases"] instanceof TestGenerics_UseAliases) {
-        target.useAliases = init["useAliases"] as TestGenerics_UseAliases;
+    {
+      const value = init["defaultInner"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.defaultInner = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initDefaultInner(), value as $.Init<TestGenerics_Inner>);
+        }
       }
-      else {
-        TestGenerics_UseAliases._applyInit(target._initUseAliases(), init["useAliases"] as $.Init<TestGenerics_UseAliases>);
+    }
+    {
+      const value = init["defaultUser"];
+      if (value !== undefined) {
+        if (value instanceof TestUseGenerics) {
+          target.defaultUser = value as TestUseGenerics;
+        }
+        else {
+          TestUseGenerics._applyInit(target._initDefaultUser(), value as $.Init<TestUseGenerics>);
+        }
+      }
+    }
+    {
+      const value = init["defaultWrapper"];
+      if (value !== undefined) {
+        if (value instanceof TestGenericsWrapper) {
+          target.defaultWrapper = value as TestGenericsWrapper;
+        }
+        else {
+          TestGenericsWrapper._applyInit(target._initDefaultWrapper(), value as $.Init<TestGenericsWrapper>);
+        }
+      }
+    }
+    {
+      const value = init["defaultWrapper2"];
+      if (value !== undefined) {
+        if (value instanceof TestGenericsWrapper2) {
+          target.defaultWrapper2 = value as TestGenericsWrapper2;
+        }
+        else {
+          TestGenericsWrapper2._applyInit(target._initDefaultWrapper2(), value as $.Init<TestGenericsWrapper2>);
+        }
+      }
+    }
+    {
+      const value = init["aliasFoo"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.aliasFoo = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initAliasFoo(), value as $.Init<TestAllTypes>);
+        }
+      }
+    }
+    {
+      const value = init["aliasInner"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner) {
+          target.aliasInner = value as TestGenerics_Inner;
+        }
+        else {
+          TestGenerics_Inner._applyInit(target._initAliasInner(), value as $.Init<TestGenerics_Inner>);
+        }
+      }
+    }
+    {
+      const value = init["aliasInner2"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.aliasInner2 = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initAliasInner2(), value as $.Init<TestGenerics_Inner2>);
+        }
+      }
+    }
+    {
+      const value = init["aliasInner2Bind"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.aliasInner2Bind = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initAliasInner2Bind(), value as $.Init<TestGenerics_Inner2>);
+        }
+      }
+    }
+    {
+      const value = init["aliasInner2Text"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_Inner2) {
+          target.aliasInner2Text = value as TestGenerics_Inner2;
+        }
+        else {
+          TestGenerics_Inner2._applyInit(target._initAliasInner2Text(), value as $.Init<TestGenerics_Inner2>);
+        }
+      }
+    }
+    {
+      const value = init["aliasRev"];
+      if (value !== undefined) {
+        target.aliasRev = value as any;
+      }
+    }
+    {
+      const value = init["useAliases"];
+      if (value !== undefined) {
+        if (value instanceof TestGenerics_UseAliases) {
+          target.useAliases = value as TestGenerics_UseAliases;
+        }
+        else {
+          TestGenerics_UseAliases._applyInit(target._initUseAliases(), value as $.Init<TestGenerics_UseAliases>);
+        }
       }
     }
   }
@@ -9050,17 +10009,29 @@ export class TestAnyPointerConstants extends $.Struct {
   };
   static _applyInit(target: TestAnyPointerConstants, value: $.Init<TestAnyPointerConstants>): void {
     const init = value as any;
-    if (init["anyKindAsStruct"] !== undefined) {
-      target.anyKindAsStruct = init["anyKindAsStruct"] as any;
+    {
+      const value = init["anyKindAsStruct"];
+      if (value !== undefined) {
+        target.anyKindAsStruct = value as any;
+      }
     }
-    if (init["anyStructAsStruct"] !== undefined) {
-      target.anyStructAsStruct = init["anyStructAsStruct"] as any;
+    {
+      const value = init["anyStructAsStruct"];
+      if (value !== undefined) {
+        target.anyStructAsStruct = value as any;
+      }
     }
-    if (init["anyKindAsList"] !== undefined) {
-      target.anyKindAsList = init["anyKindAsList"] as any;
+    {
+      const value = init["anyKindAsList"];
+      if (value !== undefined) {
+        target.anyKindAsList = value as any;
+      }
     }
-    if (init["anyListAsList"] !== undefined) {
-      target.anyListAsList = init["anyListAsList"] as any;
+    {
+      const value = init["anyListAsList"];
+      if (value !== undefined) {
+        target.anyListAsList = value as any;
+      }
     }
   }
   _adoptAnyKindAsStruct(value: $.Orphan<$.Pointer>): void {
@@ -9139,11 +10110,17 @@ export class TestInterface_Foo$Params extends $.Struct {
   };
   static _applyInit(target: TestInterface_Foo$Params, value: $.Init<TestInterface_Foo$Params>): void {
     const init = value as any;
-    if (init["i"] !== undefined) {
-      target.i = init["i"] as any;
+    {
+      const value = init["i"];
+      if (value !== undefined) {
+        target.i = value as any;
+      }
     }
-    if (init["j"] !== undefined) {
-      target.j = init["j"] as any;
+    {
+      const value = init["j"];
+      if (value !== undefined) {
+        target.j = value as any;
+      }
     }
   }
   get i(): number {
@@ -9173,8 +10150,11 @@ export class TestInterface_Foo$Results extends $.Struct {
   };
   static _applyInit(target: TestInterface_Foo$Results, value: $.Init<TestInterface_Foo$Results>): void {
     const init = value as any;
-    if (init["x"] !== undefined) {
-      target.x = init["x"] as any;
+    {
+      const value = init["x"];
+      if (value !== undefined) {
+        target.x = value as any;
+      }
     }
   }
   get x(): string {
@@ -9262,12 +10242,15 @@ export class TestInterface_Baz$Params extends $.Struct {
   };
   static _applyInit(target: TestInterface_Baz$Params, value: $.Init<TestInterface_Baz$Params>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      if (init["s"] instanceof TestAllTypes) {
-        target.s = init["s"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initS(), init["s"] as $.Init<TestAllTypes>);
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.s = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initS(), value as $.Init<TestAllTypes>);
+        }
       }
     }
   }
@@ -9373,7 +10356,9 @@ export class TestInterface$Client {
       method: TestInterface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestInterface_Foo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestInterface_Foo$Params) => void
+          : (target: TestInterface_Foo$Params) => TestInterface_Foo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Foo$Results, answer);
     return new TestInterface_Foo$Results$Promise(pipeline);
@@ -9386,7 +10371,9 @@ export class TestInterface$Client {
       method: TestInterface$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestInterface_Bar$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestInterface_Bar$Params) => void
+          : (target: TestInterface_Bar$Params) => TestInterface_Bar$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Bar$Results, answer);
     return new TestInterface_Bar$Results$Promise(pipeline);
@@ -9399,7 +10386,9 @@ export class TestInterface$Client {
       method: TestInterface$Client.methods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestInterface_Baz$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestInterface_Baz$Params) => void
+          : (target: TestInterface_Baz$Params) => TestInterface_Baz$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Baz$Results, answer);
     return new TestInterface_Baz$Results$Promise(pipeline);
@@ -9420,7 +10409,7 @@ export class TestInterface$Server extends $.Server {
         impl: async (params: TestInterface_Foo$Params, results: TestInterface_Foo$Results) => {
           const value = await target.foo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestInterface_Foo$Results>);
+            TestInterface_Foo$Results._applyInit(results, value as $.Init<TestInterface_Foo$Results>);
           }
         }
       },
@@ -9429,7 +10418,7 @@ export class TestInterface$Server extends $.Server {
         impl: async (params: TestInterface_Bar$Params, results: TestInterface_Bar$Results) => {
           const value = await target.bar(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestInterface_Bar$Results>);
+            TestInterface_Bar$Results._applyInit(results, value as $.Init<TestInterface_Bar$Results>);
           }
         }
       },
@@ -9438,7 +10427,7 @@ export class TestInterface$Server extends $.Server {
         impl: async (params: TestInterface_Baz$Params, results: TestInterface_Baz$Results) => {
           const value = await target.baz(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestInterface_Baz$Results>);
+            TestInterface_Baz$Results._applyInit(results, value as $.Init<TestInterface_Baz$Results>);
           }
         }
       }
@@ -9635,7 +10624,9 @@ export class TestExtends$Client {
       method: TestExtends$Client.ownMethods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestExtends_Qux$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestExtends_Qux$Params) => void
+          : (target: TestExtends_Qux$Params) => TestExtends_Qux$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestExtends_Qux$Results, answer);
     return new TestExtends_Qux$Results$Promise(pipeline);
@@ -9648,7 +10639,9 @@ export class TestExtends$Client {
       method: TestExtends$Client.ownMethods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestAllTypes) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestAllTypes) => void
+          : (target: TestAllTypes) => TestAllTypes._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestExtends_Corge$Results, answer);
     return new TestExtends_Corge$Results$Promise(pipeline);
@@ -9661,7 +10654,9 @@ export class TestExtends$Client {
       method: TestExtends$Client.ownMethods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestExtends_Grault$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestExtends_Grault$Params) => void
+          : (target: TestExtends_Grault$Params) => TestExtends_Grault$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestAllTypes, answer);
     return new TestAllTypes$Promise(pipeline);
@@ -9682,7 +10677,7 @@ export class TestExtends$Server extends $.Server {
         impl: async (params: any, results: any) => {
           const value = await (target[method.methodName as keyof TestExtends$Server$Target] as any).call(target, params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as any);
+            (method.ResultsClass as any)._applyInit(results, value);
           }
         }
       })),
@@ -9691,7 +10686,7 @@ export class TestExtends$Server extends $.Server {
         impl: async (params: TestExtends_Qux$Params, results: TestExtends_Qux$Results) => {
           const value = await target.qux(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestExtends_Qux$Results>);
+            TestExtends_Qux$Results._applyInit(results, value as $.Init<TestExtends_Qux$Results>);
           }
         }
       },
@@ -9700,7 +10695,7 @@ export class TestExtends$Server extends $.Server {
         impl: async (params: TestAllTypes, results: TestExtends_Corge$Results) => {
           const value = await target.corge(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestExtends_Corge$Results>);
+            TestExtends_Corge$Results._applyInit(results, value as $.Init<TestExtends_Corge$Results>);
           }
         }
       },
@@ -9709,7 +10704,7 @@ export class TestExtends$Server extends $.Server {
         impl: async (params: TestExtends_Grault$Params, results: TestAllTypes) => {
           const value = await target.grault(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestAllTypes>);
+            TestAllTypes._applyInit(results, value as $.Init<TestAllTypes>);
           }
         }
       }
@@ -9776,7 +10771,7 @@ export class TestExtends2$Server extends $.Server {
         impl: async (params: any, results: any) => {
           const value = await (target[method.methodName as keyof TestExtends2$Server$Target] as any).call(target, params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as any);
+            (method.ResultsClass as any)._applyInit(results, value);
           }
         }
       }))
@@ -9813,8 +10808,11 @@ export class TestPipeline_Box extends $.Struct {
   };
   static _applyInit(target: TestPipeline_Box, value: $.Init<TestPipeline_Box>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -9850,8 +10848,11 @@ export class TestPipeline_AnyBox extends $.Struct {
   };
   static _applyInit(target: TestPipeline_AnyBox, value: $.Init<TestPipeline_AnyBox>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   _adoptCap(value: $.Orphan<$.Pointer>): void {
@@ -9885,11 +10886,17 @@ export class TestPipeline_GetCap$Params extends $.Struct {
   };
   static _applyInit(target: TestPipeline_GetCap$Params, value: $.Init<TestPipeline_GetCap$Params>): void {
     const init = value as any;
-    if (init["n"] !== undefined) {
-      target.n = init["n"] as any;
+    {
+      const value = init["n"];
+      if (value !== undefined) {
+        target.n = value as any;
+      }
     }
-    if (init["inCap"] !== undefined) {
-      target.inCap = init["inCap"] as any;
+    {
+      const value = init["inCap"];
+      if (value !== undefined) {
+        target.inCap = value as any;
+      }
     }
   }
   get n(): number {
@@ -9932,15 +10939,21 @@ export class TestPipeline_GetCap$Results extends $.Struct {
   };
   static _applyInit(target: TestPipeline_GetCap$Results, value: $.Init<TestPipeline_GetCap$Results>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      target.s = init["s"] as any;
-    }
-    if (init["outBox"] !== undefined) {
-      if (init["outBox"] instanceof TestPipeline_Box) {
-        target.outBox = init["outBox"] as TestPipeline_Box;
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        target.s = value as any;
       }
-      else {
-        TestPipeline_Box._applyInit(target._initOutBox(), init["outBox"] as $.Init<TestPipeline_Box>);
+    }
+    {
+      const value = init["outBox"];
+      if (value !== undefined) {
+        if (value instanceof TestPipeline_Box) {
+          target.outBox = value as TestPipeline_Box;
+        }
+        else {
+          TestPipeline_Box._applyInit(target._initOutBox(), value as $.Init<TestPipeline_Box>);
+        }
       }
     }
   }
@@ -10003,22 +11016,31 @@ export class TestPipeline_TestPointers$Params extends $.Struct {
   };
   static _applyInit(target: TestPipeline_TestPointers$Params, value: $.Init<TestPipeline_TestPointers$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
-    }
-    if (init["obj"] !== undefined) {
-      target.obj = init["obj"] as any;
-    }
-    if (init["list"] !== undefined) {
-      if (init["list"] instanceof $.List) {
-        target.list = init["list"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
       }
-      else {
-        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
-        const list = target._initList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["obj"];
+      if (value !== undefined) {
+        target.obj = value as any;
+      }
+    }
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -10122,11 +11144,17 @@ export class TestPipeline_GetAnyCap$Params extends $.Struct {
   };
   static _applyInit(target: TestPipeline_GetAnyCap$Params, value: $.Init<TestPipeline_GetAnyCap$Params>): void {
     const init = value as any;
-    if (init["n"] !== undefined) {
-      target.n = init["n"] as any;
+    {
+      const value = init["n"];
+      if (value !== undefined) {
+        target.n = value as any;
+      }
     }
-    if (init["inCap"] !== undefined) {
-      target.inCap = init["inCap"] as any;
+    {
+      const value = init["inCap"];
+      if (value !== undefined) {
+        target.inCap = value as any;
+      }
     }
   }
   get n(): number {
@@ -10166,15 +11194,21 @@ export class TestPipeline_GetAnyCap$Results extends $.Struct {
   };
   static _applyInit(target: TestPipeline_GetAnyCap$Results, value: $.Init<TestPipeline_GetAnyCap$Results>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      target.s = init["s"] as any;
-    }
-    if (init["outBox"] !== undefined) {
-      if (init["outBox"] instanceof TestPipeline_AnyBox) {
-        target.outBox = init["outBox"] as TestPipeline_AnyBox;
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        target.s = value as any;
       }
-      else {
-        TestPipeline_AnyBox._applyInit(target._initOutBox(), init["outBox"] as $.Init<TestPipeline_AnyBox>);
+    }
+    {
+      const value = init["outBox"];
+      if (value !== undefined) {
+        if (value instanceof TestPipeline_AnyBox) {
+          target.outBox = value as TestPipeline_AnyBox;
+        }
+        else {
+          TestPipeline_AnyBox._applyInit(target._initOutBox(), value as $.Init<TestPipeline_AnyBox>);
+        }
       }
     }
   }
@@ -10272,7 +11306,9 @@ export class TestPipeline$Client {
       method: TestPipeline$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestPipeline_GetCap$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestPipeline_GetCap$Params) => void
+          : (target: TestPipeline_GetCap$Params) => TestPipeline_GetCap$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_GetCap$Results, answer);
     return new TestPipeline_GetCap$Results$Promise(pipeline);
@@ -10285,7 +11321,9 @@ export class TestPipeline$Client {
       method: TestPipeline$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestPipeline_TestPointers$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestPipeline_TestPointers$Params) => void
+          : (target: TestPipeline_TestPointers$Params) => TestPipeline_TestPointers$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_TestPointers$Results, answer);
     return new TestPipeline_TestPointers$Results$Promise(pipeline);
@@ -10298,7 +11336,9 @@ export class TestPipeline$Client {
       method: TestPipeline$Client.methods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestPipeline_GetAnyCap$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestPipeline_GetAnyCap$Params) => void
+          : (target: TestPipeline_GetAnyCap$Params) => TestPipeline_GetAnyCap$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_GetAnyCap$Results, answer);
     return new TestPipeline_GetAnyCap$Results$Promise(pipeline);
@@ -10319,7 +11359,7 @@ export class TestPipeline$Server extends $.Server {
         impl: async (params: TestPipeline_GetCap$Params, results: TestPipeline_GetCap$Results) => {
           const value = await target.getCap(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestPipeline_GetCap$Results>);
+            TestPipeline_GetCap$Results._applyInit(results, value as $.Init<TestPipeline_GetCap$Results>);
           }
         }
       },
@@ -10328,7 +11368,7 @@ export class TestPipeline$Server extends $.Server {
         impl: async (params: TestPipeline_TestPointers$Params, results: TestPipeline_TestPointers$Results) => {
           const value = await target.testPointers(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestPipeline_TestPointers$Results>);
+            TestPipeline_TestPointers$Results._applyInit(results, value as $.Init<TestPipeline_TestPointers$Results>);
           }
         }
       },
@@ -10337,7 +11377,7 @@ export class TestPipeline$Server extends $.Server {
         impl: async (params: TestPipeline_GetAnyCap$Params, results: TestPipeline_GetAnyCap$Results) => {
           const value = await target.getAnyCap(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestPipeline_GetAnyCap$Results>);
+            TestPipeline_GetAnyCap$Results._applyInit(results, value as $.Init<TestPipeline_GetAnyCap$Results>);
           }
         }
       }
@@ -10376,8 +11416,11 @@ export class TestCallOrder_GetCallSequence$Params extends $.Struct {
   };
   static _applyInit(target: TestCallOrder_GetCallSequence$Params, value: $.Init<TestCallOrder_GetCallSequence$Params>): void {
     const init = value as any;
-    if (init["expected"] !== undefined) {
-      target.expected = init["expected"] as any;
+    {
+      const value = init["expected"];
+      if (value !== undefined) {
+        target.expected = value as any;
+      }
     }
   }
   get expected(): number {
@@ -10401,8 +11444,11 @@ export class TestCallOrder_GetCallSequence$Results extends $.Struct {
   };
   static _applyInit(target: TestCallOrder_GetCallSequence$Results, value: $.Init<TestCallOrder_GetCallSequence$Results>): void {
     const init = value as any;
-    if (init["n"] !== undefined) {
-      target.n = init["n"] as any;
+    {
+      const value = init["n"];
+      if (value !== undefined) {
+        target.n = value as any;
+      }
     }
   }
   get n(): number {
@@ -10465,7 +11511,9 @@ export class TestCallOrder$Client {
       method: TestCallOrder$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestCallOrder_GetCallSequence$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestCallOrder_GetCallSequence$Params) => void
+          : (target: TestCallOrder_GetCallSequence$Params) => TestCallOrder_GetCallSequence$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestCallOrder_GetCallSequence$Results, answer);
     return new TestCallOrder_GetCallSequence$Results$Promise(pipeline);
@@ -10484,7 +11532,7 @@ export class TestCallOrder$Server extends $.Server {
         impl: async (params: TestCallOrder_GetCallSequence$Params, results: TestCallOrder_GetCallSequence$Results) => {
           const value = await target.getCallSequence(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestCallOrder_GetCallSequence$Results>);
+            TestCallOrder_GetCallSequence$Results._applyInit(results, value as $.Init<TestCallOrder_GetCallSequence$Results>);
           }
         }
       }
@@ -10523,14 +11571,23 @@ export class TestTailCallee_TailResult extends $.Struct {
   };
   static _applyInit(target: TestTailCallee_TailResult, value: $.Init<TestTailCallee_TailResult>): void {
     const init = value as any;
-    if (init["i"] !== undefined) {
-      target.i = init["i"] as any;
+    {
+      const value = init["i"];
+      if (value !== undefined) {
+        target.i = value as any;
+      }
     }
-    if (init["t"] !== undefined) {
-      target.t = init["t"] as any;
+    {
+      const value = init["t"];
+      if (value !== undefined) {
+        target.t = value as any;
+      }
     }
-    if (init["c"] !== undefined) {
-      target.c = init["c"] as any;
+    {
+      const value = init["c"];
+      if (value !== undefined) {
+        target.c = value as any;
+      }
     }
   }
   get i(): number {
@@ -10579,11 +11636,17 @@ export class TestTailCallee_Foo$Params extends $.Struct {
   };
   static _applyInit(target: TestTailCallee_Foo$Params, value: $.Init<TestTailCallee_Foo$Params>): void {
     const init = value as any;
-    if (init["i"] !== undefined) {
-      target.i = init["i"] as any;
+    {
+      const value = init["i"];
+      if (value !== undefined) {
+        target.i = value as any;
+      }
     }
-    if (init["t"] !== undefined) {
-      target.t = init["t"] as any;
+    {
+      const value = init["t"];
+      if (value !== undefined) {
+        target.t = value as any;
+      }
     }
   }
   get i(): number {
@@ -10649,7 +11712,9 @@ export class TestTailCallee$Client {
       method: TestTailCallee$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestTailCallee_Foo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestTailCallee_Foo$Params) => void
+          : (target: TestTailCallee_Foo$Params) => TestTailCallee_Foo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestTailCallee_TailResult, answer);
     return new TestTailCallee_TailResult$Promise(pipeline);
@@ -10668,7 +11733,7 @@ export class TestTailCallee$Server extends $.Server {
         impl: async (params: TestTailCallee_Foo$Params, results: TestTailCallee_TailResult) => {
           const value = await target.foo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestTailCallee_TailResult>);
+            TestTailCallee_TailResult._applyInit(results, value as $.Init<TestTailCallee_TailResult>);
           }
         }
       }
@@ -10707,11 +11772,17 @@ export class TestTailCaller_Foo$Params extends $.Struct {
   };
   static _applyInit(target: TestTailCaller_Foo$Params, value: $.Init<TestTailCaller_Foo$Params>): void {
     const init = value as any;
-    if (init["i"] !== undefined) {
-      target.i = init["i"] as any;
+    {
+      const value = init["i"];
+      if (value !== undefined) {
+        target.i = value as any;
+      }
     }
-    if (init["callee"] !== undefined) {
-      target.callee = init["callee"] as any;
+    {
+      const value = init["callee"];
+      if (value !== undefined) {
+        target.callee = value as any;
+      }
     }
   }
   get i(): number {
@@ -10768,7 +11839,9 @@ export class TestTailCaller$Client {
       method: TestTailCaller$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestTailCaller_Foo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestTailCaller_Foo$Params) => void
+          : (target: TestTailCaller_Foo$Params) => TestTailCaller_Foo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestTailCallee_TailResult, answer);
     return new TestTailCallee_TailResult$Promise(pipeline);
@@ -10787,7 +11860,7 @@ export class TestTailCaller$Server extends $.Server {
         impl: async (params: TestTailCaller_Foo$Params, results: TestTailCallee_TailResult) => {
           const value = await target.foo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestTailCallee_TailResult>);
+            TestTailCallee_TailResult._applyInit(results, value as $.Init<TestTailCallee_TailResult>);
           }
         }
       }
@@ -10859,8 +11932,11 @@ export class TestMoreStuff_CallFoo$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_CallFoo$Params, value: $.Init<TestMoreStuff_CallFoo$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -10896,8 +11972,11 @@ export class TestMoreStuff_CallFoo$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_CallFoo$Results, value: $.Init<TestMoreStuff_CallFoo$Results>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      target.s = init["s"] as any;
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        target.s = value as any;
+      }
     }
   }
   get s(): string {
@@ -10939,8 +12018,11 @@ export class TestMoreStuff_CallFooWhenResolved$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Params, value: $.Init<TestMoreStuff_CallFooWhenResolved$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -10976,8 +12058,11 @@ export class TestMoreStuff_CallFooWhenResolved$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Results, value: $.Init<TestMoreStuff_CallFooWhenResolved$Results>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      target.s = init["s"] as any;
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        target.s = value as any;
+      }
     }
   }
   get s(): string {
@@ -11019,8 +12104,11 @@ export class TestMoreStuff_NeverReturn$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_NeverReturn$Params, value: $.Init<TestMoreStuff_NeverReturn$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -11056,8 +12144,11 @@ export class TestMoreStuff_NeverReturn$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_NeverReturn$Results, value: $.Init<TestMoreStuff_NeverReturn$Results>): void {
     const init = value as any;
-    if (init["capCopy"] !== undefined) {
-      target.capCopy = init["capCopy"] as any;
+    {
+      const value = init["capCopy"];
+      if (value !== undefined) {
+        target.capCopy = value as any;
+      }
     }
   }
   get capCopy(): TestInterface$Client {
@@ -11114,8 +12205,11 @@ export class TestMoreStuff_Hold$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_Hold$Params, value: $.Init<TestMoreStuff_Hold$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -11197,8 +12291,11 @@ export class TestMoreStuff_CallHeld$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_CallHeld$Results, value: $.Init<TestMoreStuff_CallHeld$Results>): void {
     const init = value as any;
-    if (init["s"] !== undefined) {
-      target.s = init["s"] as any;
+    {
+      const value = init["s"];
+      if (value !== undefined) {
+        target.s = value as any;
+      }
     }
   }
   get s(): string {
@@ -11254,8 +12351,11 @@ export class TestMoreStuff_GetHeld$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_GetHeld$Results, value: $.Init<TestMoreStuff_GetHeld$Results>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -11312,8 +12412,11 @@ export class TestMoreStuff_Echo$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_Echo$Params, value: $.Init<TestMoreStuff_Echo$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestCallOrder$Client {
@@ -11349,8 +12452,11 @@ export class TestMoreStuff_Echo$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_Echo$Results, value: $.Init<TestMoreStuff_Echo$Results>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestCallOrder$Client {
@@ -11407,8 +12513,11 @@ export class TestMoreStuff_ExpectCancel$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_ExpectCancel$Params, value: $.Init<TestMoreStuff_ExpectCancel$Params>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get cap(): TestInterface$Client {
@@ -11480,14 +12589,23 @@ export class TestMoreStuff_MethodWithDefaults$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_MethodWithDefaults$Params, value: $.Init<TestMoreStuff_MethodWithDefaults$Params>): void {
     const init = value as any;
-    if (init["a"] !== undefined) {
-      target.a = init["a"] as any;
+    {
+      const value = init["a"];
+      if (value !== undefined) {
+        target.a = value as any;
+      }
     }
-    if (init["b"] !== undefined) {
-      target.b = init["b"] as any;
+    {
+      const value = init["b"];
+      if (value !== undefined) {
+        target.b = value as any;
+      }
     }
-    if (init["c"] !== undefined) {
-      target.c = init["c"] as any;
+    {
+      const value = init["c"];
+      if (value !== undefined) {
+        target.c = value as any;
+      }
     }
   }
   get a(): string {
@@ -11525,11 +12643,17 @@ export class TestMoreStuff_MethodWithDefaults$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_MethodWithDefaults$Results, value: $.Init<TestMoreStuff_MethodWithDefaults$Results>): void {
     const init = value as any;
-    if (init["d"] !== undefined) {
-      target.d = init["d"] as any;
+    {
+      const value = init["d"];
+      if (value !== undefined) {
+        target.d = value as any;
+      }
     }
-    if (init["e"] !== undefined) {
-      target.e = init["e"] as any;
+    {
+      const value = init["e"];
+      if (value !== undefined) {
+        target.e = value as any;
+      }
     }
   }
   get d(): string {
@@ -11591,8 +12715,11 @@ export class TestMoreStuff_GetHandle$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_GetHandle$Results, value: $.Init<TestMoreStuff_GetHandle$Results>): void {
     const init = value as any;
-    if (init["handle"] !== undefined) {
-      target.handle = init["handle"] as any;
+    {
+      const value = init["handle"];
+      if (value !== undefined) {
+        target.handle = value as any;
+      }
     }
   }
   get handle(): TestHandle$Client {
@@ -11663,8 +12790,11 @@ export class TestMoreStuff_GetNull$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_GetNull$Results, value: $.Init<TestMoreStuff_GetNull$Results>): void {
     const init = value as any;
-    if (init["nullCap"] !== undefined) {
-      target.nullCap = init["nullCap"] as any;
+    {
+      const value = init["nullCap"];
+      if (value !== undefined) {
+        target.nullCap = value as any;
+      }
     }
   }
   get nullCap(): TestMoreStuff$Client {
@@ -11735,8 +12865,11 @@ export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_GetEnormousString$Results, value: $.Init<TestMoreStuff_GetEnormousString$Results>): void {
     const init = value as any;
-    if (init["str"] !== undefined) {
-      target.str = init["str"] as any;
+    {
+      const value = init["str"];
+      if (value !== undefined) {
+        target.str = value as any;
+      }
     }
   }
   get str(): string {
@@ -11780,11 +12913,17 @@ export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
   };
   static _applyInit(target: TestMoreStuff_MethodWithNullDefault$Params, value: $.Init<TestMoreStuff_MethodWithNullDefault$Params>): void {
     const init = value as any;
-    if (init["a"] !== undefined) {
-      target.a = init["a"] as any;
+    {
+      const value = init["a"];
+      if (value !== undefined) {
+        target.a = value as any;
+      }
     }
-    if (init["b"] !== undefined) {
-      target.b = init["b"] as any;
+    {
+      const value = init["b"];
+      if (value !== undefined) {
+        target.b = value as any;
+      }
     }
   }
   get a(): string {
@@ -12016,7 +13155,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_CallFoo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_CallFoo$Params) => void
+          : (target: TestMoreStuff_CallFoo$Params) => TestMoreStuff_CallFoo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFoo$Results, answer);
     return new TestMoreStuff_CallFoo$Results$Promise(pipeline);
@@ -12033,7 +13174,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_CallFooWhenResolved$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_CallFooWhenResolved$Params) => void
+          : (target: TestMoreStuff_CallFooWhenResolved$Params) => TestMoreStuff_CallFooWhenResolved$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFooWhenResolved$Results, answer);
     return new TestMoreStuff_CallFooWhenResolved$Results$Promise(pipeline);
@@ -12050,7 +13193,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_NeverReturn$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_NeverReturn$Params) => void
+          : (target: TestMoreStuff_NeverReturn$Params) => TestMoreStuff_NeverReturn$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_NeverReturn$Results, answer);
     return new TestMoreStuff_NeverReturn$Results$Promise(pipeline);
@@ -12067,7 +13212,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[3],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_Hold$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_Hold$Params) => void
+          : (target: TestMoreStuff_Hold$Params) => TestMoreStuff_Hold$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Hold$Results, answer);
     return new TestMoreStuff_Hold$Results$Promise(pipeline);
@@ -12084,7 +13231,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[4],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_CallHeld$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_CallHeld$Params) => void
+          : (target: TestMoreStuff_CallHeld$Params) => TestMoreStuff_CallHeld$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallHeld$Results, answer);
     return new TestMoreStuff_CallHeld$Results$Promise(pipeline);
@@ -12101,7 +13250,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[5],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_GetHeld$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_GetHeld$Params) => void
+          : (target: TestMoreStuff_GetHeld$Params) => TestMoreStuff_GetHeld$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHeld$Results, answer);
     return new TestMoreStuff_GetHeld$Results$Promise(pipeline);
@@ -12118,7 +13269,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[6],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_Echo$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_Echo$Params) => void
+          : (target: TestMoreStuff_Echo$Params) => TestMoreStuff_Echo$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Echo$Results, answer);
     return new TestMoreStuff_Echo$Results$Promise(pipeline);
@@ -12135,7 +13288,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[7],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_ExpectCancel$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_ExpectCancel$Params) => void
+          : (target: TestMoreStuff_ExpectCancel$Params) => TestMoreStuff_ExpectCancel$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_ExpectCancel$Results, answer);
     return new TestMoreStuff_ExpectCancel$Results$Promise(pipeline);
@@ -12148,7 +13303,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[8],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_MethodWithDefaults$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_MethodWithDefaults$Params) => void
+          : (target: TestMoreStuff_MethodWithDefaults$Params) => TestMoreStuff_MethodWithDefaults$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithDefaults$Results, answer);
     return new TestMoreStuff_MethodWithDefaults$Results$Promise(pipeline);
@@ -12166,7 +13323,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[9],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_GetHandle$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_GetHandle$Params) => void
+          : (target: TestMoreStuff_GetHandle$Params) => TestMoreStuff_GetHandle$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHandle$Results, answer);
     return new TestMoreStuff_GetHandle$Results$Promise(pipeline);
@@ -12183,7 +13342,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[10],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_GetNull$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_GetNull$Params) => void
+          : (target: TestMoreStuff_GetNull$Params) => TestMoreStuff_GetNull$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetNull$Results, answer);
     return new TestMoreStuff_GetNull$Results$Promise(pipeline);
@@ -12200,7 +13361,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[11],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_GetEnormousString$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_GetEnormousString$Params) => void
+          : (target: TestMoreStuff_GetEnormousString$Params) => TestMoreStuff_GetEnormousString$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetEnormousString$Results, answer);
     return new TestMoreStuff_GetEnormousString$Results$Promise(pipeline);
@@ -12213,7 +13376,9 @@ export class TestMoreStuff$Client {
       method: TestMoreStuff$Client.ownMethods[12],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMoreStuff_MethodWithNullDefault$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMoreStuff_MethodWithNullDefault$Params) => void
+          : (target: TestMoreStuff_MethodWithNullDefault$Params) => TestMoreStuff_MethodWithNullDefault$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithNullDefault$Results, answer);
     return new TestMoreStuff_MethodWithNullDefault$Results$Promise(pipeline);
@@ -12244,7 +13409,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: any, results: any) => {
           const value = await (target[method.methodName as keyof TestMoreStuff$Server$Target] as any).call(target, params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as any);
+            (method.ResultsClass as any)._applyInit(results, value);
           }
         }
       })),
@@ -12253,7 +13418,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_CallFoo$Params, results: TestMoreStuff_CallFoo$Results) => {
           const value = await target.callFoo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_CallFoo$Results>);
+            TestMoreStuff_CallFoo$Results._applyInit(results, value as $.Init<TestMoreStuff_CallFoo$Results>);
           }
         }
       },
@@ -12262,7 +13427,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_CallFooWhenResolved$Params, results: TestMoreStuff_CallFooWhenResolved$Results) => {
           const value = await target.callFooWhenResolved(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_CallFooWhenResolved$Results>);
+            TestMoreStuff_CallFooWhenResolved$Results._applyInit(results, value as $.Init<TestMoreStuff_CallFooWhenResolved$Results>);
           }
         }
       },
@@ -12271,7 +13436,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_NeverReturn$Params, results: TestMoreStuff_NeverReturn$Results) => {
           const value = await target.neverReturn(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_NeverReturn$Results>);
+            TestMoreStuff_NeverReturn$Results._applyInit(results, value as $.Init<TestMoreStuff_NeverReturn$Results>);
           }
         }
       },
@@ -12280,7 +13445,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_Hold$Params, results: TestMoreStuff_Hold$Results) => {
           const value = await target.hold(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_Hold$Results>);
+            TestMoreStuff_Hold$Results._applyInit(results, value as $.Init<TestMoreStuff_Hold$Results>);
           }
         }
       },
@@ -12289,7 +13454,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_CallHeld$Params, results: TestMoreStuff_CallHeld$Results) => {
           const value = await target.callHeld(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_CallHeld$Results>);
+            TestMoreStuff_CallHeld$Results._applyInit(results, value as $.Init<TestMoreStuff_CallHeld$Results>);
           }
         }
       },
@@ -12298,7 +13463,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_GetHeld$Params, results: TestMoreStuff_GetHeld$Results) => {
           const value = await target.getHeld(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_GetHeld$Results>);
+            TestMoreStuff_GetHeld$Results._applyInit(results, value as $.Init<TestMoreStuff_GetHeld$Results>);
           }
         }
       },
@@ -12307,7 +13472,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_Echo$Params, results: TestMoreStuff_Echo$Results) => {
           const value = await target.echo(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_Echo$Results>);
+            TestMoreStuff_Echo$Results._applyInit(results, value as $.Init<TestMoreStuff_Echo$Results>);
           }
         }
       },
@@ -12316,7 +13481,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_ExpectCancel$Params, results: TestMoreStuff_ExpectCancel$Results) => {
           const value = await target.expectCancel(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_ExpectCancel$Results>);
+            TestMoreStuff_ExpectCancel$Results._applyInit(results, value as $.Init<TestMoreStuff_ExpectCancel$Results>);
           }
         }
       },
@@ -12325,7 +13490,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_MethodWithDefaults$Params, results: TestMoreStuff_MethodWithDefaults$Results) => {
           const value = await target.methodWithDefaults(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_MethodWithDefaults$Results>);
+            TestMoreStuff_MethodWithDefaults$Results._applyInit(results, value as $.Init<TestMoreStuff_MethodWithDefaults$Results>);
           }
         }
       },
@@ -12334,7 +13499,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_GetHandle$Params, results: TestMoreStuff_GetHandle$Results) => {
           const value = await target.getHandle(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_GetHandle$Results>);
+            TestMoreStuff_GetHandle$Results._applyInit(results, value as $.Init<TestMoreStuff_GetHandle$Results>);
           }
         }
       },
@@ -12343,7 +13508,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_GetNull$Params, results: TestMoreStuff_GetNull$Results) => {
           const value = await target.getNull(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_GetNull$Results>);
+            TestMoreStuff_GetNull$Results._applyInit(results, value as $.Init<TestMoreStuff_GetNull$Results>);
           }
         }
       },
@@ -12352,7 +13517,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_GetEnormousString$Params, results: TestMoreStuff_GetEnormousString$Results) => {
           const value = await target.getEnormousString(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_GetEnormousString$Results>);
+            TestMoreStuff_GetEnormousString$Results._applyInit(results, value as $.Init<TestMoreStuff_GetEnormousString$Results>);
           }
         }
       },
@@ -12361,7 +13526,7 @@ export class TestMoreStuff$Server extends $.Server {
         impl: async (params: TestMoreStuff_MethodWithNullDefault$Params, results: TestMoreStuff_MethodWithNullDefault$Results) => {
           const value = await target.methodWithNullDefault(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMoreStuff_MethodWithNullDefault$Results>);
+            TestMoreStuff_MethodWithNullDefault$Results._applyInit(results, value as $.Init<TestMoreStuff_MethodWithNullDefault$Results>);
           }
         }
       }
@@ -12416,8 +13581,11 @@ export class TestMembrane_Result extends $.Struct {
   };
   static _applyInit(target: TestMembrane_Result, value: $.Init<TestMembrane_Result>): void {
     const init = value as any;
-    if (init["text"] !== undefined) {
-      target.text = init["text"] as any;
+    {
+      const value = init["text"];
+      if (value !== undefined) {
+        target.text = value as any;
+      }
     }
   }
   get text(): string {
@@ -12499,7 +13667,9 @@ export class TestMembrane_Thing$Client {
       method: TestMembrane_Thing$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_Thing_PassThrough$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_Thing_PassThrough$Params) => void
+          : (target: TestMembrane_Thing_PassThrough$Params) => TestMembrane_Thing_PassThrough$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
@@ -12512,7 +13682,9 @@ export class TestMembrane_Thing$Client {
       method: TestMembrane_Thing$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_Thing_Intercept$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_Thing_Intercept$Params) => void
+          : (target: TestMembrane_Thing_Intercept$Params) => TestMembrane_Thing_Intercept$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
@@ -12532,7 +13704,7 @@ export class TestMembrane_Thing$Server extends $.Server {
         impl: async (params: TestMembrane_Thing_PassThrough$Params, results: TestMembrane_Result) => {
           const value = await target.passThrough(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+            TestMembrane_Result._applyInit(results, value as $.Init<TestMembrane_Result>);
           }
         }
       },
@@ -12541,7 +13713,7 @@ export class TestMembrane_Thing$Server extends $.Server {
         impl: async (params: TestMembrane_Thing_Intercept$Params, results: TestMembrane_Result) => {
           const value = await target.intercept(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+            TestMembrane_Result._applyInit(results, value as $.Init<TestMembrane_Result>);
           }
         }
       }
@@ -12592,8 +13764,11 @@ export class TestMembrane_MakeThing$Results extends $.Struct {
   };
   static _applyInit(target: TestMembrane_MakeThing$Results, value: $.Init<TestMembrane_MakeThing$Results>): void {
     const init = value as any;
-    if (init["thing"] !== undefined) {
-      target.thing = init["thing"] as any;
+    {
+      const value = init["thing"];
+      if (value !== undefined) {
+        target.thing = value as any;
+      }
     }
   }
   get thing(): TestMembrane_Thing$Client {
@@ -12651,11 +13826,17 @@ export class TestMembrane_CallPassThrough$Params extends $.Struct {
   };
   static _applyInit(target: TestMembrane_CallPassThrough$Params, value: $.Init<TestMembrane_CallPassThrough$Params>): void {
     const init = value as any;
-    if (init["thing"] !== undefined) {
-      target.thing = init["thing"] as any;
+    {
+      const value = init["thing"];
+      if (value !== undefined) {
+        target.thing = value as any;
+      }
     }
-    if (init["tailCall"] !== undefined) {
-      target.tailCall = init["tailCall"] as any;
+    {
+      const value = init["tailCall"];
+      if (value !== undefined) {
+        target.tailCall = value as any;
+      }
     }
   }
   get thing(): TestMembrane_Thing$Client {
@@ -12698,11 +13879,17 @@ export class TestMembrane_CallIntercept$Params extends $.Struct {
   };
   static _applyInit(target: TestMembrane_CallIntercept$Params, value: $.Init<TestMembrane_CallIntercept$Params>): void {
     const init = value as any;
-    if (init["thing"] !== undefined) {
-      target.thing = init["thing"] as any;
+    {
+      const value = init["thing"];
+      if (value !== undefined) {
+        target.thing = value as any;
+      }
     }
-    if (init["tailCall"] !== undefined) {
-      target.tailCall = init["tailCall"] as any;
+    {
+      const value = init["tailCall"];
+      if (value !== undefined) {
+        target.tailCall = value as any;
+      }
     }
   }
   get thing(): TestMembrane_Thing$Client {
@@ -12744,8 +13931,11 @@ export class TestMembrane_Loopback$Params extends $.Struct {
   };
   static _applyInit(target: TestMembrane_Loopback$Params, value: $.Init<TestMembrane_Loopback$Params>): void {
     const init = value as any;
-    if (init["thing"] !== undefined) {
-      target.thing = init["thing"] as any;
+    {
+      const value = init["thing"];
+      if (value !== undefined) {
+        target.thing = value as any;
+      }
     }
   }
   get thing(): TestMembrane_Thing$Client {
@@ -12781,8 +13971,11 @@ export class TestMembrane_Loopback$Results extends $.Struct {
   };
   static _applyInit(target: TestMembrane_Loopback$Results, value: $.Init<TestMembrane_Loopback$Results>): void {
     const init = value as any;
-    if (init["thing"] !== undefined) {
-      target.thing = init["thing"] as any;
+    {
+      const value = init["thing"];
+      if (value !== undefined) {
+        target.thing = value as any;
+      }
     }
   }
   get thing(): TestMembrane_Thing$Client {
@@ -12887,7 +14080,9 @@ export class TestMembrane$Client {
       method: TestMembrane$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_MakeThing$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_MakeThing$Params) => void
+          : (target: TestMembrane_MakeThing$Params) => TestMembrane_MakeThing$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_MakeThing$Results, answer);
     return new TestMembrane_MakeThing$Results$Promise(pipeline);
@@ -12900,7 +14095,9 @@ export class TestMembrane$Client {
       method: TestMembrane$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_CallPassThrough$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_CallPassThrough$Params) => void
+          : (target: TestMembrane_CallPassThrough$Params) => TestMembrane_CallPassThrough$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
@@ -12913,7 +14110,9 @@ export class TestMembrane$Client {
       method: TestMembrane$Client.methods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_CallIntercept$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_CallIntercept$Params) => void
+          : (target: TestMembrane_CallIntercept$Params) => TestMembrane_CallIntercept$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
@@ -12926,7 +14125,9 @@ export class TestMembrane$Client {
       method: TestMembrane$Client.methods[3],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestMembrane_Loopback$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestMembrane_Loopback$Params) => void
+          : (target: TestMembrane_Loopback$Params) => TestMembrane_Loopback$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Loopback$Results, answer);
     return new TestMembrane_Loopback$Results$Promise(pipeline);
@@ -12948,7 +14149,7 @@ export class TestMembrane$Server extends $.Server {
         impl: async (params: TestMembrane_MakeThing$Params, results: TestMembrane_MakeThing$Results) => {
           const value = await target.makeThing(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_MakeThing$Results>);
+            TestMembrane_MakeThing$Results._applyInit(results, value as $.Init<TestMembrane_MakeThing$Results>);
           }
         }
       },
@@ -12957,7 +14158,7 @@ export class TestMembrane$Server extends $.Server {
         impl: async (params: TestMembrane_CallPassThrough$Params, results: TestMembrane_Result) => {
           const value = await target.callPassThrough(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+            TestMembrane_Result._applyInit(results, value as $.Init<TestMembrane_Result>);
           }
         }
       },
@@ -12966,7 +14167,7 @@ export class TestMembrane$Server extends $.Server {
         impl: async (params: TestMembrane_CallIntercept$Params, results: TestMembrane_Result) => {
           const value = await target.callIntercept(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+            TestMembrane_Result._applyInit(results, value as $.Init<TestMembrane_Result>);
           }
         }
       },
@@ -12975,7 +14176,7 @@ export class TestMembrane$Server extends $.Server {
         impl: async (params: TestMembrane_Loopback$Params, results: TestMembrane_Loopback$Results) => {
           const value = await target.loopback(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestMembrane_Loopback$Results>);
+            TestMembrane_Loopback$Results._applyInit(results, value as $.Init<TestMembrane_Loopback$Results>);
           }
         }
       }
@@ -13015,19 +14216,25 @@ export class TestContainMembrane extends $.Struct {
   };
   static _applyInit(target: TestContainMembrane, value: $.Init<TestContainMembrane>): void {
     const init = value as any;
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
-    }
-    if (init["list"] !== undefined) {
-      if (init["list"] instanceof $.List) {
-        target.list = init["list"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
       }
-      else {
-        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
-        const list = target._initList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    }
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -13083,8 +14290,11 @@ export class TestContructorName extends $.Struct {
   };
   static _applyInit(target: TestContructorName, value: $.Init<TestContructorName>): void {
     const init = value as any;
-    if (init["$constructor"] !== undefined) {
-      target.$constructor = init["$constructor"] as any;
+    {
+      const value = init["$constructor"];
+      if (value !== undefined) {
+        target.$constructor = value as any;
+      }
     }
   }
   get $constructor(): string {
@@ -13109,11 +14319,17 @@ export class TestTransferCap_Element extends $.Struct {
   };
   static _applyInit(target: TestTransferCap_Element, value: $.Init<TestTransferCap_Element>): void {
     const init = value as any;
-    if (init["text"] !== undefined) {
-      target.text = init["text"] as any;
+    {
+      const value = init["text"];
+      if (value !== undefined) {
+        target.text = value as any;
+      }
     }
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   get text(): string {
@@ -13157,20 +14373,23 @@ export class TestTransferCap extends $.Struct {
   static _List: $.ListCtor<TestTransferCap_Element>;
   static _applyInit(target: TestTransferCap, value: $.Init<TestTransferCap>): void {
     const init = value as any;
-    if (init["list"] !== undefined) {
-      if (init["list"] instanceof $.List) {
-        target.list = init["list"] as any;
-      }
-      else {
-        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
-        const list = target._initList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof TestTransferCap_Element) {
-            list.set(index, item);
-          }
-          else {
-            TestTransferCap_Element._applyInit(list.get(index), item as $.Init<TestTransferCap_Element>);
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.list = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof TestTransferCap_Element) {
+              list.set(index, item);
+            }
+            else {
+              TestTransferCap_Element._applyInit(list.get(index), item as $.Init<TestTransferCap_Element>);
+            }
           }
         }
       }
@@ -13441,7 +14660,9 @@ export class TestKeywordMethods$Client {
       method: TestKeywordMethods$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestKeywordMethods_Delete$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestKeywordMethods_Delete$Params) => void
+          : (target: TestKeywordMethods_Delete$Params) => TestKeywordMethods_Delete$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Delete$Results, answer);
     return new TestKeywordMethods_Delete$Results$Promise(pipeline);
@@ -13454,7 +14675,9 @@ export class TestKeywordMethods$Client {
       method: TestKeywordMethods$Client.methods[1],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestKeywordMethods_Class$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestKeywordMethods_Class$Params) => void
+          : (target: TestKeywordMethods_Class$Params) => TestKeywordMethods_Class$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Class$Results, answer);
     return new TestKeywordMethods_Class$Results$Promise(pipeline);
@@ -13467,7 +14690,9 @@ export class TestKeywordMethods$Client {
       method: TestKeywordMethods$Client.methods[2],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestKeywordMethods_Void$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestKeywordMethods_Void$Params) => void
+          : (target: TestKeywordMethods_Void$Params) => TestKeywordMethods_Void$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Void$Results, answer);
     return new TestKeywordMethods_Void$Results$Promise(pipeline);
@@ -13480,7 +14705,9 @@ export class TestKeywordMethods$Client {
       method: TestKeywordMethods$Client.methods[3],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestKeywordMethods_Return$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestKeywordMethods_Return$Params) => void
+          : (target: TestKeywordMethods_Return$Params) => TestKeywordMethods_Return$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Return$Results, answer);
     return new TestKeywordMethods_Return$Results$Promise(pipeline);
@@ -13502,7 +14729,7 @@ export class TestKeywordMethods$Server extends $.Server {
         impl: async (params: TestKeywordMethods_Delete$Params, results: TestKeywordMethods_Delete$Results) => {
           const value = await target.delete(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestKeywordMethods_Delete$Results>);
+            TestKeywordMethods_Delete$Results._applyInit(results, value as $.Init<TestKeywordMethods_Delete$Results>);
           }
         }
       },
@@ -13511,7 +14738,7 @@ export class TestKeywordMethods$Server extends $.Server {
         impl: async (params: TestKeywordMethods_Class$Params, results: TestKeywordMethods_Class$Results) => {
           const value = await target.class(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestKeywordMethods_Class$Results>);
+            TestKeywordMethods_Class$Results._applyInit(results, value as $.Init<TestKeywordMethods_Class$Results>);
           }
         }
       },
@@ -13520,7 +14747,7 @@ export class TestKeywordMethods$Server extends $.Server {
         impl: async (params: TestKeywordMethods_Void$Params, results: TestKeywordMethods_Void$Results) => {
           const value = await target.void(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestKeywordMethods_Void$Results>);
+            TestKeywordMethods_Void$Results._applyInit(results, value as $.Init<TestKeywordMethods_Void$Results>);
           }
         }
       },
@@ -13529,7 +14756,7 @@ export class TestKeywordMethods$Server extends $.Server {
         impl: async (params: TestKeywordMethods_Return$Params, results: TestKeywordMethods_Return$Results) => {
           const value = await target.return(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestKeywordMethods_Return$Results>);
+            TestKeywordMethods_Return$Results._applyInit(results, value as $.Init<TestKeywordMethods_Return$Results>);
           }
         }
       }
@@ -13580,8 +14807,11 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
   };
   static _applyInit(target: TestAuthenticatedBootstrap_GetCallerId$Results, value: $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>): void {
     const init = value as any;
-    if (init["caller"] !== undefined) {
-      target.caller = init["caller"] as any;
+    {
+      const value = init["caller"];
+      if (value !== undefined) {
+        target.caller = value as any;
+      }
     }
   }
   _adoptCaller(value: $.Orphan<$.Pointer>): void {
@@ -13647,7 +14877,9 @@ export class TestAuthenticatedBootstrap$Client {
       method: TestAuthenticatedBootstrap$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestAuthenticatedBootstrap_GetCallerId$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestAuthenticatedBootstrap_GetCallerId$Params) => void
+          : (target: TestAuthenticatedBootstrap_GetCallerId$Params) => TestAuthenticatedBootstrap_GetCallerId$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestAuthenticatedBootstrap_GetCallerId$Results, answer);
     return new TestAuthenticatedBootstrap_GetCallerId$Results$Promise(pipeline);
@@ -13666,7 +14898,7 @@ export class TestAuthenticatedBootstrap$Server extends $.Server {
         impl: async (params: TestAuthenticatedBootstrap_GetCallerId$Params, results: TestAuthenticatedBootstrap_GetCallerId$Results) => {
           const value = await target.getCallerId(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>);
+            TestAuthenticatedBootstrap_GetCallerId$Results._applyInit(results, value as $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>);
           }
         }
       }
@@ -13704,16 +14936,22 @@ export class TestSturdyRef extends $.Struct {
   };
   static _applyInit(target: TestSturdyRef, value: $.Init<TestSturdyRef>): void {
     const init = value as any;
-    if (init["hostId"] !== undefined) {
-      if (init["hostId"] instanceof TestSturdyRefHostId) {
-        target.hostId = init["hostId"] as TestSturdyRefHostId;
-      }
-      else {
-        TestSturdyRefHostId._applyInit(target._initHostId(), init["hostId"] as $.Init<TestSturdyRefHostId>);
+    {
+      const value = init["hostId"];
+      if (value !== undefined) {
+        if (value instanceof TestSturdyRefHostId) {
+          target.hostId = value as TestSturdyRefHostId;
+        }
+        else {
+          TestSturdyRefHostId._applyInit(target._initHostId(), value as $.Init<TestSturdyRefHostId>);
+        }
       }
     }
-    if (init["objectId"] !== undefined) {
-      target.objectId = init["objectId"] as any;
+    {
+      const value = init["objectId"];
+      if (value !== undefined) {
+        target.objectId = value as any;
+      }
     }
   }
   _adoptHostId(value: $.Orphan<TestSturdyRefHostId>): void {
@@ -13764,8 +15002,11 @@ export class TestSturdyRefHostId extends $.Struct {
   };
   static _applyInit(target: TestSturdyRefHostId, value: $.Init<TestSturdyRefHostId>): void {
     const init = value as any;
-    if (init["host"] !== undefined) {
-      target.host = init["host"] as any;
+    {
+      const value = init["host"];
+      if (value !== undefined) {
+        target.host = value as any;
+      }
     }
   }
   get host(): string {
@@ -13807,8 +15048,11 @@ export class TestSturdyRefObjectId extends $.Struct {
   };
   static _applyInit(target: TestSturdyRefObjectId, value: $.Init<TestSturdyRefObjectId>): void {
     const init = value as any;
-    if (init["tag"] !== undefined) {
-      target.tag = init["tag"] as any;
+    {
+      const value = init["tag"];
+      if (value !== undefined) {
+        target.tag = value as any;
+      }
     }
   }
   get tag(): TestSturdyRefObjectId_Tag {
@@ -13902,15 +15146,21 @@ export class TestNameAnnotation_NestedStruct extends $.Struct {
   };
   static _applyInit(target: TestNameAnnotation_NestedStruct, value: $.Init<TestNameAnnotation_NestedStruct>): void {
     const init = value as any;
-    if (init["badNestedFieldName"] !== undefined) {
-      target.badNestedFieldName = init["badNestedFieldName"] as any;
-    }
-    if (init["anotherBadNestedFieldName"] !== undefined) {
-      if (init["anotherBadNestedFieldName"] instanceof TestNameAnnotation_NestedStruct) {
-        target.anotherBadNestedFieldName = init["anotherBadNestedFieldName"] as TestNameAnnotation_NestedStruct;
+    {
+      const value = init["badNestedFieldName"];
+      if (value !== undefined) {
+        target.badNestedFieldName = value as any;
       }
-      else {
-        TestNameAnnotation_NestedStruct._applyInit(target._initAnotherBadNestedFieldName(), init["anotherBadNestedFieldName"] as $.Init<TestNameAnnotation_NestedStruct>);
+    }
+    {
+      const value = init["anotherBadNestedFieldName"];
+      if (value !== undefined) {
+        if (value instanceof TestNameAnnotation_NestedStruct) {
+          target.anotherBadNestedFieldName = value as TestNameAnnotation_NestedStruct;
+        }
+        else {
+          TestNameAnnotation_NestedStruct._applyInit(target._initAnotherBadNestedFieldName(), value as $.Init<TestNameAnnotation_NestedStruct>);
+        }
       }
     }
   }
@@ -13954,9 +15204,15 @@ export class TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup extends $.Struct
   };
   static _applyInit(target: TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup, value: $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>): void {
     const init = value as any;
-    if (init["foo"] !== undefined) {
+    {
+      const value = init["foo"];
+      if (value !== undefined) {
+      }
     }
-    if (init["bar"] !== undefined) {
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+      }
     }
   }
   toString(): string { return "TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup_" + super.toString(); }
@@ -13982,15 +15238,21 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
   };
   static _applyInit(target: TestNameAnnotation_BadlyNamedUnion, value: $.Init<TestNameAnnotation_BadlyNamedUnion>): void {
     const init = value as any;
-    if (init["badlyNamedGroup"] !== undefined) {
-      TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup._applyInit(target._initBadlyNamedGroup(), init["badlyNamedGroup"] as $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>);
-    }
-    if (init["baz"] !== undefined) {
-      if (init["baz"] instanceof TestNameAnnotation_NestedStruct) {
-        target.baz = init["baz"] as TestNameAnnotation_NestedStruct;
+    {
+      const value = init["badlyNamedGroup"];
+      if (value !== undefined) {
+        TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup._applyInit(target._initBadlyNamedGroup(), value as $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>);
       }
-      else {
-        TestNameAnnotation_NestedStruct._applyInit(target._initBaz(), init["baz"] as $.Init<TestNameAnnotation_NestedStruct>);
+    }
+    {
+      const value = init["baz"];
+      if (value !== undefined) {
+        if (value instanceof TestNameAnnotation_NestedStruct) {
+          target.baz = value as TestNameAnnotation_NestedStruct;
+        }
+        else {
+          TestNameAnnotation_NestedStruct._applyInit(target._initBaz(), value as $.Init<TestNameAnnotation_NestedStruct>);
+        }
       }
     }
   }
@@ -14107,17 +15369,29 @@ export class TestNameAnnotation extends $.Struct {
   };
   static _applyInit(target: TestNameAnnotation, value: $.Init<TestNameAnnotation>): void {
     const init = value as any;
-    if (init["badFieldName"] !== undefined) {
-      target.badFieldName = init["badFieldName"] as any;
+    {
+      const value = init["badFieldName"];
+      if (value !== undefined) {
+        target.badFieldName = value as any;
+      }
     }
-    if (init["bar"] !== undefined) {
-      target.bar = init["bar"] as any;
+    {
+      const value = init["bar"];
+      if (value !== undefined) {
+        target.bar = value as any;
+      }
     }
-    if (init["anotherBadFieldName"] !== undefined) {
-      target.anotherBadFieldName = init["anotherBadFieldName"] as any;
+    {
+      const value = init["anotherBadFieldName"];
+      if (value !== undefined) {
+        target.anotherBadFieldName = value as any;
+      }
     }
-    if (init["badlyNamedUnion"] !== undefined) {
-      TestNameAnnotation_BadlyNamedUnion._applyInit(target._initBadlyNamedUnion(), init["badlyNamedUnion"] as $.Init<TestNameAnnotation_BadlyNamedUnion>);
+    {
+      const value = init["badlyNamedUnion"];
+      if (value !== undefined) {
+        TestNameAnnotation_BadlyNamedUnion._applyInit(target._initBadlyNamedUnion(), value as $.Init<TestNameAnnotation_BadlyNamedUnion>);
+      }
     }
   }
   get badFieldName(): boolean {
@@ -14217,8 +15491,11 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Params extends $.Struc
   };
   static _applyInit(target: TestNameAnnotationInterface_BadlyNamedMethod$Params, value: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Params>): void {
     const init = value as any;
-    if (init["badlyNamedParam"] !== undefined) {
-      target.badlyNamedParam = init["badlyNamedParam"] as any;
+    {
+      const value = init["badlyNamedParam"];
+      if (value !== undefined) {
+        target.badlyNamedParam = value as any;
+      }
     }
   }
   get badlyNamedParam(): number {
@@ -14289,7 +15566,9 @@ export class TestNameAnnotationInterface$Client {
       method: TestNameAnnotationInterface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: TestNameAnnotationInterface_BadlyNamedMethod$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: TestNameAnnotationInterface_BadlyNamedMethod$Params) => void
+          : (target: TestNameAnnotationInterface_BadlyNamedMethod$Params) => TestNameAnnotationInterface_BadlyNamedMethod$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestNameAnnotationInterface_BadlyNamedMethod$Results, answer);
     return new TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise(pipeline);
@@ -14308,7 +15587,7 @@ export class TestNameAnnotationInterface$Server extends $.Server {
         impl: async (params: TestNameAnnotationInterface_BadlyNamedMethod$Params, results: TestNameAnnotationInterface_BadlyNamedMethod$Results) => {
           const value = await target.badlyNamedMethod(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>);
+            TestNameAnnotationInterface_BadlyNamedMethod$Results._applyInit(results, value as $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>);
           }
         }
       }

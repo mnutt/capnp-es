@@ -16,16 +16,22 @@ export class TestImport extends $.Struct {
   };
   static _applyInit(target: TestImport, value: $.Init<TestImport>): void {
     const init = value as any;
-    if (init["field"] !== undefined) {
-      if (init["field"] instanceof TestAllTypes) {
-        target.field = init["field"] as TestAllTypes;
-      }
-      else {
-        TestAllTypes._applyInit(target._initField(), init["field"] as $.Init<TestAllTypes>);
+    {
+      const value = init["field"];
+      if (value !== undefined) {
+        if (value instanceof TestAllTypes) {
+          target.field = value as TestAllTypes;
+        }
+        else {
+          TestAllTypes._applyInit(target._initField(), value as $.Init<TestAllTypes>);
+        }
       }
     }
-    if (init["enumField"] !== undefined) {
-      target.enumField = init["enumField"] as any;
+    {
+      const value = init["enumField"];
+      if (value !== undefined) {
+        target.enumField = value as any;
+      }
     }
   }
   _adoptField(value: $.Orphan<TestAllTypes>): void {

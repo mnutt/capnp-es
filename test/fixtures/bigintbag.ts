@@ -19,17 +19,29 @@ export class BigIntBag extends $.Struct {
   };
   static _applyInit(target: BigIntBag, value: $.Init<BigIntBag>): void {
     const init = value as any;
-    if (init["signed"] !== undefined) {
-      target.signed = init["signed"] as any;
+    {
+      const value = init["signed"];
+      if (value !== undefined) {
+        target.signed = value as any;
+      }
     }
-    if (init["unsigned"] !== undefined) {
-      target.unsigned = init["unsigned"] as any;
+    {
+      const value = init["unsigned"];
+      if (value !== undefined) {
+        target.unsigned = value as any;
+      }
     }
-    if (init["defaultSigned"] !== undefined) {
-      target.defaultSigned = init["defaultSigned"] as any;
+    {
+      const value = init["defaultSigned"];
+      if (value !== undefined) {
+        target.defaultSigned = value as any;
+      }
     }
-    if (init["defaultUnsigned"] !== undefined) {
-      target.defaultUnsigned = init["defaultUnsigned"] as any;
+    {
+      const value = init["defaultUnsigned"];
+      if (value !== undefined) {
+        target.defaultUnsigned = value as any;
+      }
     }
   }
   get signed(): bigint {

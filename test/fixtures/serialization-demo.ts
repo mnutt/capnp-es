@@ -22,11 +22,17 @@ export class Person_PhoneNumber extends $.Struct {
   };
   static _applyInit(target: Person_PhoneNumber, value: $.Init<Person_PhoneNumber>): void {
     const init = value as any;
-    if (init["number"] !== undefined) {
-      target.number = init["number"] as any;
+    {
+      const value = init["number"];
+      if (value !== undefined) {
+        target.number = value as any;
+      }
     }
-    if (init["type"] !== undefined) {
-      target.type = init["type"] as any;
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        target.type = value as any;
+      }
     }
   }
   get number(): string {
@@ -74,17 +80,29 @@ export class Person_Employment extends $.Struct {
   };
   static _applyInit(target: Person_Employment, value: $.Init<Person_Employment>): void {
     const init = value as any;
-    if (init["unemployed"] !== undefined) {
-      target.unemployed = true;
+    {
+      const value = init["unemployed"];
+      if (value !== undefined) {
+        target.unemployed = true;
+      }
     }
-    if (init["employer"] !== undefined) {
-      target.employer = init["employer"] as any;
+    {
+      const value = init["employer"];
+      if (value !== undefined) {
+        target.employer = value as any;
+      }
     }
-    if (init["school"] !== undefined) {
-      target.school = init["school"] as any;
+    {
+      const value = init["school"];
+      if (value !== undefined) {
+        target.school = value as any;
+      }
     }
-    if (init["selfEmployed"] !== undefined) {
-      target.selfEmployed = true;
+    {
+      const value = init["selfEmployed"];
+      if (value !== undefined) {
+        target.selfEmployed = true;
+      }
     }
   }
   get _isUnemployed(): boolean {
@@ -218,35 +236,50 @@ export class Person extends $.Struct {
   static _Phones: $.ListCtor<Person_PhoneNumber>;
   static _applyInit(target: Person, value: $.Init<Person>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
-    }
-    if (init["email"] !== undefined) {
-      target.email = init["email"] as any;
-    }
-    if (init["phones"] !== undefined) {
-      if (init["phones"] instanceof $.List) {
-        target.phones = init["phones"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
-      else {
-        const values = Array.isArray(init["phones"]) ? init["phones"] : Array.from(init["phones"] as Iterable<any>);
-        const list = target._initPhones(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Person_PhoneNumber) {
-            list.set(index, item);
-          }
-          else {
-            Person_PhoneNumber._applyInit(list.get(index), item as $.Init<Person_PhoneNumber>);
+    }
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
+      }
+    }
+    {
+      const value = init["email"];
+      if (value !== undefined) {
+        target.email = value as any;
+      }
+    }
+    {
+      const value = init["phones"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.phones = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initPhones(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Person_PhoneNumber) {
+              list.set(index, item);
+            }
+            else {
+              Person_PhoneNumber._applyInit(list.get(index), item as $.Init<Person_PhoneNumber>);
+            }
           }
         }
       }
     }
-    if (init["employment"] !== undefined) {
-      Person_Employment._applyInit(target._initEmployment(), init["employment"] as $.Init<Person_Employment>);
+    {
+      const value = init["employment"];
+      if (value !== undefined) {
+        Person_Employment._applyInit(target._initEmployment(), value as $.Init<Person_Employment>);
+      }
     }
   }
   get id(): number {
@@ -307,20 +340,23 @@ export class AddressBook extends $.Struct {
   static _People: $.ListCtor<Person>;
   static _applyInit(target: AddressBook, value: $.Init<AddressBook>): void {
     const init = value as any;
-    if (init["people"] !== undefined) {
-      if (init["people"] instanceof $.List) {
-        target.people = init["people"] as any;
-      }
-      else {
-        const values = Array.isArray(init["people"]) ? init["people"] : Array.from(init["people"] as Iterable<any>);
-        const list = target._initPeople(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Person) {
-            list.set(index, item);
-          }
-          else {
-            Person._applyInit(list.get(index), item as $.Init<Person>);
+    {
+      const value = init["people"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.people = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initPeople(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Person) {
+              list.set(index, item);
+            }
+            else {
+              Person._applyInit(list.get(index), item as $.Init<Person>);
+            }
           }
         }
       }

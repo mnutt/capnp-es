@@ -37,8 +37,11 @@ export class VatId extends $.Struct {
   };
   static _applyInit(target: VatId, value: $.Init<VatId>): void {
     const init = value as any;
-    if (init["side"] !== undefined) {
-      target.side = init["side"] as any;
+    {
+      const value = init["side"];
+      if (value !== undefined) {
+        target.side = value as any;
+      }
     }
   }
   get side(): Side {
@@ -66,8 +69,11 @@ export class ProvisionId extends $.Struct {
   };
   static _applyInit(target: ProvisionId, value: $.Init<ProvisionId>): void {
     const init = value as any;
-    if (init["joinId"] !== undefined) {
-      target.joinId = init["joinId"] as any;
+    {
+      const value = init["joinId"];
+      if (value !== undefined) {
+        target.joinId = value as any;
+      }
     }
   }
   /**
@@ -166,14 +172,23 @@ export class JoinKeyPart extends $.Struct {
   };
   static _applyInit(target: JoinKeyPart, value: $.Init<JoinKeyPart>): void {
     const init = value as any;
-    if (init["joinId"] !== undefined) {
-      target.joinId = init["joinId"] as any;
+    {
+      const value = init["joinId"];
+      if (value !== undefined) {
+        target.joinId = value as any;
+      }
     }
-    if (init["partCount"] !== undefined) {
-      target.partCount = init["partCount"] as any;
+    {
+      const value = init["partCount"];
+      if (value !== undefined) {
+        target.partCount = value as any;
+      }
     }
-    if (init["partNum"] !== undefined) {
-      target.partNum = init["partNum"] as any;
+    {
+      const value = init["partNum"];
+      if (value !== undefined) {
+        target.partNum = value as any;
+      }
     }
   }
   /**
@@ -224,14 +239,23 @@ export class JoinResult extends $.Struct {
   };
   static _applyInit(target: JoinResult, value: $.Init<JoinResult>): void {
     const init = value as any;
-    if (init["joinId"] !== undefined) {
-      target.joinId = init["joinId"] as any;
+    {
+      const value = init["joinId"];
+      if (value !== undefined) {
+        target.joinId = value as any;
+      }
     }
-    if (init["succeeded"] !== undefined) {
-      target.succeeded = init["succeeded"] as any;
+    {
+      const value = init["succeeded"];
+      if (value !== undefined) {
+        target.succeeded = value as any;
+      }
     }
-    if (init["cap"] !== undefined) {
-      target.cap = init["cap"] as any;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        target.cap = value as any;
+      }
     }
   }
   /**

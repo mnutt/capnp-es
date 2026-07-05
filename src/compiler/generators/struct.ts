@@ -537,7 +537,8 @@ function createApplyInitField(
   const accessorName =
     field.name === "constructor" ? "$constructor" : field.name;
   const valueKey = JSON.stringify(accessorName);
-  const valueRef = `init[${valueKey}]`;
+  const rawValueRef = `init[${valueKey}]`;
+  const valueRef = "value";
   const discriminant =
     field.discriminantValue === schema.Field.NO_DISCRIMINANT
       ? ""
@@ -548,9 +549,12 @@ function createApplyInitField(
       lookupNode(ctx, field.group.typeId),
     );
     return `
+    {
+      const value = ${rawValueRef};
       if (${valueRef} !== undefined) {
         ${groupClassName}._applyInit(target.${initName}(), ${valueRef} as $.Init<${groupClassName}>);
       }
+    }
     `;
   }
 
@@ -562,14 +566,19 @@ function createApplyInitField(
   switch (slotType.which()) {
     case schema.Type.VOID: {
       return `
+      {
+        const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           ${discriminant}
         }
+      }
       `;
     }
 
     case schema.Type.DATA: {
       return `
+      {
+        const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           if (${valueRef} instanceof $.Data) {
             target.${accessorName} = ${valueRef} as $.Data;
@@ -578,6 +587,7 @@ function createApplyInitField(
             target.${initName}(bytes.byteLength).copyBuffer(bytes);
           }
         }
+      }
       `;
     }
 
@@ -588,6 +598,7 @@ function createApplyInitField(
         accessorName,
         initName,
         valueRef,
+        rawValueRef,
       );
     }
 
@@ -596,6 +607,8 @@ function createApplyInitField(
         lookupNode(ctx, slotType.struct.typeId),
       );
       return `
+      {
+        const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           if (${valueRef} instanceof ${structClassName}) {
             target.${accessorName} = ${valueRef} as ${structClassName};
@@ -603,6 +616,7 @@ function createApplyInitField(
             ${structClassName}._applyInit(target.${initName}(), ${valueRef} as $.Init<${structClassName}>);
           }
         }
+      }
       `;
     }
 
@@ -622,9 +636,12 @@ function createApplyInitField(
     case schema.Type.UINT64:
     case schema.Type.UINT8: {
       return `
+      {
+        const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           target.${accessorName} = ${valueRef} as any;
         }
+      }
       `;
     }
 
@@ -640,11 +657,14 @@ function createApplyInitListField(
   accessorName: string,
   initName: string,
   valueRef: string,
+  rawValueRef: string,
 ): string {
   const elementType = field.slot.type.list.elementType;
   const listSet = createApplyInitListElement(ctx, elementType);
 
   return `
+    {
+      const value = ${rawValueRef};
     if (${valueRef} !== undefined) {
       if (${valueRef} instanceof $.List) {
         target.${accessorName} = ${valueRef} as any;
@@ -656,6 +676,7 @@ function createApplyInitListField(
           ${listSet}
         }
       }
+    }
     }
   `;
 }

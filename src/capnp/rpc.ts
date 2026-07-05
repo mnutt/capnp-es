@@ -140,106 +140,148 @@ export class Message extends $.Struct {
   };
   static _applyInit(target: Message, value: $.Init<Message>): void {
     const init = value as any;
-    if (init["unimplemented"] !== undefined) {
-      if (init["unimplemented"] instanceof Message) {
-        target.unimplemented = init["unimplemented"] as Message;
-      }
-      else {
-        Message._applyInit(target._initUnimplemented(), init["unimplemented"] as $.Init<Message>);
-      }
-    }
-    if (init["abort"] !== undefined) {
-      if (init["abort"] instanceof Exception) {
-        target.abort = init["abort"] as Exception;
-      }
-      else {
-        Exception._applyInit(target._initAbort(), init["abort"] as $.Init<Exception>);
+    {
+      const value = init["unimplemented"];
+      if (value !== undefined) {
+        if (value instanceof Message) {
+          target.unimplemented = value as Message;
+        }
+        else {
+          Message._applyInit(target._initUnimplemented(), value as $.Init<Message>);
+        }
       }
     }
-    if (init["bootstrap"] !== undefined) {
-      if (init["bootstrap"] instanceof Bootstrap) {
-        target.bootstrap = init["bootstrap"] as Bootstrap;
-      }
-      else {
-        Bootstrap._applyInit(target._initBootstrap(), init["bootstrap"] as $.Init<Bootstrap>);
-      }
-    }
-    if (init["call"] !== undefined) {
-      if (init["call"] instanceof Call) {
-        target.call = init["call"] as Call;
-      }
-      else {
-        Call._applyInit(target._initCall(), init["call"] as $.Init<Call>);
+    {
+      const value = init["abort"];
+      if (value !== undefined) {
+        if (value instanceof Exception) {
+          target.abort = value as Exception;
+        }
+        else {
+          Exception._applyInit(target._initAbort(), value as $.Init<Exception>);
+        }
       }
     }
-    if (init["return"] !== undefined) {
-      if (init["return"] instanceof Return) {
-        target.return = init["return"] as Return;
-      }
-      else {
-        Return._applyInit(target._initReturn(), init["return"] as $.Init<Return>);
-      }
-    }
-    if (init["finish"] !== undefined) {
-      if (init["finish"] instanceof Finish) {
-        target.finish = init["finish"] as Finish;
-      }
-      else {
-        Finish._applyInit(target._initFinish(), init["finish"] as $.Init<Finish>);
+    {
+      const value = init["bootstrap"];
+      if (value !== undefined) {
+        if (value instanceof Bootstrap) {
+          target.bootstrap = value as Bootstrap;
+        }
+        else {
+          Bootstrap._applyInit(target._initBootstrap(), value as $.Init<Bootstrap>);
+        }
       }
     }
-    if (init["resolve"] !== undefined) {
-      if (init["resolve"] instanceof Resolve) {
-        target.resolve = init["resolve"] as Resolve;
-      }
-      else {
-        Resolve._applyInit(target._initResolve(), init["resolve"] as $.Init<Resolve>);
-      }
-    }
-    if (init["release"] !== undefined) {
-      if (init["release"] instanceof Release) {
-        target.release = init["release"] as Release;
-      }
-      else {
-        Release._applyInit(target._initRelease(), init["release"] as $.Init<Release>);
+    {
+      const value = init["call"];
+      if (value !== undefined) {
+        if (value instanceof Call) {
+          target.call = value as Call;
+        }
+        else {
+          Call._applyInit(target._initCall(), value as $.Init<Call>);
+        }
       }
     }
-    if (init["disembargo"] !== undefined) {
-      if (init["disembargo"] instanceof Disembargo) {
-        target.disembargo = init["disembargo"] as Disembargo;
-      }
-      else {
-        Disembargo._applyInit(target._initDisembargo(), init["disembargo"] as $.Init<Disembargo>);
-      }
-    }
-    if (init["obsoleteSave"] !== undefined) {
-      target.obsoleteSave = init["obsoleteSave"] as any;
-    }
-    if (init["obsoleteDelete"] !== undefined) {
-      target.obsoleteDelete = init["obsoleteDelete"] as any;
-    }
-    if (init["provide"] !== undefined) {
-      if (init["provide"] instanceof Provide) {
-        target.provide = init["provide"] as Provide;
-      }
-      else {
-        Provide._applyInit(target._initProvide(), init["provide"] as $.Init<Provide>);
+    {
+      const value = init["return"];
+      if (value !== undefined) {
+        if (value instanceof Return) {
+          target.return = value as Return;
+        }
+        else {
+          Return._applyInit(target._initReturn(), value as $.Init<Return>);
+        }
       }
     }
-    if (init["accept"] !== undefined) {
-      if (init["accept"] instanceof Accept) {
-        target.accept = init["accept"] as Accept;
-      }
-      else {
-        Accept._applyInit(target._initAccept(), init["accept"] as $.Init<Accept>);
+    {
+      const value = init["finish"];
+      if (value !== undefined) {
+        if (value instanceof Finish) {
+          target.finish = value as Finish;
+        }
+        else {
+          Finish._applyInit(target._initFinish(), value as $.Init<Finish>);
+        }
       }
     }
-    if (init["join"] !== undefined) {
-      if (init["join"] instanceof Join) {
-        target.join = init["join"] as Join;
+    {
+      const value = init["resolve"];
+      if (value !== undefined) {
+        if (value instanceof Resolve) {
+          target.resolve = value as Resolve;
+        }
+        else {
+          Resolve._applyInit(target._initResolve(), value as $.Init<Resolve>);
+        }
       }
-      else {
-        Join._applyInit(target._initJoin(), init["join"] as $.Init<Join>);
+    }
+    {
+      const value = init["release"];
+      if (value !== undefined) {
+        if (value instanceof Release) {
+          target.release = value as Release;
+        }
+        else {
+          Release._applyInit(target._initRelease(), value as $.Init<Release>);
+        }
+      }
+    }
+    {
+      const value = init["disembargo"];
+      if (value !== undefined) {
+        if (value instanceof Disembargo) {
+          target.disembargo = value as Disembargo;
+        }
+        else {
+          Disembargo._applyInit(target._initDisembargo(), value as $.Init<Disembargo>);
+        }
+      }
+    }
+    {
+      const value = init["obsoleteSave"];
+      if (value !== undefined) {
+        target.obsoleteSave = value as any;
+      }
+    }
+    {
+      const value = init["obsoleteDelete"];
+      if (value !== undefined) {
+        target.obsoleteDelete = value as any;
+      }
+    }
+    {
+      const value = init["provide"];
+      if (value !== undefined) {
+        if (value instanceof Provide) {
+          target.provide = value as Provide;
+        }
+        else {
+          Provide._applyInit(target._initProvide(), value as $.Init<Provide>);
+        }
+      }
+    }
+    {
+      const value = init["accept"];
+      if (value !== undefined) {
+        if (value instanceof Accept) {
+          target.accept = value as Accept;
+        }
+        else {
+          Accept._applyInit(target._initAccept(), value as $.Init<Accept>);
+        }
+      }
+    }
+    {
+      const value = init["join"];
+      if (value !== undefined) {
+        if (value instanceof Join) {
+          target.join = value as Join;
+        }
+        else {
+          Join._applyInit(target._initJoin(), value as $.Init<Join>);
+        }
       }
     }
   }
@@ -939,11 +981,17 @@ export class Bootstrap extends $.Struct {
   };
   static _applyInit(target: Bootstrap, value: $.Init<Bootstrap>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
+      }
     }
-    if (init["deprecatedObjectId"] !== undefined) {
-      target.deprecatedObjectId = init["deprecatedObjectId"] as any;
+    {
+      const value = init["deprecatedObjectId"];
+      if (value !== undefined) {
+        target.deprecatedObjectId = value as any;
+      }
     }
   }
   /**
@@ -1135,14 +1183,23 @@ export class Call_SendResultsTo extends $.Struct {
   };
   static _applyInit(target: Call_SendResultsTo, value: $.Init<Call_SendResultsTo>): void {
     const init = value as any;
-    if (init["caller"] !== undefined) {
-      target.caller = true;
+    {
+      const value = init["caller"];
+      if (value !== undefined) {
+        target.caller = true;
+      }
     }
-    if (init["yourself"] !== undefined) {
-      target.yourself = true;
+    {
+      const value = init["yourself"];
+      if (value !== undefined) {
+        target.yourself = true;
+      }
     }
-    if (init["thirdParty"] !== undefined) {
-      target.thirdParty = init["thirdParty"] as any;
+    {
+      const value = init["thirdParty"];
+      if (value !== undefined) {
+        target.thirdParty = value as any;
+      }
     }
   }
   get _isCaller(): boolean {
@@ -1285,42 +1342,69 @@ export class Call extends $.Struct {
   };
   static _applyInit(target: Call, value: $.Init<Call>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
-    }
-    if (init["target"] !== undefined) {
-      if (init["target"] instanceof MessageTarget) {
-        target.target = init["target"] as MessageTarget;
-      }
-      else {
-        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
       }
     }
-    if (init["interfaceId"] !== undefined) {
-      target.interfaceId = init["interfaceId"] as any;
-    }
-    if (init["methodId"] !== undefined) {
-      target.methodId = init["methodId"] as any;
-    }
-    if (init["allowThirdPartyTailCall"] !== undefined) {
-      target.allowThirdPartyTailCall = init["allowThirdPartyTailCall"] as any;
-    }
-    if (init["noPromisePipelining"] !== undefined) {
-      target.noPromisePipelining = init["noPromisePipelining"] as any;
-    }
-    if (init["onlyPromisePipeline"] !== undefined) {
-      target.onlyPromisePipeline = init["onlyPromisePipeline"] as any;
-    }
-    if (init["params"] !== undefined) {
-      if (init["params"] instanceof Payload) {
-        target.params = init["params"] as Payload;
-      }
-      else {
-        Payload._applyInit(target._initParams(), init["params"] as $.Init<Payload>);
+    {
+      const value = init["target"];
+      if (value !== undefined) {
+        if (value instanceof MessageTarget) {
+          target.target = value as MessageTarget;
+        }
+        else {
+          MessageTarget._applyInit(target._initTarget(), value as $.Init<MessageTarget>);
+        }
       }
     }
-    if (init["sendResultsTo"] !== undefined) {
-      Call_SendResultsTo._applyInit(target._initSendResultsTo(), init["sendResultsTo"] as $.Init<Call_SendResultsTo>);
+    {
+      const value = init["interfaceId"];
+      if (value !== undefined) {
+        target.interfaceId = value as any;
+      }
+    }
+    {
+      const value = init["methodId"];
+      if (value !== undefined) {
+        target.methodId = value as any;
+      }
+    }
+    {
+      const value = init["allowThirdPartyTailCall"];
+      if (value !== undefined) {
+        target.allowThirdPartyTailCall = value as any;
+      }
+    }
+    {
+      const value = init["noPromisePipelining"];
+      if (value !== undefined) {
+        target.noPromisePipelining = value as any;
+      }
+    }
+    {
+      const value = init["onlyPromisePipeline"];
+      if (value !== undefined) {
+        target.onlyPromisePipeline = value as any;
+      }
+    }
+    {
+      const value = init["params"];
+      if (value !== undefined) {
+        if (value instanceof Payload) {
+          target.params = value as Payload;
+        }
+        else {
+          Payload._applyInit(target._initParams(), value as $.Init<Payload>);
+        }
+      }
+    }
+    {
+      const value = init["sendResultsTo"];
+      if (value !== undefined) {
+        Call_SendResultsTo._applyInit(target._initSendResultsTo(), value as $.Init<Call_SendResultsTo>);
+      }
     }
   }
   /**
@@ -1554,42 +1638,69 @@ export class Return extends $.Struct {
   };
   static _applyInit(target: Return, value: $.Init<Return>): void {
     const init = value as any;
-    if (init["answerId"] !== undefined) {
-      target.answerId = init["answerId"] as any;
-    }
-    if (init["releaseParamCaps"] !== undefined) {
-      target.releaseParamCaps = init["releaseParamCaps"] as any;
-    }
-    if (init["noFinishNeeded"] !== undefined) {
-      target.noFinishNeeded = init["noFinishNeeded"] as any;
-    }
-    if (init["results"] !== undefined) {
-      if (init["results"] instanceof Payload) {
-        target.results = init["results"] as Payload;
-      }
-      else {
-        Payload._applyInit(target._initResults(), init["results"] as $.Init<Payload>);
+    {
+      const value = init["answerId"];
+      if (value !== undefined) {
+        target.answerId = value as any;
       }
     }
-    if (init["exception"] !== undefined) {
-      if (init["exception"] instanceof Exception) {
-        target.exception = init["exception"] as Exception;
-      }
-      else {
-        Exception._applyInit(target._initException(), init["exception"] as $.Init<Exception>);
+    {
+      const value = init["releaseParamCaps"];
+      if (value !== undefined) {
+        target.releaseParamCaps = value as any;
       }
     }
-    if (init["canceled"] !== undefined) {
-      target.canceled = true;
+    {
+      const value = init["noFinishNeeded"];
+      if (value !== undefined) {
+        target.noFinishNeeded = value as any;
+      }
     }
-    if (init["resultsSentElsewhere"] !== undefined) {
-      target.resultsSentElsewhere = true;
+    {
+      const value = init["results"];
+      if (value !== undefined) {
+        if (value instanceof Payload) {
+          target.results = value as Payload;
+        }
+        else {
+          Payload._applyInit(target._initResults(), value as $.Init<Payload>);
+        }
+      }
     }
-    if (init["takeFromOtherQuestion"] !== undefined) {
-      target.takeFromOtherQuestion = init["takeFromOtherQuestion"] as any;
+    {
+      const value = init["exception"];
+      if (value !== undefined) {
+        if (value instanceof Exception) {
+          target.exception = value as Exception;
+        }
+        else {
+          Exception._applyInit(target._initException(), value as $.Init<Exception>);
+        }
+      }
     }
-    if (init["acceptFromThirdParty"] !== undefined) {
-      target.acceptFromThirdParty = init["acceptFromThirdParty"] as any;
+    {
+      const value = init["canceled"];
+      if (value !== undefined) {
+        target.canceled = true;
+      }
+    }
+    {
+      const value = init["resultsSentElsewhere"];
+      if (value !== undefined) {
+        target.resultsSentElsewhere = true;
+      }
+    }
+    {
+      const value = init["takeFromOtherQuestion"];
+      if (value !== undefined) {
+        target.takeFromOtherQuestion = value as any;
+      }
+    }
+    {
+      const value = init["acceptFromThirdParty"];
+      if (value !== undefined) {
+        target.acceptFromThirdParty = value as any;
+      }
     }
   }
   /**
@@ -1901,14 +2012,23 @@ export class Finish extends $.Struct {
   };
   static _applyInit(target: Finish, value: $.Init<Finish>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
+      }
     }
-    if (init["releaseResultCaps"] !== undefined) {
-      target.releaseResultCaps = init["releaseResultCaps"] as any;
+    {
+      const value = init["releaseResultCaps"];
+      if (value !== undefined) {
+        target.releaseResultCaps = value as any;
+      }
     }
-    if (init["requireEarlyCancellationWorkaround"] !== undefined) {
-      target.requireEarlyCancellationWorkaround = init["requireEarlyCancellationWorkaround"] as any;
+    {
+      const value = init["requireEarlyCancellationWorkaround"];
+      if (value !== undefined) {
+        target.requireEarlyCancellationWorkaround = value as any;
+      }
     }
   }
   /**
@@ -2035,23 +2155,32 @@ export class Resolve extends $.Struct {
   };
   static _applyInit(target: Resolve, value: $.Init<Resolve>): void {
     const init = value as any;
-    if (init["promiseId"] !== undefined) {
-      target.promiseId = init["promiseId"] as any;
-    }
-    if (init["cap"] !== undefined) {
-      if (init["cap"] instanceof CapDescriptor) {
-        target.cap = init["cap"] as CapDescriptor;
-      }
-      else {
-        CapDescriptor._applyInit(target._initCap(), init["cap"] as $.Init<CapDescriptor>);
+    {
+      const value = init["promiseId"];
+      if (value !== undefined) {
+        target.promiseId = value as any;
       }
     }
-    if (init["exception"] !== undefined) {
-      if (init["exception"] instanceof Exception) {
-        target.exception = init["exception"] as Exception;
+    {
+      const value = init["cap"];
+      if (value !== undefined) {
+        if (value instanceof CapDescriptor) {
+          target.cap = value as CapDescriptor;
+        }
+        else {
+          CapDescriptor._applyInit(target._initCap(), value as $.Init<CapDescriptor>);
+        }
       }
-      else {
-        Exception._applyInit(target._initException(), init["exception"] as $.Init<Exception>);
+    }
+    {
+      const value = init["exception"];
+      if (value !== undefined) {
+        if (value instanceof Exception) {
+          target.exception = value as Exception;
+        }
+        else {
+          Exception._applyInit(target._initException(), value as $.Init<Exception>);
+        }
       }
     }
   }
@@ -2222,11 +2351,17 @@ export class Release extends $.Struct {
   };
   static _applyInit(target: Release, value: $.Init<Release>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
+      }
     }
-    if (init["referenceCount"] !== undefined) {
-      target.referenceCount = init["referenceCount"] as any;
+    {
+      const value = init["referenceCount"];
+      if (value !== undefined) {
+        target.referenceCount = value as any;
+      }
     }
   }
   /**
@@ -2318,17 +2453,29 @@ export class Disembargo_Context extends $.Struct {
   };
   static _applyInit(target: Disembargo_Context, value: $.Init<Disembargo_Context>): void {
     const init = value as any;
-    if (init["senderLoopback"] !== undefined) {
-      target.senderLoopback = init["senderLoopback"] as any;
+    {
+      const value = init["senderLoopback"];
+      if (value !== undefined) {
+        target.senderLoopback = value as any;
+      }
     }
-    if (init["receiverLoopback"] !== undefined) {
-      target.receiverLoopback = init["receiverLoopback"] as any;
+    {
+      const value = init["receiverLoopback"];
+      if (value !== undefined) {
+        target.receiverLoopback = value as any;
+      }
     }
-    if (init["accept"] !== undefined) {
-      target.accept = true;
+    {
+      const value = init["accept"];
+      if (value !== undefined) {
+        target.accept = true;
+      }
     }
-    if (init["provide"] !== undefined) {
-      target.provide = init["provide"] as any;
+    {
+      const value = init["provide"];
+      if (value !== undefined) {
+        target.provide = value as any;
+      }
     }
   }
   /**
@@ -2563,16 +2710,22 @@ export class Disembargo extends $.Struct {
   };
   static _applyInit(target: Disembargo, value: $.Init<Disembargo>): void {
     const init = value as any;
-    if (init["target"] !== undefined) {
-      if (init["target"] instanceof MessageTarget) {
-        target.target = init["target"] as MessageTarget;
-      }
-      else {
-        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+    {
+      const value = init["target"];
+      if (value !== undefined) {
+        if (value instanceof MessageTarget) {
+          target.target = value as MessageTarget;
+        }
+        else {
+          MessageTarget._applyInit(target._initTarget(), value as $.Init<MessageTarget>);
+        }
       }
     }
-    if (init["context"] !== undefined) {
-      Disembargo_Context._applyInit(target._initContext(), init["context"] as $.Init<Disembargo_Context>);
+    {
+      const value = init["context"];
+      if (value !== undefined) {
+        Disembargo_Context._applyInit(target._initContext(), value as $.Init<Disembargo_Context>);
+      }
     }
   }
   _adoptTarget(value: $.Orphan<MessageTarget>): void {
@@ -2631,19 +2784,28 @@ export class Provide extends $.Struct {
   };
   static _applyInit(target: Provide, value: $.Init<Provide>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
-    }
-    if (init["target"] !== undefined) {
-      if (init["target"] instanceof MessageTarget) {
-        target.target = init["target"] as MessageTarget;
-      }
-      else {
-        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
       }
     }
-    if (init["recipient"] !== undefined) {
-      target.recipient = init["recipient"] as any;
+    {
+      const value = init["target"];
+      if (value !== undefined) {
+        if (value instanceof MessageTarget) {
+          target.target = value as MessageTarget;
+        }
+        else {
+          MessageTarget._applyInit(target._initTarget(), value as $.Init<MessageTarget>);
+        }
+      }
+    }
+    {
+      const value = init["recipient"];
+      if (value !== undefined) {
+        target.recipient = value as any;
+      }
     }
   }
   /**
@@ -2726,14 +2888,23 @@ export class Accept extends $.Struct {
   };
   static _applyInit(target: Accept, value: $.Init<Accept>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
+      }
     }
-    if (init["provision"] !== undefined) {
-      target.provision = init["provision"] as any;
+    {
+      const value = init["provision"];
+      if (value !== undefined) {
+        target.provision = value as any;
+      }
     }
-    if (init["embargo"] !== undefined) {
-      target.embargo = init["embargo"] as any;
+    {
+      const value = init["embargo"];
+      if (value !== undefined) {
+        target.embargo = value as any;
+      }
     }
   }
   /**
@@ -2865,19 +3036,28 @@ export class Join extends $.Struct {
   };
   static _applyInit(target: Join, value: $.Init<Join>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
-    }
-    if (init["target"] !== undefined) {
-      if (init["target"] instanceof MessageTarget) {
-        target.target = init["target"] as MessageTarget;
-      }
-      else {
-        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
       }
     }
-    if (init["keyPart"] !== undefined) {
-      target.keyPart = init["keyPart"] as any;
+    {
+      const value = init["target"];
+      if (value !== undefined) {
+        if (value instanceof MessageTarget) {
+          target.target = value as MessageTarget;
+        }
+        else {
+          MessageTarget._applyInit(target._initTarget(), value as $.Init<MessageTarget>);
+        }
+      }
+    }
+    {
+      const value = init["keyPart"];
+      if (value !== undefined) {
+        target.keyPart = value as any;
+      }
     }
   }
   /**
@@ -2986,15 +3166,21 @@ export class MessageTarget extends $.Struct {
   };
   static _applyInit(target: MessageTarget, value: $.Init<MessageTarget>): void {
     const init = value as any;
-    if (init["importedCap"] !== undefined) {
-      target.importedCap = init["importedCap"] as any;
-    }
-    if (init["promisedAnswer"] !== undefined) {
-      if (init["promisedAnswer"] instanceof PromisedAnswer) {
-        target.promisedAnswer = init["promisedAnswer"] as PromisedAnswer;
+    {
+      const value = init["importedCap"];
+      if (value !== undefined) {
+        target.importedCap = value as any;
       }
-      else {
-        PromisedAnswer._applyInit(target._initPromisedAnswer(), init["promisedAnswer"] as $.Init<PromisedAnswer>);
+    }
+    {
+      const value = init["promisedAnswer"];
+      if (value !== undefined) {
+        if (value instanceof PromisedAnswer) {
+          target.promisedAnswer = value as PromisedAnswer;
+        }
+        else {
+          PromisedAnswer._applyInit(target._initPromisedAnswer(), value as $.Init<PromisedAnswer>);
+        }
       }
     }
   }
@@ -3116,23 +3302,29 @@ export class Payload extends $.Struct {
   static _CapTable: $.ListCtor<CapDescriptor>;
   static _applyInit(target: Payload, value: $.Init<Payload>): void {
     const init = value as any;
-    if (init["content"] !== undefined) {
-      target.content = init["content"] as any;
-    }
-    if (init["capTable"] !== undefined) {
-      if (init["capTable"] instanceof $.List) {
-        target.capTable = init["capTable"] as any;
+    {
+      const value = init["content"];
+      if (value !== undefined) {
+        target.content = value as any;
       }
-      else {
-        const values = Array.isArray(init["capTable"]) ? init["capTable"] : Array.from(init["capTable"] as Iterable<any>);
-        const list = target._initCapTable(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof CapDescriptor) {
-            list.set(index, item);
-          }
-          else {
-            CapDescriptor._applyInit(list.get(index), item as $.Init<CapDescriptor>);
+    }
+    {
+      const value = init["capTable"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.capTable = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initCapTable(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof CapDescriptor) {
+              list.set(index, item);
+            }
+            else {
+              CapDescriptor._applyInit(list.get(index), item as $.Init<CapDescriptor>);
+            }
           }
         }
       }
@@ -3276,36 +3468,57 @@ export class CapDescriptor extends $.Struct {
   };
   static _applyInit(target: CapDescriptor, value: $.Init<CapDescriptor>): void {
     const init = value as any;
-    if (init["none"] !== undefined) {
-      target.none = true;
-    }
-    if (init["senderHosted"] !== undefined) {
-      target.senderHosted = init["senderHosted"] as any;
-    }
-    if (init["senderPromise"] !== undefined) {
-      target.senderPromise = init["senderPromise"] as any;
-    }
-    if (init["receiverHosted"] !== undefined) {
-      target.receiverHosted = init["receiverHosted"] as any;
-    }
-    if (init["receiverAnswer"] !== undefined) {
-      if (init["receiverAnswer"] instanceof PromisedAnswer) {
-        target.receiverAnswer = init["receiverAnswer"] as PromisedAnswer;
-      }
-      else {
-        PromisedAnswer._applyInit(target._initReceiverAnswer(), init["receiverAnswer"] as $.Init<PromisedAnswer>);
+    {
+      const value = init["none"];
+      if (value !== undefined) {
+        target.none = true;
       }
     }
-    if (init["thirdPartyHosted"] !== undefined) {
-      if (init["thirdPartyHosted"] instanceof ThirdPartyCapDescriptor) {
-        target.thirdPartyHosted = init["thirdPartyHosted"] as ThirdPartyCapDescriptor;
-      }
-      else {
-        ThirdPartyCapDescriptor._applyInit(target._initThirdPartyHosted(), init["thirdPartyHosted"] as $.Init<ThirdPartyCapDescriptor>);
+    {
+      const value = init["senderHosted"];
+      if (value !== undefined) {
+        target.senderHosted = value as any;
       }
     }
-    if (init["attachedFd"] !== undefined) {
-      target.attachedFd = init["attachedFd"] as any;
+    {
+      const value = init["senderPromise"];
+      if (value !== undefined) {
+        target.senderPromise = value as any;
+      }
+    }
+    {
+      const value = init["receiverHosted"];
+      if (value !== undefined) {
+        target.receiverHosted = value as any;
+      }
+    }
+    {
+      const value = init["receiverAnswer"];
+      if (value !== undefined) {
+        if (value instanceof PromisedAnswer) {
+          target.receiverAnswer = value as PromisedAnswer;
+        }
+        else {
+          PromisedAnswer._applyInit(target._initReceiverAnswer(), value as $.Init<PromisedAnswer>);
+        }
+      }
+    }
+    {
+      const value = init["thirdPartyHosted"];
+      if (value !== undefined) {
+        if (value instanceof ThirdPartyCapDescriptor) {
+          target.thirdPartyHosted = value as ThirdPartyCapDescriptor;
+        }
+        else {
+          ThirdPartyCapDescriptor._applyInit(target._initThirdPartyHosted(), value as $.Init<ThirdPartyCapDescriptor>);
+        }
+      }
+    }
+    {
+      const value = init["attachedFd"];
+      if (value !== undefined) {
+        target.attachedFd = value as any;
+      }
     }
   }
   get _isNone(): boolean {
@@ -3633,11 +3846,17 @@ export class PromisedAnswer_Op extends $.Struct {
   };
   static _applyInit(target: PromisedAnswer_Op, value: $.Init<PromisedAnswer_Op>): void {
     const init = value as any;
-    if (init["noop"] !== undefined) {
-      target.noop = true;
+    {
+      const value = init["noop"];
+      if (value !== undefined) {
+        target.noop = true;
+      }
     }
-    if (init["getPointerField"] !== undefined) {
-      target.getPointerField = init["getPointerField"] as any;
+    {
+      const value = init["getPointerField"];
+      if (value !== undefined) {
+        target.getPointerField = value as any;
+      }
     }
   }
   get _isNoop(): boolean {
@@ -3740,23 +3959,29 @@ export class PromisedAnswer extends $.Struct {
   static _Transform: $.ListCtor<PromisedAnswer_Op>;
   static _applyInit(target: PromisedAnswer, value: $.Init<PromisedAnswer>): void {
     const init = value as any;
-    if (init["questionId"] !== undefined) {
-      target.questionId = init["questionId"] as any;
-    }
-    if (init["transform"] !== undefined) {
-      if (init["transform"] instanceof $.List) {
-        target.transform = init["transform"] as any;
+    {
+      const value = init["questionId"];
+      if (value !== undefined) {
+        target.questionId = value as any;
       }
-      else {
-        const values = Array.isArray(init["transform"]) ? init["transform"] : Array.from(init["transform"] as Iterable<any>);
-        const list = target._initTransform(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof PromisedAnswer_Op) {
-            list.set(index, item);
-          }
-          else {
-            PromisedAnswer_Op._applyInit(list.get(index), item as $.Init<PromisedAnswer_Op>);
+    }
+    {
+      const value = init["transform"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.transform = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initTransform(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof PromisedAnswer_Op) {
+              list.set(index, item);
+            }
+            else {
+              PromisedAnswer_Op._applyInit(list.get(index), item as $.Init<PromisedAnswer_Op>);
+            }
           }
         }
       }
@@ -3819,11 +4044,17 @@ export class ThirdPartyCapDescriptor extends $.Struct {
   };
   static _applyInit(target: ThirdPartyCapDescriptor, value: $.Init<ThirdPartyCapDescriptor>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
+      }
     }
-    if (init["vineId"] !== undefined) {
-      target.vineId = init["vineId"] as any;
+    {
+      const value = init["vineId"];
+      if (value !== undefined) {
+        target.vineId = value as any;
+      }
     }
   }
   _adoptId(value: $.Orphan<$.Pointer>): void {
@@ -3970,20 +4201,35 @@ export class Exception extends $.Struct {
   };
   static _applyInit(target: Exception, value: $.Init<Exception>): void {
     const init = value as any;
-    if (init["reason"] !== undefined) {
-      target.reason = init["reason"] as any;
+    {
+      const value = init["reason"];
+      if (value !== undefined) {
+        target.reason = value as any;
+      }
     }
-    if (init["type"] !== undefined) {
-      target.type = init["type"] as any;
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        target.type = value as any;
+      }
     }
-    if (init["obsoleteIsCallersFault"] !== undefined) {
-      target.obsoleteIsCallersFault = init["obsoleteIsCallersFault"] as any;
+    {
+      const value = init["obsoleteIsCallersFault"];
+      if (value !== undefined) {
+        target.obsoleteIsCallersFault = value as any;
+      }
     }
-    if (init["obsoleteDurability"] !== undefined) {
-      target.obsoleteDurability = init["obsoleteDurability"] as any;
+    {
+      const value = init["obsoleteDurability"];
+      if (value !== undefined) {
+        target.obsoleteDurability = value as any;
+      }
     }
-    if (init["trace"] !== undefined) {
-      target.trace = init["trace"] as any;
+    {
+      const value = init["trace"];
+      if (value !== undefined) {
+        target.trace = value as any;
+      }
     }
   }
   /**

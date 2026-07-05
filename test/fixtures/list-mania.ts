@@ -30,222 +30,270 @@ export class ListMania extends $.Struct {
   static _CompositeList: $.ListCtor<ListManiaStruct>;
   static _applyInit(target: ListMania, value: $.Init<ListMania>): void {
     const init = value as any;
-    if (init["boolList"] !== undefined) {
-      if (init["boolList"] instanceof $.List) {
-        target.boolList = init["boolList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["boolList"]) ? init["boolList"] : Array.from(init["boolList"] as Iterable<any>);
-        const list = target._initBoolList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["boolList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.boolList = value as any;
         }
-      }
-    }
-    if (init["compositeList"] !== undefined) {
-      if (init["compositeList"] instanceof $.List) {
-        target.compositeList = init["compositeList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["compositeList"]) ? init["compositeList"] : Array.from(init["compositeList"] as Iterable<any>);
-        const list = target._initCompositeList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof ListManiaStruct) {
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initBoolList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            ListManiaStruct._applyInit(list.get(index), item as $.Init<ListManiaStruct>);
+        }
+      }
+    }
+    {
+      const value = init["compositeList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.compositeList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initCompositeList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof ListManiaStruct) {
+              list.set(index, item);
+            }
+            else {
+              ListManiaStruct._applyInit(list.get(index), item as $.Init<ListManiaStruct>);
+            }
           }
         }
       }
     }
-    if (init["dataList"] !== undefined) {
-      if (init["dataList"] instanceof $.List) {
-        target.dataList = init["dataList"] as any;
+    {
+      const value = init["dataList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.dataList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initDataList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof $.Data) {
+              list.set(index, item);
+            }
+            else {
+              const bytes = $.dataBytes(item);
+              $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+            }
+          }
+        }
       }
-      else {
-        const values = Array.isArray(init["dataList"]) ? init["dataList"] : Array.from(init["dataList"] as Iterable<any>);
-        const list = target._initDataList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof $.Data) {
+    }
+    {
+      const value = init["float32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
             list.set(index, item);
           }
-          else {
-            const bytes = $.dataBytes(item);
-            $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+        }
+      }
+    }
+    {
+      const value = init["float64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.float64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFloat64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
           }
         }
       }
     }
-    if (init["float32List"] !== undefined) {
-      if (init["float32List"] instanceof $.List) {
-        target.float32List = init["float32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float32List"]) ? init["float32List"] : Array.from(init["float32List"] as Iterable<any>);
-        const list = target._initFloat32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["float64List"] !== undefined) {
-      if (init["float64List"] instanceof $.List) {
-        target.float64List = init["float64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["float64List"]) ? init["float64List"] : Array.from(init["float64List"] as Iterable<any>);
-        const list = target._initFloat64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["int8List"] !== undefined) {
-      if (init["int8List"] instanceof $.List) {
-        target.int8List = init["int8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int8List"]) ? init["int8List"] : Array.from(init["int8List"] as Iterable<any>);
-        const list = target._initInt8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["int16List"] !== undefined) {
-      if (init["int16List"] instanceof $.List) {
-        target.int16List = init["int16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int16List"]) ? init["int16List"] : Array.from(init["int16List"] as Iterable<any>);
-        const list = target._initInt16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["int64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.int64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInt64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["int32List"] !== undefined) {
-      if (init["int32List"] instanceof $.List) {
-        target.int32List = init["int32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int32List"]) ? init["int32List"] : Array.from(init["int32List"] as Iterable<any>);
-        const list = target._initInt32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["interfaceList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.interfaceList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initInterfaceList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["int64List"] !== undefined) {
-      if (init["int64List"] instanceof $.List) {
-        target.int64List = init["int64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["int64List"]) ? init["int64List"] : Array.from(init["int64List"] as Iterable<any>);
-        const list = target._initInt64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["textList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.textList = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initTextList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["interfaceList"] !== undefined) {
-      if (init["interfaceList"] instanceof $.List) {
-        target.interfaceList = init["interfaceList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["interfaceList"]) ? init["interfaceList"] : Array.from(init["interfaceList"] as Iterable<any>);
-        const list = target._initInterfaceList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["uint8List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uint8List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUint8List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["textList"] !== undefined) {
-      if (init["textList"] instanceof $.List) {
-        target.textList = init["textList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["textList"]) ? init["textList"] : Array.from(init["textList"] as Iterable<any>);
-        const list = target._initTextList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["uint16List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uint16List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUint16List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["uint8List"] !== undefined) {
-      if (init["uint8List"] instanceof $.List) {
-        target.uint8List = init["uint8List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uint8List"]) ? init["uint8List"] : Array.from(init["uint8List"] as Iterable<any>);
-        const list = target._initUint8List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["uint32List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uint32List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUint32List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["uint16List"] !== undefined) {
-      if (init["uint16List"] instanceof $.List) {
-        target.uint16List = init["uint16List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uint16List"]) ? init["uint16List"] : Array.from(init["uint16List"] as Iterable<any>);
-        const list = target._initUint16List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["uint64List"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.uint64List = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initUint64List(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
-    if (init["uint32List"] !== undefined) {
-      if (init["uint32List"] instanceof $.List) {
-        target.uint32List = init["uint32List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uint32List"]) ? init["uint32List"] : Array.from(init["uint32List"] as Iterable<any>);
-        const list = target._initUint32List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["voidList"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.voidList = value as any;
         }
-      }
-    }
-    if (init["uint64List"] !== undefined) {
-      if (init["uint64List"] instanceof $.List) {
-        target.uint64List = init["uint64List"] as any;
-      }
-      else {
-        const values = Array.isArray(init["uint64List"]) ? init["uint64List"] : Array.from(init["uint64List"] as Iterable<any>);
-        const list = target._initUint64List(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
-        }
-      }
-    }
-    if (init["voidList"] !== undefined) {
-      if (init["voidList"] instanceof $.List) {
-        target.voidList = init["voidList"] as any;
-      }
-      else {
-        const values = Array.isArray(init["voidList"]) ? init["voidList"] : Array.from(init["voidList"] as Iterable<any>);
-        const list = target._initVoidList(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initVoidList(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -567,16 +615,19 @@ export class ListManiaInterface_GetListMania$Results extends $.Struct {
   };
   static _applyInit(target: ListManiaInterface_GetListMania$Results, value: $.Init<ListManiaInterface_GetListMania$Results>): void {
     const init = value as any;
-    if (init["result"] !== undefined) {
-      if (init["result"] instanceof $.List) {
-        target.result = init["result"] as any;
-      }
-      else {
-        const values = Array.isArray(init["result"]) ? init["result"] : Array.from(init["result"] as Iterable<any>);
-        const list = target._initResult(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          list.set(index, item);
+    {
+      const value = init["result"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.result = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initResult(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            list.set(index, item);
+          }
         }
       }
     }
@@ -647,7 +698,9 @@ export class ListManiaInterface$Client {
       method: ListManiaInterface$Client.methods[0],
       paramsFunc: params === undefined
         ? undefined
-        : (target: ListManiaInterface_GetListMania$Params) => $.applyInit(target, params)
+        : typeof params === "function"
+          ? params as (target: ListManiaInterface_GetListMania$Params) => void
+          : (target: ListManiaInterface_GetListMania$Params) => ListManiaInterface_GetListMania$Params._applyInit(target, params)
     });
     const pipeline = new $.Pipeline(ListManiaInterface_GetListMania$Results, answer);
     return new ListManiaInterface_GetListMania$Results$Promise(pipeline);
@@ -666,7 +719,7 @@ export class ListManiaInterface$Server extends $.Server {
         impl: async (params: ListManiaInterface_GetListMania$Params, results: ListManiaInterface_GetListMania$Results) => {
           const value = await target.getListMania(params, results);
           if (value !== undefined) {
-            $.applyInit(results, value as $.Init<ListManiaInterface_GetListMania$Results>);
+            ListManiaInterface_GetListMania$Results._applyInit(results, value as $.Init<ListManiaInterface_GetListMania$Results>);
           }
         }
       }
@@ -704,14 +757,20 @@ export class ListManiaStruct extends $.Struct {
   };
   static _applyInit(target: ListManiaStruct, value: $.Init<ListManiaStruct>): void {
     const init = value as any;
-    if (init["void"] !== undefined) {
-    }
-    if (init["self"] !== undefined) {
-      if (init["self"] instanceof ListMania) {
-        target.self = init["self"] as ListMania;
+    {
+      const value = init["void"];
+      if (value !== undefined) {
       }
-      else {
-        ListMania._applyInit(target._initSelf(), init["self"] as $.Init<ListMania>);
+    }
+    {
+      const value = init["self"];
+      if (value !== undefined) {
+        if (value instanceof ListMania) {
+          target.self = value as ListMania;
+        }
+        else {
+          ListMania._applyInit(target._initSelf(), value as $.Init<ListMania>);
+        }
       }
     }
   }

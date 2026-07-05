@@ -18,8 +18,11 @@ export class Node_Parameter extends $.Struct {
   };
   static _applyInit(target: Node_Parameter, value: $.Init<Node_Parameter>): void {
     const init = value as any;
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
+      }
     }
   }
   get name(): string {
@@ -44,11 +47,17 @@ export class Node_NestedNode extends $.Struct {
   };
   static _applyInit(target: Node_NestedNode, value: $.Init<Node_NestedNode>): void {
     const init = value as any;
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
+      }
     }
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
+      }
     }
   }
   /**
@@ -89,8 +98,11 @@ export class Node_SourceInfo_Member extends $.Struct {
   };
   static _applyInit(target: Node_SourceInfo_Member, value: $.Init<Node_SourceInfo_Member>): void {
     const init = value as any;
-    if (init["docComment"] !== undefined) {
-      target.docComment = init["docComment"] as any;
+    {
+      const value = init["docComment"];
+      if (value !== undefined) {
+        target.docComment = value as any;
+      }
     }
   }
   /**
@@ -129,26 +141,35 @@ export class Node_SourceInfo extends $.Struct {
   static _Members: $.ListCtor<Node_SourceInfo_Member>;
   static _applyInit(target: Node_SourceInfo, value: $.Init<Node_SourceInfo>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["docComment"] !== undefined) {
-      target.docComment = init["docComment"] as any;
-    }
-    if (init["members"] !== undefined) {
-      if (init["members"] instanceof $.List) {
-        target.members = init["members"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
-      else {
-        const values = Array.isArray(init["members"]) ? init["members"] : Array.from(init["members"] as Iterable<any>);
-        const list = target._initMembers(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node_SourceInfo_Member) {
-            list.set(index, item);
-          }
-          else {
-            Node_SourceInfo_Member._applyInit(list.get(index), item as $.Init<Node_SourceInfo_Member>);
+    }
+    {
+      const value = init["docComment"];
+      if (value !== undefined) {
+        target.docComment = value as any;
+      }
+    }
+    {
+      const value = init["members"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.members = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initMembers(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node_SourceInfo_Member) {
+              list.set(index, item);
+            }
+            else {
+              Node_SourceInfo_Member._applyInit(list.get(index), item as $.Init<Node_SourceInfo_Member>);
+            }
           }
         }
       }
@@ -222,38 +243,59 @@ export class Node_Struct extends $.Struct {
   static _Fields: $.ListCtor<Field>;
   static _applyInit(target: Node_Struct, value: $.Init<Node_Struct>): void {
     const init = value as any;
-    if (init["dataWordCount"] !== undefined) {
-      target.dataWordCount = init["dataWordCount"] as any;
-    }
-    if (init["pointerCount"] !== undefined) {
-      target.pointerCount = init["pointerCount"] as any;
-    }
-    if (init["preferredListEncoding"] !== undefined) {
-      target.preferredListEncoding = init["preferredListEncoding"] as any;
-    }
-    if (init["isGroup"] !== undefined) {
-      target.isGroup = init["isGroup"] as any;
-    }
-    if (init["discriminantCount"] !== undefined) {
-      target.discriminantCount = init["discriminantCount"] as any;
-    }
-    if (init["discriminantOffset"] !== undefined) {
-      target.discriminantOffset = init["discriminantOffset"] as any;
-    }
-    if (init["fields"] !== undefined) {
-      if (init["fields"] instanceof $.List) {
-        target.fields = init["fields"] as any;
+    {
+      const value = init["dataWordCount"];
+      if (value !== undefined) {
+        target.dataWordCount = value as any;
       }
-      else {
-        const values = Array.isArray(init["fields"]) ? init["fields"] : Array.from(init["fields"] as Iterable<any>);
-        const list = target._initFields(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Field) {
-            list.set(index, item);
-          }
-          else {
-            Field._applyInit(list.get(index), item as $.Init<Field>);
+    }
+    {
+      const value = init["pointerCount"];
+      if (value !== undefined) {
+        target.pointerCount = value as any;
+      }
+    }
+    {
+      const value = init["preferredListEncoding"];
+      if (value !== undefined) {
+        target.preferredListEncoding = value as any;
+      }
+    }
+    {
+      const value = init["isGroup"];
+      if (value !== undefined) {
+        target.isGroup = value as any;
+      }
+    }
+    {
+      const value = init["discriminantCount"];
+      if (value !== undefined) {
+        target.discriminantCount = value as any;
+      }
+    }
+    {
+      const value = init["discriminantOffset"];
+      if (value !== undefined) {
+        target.discriminantOffset = value as any;
+      }
+    }
+    {
+      const value = init["fields"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.fields = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initFields(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Field) {
+              list.set(index, item);
+            }
+            else {
+              Field._applyInit(list.get(index), item as $.Init<Field>);
+            }
           }
         }
       }
@@ -386,20 +428,23 @@ export class Node_Enum extends $.Struct {
   static _Enumerants: $.ListCtor<Enumerant>;
   static _applyInit(target: Node_Enum, value: $.Init<Node_Enum>): void {
     const init = value as any;
-    if (init["enumerants"] !== undefined) {
-      if (init["enumerants"] instanceof $.List) {
-        target.enumerants = init["enumerants"] as any;
-      }
-      else {
-        const values = Array.isArray(init["enumerants"]) ? init["enumerants"] : Array.from(init["enumerants"] as Iterable<any>);
-        const list = target._initEnumerants(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Enumerant) {
-            list.set(index, item);
-          }
-          else {
-            Enumerant._applyInit(list.get(index), item as $.Init<Enumerant>);
+    {
+      const value = init["enumerants"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.enumerants = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initEnumerants(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Enumerant) {
+              list.set(index, item);
+            }
+            else {
+              Enumerant._applyInit(list.get(index), item as $.Init<Enumerant>);
+            }
           }
         }
       }
@@ -445,38 +490,44 @@ export class Node_Interface extends $.Struct {
   static _Superclasses: $.ListCtor<Superclass>;
   static _applyInit(target: Node_Interface, value: $.Init<Node_Interface>): void {
     const init = value as any;
-    if (init["methods"] !== undefined) {
-      if (init["methods"] instanceof $.List) {
-        target.methods = init["methods"] as any;
-      }
-      else {
-        const values = Array.isArray(init["methods"]) ? init["methods"] : Array.from(init["methods"] as Iterable<any>);
-        const list = target._initMethods(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Method) {
-            list.set(index, item);
-          }
-          else {
-            Method._applyInit(list.get(index), item as $.Init<Method>);
+    {
+      const value = init["methods"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.methods = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initMethods(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Method) {
+              list.set(index, item);
+            }
+            else {
+              Method._applyInit(list.get(index), item as $.Init<Method>);
+            }
           }
         }
       }
     }
-    if (init["superclasses"] !== undefined) {
-      if (init["superclasses"] instanceof $.List) {
-        target.superclasses = init["superclasses"] as any;
-      }
-      else {
-        const values = Array.isArray(init["superclasses"]) ? init["superclasses"] : Array.from(init["superclasses"] as Iterable<any>);
-        const list = target._initSuperclasses(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Superclass) {
-            list.set(index, item);
-          }
-          else {
-            Superclass._applyInit(list.get(index), item as $.Init<Superclass>);
+    {
+      const value = init["superclasses"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.superclasses = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initSuperclasses(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Superclass) {
+              list.set(index, item);
+            }
+            else {
+              Superclass._applyInit(list.get(index), item as $.Init<Superclass>);
+            }
           }
         }
       }
@@ -542,20 +593,26 @@ export class Node_Const extends $.Struct {
   };
   static _applyInit(target: Node_Const, value: $.Init<Node_Const>): void {
     const init = value as any;
-    if (init["type"] !== undefined) {
-      if (init["type"] instanceof Type) {
-        target.type = init["type"] as Type;
-      }
-      else {
-        Type._applyInit(target._initType(), init["type"] as $.Init<Type>);
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        if (value instanceof Type) {
+          target.type = value as Type;
+        }
+        else {
+          Type._applyInit(target._initType(), value as $.Init<Type>);
+        }
       }
     }
-    if (init["value"] !== undefined) {
-      if (init["value"] instanceof Value) {
-        target.value = init["value"] as Value;
-      }
-      else {
-        Value._applyInit(target._initValue(), init["value"] as $.Init<Value>);
+    {
+      const value = init["value"];
+      if (value !== undefined) {
+        if (value instanceof Value) {
+          target.value = value as Value;
+        }
+        else {
+          Value._applyInit(target._initValue(), value as $.Init<Value>);
+        }
       }
     }
   }
@@ -622,49 +679,88 @@ export class Node_Annotation extends $.Struct {
   };
   static _applyInit(target: Node_Annotation, value: $.Init<Node_Annotation>): void {
     const init = value as any;
-    if (init["type"] !== undefined) {
-      if (init["type"] instanceof Type) {
-        target.type = init["type"] as Type;
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        if (value instanceof Type) {
+          target.type = value as Type;
+        }
+        else {
+          Type._applyInit(target._initType(), value as $.Init<Type>);
+        }
       }
-      else {
-        Type._applyInit(target._initType(), init["type"] as $.Init<Type>);
+    }
+    {
+      const value = init["targetsFile"];
+      if (value !== undefined) {
+        target.targetsFile = value as any;
       }
     }
-    if (init["targetsFile"] !== undefined) {
-      target.targetsFile = init["targetsFile"] as any;
+    {
+      const value = init["targetsConst"];
+      if (value !== undefined) {
+        target.targetsConst = value as any;
+      }
     }
-    if (init["targetsConst"] !== undefined) {
-      target.targetsConst = init["targetsConst"] as any;
+    {
+      const value = init["targetsEnum"];
+      if (value !== undefined) {
+        target.targetsEnum = value as any;
+      }
     }
-    if (init["targetsEnum"] !== undefined) {
-      target.targetsEnum = init["targetsEnum"] as any;
+    {
+      const value = init["targetsEnumerant"];
+      if (value !== undefined) {
+        target.targetsEnumerant = value as any;
+      }
     }
-    if (init["targetsEnumerant"] !== undefined) {
-      target.targetsEnumerant = init["targetsEnumerant"] as any;
+    {
+      const value = init["targetsStruct"];
+      if (value !== undefined) {
+        target.targetsStruct = value as any;
+      }
     }
-    if (init["targetsStruct"] !== undefined) {
-      target.targetsStruct = init["targetsStruct"] as any;
+    {
+      const value = init["targetsField"];
+      if (value !== undefined) {
+        target.targetsField = value as any;
+      }
     }
-    if (init["targetsField"] !== undefined) {
-      target.targetsField = init["targetsField"] as any;
+    {
+      const value = init["targetsUnion"];
+      if (value !== undefined) {
+        target.targetsUnion = value as any;
+      }
     }
-    if (init["targetsUnion"] !== undefined) {
-      target.targetsUnion = init["targetsUnion"] as any;
+    {
+      const value = init["targetsGroup"];
+      if (value !== undefined) {
+        target.targetsGroup = value as any;
+      }
     }
-    if (init["targetsGroup"] !== undefined) {
-      target.targetsGroup = init["targetsGroup"] as any;
+    {
+      const value = init["targetsInterface"];
+      if (value !== undefined) {
+        target.targetsInterface = value as any;
+      }
     }
-    if (init["targetsInterface"] !== undefined) {
-      target.targetsInterface = init["targetsInterface"] as any;
+    {
+      const value = init["targetsMethod"];
+      if (value !== undefined) {
+        target.targetsMethod = value as any;
+      }
     }
-    if (init["targetsMethod"] !== undefined) {
-      target.targetsMethod = init["targetsMethod"] as any;
+    {
+      const value = init["targetsParam"];
+      if (value !== undefined) {
+        target.targetsParam = value as any;
+      }
     }
-    if (init["targetsParam"] !== undefined) {
-      target.targetsParam = init["targetsParam"] as any;
-    }
-    if (init["targetsAnnotation"] !== undefined) {
-      target.targetsAnnotation = init["targetsAnnotation"] as any;
+    {
+      const value = init["targetsAnnotation"];
+      if (value !== undefined) {
+        target.targetsAnnotation = value as any;
+      }
     }
   }
   _adoptType(value: $.Orphan<Type>): void {
@@ -834,92 +930,134 @@ export class Node extends $.Struct {
   static _Annotations: $.ListCtor<Annotation>;
   static _applyInit(target: Node, value: $.Init<Node>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["displayName"] !== undefined) {
-      target.displayName = init["displayName"] as any;
-    }
-    if (init["displayNamePrefixLength"] !== undefined) {
-      target.displayNamePrefixLength = init["displayNamePrefixLength"] as any;
-    }
-    if (init["scopeId"] !== undefined) {
-      target.scopeId = init["scopeId"] as any;
-    }
-    if (init["parameters"] !== undefined) {
-      if (init["parameters"] instanceof $.List) {
-        target.parameters = init["parameters"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
-      else {
-        const values = Array.isArray(init["parameters"]) ? init["parameters"] : Array.from(init["parameters"] as Iterable<any>);
-        const list = target._initParameters(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node_Parameter) {
-            list.set(index, item);
-          }
-          else {
-            Node_Parameter._applyInit(list.get(index), item as $.Init<Node_Parameter>);
+    }
+    {
+      const value = init["displayName"];
+      if (value !== undefined) {
+        target.displayName = value as any;
+      }
+    }
+    {
+      const value = init["displayNamePrefixLength"];
+      if (value !== undefined) {
+        target.displayNamePrefixLength = value as any;
+      }
+    }
+    {
+      const value = init["scopeId"];
+      if (value !== undefined) {
+        target.scopeId = value as any;
+      }
+    }
+    {
+      const value = init["parameters"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.parameters = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initParameters(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node_Parameter) {
+              list.set(index, item);
+            }
+            else {
+              Node_Parameter._applyInit(list.get(index), item as $.Init<Node_Parameter>);
+            }
           }
         }
       }
     }
-    if (init["isGeneric"] !== undefined) {
-      target.isGeneric = init["isGeneric"] as any;
-    }
-    if (init["nestedNodes"] !== undefined) {
-      if (init["nestedNodes"] instanceof $.List) {
-        target.nestedNodes = init["nestedNodes"] as any;
+    {
+      const value = init["isGeneric"];
+      if (value !== undefined) {
+        target.isGeneric = value as any;
       }
-      else {
-        const values = Array.isArray(init["nestedNodes"]) ? init["nestedNodes"] : Array.from(init["nestedNodes"] as Iterable<any>);
-        const list = target._initNestedNodes(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node_NestedNode) {
-            list.set(index, item);
-          }
-          else {
-            Node_NestedNode._applyInit(list.get(index), item as $.Init<Node_NestedNode>);
+    }
+    {
+      const value = init["nestedNodes"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.nestedNodes = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initNestedNodes(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node_NestedNode) {
+              list.set(index, item);
+            }
+            else {
+              Node_NestedNode._applyInit(list.get(index), item as $.Init<Node_NestedNode>);
+            }
           }
         }
       }
     }
-    if (init["annotations"] !== undefined) {
-      if (init["annotations"] instanceof $.List) {
-        target.annotations = init["annotations"] as any;
-      }
-      else {
-        const values = Array.isArray(init["annotations"]) ? init["annotations"] : Array.from(init["annotations"] as Iterable<any>);
-        const list = target._initAnnotations(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Annotation) {
-            list.set(index, item);
-          }
-          else {
-            Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+    {
+      const value = init["annotations"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.annotations = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initAnnotations(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Annotation) {
+              list.set(index, item);
+            }
+            else {
+              Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+            }
           }
         }
       }
     }
-    if (init["file"] !== undefined) {
-      target.file = true;
+    {
+      const value = init["file"];
+      if (value !== undefined) {
+        target.file = true;
+      }
     }
-    if (init["struct"] !== undefined) {
-      Node_Struct._applyInit(target._initStruct(), init["struct"] as $.Init<Node_Struct>);
+    {
+      const value = init["struct"];
+      if (value !== undefined) {
+        Node_Struct._applyInit(target._initStruct(), value as $.Init<Node_Struct>);
+      }
     }
-    if (init["enum"] !== undefined) {
-      Node_Enum._applyInit(target._initEnum(), init["enum"] as $.Init<Node_Enum>);
+    {
+      const value = init["enum"];
+      if (value !== undefined) {
+        Node_Enum._applyInit(target._initEnum(), value as $.Init<Node_Enum>);
+      }
     }
-    if (init["interface"] !== undefined) {
-      Node_Interface._applyInit(target._initInterface(), init["interface"] as $.Init<Node_Interface>);
+    {
+      const value = init["interface"];
+      if (value !== undefined) {
+        Node_Interface._applyInit(target._initInterface(), value as $.Init<Node_Interface>);
+      }
     }
-    if (init["const"] !== undefined) {
-      Node_Const._applyInit(target._initConst(), init["const"] as $.Init<Node_Const>);
+    {
+      const value = init["const"];
+      if (value !== undefined) {
+        Node_Const._applyInit(target._initConst(), value as $.Init<Node_Const>);
+      }
     }
-    if (init["annotation"] !== undefined) {
-      Node_Annotation._applyInit(target._initAnnotation(), init["annotation"] as $.Init<Node_Annotation>);
+    {
+      const value = init["annotation"];
+      if (value !== undefined) {
+        Node_Annotation._applyInit(target._initAnnotation(), value as $.Init<Node_Annotation>);
+      }
     }
   }
   get id(): bigint {
@@ -1243,27 +1381,39 @@ export class Field_Slot extends $.Struct {
   };
   static _applyInit(target: Field_Slot, value: $.Init<Field_Slot>): void {
     const init = value as any;
-    if (init["offset"] !== undefined) {
-      target.offset = init["offset"] as any;
-    }
-    if (init["type"] !== undefined) {
-      if (init["type"] instanceof Type) {
-        target.type = init["type"] as Type;
-      }
-      else {
-        Type._applyInit(target._initType(), init["type"] as $.Init<Type>);
+    {
+      const value = init["offset"];
+      if (value !== undefined) {
+        target.offset = value as any;
       }
     }
-    if (init["defaultValue"] !== undefined) {
-      if (init["defaultValue"] instanceof Value) {
-        target.defaultValue = init["defaultValue"] as Value;
-      }
-      else {
-        Value._applyInit(target._initDefaultValue(), init["defaultValue"] as $.Init<Value>);
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        if (value instanceof Type) {
+          target.type = value as Type;
+        }
+        else {
+          Type._applyInit(target._initType(), value as $.Init<Type>);
+        }
       }
     }
-    if (init["hadExplicitDefault"] !== undefined) {
-      target.hadExplicitDefault = init["hadExplicitDefault"] as any;
+    {
+      const value = init["defaultValue"];
+      if (value !== undefined) {
+        if (value instanceof Value) {
+          target.defaultValue = value as Value;
+        }
+        else {
+          Value._applyInit(target._initDefaultValue(), value as $.Init<Value>);
+        }
+      }
+    }
+    {
+      const value = init["hadExplicitDefault"];
+      if (value !== undefined) {
+        target.hadExplicitDefault = value as any;
+      }
     }
   }
   /**
@@ -1346,8 +1496,11 @@ export class Field_Group extends $.Struct {
   };
   static _applyInit(target: Field_Group, value: $.Init<Field_Group>): void {
     const init = value as any;
-    if (init["typeId"] !== undefined) {
-      target.typeId = init["typeId"] as any;
+    {
+      const value = init["typeId"];
+      if (value !== undefined) {
+        target.typeId = value as any;
+      }
     }
   }
   /**
@@ -1390,11 +1543,17 @@ export class Field_Ordinal extends $.Struct {
   };
   static _applyInit(target: Field_Ordinal, value: $.Init<Field_Ordinal>): void {
     const init = value as any;
-    if (init["implicit"] !== undefined) {
-      target.implicit = true;
+    {
+      const value = init["implicit"];
+      if (value !== undefined) {
+        target.implicit = true;
+      }
     }
-    if (init["explicit"] !== undefined) {
-      target.explicit = init["explicit"] as any;
+    {
+      const value = init["explicit"];
+      if (value !== undefined) {
+        target.explicit = value as any;
+      }
     }
   }
   get _isImplicit(): boolean {
@@ -1512,41 +1671,62 @@ export class Field extends $.Struct {
   static _Annotations: $.ListCtor<Annotation>;
   static _applyInit(target: Field, value: $.Init<Field>): void {
     const init = value as any;
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
-    }
-    if (init["codeOrder"] !== undefined) {
-      target.codeOrder = init["codeOrder"] as any;
-    }
-    if (init["annotations"] !== undefined) {
-      if (init["annotations"] instanceof $.List) {
-        target.annotations = init["annotations"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
       }
-      else {
-        const values = Array.isArray(init["annotations"]) ? init["annotations"] : Array.from(init["annotations"] as Iterable<any>);
-        const list = target._initAnnotations(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Annotation) {
-            list.set(index, item);
-          }
-          else {
-            Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+    }
+    {
+      const value = init["codeOrder"];
+      if (value !== undefined) {
+        target.codeOrder = value as any;
+      }
+    }
+    {
+      const value = init["annotations"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.annotations = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initAnnotations(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Annotation) {
+              list.set(index, item);
+            }
+            else {
+              Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+            }
           }
         }
       }
     }
-    if (init["discriminantValue"] !== undefined) {
-      target.discriminantValue = init["discriminantValue"] as any;
+    {
+      const value = init["discriminantValue"];
+      if (value !== undefined) {
+        target.discriminantValue = value as any;
+      }
     }
-    if (init["slot"] !== undefined) {
-      Field_Slot._applyInit(target._initSlot(), init["slot"] as $.Init<Field_Slot>);
+    {
+      const value = init["slot"];
+      if (value !== undefined) {
+        Field_Slot._applyInit(target._initSlot(), value as $.Init<Field_Slot>);
+      }
     }
-    if (init["group"] !== undefined) {
-      Field_Group._applyInit(target._initGroup(), init["group"] as $.Init<Field_Group>);
+    {
+      const value = init["group"];
+      if (value !== undefined) {
+        Field_Group._applyInit(target._initGroup(), value as $.Init<Field_Group>);
+      }
     }
-    if (init["ordinal"] !== undefined) {
-      Field_Ordinal._applyInit(target._initOrdinal(), init["ordinal"] as $.Init<Field_Ordinal>);
+    {
+      const value = init["ordinal"];
+      if (value !== undefined) {
+        Field_Ordinal._applyInit(target._initOrdinal(), value as $.Init<Field_Ordinal>);
+      }
     }
   }
   get name(): string {
@@ -1709,26 +1889,35 @@ export class Enumerant extends $.Struct {
   static _Annotations: $.ListCtor<Annotation>;
   static _applyInit(target: Enumerant, value: $.Init<Enumerant>): void {
     const init = value as any;
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
-    }
-    if (init["codeOrder"] !== undefined) {
-      target.codeOrder = init["codeOrder"] as any;
-    }
-    if (init["annotations"] !== undefined) {
-      if (init["annotations"] instanceof $.List) {
-        target.annotations = init["annotations"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
       }
-      else {
-        const values = Array.isArray(init["annotations"]) ? init["annotations"] : Array.from(init["annotations"] as Iterable<any>);
-        const list = target._initAnnotations(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Annotation) {
-            list.set(index, item);
-          }
-          else {
-            Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+    }
+    {
+      const value = init["codeOrder"];
+      if (value !== undefined) {
+        target.codeOrder = value as any;
+      }
+    }
+    {
+      const value = init["annotations"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.annotations = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initAnnotations(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Annotation) {
+              list.set(index, item);
+            }
+            else {
+              Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+            }
           }
         }
       }
@@ -1785,15 +1974,21 @@ export class Superclass extends $.Struct {
   };
   static _applyInit(target: Superclass, value: $.Init<Superclass>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["brand"] !== undefined) {
-      if (init["brand"] instanceof Brand) {
-        target.brand = init["brand"] as Brand;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
-      else {
-        Brand._applyInit(target._initBrand(), init["brand"] as $.Init<Brand>);
+    }
+    {
+      const value = init["brand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.brand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initBrand(), value as $.Init<Brand>);
+        }
       }
     }
   }
@@ -1849,66 +2044,90 @@ export class Method extends $.Struct {
   static _Annotations: $.ListCtor<Annotation>;
   static _applyInit(target: Method, value: $.Init<Method>): void {
     const init = value as any;
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
-    }
-    if (init["codeOrder"] !== undefined) {
-      target.codeOrder = init["codeOrder"] as any;
-    }
-    if (init["implicitParameters"] !== undefined) {
-      if (init["implicitParameters"] instanceof $.List) {
-        target.implicitParameters = init["implicitParameters"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
       }
-      else {
-        const values = Array.isArray(init["implicitParameters"]) ? init["implicitParameters"] : Array.from(init["implicitParameters"] as Iterable<any>);
-        const list = target._initImplicitParameters(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node_Parameter) {
-            list.set(index, item);
-          }
-          else {
-            Node_Parameter._applyInit(list.get(index), item as $.Init<Node_Parameter>);
+    }
+    {
+      const value = init["codeOrder"];
+      if (value !== undefined) {
+        target.codeOrder = value as any;
+      }
+    }
+    {
+      const value = init["implicitParameters"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.implicitParameters = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initImplicitParameters(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node_Parameter) {
+              list.set(index, item);
+            }
+            else {
+              Node_Parameter._applyInit(list.get(index), item as $.Init<Node_Parameter>);
+            }
           }
         }
       }
     }
-    if (init["paramStructType"] !== undefined) {
-      target.paramStructType = init["paramStructType"] as any;
-    }
-    if (init["paramBrand"] !== undefined) {
-      if (init["paramBrand"] instanceof Brand) {
-        target.paramBrand = init["paramBrand"] as Brand;
-      }
-      else {
-        Brand._applyInit(target._initParamBrand(), init["paramBrand"] as $.Init<Brand>);
+    {
+      const value = init["paramStructType"];
+      if (value !== undefined) {
+        target.paramStructType = value as any;
       }
     }
-    if (init["resultStructType"] !== undefined) {
-      target.resultStructType = init["resultStructType"] as any;
+    {
+      const value = init["paramBrand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.paramBrand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initParamBrand(), value as $.Init<Brand>);
+        }
+      }
     }
-    if (init["resultBrand"] !== undefined) {
-      if (init["resultBrand"] instanceof Brand) {
-        target.resultBrand = init["resultBrand"] as Brand;
-      }
-      else {
-        Brand._applyInit(target._initResultBrand(), init["resultBrand"] as $.Init<Brand>);
+    {
+      const value = init["resultStructType"];
+      if (value !== undefined) {
+        target.resultStructType = value as any;
       }
     }
-    if (init["annotations"] !== undefined) {
-      if (init["annotations"] instanceof $.List) {
-        target.annotations = init["annotations"] as any;
+    {
+      const value = init["resultBrand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.resultBrand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initResultBrand(), value as $.Init<Brand>);
+        }
       }
-      else {
-        const values = Array.isArray(init["annotations"]) ? init["annotations"] : Array.from(init["annotations"] as Iterable<any>);
-        const list = target._initAnnotations(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Annotation) {
-            list.set(index, item);
-          }
-          else {
-            Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+    }
+    {
+      const value = init["annotations"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.annotations = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initAnnotations(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Annotation) {
+              list.set(index, item);
+            }
+            else {
+              Annotation._applyInit(list.get(index), item as $.Init<Annotation>);
+            }
           }
         }
       }
@@ -2057,12 +2276,15 @@ export class Type_List extends $.Struct {
   };
   static _applyInit(target: Type_List, value: $.Init<Type_List>): void {
     const init = value as any;
-    if (init["elementType"] !== undefined) {
-      if (init["elementType"] instanceof Type) {
-        target.elementType = init["elementType"] as Type;
-      }
-      else {
-        Type._applyInit(target._initElementType(), init["elementType"] as $.Init<Type>);
+    {
+      const value = init["elementType"];
+      if (value !== undefined) {
+        if (value instanceof Type) {
+          target.elementType = value as Type;
+        }
+        else {
+          Type._applyInit(target._initElementType(), value as $.Init<Type>);
+        }
       }
     }
   }
@@ -2100,15 +2322,21 @@ export class Type_Enum extends $.Struct {
   };
   static _applyInit(target: Type_Enum, value: $.Init<Type_Enum>): void {
     const init = value as any;
-    if (init["typeId"] !== undefined) {
-      target.typeId = init["typeId"] as any;
-    }
-    if (init["brand"] !== undefined) {
-      if (init["brand"] instanceof Brand) {
-        target.brand = init["brand"] as Brand;
+    {
+      const value = init["typeId"];
+      if (value !== undefined) {
+        target.typeId = value as any;
       }
-      else {
-        Brand._applyInit(target._initBrand(), init["brand"] as $.Init<Brand>);
+    }
+    {
+      const value = init["brand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.brand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initBrand(), value as $.Init<Brand>);
+        }
       }
     }
   }
@@ -2152,15 +2380,21 @@ export class Type_Struct extends $.Struct {
   };
   static _applyInit(target: Type_Struct, value: $.Init<Type_Struct>): void {
     const init = value as any;
-    if (init["typeId"] !== undefined) {
-      target.typeId = init["typeId"] as any;
-    }
-    if (init["brand"] !== undefined) {
-      if (init["brand"] instanceof Brand) {
-        target.brand = init["brand"] as Brand;
+    {
+      const value = init["typeId"];
+      if (value !== undefined) {
+        target.typeId = value as any;
       }
-      else {
-        Brand._applyInit(target._initBrand(), init["brand"] as $.Init<Brand>);
+    }
+    {
+      const value = init["brand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.brand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initBrand(), value as $.Init<Brand>);
+        }
       }
     }
   }
@@ -2204,15 +2438,21 @@ export class Type_Interface extends $.Struct {
   };
   static _applyInit(target: Type_Interface, value: $.Init<Type_Interface>): void {
     const init = value as any;
-    if (init["typeId"] !== undefined) {
-      target.typeId = init["typeId"] as any;
-    }
-    if (init["brand"] !== undefined) {
-      if (init["brand"] instanceof Brand) {
-        target.brand = init["brand"] as Brand;
+    {
+      const value = init["typeId"];
+      if (value !== undefined) {
+        target.typeId = value as any;
       }
-      else {
-        Brand._applyInit(target._initBrand(), init["brand"] as $.Init<Brand>);
+    }
+    {
+      const value = init["brand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.brand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initBrand(), value as $.Init<Brand>);
+        }
       }
     }
   }
@@ -2293,17 +2533,29 @@ export class Type_AnyPointer_Unconstrained extends $.Struct {
   };
   static _applyInit(target: Type_AnyPointer_Unconstrained, value: $.Init<Type_AnyPointer_Unconstrained>): void {
     const init = value as any;
-    if (init["anyKind"] !== undefined) {
-      target.anyKind = true;
+    {
+      const value = init["anyKind"];
+      if (value !== undefined) {
+        target.anyKind = true;
+      }
     }
-    if (init["struct"] !== undefined) {
-      target.struct = true;
+    {
+      const value = init["struct"];
+      if (value !== undefined) {
+        target.struct = true;
+      }
     }
-    if (init["list"] !== undefined) {
-      target.list = true;
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        target.list = true;
+      }
     }
-    if (init["capability"] !== undefined) {
-      target.capability = true;
+    {
+      const value = init["capability"];
+      if (value !== undefined) {
+        target.capability = true;
+      }
     }
   }
   get _isAnyKind(): boolean {
@@ -2424,11 +2676,17 @@ export class Type_AnyPointer_Parameter extends $.Struct {
   };
   static _applyInit(target: Type_AnyPointer_Parameter, value: $.Init<Type_AnyPointer_Parameter>): void {
     const init = value as any;
-    if (init["scopeId"] !== undefined) {
-      target.scopeId = init["scopeId"] as any;
+    {
+      const value = init["scopeId"];
+      if (value !== undefined) {
+        target.scopeId = value as any;
+      }
     }
-    if (init["parameterIndex"] !== undefined) {
-      target.parameterIndex = init["parameterIndex"] as any;
+    {
+      const value = init["parameterIndex"];
+      if (value !== undefined) {
+        target.parameterIndex = value as any;
+      }
     }
   }
   /**
@@ -2472,8 +2730,11 @@ export class Type_AnyPointer_ImplicitMethodParameter extends $.Struct {
   };
   static _applyInit(target: Type_AnyPointer_ImplicitMethodParameter, value: $.Init<Type_AnyPointer_ImplicitMethodParameter>): void {
     const init = value as any;
-    if (init["parameterIndex"] !== undefined) {
-      target.parameterIndex = init["parameterIndex"] as any;
+    {
+      const value = init["parameterIndex"];
+      if (value !== undefined) {
+        target.parameterIndex = value as any;
+      }
     }
   }
   get parameterIndex(): number {
@@ -2525,14 +2786,23 @@ export class Type_AnyPointer extends $.Struct {
   };
   static _applyInit(target: Type_AnyPointer, value: $.Init<Type_AnyPointer>): void {
     const init = value as any;
-    if (init["unconstrained"] !== undefined) {
-      Type_AnyPointer_Unconstrained._applyInit(target._initUnconstrained(), init["unconstrained"] as $.Init<Type_AnyPointer_Unconstrained>);
+    {
+      const value = init["unconstrained"];
+      if (value !== undefined) {
+        Type_AnyPointer_Unconstrained._applyInit(target._initUnconstrained(), value as $.Init<Type_AnyPointer_Unconstrained>);
+      }
     }
-    if (init["parameter"] !== undefined) {
-      Type_AnyPointer_Parameter._applyInit(target._initParameter(), init["parameter"] as $.Init<Type_AnyPointer_Parameter>);
+    {
+      const value = init["parameter"];
+      if (value !== undefined) {
+        Type_AnyPointer_Parameter._applyInit(target._initParameter(), value as $.Init<Type_AnyPointer_Parameter>);
+      }
     }
-    if (init["implicitMethodParameter"] !== undefined) {
-      Type_AnyPointer_ImplicitMethodParameter._applyInit(target._initImplicitMethodParameter(), init["implicitMethodParameter"] as $.Init<Type_AnyPointer_ImplicitMethodParameter>);
+    {
+      const value = init["implicitMethodParameter"];
+      if (value !== undefined) {
+        Type_AnyPointer_ImplicitMethodParameter._applyInit(target._initImplicitMethodParameter(), value as $.Init<Type_AnyPointer_ImplicitMethodParameter>);
+      }
     }
   }
   /**
@@ -2732,62 +3002,119 @@ export class Type extends $.Struct {
   };
   static _applyInit(target: Type, value: $.Init<Type>): void {
     const init = value as any;
-    if (init["void"] !== undefined) {
-      target.void = true;
+    {
+      const value = init["void"];
+      if (value !== undefined) {
+        target.void = true;
+      }
     }
-    if (init["bool"] !== undefined) {
-      target.bool = true;
+    {
+      const value = init["bool"];
+      if (value !== undefined) {
+        target.bool = true;
+      }
     }
-    if (init["int8"] !== undefined) {
-      target.int8 = true;
+    {
+      const value = init["int8"];
+      if (value !== undefined) {
+        target.int8 = true;
+      }
     }
-    if (init["int16"] !== undefined) {
-      target.int16 = true;
+    {
+      const value = init["int16"];
+      if (value !== undefined) {
+        target.int16 = true;
+      }
     }
-    if (init["int32"] !== undefined) {
-      target.int32 = true;
+    {
+      const value = init["int32"];
+      if (value !== undefined) {
+        target.int32 = true;
+      }
     }
-    if (init["int64"] !== undefined) {
-      target.int64 = true;
+    {
+      const value = init["int64"];
+      if (value !== undefined) {
+        target.int64 = true;
+      }
     }
-    if (init["uint8"] !== undefined) {
-      target.uint8 = true;
+    {
+      const value = init["uint8"];
+      if (value !== undefined) {
+        target.uint8 = true;
+      }
     }
-    if (init["uint16"] !== undefined) {
-      target.uint16 = true;
+    {
+      const value = init["uint16"];
+      if (value !== undefined) {
+        target.uint16 = true;
+      }
     }
-    if (init["uint32"] !== undefined) {
-      target.uint32 = true;
+    {
+      const value = init["uint32"];
+      if (value !== undefined) {
+        target.uint32 = true;
+      }
     }
-    if (init["uint64"] !== undefined) {
-      target.uint64 = true;
+    {
+      const value = init["uint64"];
+      if (value !== undefined) {
+        target.uint64 = true;
+      }
     }
-    if (init["float32"] !== undefined) {
-      target.float32 = true;
+    {
+      const value = init["float32"];
+      if (value !== undefined) {
+        target.float32 = true;
+      }
     }
-    if (init["float64"] !== undefined) {
-      target.float64 = true;
+    {
+      const value = init["float64"];
+      if (value !== undefined) {
+        target.float64 = true;
+      }
     }
-    if (init["text"] !== undefined) {
-      target.text = true;
+    {
+      const value = init["text"];
+      if (value !== undefined) {
+        target.text = true;
+      }
     }
-    if (init["data"] !== undefined) {
-      target.data = true;
+    {
+      const value = init["data"];
+      if (value !== undefined) {
+        target.data = true;
+      }
     }
-    if (init["list"] !== undefined) {
-      Type_List._applyInit(target._initList(), init["list"] as $.Init<Type_List>);
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        Type_List._applyInit(target._initList(), value as $.Init<Type_List>);
+      }
     }
-    if (init["enum"] !== undefined) {
-      Type_Enum._applyInit(target._initEnum(), init["enum"] as $.Init<Type_Enum>);
+    {
+      const value = init["enum"];
+      if (value !== undefined) {
+        Type_Enum._applyInit(target._initEnum(), value as $.Init<Type_Enum>);
+      }
     }
-    if (init["struct"] !== undefined) {
-      Type_Struct._applyInit(target._initStruct(), init["struct"] as $.Init<Type_Struct>);
+    {
+      const value = init["struct"];
+      if (value !== undefined) {
+        Type_Struct._applyInit(target._initStruct(), value as $.Init<Type_Struct>);
+      }
     }
-    if (init["interface"] !== undefined) {
-      Type_Interface._applyInit(target._initInterface(), init["interface"] as $.Init<Type_Interface>);
+    {
+      const value = init["interface"];
+      if (value !== undefined) {
+        Type_Interface._applyInit(target._initInterface(), value as $.Init<Type_Interface>);
+      }
     }
-    if (init["anyPointer"] !== undefined) {
-      Type_AnyPointer._applyInit(target._initAnyPointer(), init["anyPointer"] as $.Init<Type_AnyPointer>);
+    {
+      const value = init["anyPointer"];
+      if (value !== undefined) {
+        Type_AnyPointer._applyInit(target._initAnyPointer(), value as $.Init<Type_AnyPointer>);
+      }
     }
   }
   get _isVoid(): boolean {
@@ -3261,29 +3588,38 @@ export class Brand_Scope extends $.Struct {
   static _Bind: $.ListCtor<Brand_Binding>;
   static _applyInit(target: Brand_Scope, value: $.Init<Brand_Scope>): void {
     const init = value as any;
-    if (init["scopeId"] !== undefined) {
-      target.scopeId = init["scopeId"] as any;
-    }
-    if (init["bind"] !== undefined) {
-      if (init["bind"] instanceof $.List) {
-        target.bind = init["bind"] as any;
+    {
+      const value = init["scopeId"];
+      if (value !== undefined) {
+        target.scopeId = value as any;
       }
-      else {
-        const values = Array.isArray(init["bind"]) ? init["bind"] : Array.from(init["bind"] as Iterable<any>);
-        const list = target._initBind(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Brand_Binding) {
-            list.set(index, item);
-          }
-          else {
-            Brand_Binding._applyInit(list.get(index), item as $.Init<Brand_Binding>);
+    }
+    {
+      const value = init["bind"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.bind = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initBind(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Brand_Binding) {
+              list.set(index, item);
+            }
+            else {
+              Brand_Binding._applyInit(list.get(index), item as $.Init<Brand_Binding>);
+            }
           }
         }
       }
     }
-    if (init["inherit"] !== undefined) {
-      target.inherit = true;
+    {
+      const value = init["inherit"];
+      if (value !== undefined) {
+        target.inherit = true;
+      }
     }
   }
   /**
@@ -3401,15 +3737,21 @@ export class Brand_Binding extends $.Struct {
   };
   static _applyInit(target: Brand_Binding, value: $.Init<Brand_Binding>): void {
     const init = value as any;
-    if (init["unbound"] !== undefined) {
-      target.unbound = true;
-    }
-    if (init["type"] !== undefined) {
-      if (init["type"] instanceof Type) {
-        target.type = init["type"] as Type;
+    {
+      const value = init["unbound"];
+      if (value !== undefined) {
+        target.unbound = true;
       }
-      else {
-        Type._applyInit(target._initType(), init["type"] as $.Init<Type>);
+    }
+    {
+      const value = init["type"];
+      if (value !== undefined) {
+        if (value instanceof Type) {
+          target.type = value as Type;
+        }
+        else {
+          Type._applyInit(target._initType(), value as $.Init<Type>);
+        }
       }
     }
   }
@@ -3514,20 +3856,23 @@ export class Brand extends $.Struct {
   static _Scopes: $.ListCtor<Brand_Scope>;
   static _applyInit(target: Brand, value: $.Init<Brand>): void {
     const init = value as any;
-    if (init["scopes"] !== undefined) {
-      if (init["scopes"] instanceof $.List) {
-        target.scopes = init["scopes"] as any;
-      }
-      else {
-        const values = Array.isArray(init["scopes"]) ? init["scopes"] : Array.from(init["scopes"] as Iterable<any>);
-        const list = target._initScopes(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Brand_Scope) {
-            list.set(index, item);
-          }
-          else {
-            Brand_Scope._applyInit(list.get(index), item as $.Init<Brand_Scope>);
+    {
+      const value = init["scopes"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.scopes = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initScopes(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Brand_Scope) {
+              list.set(index, item);
+            }
+            else {
+              Brand_Scope._applyInit(list.get(index), item as $.Init<Brand_Scope>);
+            }
           }
         }
       }
@@ -3640,68 +3985,125 @@ export class Value extends $.Struct {
   };
   static _applyInit(target: Value, value: $.Init<Value>): void {
     const init = value as any;
-    if (init["void"] !== undefined) {
-      target.void = true;
-    }
-    if (init["bool"] !== undefined) {
-      target.bool = init["bool"] as any;
-    }
-    if (init["int8"] !== undefined) {
-      target.int8 = init["int8"] as any;
-    }
-    if (init["int16"] !== undefined) {
-      target.int16 = init["int16"] as any;
-    }
-    if (init["int32"] !== undefined) {
-      target.int32 = init["int32"] as any;
-    }
-    if (init["int64"] !== undefined) {
-      target.int64 = init["int64"] as any;
-    }
-    if (init["uint8"] !== undefined) {
-      target.uint8 = init["uint8"] as any;
-    }
-    if (init["uint16"] !== undefined) {
-      target.uint16 = init["uint16"] as any;
-    }
-    if (init["uint32"] !== undefined) {
-      target.uint32 = init["uint32"] as any;
-    }
-    if (init["uint64"] !== undefined) {
-      target.uint64 = init["uint64"] as any;
-    }
-    if (init["float32"] !== undefined) {
-      target.float32 = init["float32"] as any;
-    }
-    if (init["float64"] !== undefined) {
-      target.float64 = init["float64"] as any;
-    }
-    if (init["text"] !== undefined) {
-      target.text = init["text"] as any;
-    }
-    if (init["data"] !== undefined) {
-      if (init["data"] instanceof $.Data) {
-        target.data = init["data"] as $.Data;
-      }
-      else {
-        const bytes = $.dataBytes(init["data"]);
-        target._initData(bytes.byteLength).copyBuffer(bytes);
+    {
+      const value = init["void"];
+      if (value !== undefined) {
+        target.void = true;
       }
     }
-    if (init["list"] !== undefined) {
-      target.list = init["list"] as any;
+    {
+      const value = init["bool"];
+      if (value !== undefined) {
+        target.bool = value as any;
+      }
     }
-    if (init["enum"] !== undefined) {
-      target.enum = init["enum"] as any;
+    {
+      const value = init["int8"];
+      if (value !== undefined) {
+        target.int8 = value as any;
+      }
     }
-    if (init["struct"] !== undefined) {
-      target.struct = init["struct"] as any;
+    {
+      const value = init["int16"];
+      if (value !== undefined) {
+        target.int16 = value as any;
+      }
     }
-    if (init["interface"] !== undefined) {
-      target.interface = true;
+    {
+      const value = init["int32"];
+      if (value !== undefined) {
+        target.int32 = value as any;
+      }
     }
-    if (init["anyPointer"] !== undefined) {
-      target.anyPointer = init["anyPointer"] as any;
+    {
+      const value = init["int64"];
+      if (value !== undefined) {
+        target.int64 = value as any;
+      }
+    }
+    {
+      const value = init["uint8"];
+      if (value !== undefined) {
+        target.uint8 = value as any;
+      }
+    }
+    {
+      const value = init["uint16"];
+      if (value !== undefined) {
+        target.uint16 = value as any;
+      }
+    }
+    {
+      const value = init["uint32"];
+      if (value !== undefined) {
+        target.uint32 = value as any;
+      }
+    }
+    {
+      const value = init["uint64"];
+      if (value !== undefined) {
+        target.uint64 = value as any;
+      }
+    }
+    {
+      const value = init["float32"];
+      if (value !== undefined) {
+        target.float32 = value as any;
+      }
+    }
+    {
+      const value = init["float64"];
+      if (value !== undefined) {
+        target.float64 = value as any;
+      }
+    }
+    {
+      const value = init["text"];
+      if (value !== undefined) {
+        target.text = value as any;
+      }
+    }
+    {
+      const value = init["data"];
+      if (value !== undefined) {
+        if (value instanceof $.Data) {
+          target.data = value as $.Data;
+        }
+        else {
+          const bytes = $.dataBytes(value);
+          target._initData(bytes.byteLength).copyBuffer(bytes);
+        }
+      }
+    }
+    {
+      const value = init["list"];
+      if (value !== undefined) {
+        target.list = value as any;
+      }
+    }
+    {
+      const value = init["enum"];
+      if (value !== undefined) {
+        target.enum = value as any;
+      }
+    }
+    {
+      const value = init["struct"];
+      if (value !== undefined) {
+        target.struct = value as any;
+      }
+    }
+    {
+      const value = init["interface"];
+      if (value !== undefined) {
+        target.interface = true;
+      }
+    }
+    {
+      const value = init["anyPointer"];
+      if (value !== undefined) {
+        target.anyPointer = value as any;
+      }
     }
   }
   get _isVoid(): boolean {
@@ -4270,23 +4672,32 @@ export class Annotation extends $.Struct {
   };
   static _applyInit(target: Annotation, value: $.Init<Annotation>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["brand"] !== undefined) {
-      if (init["brand"] instanceof Brand) {
-        target.brand = init["brand"] as Brand;
-      }
-      else {
-        Brand._applyInit(target._initBrand(), init["brand"] as $.Init<Brand>);
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
     }
-    if (init["value"] !== undefined) {
-      if (init["value"] instanceof Value) {
-        target.value = init["value"] as Value;
+    {
+      const value = init["brand"];
+      if (value !== undefined) {
+        if (value instanceof Brand) {
+          target.brand = value as Brand;
+        }
+        else {
+          Brand._applyInit(target._initBrand(), value as $.Init<Brand>);
+        }
       }
-      else {
-        Value._applyInit(target._initValue(), init["value"] as $.Init<Value>);
+    }
+    {
+      const value = init["value"];
+      if (value !== undefined) {
+        if (value instanceof Value) {
+          target.value = value as Value;
+        }
+        else {
+          Value._applyInit(target._initValue(), value as $.Init<Value>);
+        }
       }
     }
   }
@@ -4374,14 +4785,23 @@ export class CapnpVersion extends $.Struct {
   };
   static _applyInit(target: CapnpVersion, value: $.Init<CapnpVersion>): void {
     const init = value as any;
-    if (init["major"] !== undefined) {
-      target.major = init["major"] as any;
+    {
+      const value = init["major"];
+      if (value !== undefined) {
+        target.major = value as any;
+      }
     }
-    if (init["minor"] !== undefined) {
-      target.minor = init["minor"] as any;
+    {
+      const value = init["minor"];
+      if (value !== undefined) {
+        target.minor = value as any;
+      }
     }
-    if (init["micro"] !== undefined) {
-      target.micro = init["micro"] as any;
+    {
+      const value = init["micro"];
+      if (value !== undefined) {
+        target.micro = value as any;
+      }
     }
   }
   get major(): number {
@@ -4418,11 +4838,17 @@ export class CodeGeneratorRequest_RequestedFile_Import extends $.Struct {
   };
   static _applyInit(target: CodeGeneratorRequest_RequestedFile_Import, value: $.Init<CodeGeneratorRequest_RequestedFile_Import>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
+      }
     }
-    if (init["name"] !== undefined) {
-      target.name = init["name"] as any;
+    {
+      const value = init["name"];
+      if (value !== undefined) {
+        target.name = value as any;
+      }
     }
   }
   /**
@@ -4469,26 +4895,35 @@ export class CodeGeneratorRequest_RequestedFile extends $.Struct {
   static _Imports: $.ListCtor<CodeGeneratorRequest_RequestedFile_Import>;
   static _applyInit(target: CodeGeneratorRequest_RequestedFile, value: $.Init<CodeGeneratorRequest_RequestedFile>): void {
     const init = value as any;
-    if (init["id"] !== undefined) {
-      target.id = init["id"] as any;
-    }
-    if (init["filename"] !== undefined) {
-      target.filename = init["filename"] as any;
-    }
-    if (init["imports"] !== undefined) {
-      if (init["imports"] instanceof $.List) {
-        target.imports = init["imports"] as any;
+    {
+      const value = init["id"];
+      if (value !== undefined) {
+        target.id = value as any;
       }
-      else {
-        const values = Array.isArray(init["imports"]) ? init["imports"] : Array.from(init["imports"] as Iterable<any>);
-        const list = target._initImports(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof CodeGeneratorRequest_RequestedFile_Import) {
-            list.set(index, item);
-          }
-          else {
-            CodeGeneratorRequest_RequestedFile_Import._applyInit(list.get(index), item as $.Init<CodeGeneratorRequest_RequestedFile_Import>);
+    }
+    {
+      const value = init["filename"];
+      if (value !== undefined) {
+        target.filename = value as any;
+      }
+    }
+    {
+      const value = init["imports"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.imports = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initImports(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof CodeGeneratorRequest_RequestedFile_Import) {
+              list.set(index, item);
+            }
+            else {
+              CodeGeneratorRequest_RequestedFile_Import._applyInit(list.get(index), item as $.Init<CodeGeneratorRequest_RequestedFile_Import>);
+            }
           }
         }
       }
@@ -4559,64 +4994,76 @@ export class CodeGeneratorRequest extends $.Struct {
   static _RequestedFiles: $.ListCtor<CodeGeneratorRequest_RequestedFile>;
   static _applyInit(target: CodeGeneratorRequest, value: $.Init<CodeGeneratorRequest>): void {
     const init = value as any;
-    if (init["capnpVersion"] !== undefined) {
-      if (init["capnpVersion"] instanceof CapnpVersion) {
-        target.capnpVersion = init["capnpVersion"] as CapnpVersion;
-      }
-      else {
-        CapnpVersion._applyInit(target._initCapnpVersion(), init["capnpVersion"] as $.Init<CapnpVersion>);
+    {
+      const value = init["capnpVersion"];
+      if (value !== undefined) {
+        if (value instanceof CapnpVersion) {
+          target.capnpVersion = value as CapnpVersion;
+        }
+        else {
+          CapnpVersion._applyInit(target._initCapnpVersion(), value as $.Init<CapnpVersion>);
+        }
       }
     }
-    if (init["nodes"] !== undefined) {
-      if (init["nodes"] instanceof $.List) {
-        target.nodes = init["nodes"] as any;
-      }
-      else {
-        const values = Array.isArray(init["nodes"]) ? init["nodes"] : Array.from(init["nodes"] as Iterable<any>);
-        const list = target._initNodes(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node) {
-            list.set(index, item);
-          }
-          else {
-            Node._applyInit(list.get(index), item as $.Init<Node>);
+    {
+      const value = init["nodes"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.nodes = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initNodes(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node) {
+              list.set(index, item);
+            }
+            else {
+              Node._applyInit(list.get(index), item as $.Init<Node>);
+            }
           }
         }
       }
     }
-    if (init["sourceInfo"] !== undefined) {
-      if (init["sourceInfo"] instanceof $.List) {
-        target.sourceInfo = init["sourceInfo"] as any;
-      }
-      else {
-        const values = Array.isArray(init["sourceInfo"]) ? init["sourceInfo"] : Array.from(init["sourceInfo"] as Iterable<any>);
-        const list = target._initSourceInfo(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof Node_SourceInfo) {
-            list.set(index, item);
-          }
-          else {
-            Node_SourceInfo._applyInit(list.get(index), item as $.Init<Node_SourceInfo>);
+    {
+      const value = init["sourceInfo"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.sourceInfo = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initSourceInfo(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof Node_SourceInfo) {
+              list.set(index, item);
+            }
+            else {
+              Node_SourceInfo._applyInit(list.get(index), item as $.Init<Node_SourceInfo>);
+            }
           }
         }
       }
     }
-    if (init["requestedFiles"] !== undefined) {
-      if (init["requestedFiles"] instanceof $.List) {
-        target.requestedFiles = init["requestedFiles"] as any;
-      }
-      else {
-        const values = Array.isArray(init["requestedFiles"]) ? init["requestedFiles"] : Array.from(init["requestedFiles"] as Iterable<any>);
-        const list = target._initRequestedFiles(values.length);
-        for (let index = 0; index < values.length; index++) {
-          const item = values[index];
-          if (item instanceof CodeGeneratorRequest_RequestedFile) {
-            list.set(index, item);
-          }
-          else {
-            CodeGeneratorRequest_RequestedFile._applyInit(list.get(index), item as $.Init<CodeGeneratorRequest_RequestedFile>);
+    {
+      const value = init["requestedFiles"];
+      if (value !== undefined) {
+        if (value instanceof $.List) {
+          target.requestedFiles = value as any;
+        }
+        else {
+          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const list = target._initRequestedFiles(values.length);
+          for (let index = 0; index < values.length; index++) {
+            const item = values[index];
+            if (item instanceof CodeGeneratorRequest_RequestedFile) {
+              list.set(index, item);
+            }
+            else {
+              CodeGeneratorRequest_RequestedFile._applyInit(list.get(index), item as $.Init<CodeGeneratorRequest_RequestedFile>);
+            }
           }
         }
       }
