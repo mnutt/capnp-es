@@ -26,6 +26,10 @@ export async function cliMain(outFormat: "js" | "ts" | "dts") {
       const parsedOptions = parseOptions();
       outFormats = parsedOptions.outFormats;
       outDir = parsedOptions.outDir;
+      if (parsedOptions.generateId) {
+        process.stdout.write(await execCapnpcGenerateId());
+        return;
+      }
       const { sources, options } = parsedOptions;
       dataBuf = await execCapnpc(sources, options);
     }
@@ -51,12 +55,14 @@ export async function cliMain(outFormat: "js" | "ts" | "dts") {
  *   - options: Array of command-line options to pass to capnpc
  *   - outFormats: Array of output format strings ("js", "ts", "dts")
  *   - outDir: Optional output directory for generated files
+ *   - generateId: Whether to generate a fresh schema ID and exit
  */
 function parseOptions() {
   const sources: string[] = [];
   const options: string[] = [];
   let outFormats: string[] = ["js"];
   let outDir: string | undefined;
+  let generateId = false;
 
   for (const arg of process.argv.slice(2)) {
     if (arg === "--help") {
@@ -77,12 +83,28 @@ function parseOptions() {
       if (s[1]) {
         outDir = s[1];
       }
+    } else if (arg === "-i" || arg === "--generate-id") {
+      generateId = true;
     } else if (capnpcOptions.some((opt) => arg.startsWith(opt))) {
       options.push(arg);
     }
   }
 
-  return { sources, options, outFormats, outDir };
+  return { sources, options, outFormats, outDir, generateId };
+}
+
+async function execCapnpcGenerateId(): Promise<string> {
+  return new Promise<string>((resolve) => {
+    exec("capnpc -i", { encoding: "utf8" }, (error, stdout, stderr) => {
+      if (stderr.length > 0) {
+        process.stderr.write(stderr);
+      }
+      if (error) {
+        process.exit(1);
+      }
+      resolve(stdout);
+    });
+  });
 }
 
 /**
