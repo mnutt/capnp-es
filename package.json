@@ -56,6 +56,7 @@
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && vitest run --coverage && pnpm test:types",
     "test:interop:cpp": "node ./scripts/test-interop-cpp.mjs",
+    "test:pack": "node ./scripts/test-pack.mjs",
     "test:types": "tsc --noEmit --skipLibCheck"
   },
   "devDependencies": {
@@ -75,6 +76,7 @@
     "mitata": "^1.0.34",
     "prettier": "^3.8.1",
     "protobufjs": "^8.0.0",
+    "publint": "0.3.21",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1",
     "vite-tsconfig-paths": "^6.1.0",
