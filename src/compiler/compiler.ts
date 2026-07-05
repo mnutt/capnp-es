@@ -190,6 +190,24 @@ function tsCompile(
   };
   compilerHost.resolveModuleNames = (moduleNames, containingFile) =>
     moduleNames.map((moduleName) => {
+      if (moduleName === "capnp-es") {
+        return {
+          resolvedFileName: join(process.cwd(), "src/index.ts"),
+          extension: ts.Extension.Ts,
+        };
+      }
+
+      if (moduleName.startsWith("capnp-es/")) {
+        return {
+          resolvedFileName: join(
+            process.cwd(),
+            "src",
+            `${moduleName.slice("capnp-es/".length)}.ts`,
+          ),
+          extension: ts.Extension.Ts,
+        };
+      }
+
       if (moduleName.startsWith(".") && moduleName.endsWith(".js")) {
         const resolvedModule = normalize(
           join(dirname(containingFile), moduleName),

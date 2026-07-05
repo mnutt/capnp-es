@@ -190,14 +190,13 @@ describe("Conn level-1 message dispatch", () => {
 
     promiseRef.close();
 
-    // Resolve emits sender-loopback disembargo, and closing promise import
-    // releases both forwarding cap and promise import.
-    t.equal(transport.sent.length, 3);
-    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
+    // Sender-hosted caps are already ordered by the sender, so no sender-loopback
+    // disembargo is needed. Closing releases both forwarding cap and promise import.
+    t.equal(transport.sent.length, 2);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 8);
     t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
-    t.equal(transport.sent[1].release.id, 8);
-    t.equal(transport.sent[2].which(), RPCMessage.RELEASE);
-    t.equal(transport.sent[2].release.id, 7);
+    t.equal(transport.sent[1].release.id, 7);
   });
 
   test("duplicate resolve for settled import is ignored and introduced cap is released", () => {
@@ -213,9 +212,8 @@ describe("Conn level-1 message dispatch", () => {
       conn.handleMessage(m);
     }
 
-    // First resolve starts disembargo flow.
-    t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.DISEMBARGO);
+    // Sender-hosted caps do not need sender-loopback disembargo.
+    t.equal(transport.sent.length, 0);
 
     {
       const m = new Message().initRoot(RPCMessage);
@@ -227,9 +225,9 @@ describe("Conn level-1 message dispatch", () => {
 
     // Duplicate resolve should not retarget; newly introduced cap should be
     // immediately released and cleaned up.
-    t.equal(transport.sent.length, 2);
-    t.equal(transport.sent[1].which(), RPCMessage.RELEASE);
-    t.equal(transport.sent[1].release.id, 9);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.RELEASE);
+    t.equal(transport.sent[0].release.id, 9);
     t.equal(conn.imports[9], undefined);
   });
 
@@ -323,12 +321,14 @@ describe("Conn level-1 message dispatch", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const promiseRef = conn.addImport(7, true);
+    const counting = new CountingClient();
+    const exportId = conn.addExport(counting);
 
     {
       const m = new Message().initRoot(RPCMessage);
       const resolve = m._initResolve();
       resolve.promiseId = 7;
-      resolve._initCap().senderHosted = 8;
+      resolve._initCap().receiverHosted = exportId;
       conn.handleMessage(m);
     }
 
@@ -343,10 +343,7 @@ describe("Conn level-1 message dispatch", () => {
     promiseRef.call(call);
 
     // Still embargoed: no forwarded call yet.
-    t.equal(
-      transport.sent.filter((m) => m.which() === RPCMessage.CALL).length,
-      0,
-    );
+    t.equal(counting.calls, 0);
 
     {
       const m = new Message().initRoot(RPCMessage);
@@ -356,10 +353,7 @@ describe("Conn level-1 message dispatch", () => {
       conn.handleMessage(m);
     }
 
-    const calls = transport.sent.filter((m) => m.which() === RPCMessage.CALL);
-    t.equal(calls.length, 1);
-    t.equal(calls[0].call.target.which(), 0); // importedCap
-    t.equal(calls[0].call.target.importedCap, 8);
+    t.equal(counting.calls, 1);
   });
 
   test("import embargo queues calls until receiverLoopback", () => {
@@ -1380,7 +1374,7 @@ describe("Conn level-1 message dispatch", () => {
     );
   });
 
-  test("incoming call with unsupported sendResultsTo returns unimplemented and cleans answer", () => {
+  test("incoming call with unsupported sendResultsTo returns exception and cleans answer", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const interfaceId = 0x1111n;
@@ -1407,7 +1401,9 @@ describe("Conn level-1 message dispatch", () => {
     conn.handleMessage(m);
 
     t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].which(), RPCMessage.RETURN);
+    t.equal(transport.sent[0].return.which(), Return_Which.EXCEPTION);
+    t.equal(transport.sent[0].return.answerId, 201);
     t.equal(conn.answers[201], undefined);
   });
 
@@ -1443,7 +1439,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.isClosed, true);
   });
 
-  test("incoming call unknown interface/method returns unimplemented and cleans answer", () => {
+  test("incoming call unknown interface/method returns exceptions and cleans answers", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const exportId = conn.addExport(new ImmediateClient());
@@ -1477,8 +1473,12 @@ describe("Conn level-1 message dispatch", () => {
     }
 
     t.equal(transport.sent.length, 2);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
-    t.equal(transport.sent[1].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].which(), RPCMessage.RETURN);
+    t.equal(transport.sent[0].return.which(), Return_Which.EXCEPTION);
+    t.equal(transport.sent[0].return.answerId, 202);
+    t.equal(transport.sent[1].which(), RPCMessage.RETURN);
+    t.equal(transport.sent[1].return.which(), Return_Which.EXCEPTION);
+    t.equal(transport.sent[1].return.answerId, 203);
   });
 
   test("return.results decode failure responds unimplemented and rejects question", async () => {

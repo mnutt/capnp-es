@@ -247,9 +247,8 @@ export function erase(p: Pointer): void {
     case PointerType.LIST: {
       const elementSize = getTargetListElementSize(p);
       const length = getTargetListLength(p);
-      let contentWords = padToWord(
-        length * getListElementByteLength(elementSize),
-      );
+      let contentWords =
+        padToWord(length * getListElementByteLength(elementSize)) / 8;
       c = getContent(p);
 
       if (elementSize === ListElementSize.POINTER) {
@@ -271,7 +270,9 @@ export function erase(p: Pointer): void {
         const tag = add(-8, c);
         const compositeSize = getStructSize(tag);
         const compositeByteLength = getByteLength(compositeSize);
-        contentWords = getOffsetWords(tag);
+        contentWords =
+          getListByteLength(ListElementSize.COMPOSITE, length, compositeSize) /
+          8;
 
         // Kill the tag word.
         c.segment.setWordZero(c.byteOffset - 8);
@@ -965,6 +966,7 @@ export function copyFromList(src: Pointer, dst: Pointer): void {
           dst._capnp.depthLimit - 1,
         );
 
+        dstPtr.segment.setWordZero(dstPtr.byteOffset);
         copyFrom(srcPtr, dstPtr);
       }
     }

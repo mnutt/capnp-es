@@ -632,11 +632,12 @@ describe("rpc", () => {
         const pipedCap = pending.getCapability();
 
         await waitUntil(() => getQuestionId !== undefined, 1000);
-        pipedCap.client.close();
+        pending.pipeline.answer.pipelineClose([]);
         await waitUntil(
           () => finishQuestionIds.includes(getQuestionId as number),
           1000,
         );
+        pipedCap.client.close();
       } finally {
         serverPort.off("message", onMessage);
         releaseGet?.();
