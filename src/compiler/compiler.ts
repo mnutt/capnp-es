@@ -9,7 +9,7 @@ import {
   CodeGeneratorContext,
   CodeGeneratorFileContext,
 } from "./generators/index.ts";
-import { SOURCE_COMMENT } from "./constants";
+import { RUNTIME_MODULE_NAME, SOURCE_COMMENT } from "./constants";
 import { loadRequestedFile, lookupNode } from "./node-util.ts";
 import { generateFileId } from "./generators/file-id.ts";
 import { generateConcreteListInitializer } from "./generators/list.ts";
@@ -190,19 +190,20 @@ function tsCompile(
   };
   compilerHost.resolveModuleNames = (moduleNames, containingFile) =>
     moduleNames.map((moduleName) => {
-      if (moduleName === "capnp-es") {
+      if (moduleName === RUNTIME_MODULE_NAME) {
         return {
           resolvedFileName: join(process.cwd(), "src/index.ts"),
           extension: ts.Extension.Ts,
         };
       }
 
-      if (moduleName.startsWith("capnp-es/")) {
+      const runtimeModulePrefix = `${RUNTIME_MODULE_NAME}/`;
+      if (moduleName.startsWith(runtimeModulePrefix)) {
         return {
           resolvedFileName: join(
             process.cwd(),
             "src",
-            `${moduleName.slice("capnp-es/".length)}.ts`,
+            `${moduleName.slice(runtimeModulePrefix.length)}.ts`,
           ),
           extension: ts.Extension.Ts,
         };
