@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { group, bench, run, summary } from "mitata";
-import * as capnpES from "capnp-es";
+import * as capnpES from "@mnutt/capnp-es";
 
 // JSON
 const decoder = new TextDecoder();
@@ -96,7 +96,7 @@ function traverseData(obj: any, capnpTSCompat = false) {
 
 // All benchmarks
 const benchmarks = {
-  "capnp-es": capnpESBench,
+  "@mnutt/capnp-es": capnpESBench,
   "capnp-ts": capnpTSBench,
   "JSON.parse(<string>)": jsonStrBench,
   "JSON.parse(<buffer>)": jsonBuffBench,

@@ -1,4 +1,4 @@
-import * as capnp from "capnp-es";
+import * as capnp from "@mnutt/capnp-es";
 import { messageToString } from "../../src/debug";
 
 import { test, describe, beforeAll, expect } from "vitest";

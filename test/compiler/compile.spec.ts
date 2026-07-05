@@ -1,5 +1,5 @@
 import { exec } from "node:child_process";
-import { compileAll } from "capnp-es/compiler";
+import { compileAll } from "@mnutt/capnp-es/compiler";
 import { test } from "vitest";
 import { writeFile } from "node:fs/promises";
 

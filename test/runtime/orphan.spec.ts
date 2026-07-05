@@ -2,7 +2,7 @@
 
 import { test, assert as t } from "vitest";
 
-import { Message, ObjectSize, Orphan, Struct, utils } from "capnp-es";
+import { Message, ObjectSize, Orphan, Struct, utils } from "@mnutt/capnp-es";
 import { Int32List } from "src/serialization";
 
 /** Just a silly struct that holds a single pointer to... itself? */

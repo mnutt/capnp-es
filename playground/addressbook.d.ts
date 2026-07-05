@@ -1,4 +1,4 @@
-import * as $ from "capnp-es";
+import * as $ from "@mnutt/capnp-es";
 export declare const _capnpFileId = 17229464571574614228n;
 export declare const Person_PhoneNumber_Type: {
   readonly MOBILE: 0;

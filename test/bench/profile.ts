@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import * as capnpES from "capnp-es";
+import * as capnpES from "@mnutt/capnp-es";
 import { bench, run } from "mitata";
 
 const { AddressBook: capnpESStruct } = await import("./data/capnp/schema.ts");

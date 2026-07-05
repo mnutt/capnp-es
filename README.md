@@ -2,9 +2,9 @@
 
 <!-- automd:badges bundlephobia codecov -->
 
-[![npm version](https://img.shields.io/npm/v/capnp-es)](https://npmjs.com/package/capnp-es)
-[![npm downloads](https://img.shields.io/npm/dm/capnp-es)](https://npm.chart.dev/capnp-es)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/capnp-es)](https://bundlephobia.com/package/capnp-es)
+[![npm version](https://img.shields.io/npm/v/@mnutt/capnp-es)](https://npmjs.com/package/@mnutt/capnp-es)
+[![npm downloads](https://img.shields.io/npm/dm/@mnutt/capnp-es)](https://npm.chart.dev/@mnutt/capnp-es)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@mnutt/capnp-es)](https://bundlephobia.com/package/@mnutt/capnp-es)
 [![codecov](https://img.shields.io/codecov/c/gh/unjs/capnp-es)](https://codecov.io/gh/unjs/capnp-es)
 
 <!-- /automd -->
@@ -23,21 +23,21 @@ TypeScript implementation of the [Cap'n Proto](https://capnproto.org) serializat
 > [!NOTE]
 > Make sure `capnpc` command is available. You can find install instructions [here](https://capnproto.org/install.html) to install it.
 
-Install `capnp-es` dependency:
+Install `@mnutt/capnp-es` dependency:
 
 ```sh
-npx nypm install capnp-es
+npx nypm install @mnutt/capnp-es
 ```
 
 You can use `capnp-es` to compile a schema file into typeScript/javascript source code:
 
 ```shell
-npx capnp-es path/to/myschema.capnp -ojs,ts,dts
+npx --package @mnutt/capnp-es capnp-es path/to/myschema.capnp -ojs,ts,dts
 ```
 
 This will generate `path/to/myschema.{js,ts,dts}`.
 
-Use `npx capnp-es --help` for full usage info.
+Use `npx --package @mnutt/capnp-es capnp-es --help` for full usage info.
 
 See [playground](./playground/) for examples and learn more about `.capnp` schema in [language docs](https://capnproto.org/language.html).
 
@@ -46,7 +46,7 @@ See [playground](./playground/) for examples and learn more about `.capnp` schem
 Here's a quick usage example:
 
 ```ts
-import * as capnp from "capnp-es";
+import * as capnp from "@mnutt/capnp-es";
 import { MyStruct } from "./myschema.js";
 
 const message = new capnp.Message(buffer);
@@ -117,10 +117,10 @@ Level 2 authoring guidance:
 
 ### Node RPC Transport
 
-Node-specific RPC transport helpers are available from `capnp-es/node`:
+Node-specific RPC transport helpers are available from `@mnutt/capnp-es/node`:
 
 ```ts
-import { connectNodeRpc, transportFromDuplex } from "capnp-es/node";
+import { connectNodeRpc, transportFromDuplex } from "@mnutt/capnp-es/node";
 
 const conn = await connectNodeRpc({ path: "/tmp/service.sock" });
 const fdConn = await connectNodeRpc({ fd: 3 });
@@ -136,7 +136,7 @@ import {
   copyDataToBuffer,
   messageToBuffer,
   viewDataAsBuffer,
-} from "capnp-es/node";
+} from "@mnutt/capnp-es/node";
 
 const frame = messageToBuffer(message);
 const packedFrame = messageToBuffer(message, { packed: true });
@@ -151,7 +151,7 @@ const dataView = viewDataAsBuffer(struct.dataField);
 RPC failures use `CapnpRpcError`:
 
 ```ts
-import { CapnpRpcError } from "capnp-es";
+import { CapnpRpcError } from "@mnutt/capnp-es";
 
 try {
   await cap
@@ -180,7 +180,7 @@ This project is a rework of [jdiaz5513/capnp-ts](https://github.com/jdiaz5513/ca
 - Compiler, runtime, and std lib published via a single and compact ESM-only package with subpath exports.
 - Compiler updated to use Typescript v5 API
 - Output files can be `.ts` (new), `.js` (ESM instead of CJS), and `.d.ts` and has no `.capnp` suffix.
-- Compiler API can be used via the `capnp-es/compiler` subpath export programmatically.
+- Compiler API can be used via the `@mnutt/capnp-es/compiler` subpath export programmatically.
 - Use native `TextEncoder` and `TextDecoder` for utf8 encoding
 - Enums are typed plain JS objects (this way `.ts` files work with strip-only ts loaders without enum support.)
 - Compiler CLI can directly accept a path to `.capnp` files and internally use `capnpc`

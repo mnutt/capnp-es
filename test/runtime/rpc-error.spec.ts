@@ -1,5 +1,5 @@
 import { describe, test, assert as t } from "vitest";
-import { CapnpRpcError, toException } from "capnp-es";
+import { CapnpRpcError, toException } from "@mnutt/capnp-es";
 import { Exception } from "src/capnp/rpc";
 import { MethodError } from "src/rpc/method-error";
 import { Message } from "src/serialization/message";

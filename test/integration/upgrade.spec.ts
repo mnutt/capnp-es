@@ -3,7 +3,7 @@
 // A collection of tests regarding protocol upgrade/downgrade behavior.
 
 import { test, assert as t } from "vitest";
-import * as capnp from "capnp-es";
+import * as capnp from "@mnutt/capnp-es";
 
 import { Upgrade as UpgradeV1 } from "../fixtures/upgrade-v1.ts";
 import { Upgrade as UpgradeV2 } from "../fixtures/upgrade-v2.ts";

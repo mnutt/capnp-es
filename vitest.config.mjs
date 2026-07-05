@@ -6,13 +6,13 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^capnp-es\/compiler$/,
+        find: /^@mnutt\/capnp-es\/compiler$/,
         replacement: fileURLToPath(
           new URL("src/compiler/index.ts", import.meta.url),
         ),
       },
       {
-        find: /^capnp-es$/,
+        find: /^@mnutt\/capnp-es$/,
         replacement: fileURLToPath(new URL("src/index.ts", import.meta.url)),
       },
     ],

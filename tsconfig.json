@@ -9,10 +9,10 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "paths": {
-      "capnp-es": ["./src/index.ts"],
-      "capnp-es/compiler": ["./src/compiler/index.ts"],
-      "capnp-es/node": ["./src/node/index.ts"],
-      "capnp-es/capnp/*": ["./src/capnp/*.ts"],
+      "@mnutt/capnp-es": ["./src/index.ts"],
+      "@mnutt/capnp-es/compiler": ["./src/compiler/index.ts"],
+      "@mnutt/capnp-es/node": ["./src/node/index.ts"],
+      "@mnutt/capnp-es/capnp/*": ["./src/capnp/*.ts"],
       "src/*": ["./src/*"],
       "test/*": ["./test/*"]
     }

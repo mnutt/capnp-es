@@ -2,7 +2,7 @@ import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { compileAll } from "capnp-es/compiler";
+import { compileAll } from "@mnutt/capnp-es/compiler";
 import { test, assert as t } from "vitest";
 
 const sandstormSrc =
@@ -49,6 +49,9 @@ test.skipIf(!existsSync(sandstormSchemaDir))(
     t.ok(files.has("sandstorm/supervisor.ts"));
     t.ok(files.has("sandstorm/web-session.ts"));
     t.ok(files.has("sandstorm/util.ts"));
-    t.include(files.get("sandstorm/util.ts") ?? "", "capnp-es/capnp/stream");
+    t.include(
+      files.get("sandstorm/util.ts") ?? "",
+      "@mnutt/capnp-es/capnp/stream",
+    );
   },
 );

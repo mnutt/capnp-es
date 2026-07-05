@@ -2,7 +2,7 @@
 
 import { test, assert as t } from "vitest";
 
-import * as capnp from "capnp-es";
+import * as capnp from "@mnutt/capnp-es";
 import { compareBuffers, readFileBuffer } from "test/utils";
 import {
   AddressBook,

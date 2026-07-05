@@ -2,7 +2,7 @@
 
 import { test, assert as t } from "vitest";
 
-import { Message, Pointer, utils } from "capnp-es";
+import { Message, Pointer, utils } from "@mnutt/capnp-es";
 import * as C from "src/constants";
 
 test("new Pointer()", () => {

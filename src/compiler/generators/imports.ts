@@ -11,10 +11,10 @@ import type * as schema from "../../capnp/schema";
 import { dirname, relative } from "node:path/posix";
 
 /**
- * Generates the import statement for the capnp-es runtime library.
+ * Generates the import statement for the @mnutt/capnp-es runtime library.
  *
  * This function checks for a custom import path annotation in the schema file.
- * If found, it uses that path instead of the default 'capnp-es' import.
+ * If found, it uses that path instead of the default '@mnutt/capnp-es' import.
  *
  * The import path can be customized using the ts.importPath annotation:
  *
@@ -26,7 +26,7 @@ import { dirname, relative } from "node:path/posix";
  * @param ctx - The code generator context containing file and annotation information
  */
 export function generateCapnpImport(ctx: CodeGeneratorFileContext): void {
-  // Look for the special importPath annotation on the file to see if we need a different import path for capnp-es.
+  // Look for the special importPath annotation on the file to see if we need a different import path for @mnutt/capnp-es.
   const fileNode = lookupNode(ctx, ctx.file);
   const tsFileId = util.hexToBigInt(TS_FILE_ID);
   // This may be undefined if ts.capnp is not imported; fine, we'll just use the default.
@@ -40,7 +40,9 @@ export function generateCapnpImport(ctx: CodeGeneratorFileContext): void {
     tsImportPathAnnotation &&
     fileNode.annotations.find((a) => a.id === tsImportPathAnnotation.id);
   const importPath =
-    importAnnotation === undefined ? "capnp-es" : importAnnotation.value.text;
+    importAnnotation === undefined
+      ? "@mnutt/capnp-es"
+      : importAnnotation.value.text;
 
   ctx.codeParts.push(`import * as $ from '${importPath}';`);
 }
@@ -61,7 +63,7 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
     let importPath: string;
 
     if (name.startsWith("/capnp/")) {
-      importPath = `capnp-es/capnp/${name.slice(7).replace(/\.capnp$/, "")}`;
+      importPath = `@mnutt/capnp-es/capnp/${name.slice(7).replace(/\.capnp$/, "")}`;
     } else {
       importPath = generatedImportPath(ctx.tsPath, importNode.displayName);
     }

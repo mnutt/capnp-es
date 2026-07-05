@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { test, assert as t } from "vitest";
-import * as capnp from "capnp-es";
+import * as capnp from "@mnutt/capnp-es";
 
 import { BigIntBag } from "../fixtures/bigintbag.ts";
 

@@ -1,12 +1,12 @@
 import { Duplex, PassThrough } from "node:stream";
 import { describe, test, assert as t } from "vitest";
-import { CapnpRpcError } from "capnp-es";
+import { CapnpRpcError } from "@mnutt/capnp-es";
 import {
   copyDataToBuffer,
   messageToBuffer,
   transportFromDuplex,
   viewDataAsBuffer,
-} from "capnp-es/node";
+} from "@mnutt/capnp-es/node";
 import { Message as RPCMessage } from "src/capnp/rpc";
 import { Message } from "src/serialization/message";
 import { TestAllTypes } from "test/fixtures/test";

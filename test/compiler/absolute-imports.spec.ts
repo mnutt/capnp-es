@@ -1,5 +1,5 @@
 import { exec } from "node:child_process";
-import { compileAll } from "capnp-es/compiler";
+import { compileAll } from "@mnutt/capnp-es/compiler";
 import { test, assert as t } from "vitest";
 
 test("compiler maps absolute non-standard imports to relative ESM imports", async () => {

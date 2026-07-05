@@ -15,7 +15,7 @@ export default defineBuildConfig({
     ),
   ],
   alias: {
-    "capnp-es": fileURLToPath(new URL("src/index.ts", import.meta.url)),
+    "@mnutt/capnp-es": fileURLToPath(new URL("src/index.ts", import.meta.url)),
   },
   hooks: {
     "rollup:options"(_ctx, rollupOptions) {
