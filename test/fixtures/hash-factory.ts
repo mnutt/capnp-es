@@ -66,10 +66,10 @@ export class HashFactory_NewSha1$Results$Promise {
   async promise(): Promise<HashFactory_NewSha1$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = HashFactory_NewSha1$Results, TResult2 = never>(onfulfilled?: ((value: HashFactory_NewSha1$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = HashFactory_NewSha1$Results, TResult2 = never>(onfulfilled?: ((value: HashFactory_NewSha1$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<HashFactory_NewSha1$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<HashFactory_NewSha1$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<HashFactory_NewSha1$Results> {
@@ -217,10 +217,10 @@ export class Hash_Write$Results$Promise {
   async promise(): Promise<Hash_Write$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Hash_Write$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Write$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Hash_Write$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Write$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Write$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Write$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Hash_Write$Results> {
@@ -295,10 +295,10 @@ export class Hash_Sum$Results$Promise {
   async promise(): Promise<Hash_Sum$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Hash_Sum$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Sum$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Hash_Sum$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Sum$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Sum$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Sum$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Hash_Sum$Results> {

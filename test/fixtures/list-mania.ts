@@ -660,10 +660,10 @@ export class ListManiaInterface_GetListMania$Results$Promise {
   async promise(): Promise<ListManiaInterface_GetListMania$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = ListManiaInterface_GetListMania$Results, TResult2 = never>(onfulfilled?: ((value: ListManiaInterface_GetListMania$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = ListManiaInterface_GetListMania$Results, TResult2 = never>(onfulfilled?: ((value: ListManiaInterface_GetListMania$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<ListManiaInterface_GetListMania$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<ListManiaInterface_GetListMania$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<ListManiaInterface_GetListMania$Results> {

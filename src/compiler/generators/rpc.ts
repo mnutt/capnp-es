@@ -399,12 +399,12 @@ export function generateResultPromise(
     }
     then<TResult1 = ${resultsClassName}, TResult2 = never>(
       onfulfilled?: ((value: ${resultsClassName}) => TResult1 | PromiseLike<TResult1>) | null,
-      onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
+      onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
     ): Promise<TResult1 | TResult2> {
       return this.promise().then(onfulfilled, onrejected);
     }
     catch<TResult = never>(
-      onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null
+      onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null
     ): Promise<${resultsClassName} | TResult> {
       return this.promise().catch(onrejected);
     }

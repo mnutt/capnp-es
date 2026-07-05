@@ -81,10 +81,10 @@ export class ReturnCapability_Get$Results$Promise {
   async promise(): Promise<ReturnCapability_Get$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = ReturnCapability_Get$Results, TResult2 = never>(onfulfilled?: ((value: ReturnCapability_Get$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = ReturnCapability_Get$Results, TResult2 = never>(onfulfilled?: ((value: ReturnCapability_Get$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<ReturnCapability_Get$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<ReturnCapability_Get$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<ReturnCapability_Get$Results> {

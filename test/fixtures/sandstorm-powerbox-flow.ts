@@ -69,10 +69,10 @@ export class AppPersistent_Save$Results$Promise {
   async promise(): Promise<AppPersistent_Save$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppPersistent_Save$Results, TResult2 = never>(onfulfilled?: ((value: AppPersistent_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppPersistent_Save$Results, TResult2 = never>(onfulfilled?: ((value: AppPersistent_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppPersistent_Save$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppPersistent_Save$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppPersistent_Save$Results> {
@@ -202,10 +202,10 @@ export class Node_Stat$Results$Promise {
   async promise(): Promise<Node_Stat$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Node_Stat$Results, TResult2 = never>(onfulfilled?: ((value: Node_Stat$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Node_Stat$Results, TResult2 = never>(onfulfilled?: ((value: Node_Stat$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Node_Stat$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Node_Stat$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Node_Stat$Results> {
@@ -352,10 +352,10 @@ export class AppHooks_GetViewInfo$Results$Promise {
   async promise(): Promise<AppHooks_GetViewInfo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_GetViewInfo$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_GetViewInfo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_GetViewInfo$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_GetViewInfo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_GetViewInfo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_GetViewInfo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_GetViewInfo$Results> {
@@ -459,10 +459,10 @@ export class AppHooks_Restore$Results$Promise {
   async promise(): Promise<AppHooks_Restore$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_Restore$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_Restore$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Restore$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Restore$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_Restore$Results> {
@@ -537,10 +537,10 @@ export class AppHooks_Drop$Results$Promise {
   async promise(): Promise<AppHooks_Drop$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_Drop$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Drop$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_Drop$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Drop$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Drop$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Drop$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_Drop$Results> {
@@ -754,10 +754,10 @@ export class SessionContext_FulfillRequest$Results$Promise {
   async promise(): Promise<SessionContext_FulfillRequest$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SessionContext_FulfillRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_FulfillRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SessionContext_FulfillRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_FulfillRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_FulfillRequest$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_FulfillRequest$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SessionContext_FulfillRequest$Results> {
@@ -829,10 +829,10 @@ export class SessionContext_ClaimRequest$Results$Promise {
   async promise(): Promise<SessionContext_ClaimRequest$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SessionContext_ClaimRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_ClaimRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SessionContext_ClaimRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_ClaimRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_ClaimRequest$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_ClaimRequest$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SessionContext_ClaimRequest$Results> {
@@ -1013,10 +1013,10 @@ export class SandstormBridge_GetSessionContext$Results$Promise {
   async promise(): Promise<SandstormBridge_GetSessionContext$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SandstormBridge_GetSessionContext$Results, TResult2 = never>(onfulfilled?: ((value: SandstormBridge_GetSessionContext$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SandstormBridge_GetSessionContext$Results, TResult2 = never>(onfulfilled?: ((value: SandstormBridge_GetSessionContext$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SandstormBridge_GetSessionContext$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SandstormBridge_GetSessionContext$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SandstormBridge_GetSessionContext$Results> {

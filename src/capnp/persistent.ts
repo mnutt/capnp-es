@@ -92,10 +92,10 @@ export class Persistent_SaveResults$Promise {
   async promise(): Promise<Persistent_SaveResults> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Persistent_SaveResults, TResult2 = never>(onfulfilled?: ((value: Persistent_SaveResults) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Persistent_SaveResults, TResult2 = never>(onfulfilled?: ((value: Persistent_SaveResults) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Persistent_SaveResults | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Persistent_SaveResults | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Persistent_SaveResults> {

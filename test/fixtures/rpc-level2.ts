@@ -215,10 +215,10 @@ export class RpcLevel2Restorer_Restore$Results$Promise {
   async promise(): Promise<RpcLevel2Restorer_Restore$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = RpcLevel2Restorer_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2Restorer_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = RpcLevel2Restorer_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2Restorer_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2Restorer_Restore$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2Restorer_Restore$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<RpcLevel2Restorer_Restore$Results> {
@@ -421,10 +421,10 @@ export class RpcLevel2PersistenceService_Save$Results$Promise {
   async promise(): Promise<RpcLevel2PersistenceService_Save$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = RpcLevel2PersistenceService_Save$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = RpcLevel2PersistenceService_Save$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Save$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Save$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<RpcLevel2PersistenceService_Save$Results> {
@@ -557,10 +557,10 @@ export class RpcLevel2PersistenceService_Restore$Results$Promise {
   async promise(): Promise<RpcLevel2PersistenceService_Restore$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = RpcLevel2PersistenceService_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = RpcLevel2PersistenceService_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Restore$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Restore$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<RpcLevel2PersistenceService_Restore$Results> {

@@ -8016,10 +8016,10 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise
   async promise(): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
@@ -8402,10 +8402,10 @@ export class TestGenerics_Interface_Call$Results$Promise {
   async promise(): Promise<TestGenerics_Interface_Call$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics_Interface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Interface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics_Interface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Interface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Interface_Call$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Interface_Call$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics_Interface_Call$Results> {
@@ -9009,10 +9009,10 @@ export class TestGenerics$Promise {
   async promise(): Promise<TestGenerics> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics, TResult2 = never>(onfulfilled?: ((value: TestGenerics) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics, TResult2 = never>(onfulfilled?: ((value: TestGenerics) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics> {
@@ -10199,10 +10199,10 @@ export class TestInterface_Foo$Results$Promise {
   async promise(): Promise<TestInterface_Foo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Foo$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Foo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Foo$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Foo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Foo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Foo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Foo$Results> {
@@ -10245,10 +10245,10 @@ export class TestInterface_Bar$Results$Promise {
   async promise(): Promise<TestInterface_Bar$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Bar$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Bar$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Bar$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Bar$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Bar$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Bar$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Bar$Results> {
@@ -10322,10 +10322,10 @@ export class TestInterface_Baz$Results$Promise {
   async promise(): Promise<TestInterface_Baz$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Baz$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Baz$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Baz$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Baz$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Baz$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Baz$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Baz$Results> {
@@ -10513,10 +10513,10 @@ export class TestExtends_Qux$Results$Promise {
   async promise(): Promise<TestExtends_Qux$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestExtends_Qux$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Qux$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestExtends_Qux$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Qux$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Qux$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Qux$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestExtends_Qux$Results> {
@@ -10545,10 +10545,10 @@ export class TestExtends_Corge$Results$Promise {
   async promise(): Promise<TestExtends_Corge$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestExtends_Corge$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Corge$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestExtends_Corge$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Corge$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Corge$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Corge$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestExtends_Corge$Results> {
@@ -10577,10 +10577,10 @@ export class TestAllTypes$Promise {
   async promise(): Promise<TestAllTypes> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestAllTypes, TResult2 = never>(onfulfilled?: ((value: TestAllTypes) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestAllTypes, TResult2 = never>(onfulfilled?: ((value: TestAllTypes) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestAllTypes | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAllTypes | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestAllTypes> {
@@ -11019,10 +11019,10 @@ export class TestPipeline_GetCap$Results$Promise {
   async promise(): Promise<TestPipeline_GetCap$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_GetCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_GetCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetCap$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetCap$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetCap$Results> {
@@ -11148,10 +11148,10 @@ export class TestPipeline_TestPointers$Results$Promise {
   async promise(): Promise<TestPipeline_TestPointers$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_TestPointers$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_TestPointers$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_TestPointers$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_TestPointers$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_TestPointers$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_TestPointers$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_TestPointers$Results> {
@@ -11274,10 +11274,10 @@ export class TestPipeline_GetAnyCap$Results$Promise {
   async promise(): Promise<TestPipeline_GetAnyCap$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_GetAnyCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetAnyCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_GetAnyCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetAnyCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetAnyCap$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetAnyCap$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetAnyCap$Results> {
@@ -11495,10 +11495,10 @@ export class TestCallOrder_GetCallSequence$Results$Promise {
   async promise(): Promise<TestCallOrder_GetCallSequence$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestCallOrder_GetCallSequence$Results, TResult2 = never>(onfulfilled?: ((value: TestCallOrder_GetCallSequence$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestCallOrder_GetCallSequence$Results, TResult2 = never>(onfulfilled?: ((value: TestCallOrder_GetCallSequence$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestCallOrder_GetCallSequence$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestCallOrder_GetCallSequence$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestCallOrder_GetCallSequence$Results> {
@@ -11702,10 +11702,10 @@ export class TestTailCallee_TailResult$Promise {
   async promise(): Promise<TestTailCallee_TailResult> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestTailCallee_TailResult, TResult2 = never>(onfulfilled?: ((value: TestTailCallee_TailResult) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestTailCallee_TailResult, TResult2 = never>(onfulfilled?: ((value: TestTailCallee_TailResult) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestTailCallee_TailResult | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestTailCallee_TailResult | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestTailCallee_TailResult> {
@@ -12023,10 +12023,10 @@ export class TestMoreStuff_CallFoo$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallFoo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallFoo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFoo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallFoo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFoo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFoo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFoo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFoo$Results> {
@@ -12109,10 +12109,10 @@ export class TestMoreStuff_CallFooWhenResolved$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallFooWhenResolved$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFooWhenResolved$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallFooWhenResolved$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFooWhenResolved$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
@@ -12210,10 +12210,10 @@ export class TestMoreStuff_NeverReturn$Results$Promise {
   async promise(): Promise<TestMoreStuff_NeverReturn$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_NeverReturn$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_NeverReturn$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_NeverReturn$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_NeverReturn$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_NeverReturn$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_NeverReturn$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_NeverReturn$Results> {
@@ -12282,10 +12282,10 @@ export class TestMoreStuff_Hold$Results$Promise {
   async promise(): Promise<TestMoreStuff_Hold$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_Hold$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Hold$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_Hold$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Hold$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Hold$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Hold$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Hold$Results> {
@@ -12342,10 +12342,10 @@ export class TestMoreStuff_CallHeld$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallHeld$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallHeld$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallHeld$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallHeld$Results> {
@@ -12417,10 +12417,10 @@ export class TestMoreStuff_GetHeld$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHeld$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHeld$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHeld$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHeld$Results> {
@@ -12518,10 +12518,10 @@ export class TestMoreStuff_Echo$Results$Promise {
   async promise(): Promise<TestMoreStuff_Echo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_Echo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Echo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_Echo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Echo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Echo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Echo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Echo$Results> {
@@ -12590,10 +12590,10 @@ export class TestMoreStuff_ExpectCancel$Results$Promise {
   async promise(): Promise<TestMoreStuff_ExpectCancel$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_ExpectCancel$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_ExpectCancel$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_ExpectCancel$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_ExpectCancel$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_ExpectCancel$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_ExpectCancel$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_ExpectCancel$Results> {
@@ -12706,10 +12706,10 @@ export class TestMoreStuff_MethodWithDefaults$Results$Promise {
   async promise(): Promise<TestMoreStuff_MethodWithDefaults$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_MethodWithDefaults$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithDefaults$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_MethodWithDefaults$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithDefaults$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithDefaults$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithDefaults$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithDefaults$Results> {
@@ -12781,10 +12781,10 @@ export class TestMoreStuff_GetHandle$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHandle$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetHandle$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHandle$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetHandle$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHandle$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHandle$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHandle$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHandle$Results> {
@@ -12856,10 +12856,10 @@ export class TestMoreStuff_GetNull$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetNull$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetNull$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetNull$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetNull$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetNull$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetNull$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetNull$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetNull$Results> {
@@ -12916,10 +12916,10 @@ export class TestMoreStuff_GetEnormousString$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetEnormousString$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetEnormousString$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetEnormousString$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetEnormousString$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetEnormousString$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetEnormousString$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetEnormousString$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetEnormousString$Results> {
@@ -13002,10 +13002,10 @@ export class TestMoreStuff_MethodWithNullDefault$Results$Promise {
   async promise(): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_MethodWithNullDefault$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithNullDefault$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_MethodWithNullDefault$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithNullDefault$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
@@ -13633,10 +13633,10 @@ export class TestMembrane_Result$Promise {
   async promise(): Promise<TestMembrane_Result> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_Result, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Result) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_Result, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Result) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Result | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Result | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_Result> {
@@ -13831,10 +13831,10 @@ export class TestMembrane_MakeThing$Results$Promise {
   async promise(): Promise<TestMembrane_MakeThing$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_MakeThing$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_MakeThing$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_MakeThing$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_MakeThing$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_MakeThing$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_MakeThing$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_MakeThing$Results> {
@@ -14038,10 +14038,10 @@ export class TestMembrane_Loopback$Results$Promise {
   async promise(): Promise<TestMembrane_Loopback$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_Loopback$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Loopback$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_Loopback$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Loopback$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Loopback$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Loopback$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_Loopback$Results> {
@@ -14480,10 +14480,10 @@ export class TestKeywordMethods_Delete$Results$Promise {
   async promise(): Promise<TestKeywordMethods_Delete$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Delete$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Delete$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Delete$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Delete$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Delete$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Delete$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Delete$Results> {
@@ -14526,10 +14526,10 @@ export class TestKeywordMethods_Class$Results$Promise {
   async promise(): Promise<TestKeywordMethods_Class$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Class$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Class$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Class$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Class$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Class$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Class$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Class$Results> {
@@ -14572,10 +14572,10 @@ export class TestKeywordMethods_Void$Results$Promise {
   async promise(): Promise<TestKeywordMethods_Void$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Void$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Void$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Void$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Void$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Void$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Void$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Void$Results> {
@@ -14618,10 +14618,10 @@ export class TestKeywordMethods_Return$Results$Promise {
   async promise(): Promise<TestKeywordMethods_Return$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Return$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Return$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Return$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Return$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Return$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Return$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Return$Results> {
@@ -14868,10 +14868,10 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
   async promise(): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestAuthenticatedBootstrap_GetCallerId$Results, TResult2 = never>(onfulfilled?: ((value: TestAuthenticatedBootstrap_GetCallerId$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestAuthenticatedBootstrap_GetCallerId$Results, TResult2 = never>(onfulfilled?: ((value: TestAuthenticatedBootstrap_GetCallerId$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
@@ -15561,10 +15561,10 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
   async promise(): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestNameAnnotationInterface_BadlyNamedMethod$Results, TResult2 = never>(onfulfilled?: ((value: TestNameAnnotationInterface_BadlyNamedMethod$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestNameAnnotationInterface_BadlyNamedMethod$Results, TResult2 = never>(onfulfilled?: ((value: TestNameAnnotationInterface_BadlyNamedMethod$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {
