@@ -5,10 +5,12 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "capnp/simple-interface.capnp.h"
 #include "capnp/import-interface.capnp.h"
 #include "capnp/rpc-level2.capnp.h"
+#include "capnp/sandstorm-powerbox-flow.capnp.h"
 
 class SimpleImpl final: public SimpleInterface::Server {
 public:
@@ -139,6 +141,54 @@ private:
   kj::Maybe<SimpleInterface::Client> storedCap;
 };
 
+static std::string dataToString(capnp::Data::Reader data) {
+  std::string out;
+  out.reserve(data.size());
+  for (auto c : data) {
+    out.push_back(static_cast<char>(c));
+  }
+  return out;
+}
+
+class SandstormSessionContextImpl final: public SessionContext::Server {
+public:
+  kj::Promise<void> fulfillRequest(FulfillRequestContext context) override {
+    auto cap = context.getParams().getCap();
+    auto req = cap.saveRequest();
+    return req.send().then([this, cap = kj::mv(cap)](auto results) mutable {
+      savedObjectIds.push_back(dataToString(results.getObjectId()));
+      retainedCaps.push_back(kj::mv(cap));
+    });
+  }
+
+  kj::Promise<void> claimRequest(ClaimRequestContext context) override {
+    if (nextClaim >= retainedCaps.size()) {
+      throw KJ_EXCEPTION(FAILED, "claimRequest called without saved capability");
+    }
+
+    context.getResults().setCap(retainedCaps[nextClaim++]);
+    return kj::READY_NOW;
+  }
+
+private:
+  std::vector<std::string> savedObjectIds;
+  std::vector<Node::Client> retainedCaps;
+  size_t nextClaim = 0;
+};
+
+class SandstormBridgeImpl final: public SandstormBridge::Server {
+public:
+  SandstormBridgeImpl(): sessionContext(kj::heap<SandstormSessionContextImpl>()) {}
+
+  kj::Promise<void> getSessionContext(GetSessionContextContext context) override {
+    context.getResults().setContext(sessionContext);
+    return kj::READY_NOW;
+  }
+
+private:
+  SessionContext::Client sessionContext;
+};
+
 static std::string getEnvOr(const char* key, const char* fallback) {
   const char* value = std::getenv(key);
   return value == nullptr ? std::string(fallback) : std::string(value);
@@ -159,6 +209,14 @@ int main() {
     return 0;
   } else if (mainType == "persistence") {
     capnp::EzRpcServer server(kj::heap<RpcLevel2PersistenceImpl>(), bindAddr);
+    auto& waitScope = server.getWaitScope();
+    auto actualPort = server.getPort().wait(waitScope);
+    std::cout << "READY " << actualPort << std::endl;
+    std::cout.flush();
+    kj::NEVER_DONE.wait(waitScope);
+    return 0;
+  } else if (mainType == "sandstorm-bridge") {
+    capnp::EzRpcServer server(kj::heap<SandstormBridgeImpl>(), bindAddr);
     auto& waitScope = server.getWaitScope();
     auto actualPort = server.getPort().wait(waitScope);
     std::cout << "READY " << actualPort << std::endl;

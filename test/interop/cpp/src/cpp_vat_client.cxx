@@ -8,12 +8,28 @@
 #include "capnp/import-interface.capnp.h"
 #include <capnp/persistent.capnp.h>
 #include "capnp/rpc-level2.capnp.h"
+#include "capnp/sandstorm-powerbox-flow.capnp.h"
 
 static std::string getArg(int argc, char* argv[], int idx, const char* fallback) {
   if (idx < argc) {
     return std::string(argv[idx]);
   }
   return std::string(fallback);
+}
+
+static void setData(capnp::Data::Builder data, const std::string& value) {
+  for (uint i = 0; i < value.size(); i++) {
+    data[i] = static_cast<uint8_t>(value[i]);
+  }
+}
+
+static std::string dataToString(capnp::Data::Reader data) {
+  std::string out;
+  out.reserve(data.size());
+  for (auto c : data) {
+    out.push_back(static_cast<char>(c));
+  }
+  return out;
 }
 
 int main(int argc, char* argv[]) {
@@ -34,6 +50,37 @@ int main(int argc, char* argv[]) {
       mode == "restore-revoked";
 
   try {
+    if (mode == "sandstorm-apphooks") {
+      auto appHooks = client.getMain<AppHooks>();
+
+      auto viewInfo = appHooks.getViewInfoRequest().send().wait(waitScope);
+      if (!viewInfo.getSupportsNode()) {
+        std::cerr << "expected supportsNode=true" << std::endl;
+        return 10;
+      }
+
+      const std::string objectId = "/cpp/restored-node";
+      auto restoreReq = appHooks.restoreRequest();
+      setData(restoreReq.initObjectId(objectId.size()), objectId);
+      auto node = restoreReq.send().wait(waitScope).getCap();
+
+      auto stat = node.statRequest().send().wait(waitScope);
+      if (!stat.getIsDir()) {
+        std::cerr << "expected restored node to be a directory" << std::endl;
+        return 11;
+      }
+
+      auto saved = node.saveRequest().send().wait(waitScope);
+      const auto savedObjectId = dataToString(saved.getObjectId());
+      if (savedObjectId != objectId) {
+        std::cerr << "unexpected saved objectId=" << savedObjectId << std::endl;
+        return 12;
+      }
+
+      std::cout << "OK sandstorm-apphooks=" << savedObjectId << std::endl;
+      return 0;
+    }
+
     if (
         mode == "restore-success" ||
         mode == "restore-unknown" ||

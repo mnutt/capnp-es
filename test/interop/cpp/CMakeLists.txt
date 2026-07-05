@@ -11,6 +11,7 @@ set(SCHEMAS
   ${SCHEMA_DIR}/simple-interface.capnp
   ${SCHEMA_DIR}/import-interface.capnp
   ${SCHEMA_DIR}/rpc-level2.capnp
+  ${SCHEMA_DIR}/sandstorm-powerbox-flow.capnp
 )
 
 capnp_generate_cpp(CAPNP_SRCS CAPNP_HDRS ${SCHEMAS})

@@ -33,7 +33,7 @@ async function startCppServer(): Promise<{
 }
 
 async function startCppServerWithMode(
-  mainType: "return" | "restorer" | "persistence",
+  mainType: "return" | "restorer" | "persistence" | "sandstorm-bridge",
 ): Promise<{
   child: ChildProcessByStdio<null, Readable, Readable>;
   host: string;
@@ -125,7 +125,97 @@ type CppClientMode =
   | "restore-unknown"
   | "restore-sealed-success"
   | "restore-sealed-denied"
-  | "restore-revoked";
+  | "restore-revoked"
+  | "sandstorm-apphooks";
+
+function dataFromText(text: string): Uint8Array {
+  return new TextEncoder().encode(text);
+}
+
+function dataToText(data: { toUint8Array(): Uint8Array }): string {
+  return new TextDecoder().decode(data.toUint8Array());
+}
+
+async function makeSandstormNode(label: string): Promise<any> {
+  const { Node$Server } = await import("test/fixtures/sandstorm-powerbox-flow");
+  return new Node$Server({
+    async stat(_params: any, results: any): Promise<void> {
+      results.isDir = true;
+    },
+
+    async save(_params: any, results: any): Promise<void> {
+      const bytes = dataFromText(label);
+      results._initObjectId(bytes.byteLength).copyBuffer(bytes);
+    },
+  }).client();
+}
+
+async function startTsSandstormAppHooksServer(): Promise<{
+  host: string;
+  port: number;
+  seen: {
+    getViewInfoCalls: number;
+    restoreCalls: number;
+    restoredObjectIds: string[];
+  };
+  stop: () => Promise<void>;
+}> {
+  const [{ Conn }, { AppHooks }] = await Promise.all([
+    import("src/rpc"),
+    import("test/fixtures/sandstorm-powerbox-flow"),
+  ]);
+
+  const host = process.env.CAPNP_INTEROP_HOST || "127.0.0.1";
+  const conns: Conn[] = [];
+  const seen = {
+    getViewInfoCalls: 0,
+    restoreCalls: 0,
+    restoredObjectIds: [] as string[],
+  };
+
+  const server = net.createServer((socket) => {
+    const conn = new Conn(TcpRPCTransport.fromSocket(socket));
+    conn.onError = () => {};
+    conn.initMain(AppHooks, {
+      async getViewInfo(_params: any, results: any): Promise<void> {
+        seen.getViewInfoCalls++;
+        results.supportsNode = true;
+      },
+
+      async restore(params: any, results: any): Promise<void> {
+        seen.restoreCalls++;
+        const objectId = dataToText(params.objectId);
+        seen.restoredObjectIds.push(objectId);
+        results.cap = await makeSandstormNode(objectId);
+      },
+
+      async drop(_params: any, _results: any): Promise<void> {
+        // No-op for interop coverage.
+      },
+    });
+    conns.push(conn);
+  });
+
+  await new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, host, () => resolve());
+  });
+
+  const addr = server.address() as AddressInfo;
+  const stop = async () => {
+    for (const conn of conns) {
+      conn.shutdown();
+    }
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  };
+
+  return {
+    host,
+    port: addr.port,
+    seen,
+    stop,
+  };
+}
 
 async function runCppClient(
   host: string,
@@ -540,6 +630,54 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
           .promise();
 
         t.equal(out.result, 13);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client can fulfill and claim a persistent Node through C++ Sandstorm bridge",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { AppPersistent$Client, SandstormBridge }] =
+        await Promise.all([
+          import("src/rpc"),
+          import("test/fixtures/sandstorm-powerbox-flow"),
+        ]);
+      const server = await startCppServerWithMode("sandstorm-bridge");
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const session = await conn
+          .bootstrap(SandstormBridge)
+          .getSessionContext()
+          .promise();
+        const label = "/interop/cpp-bridge-node";
+        const offeredCap = await makeSandstormNode(label);
+
+        await session.context
+          .fulfillRequest((p: any) => {
+            p.cap = offeredCap;
+          })
+          .promise();
+
+        const claim = await session.context.claimRequest().promise();
+        const stat = await claim.cap.stat().promise();
+        const saved = await new AppPersistent$Client(claim.cap.client)
+          .save()
+          .promise();
+
+        t.equal(stat.isDir, true);
+        t.equal(dataToText(saved.objectId), label);
       } finally {
         conn?.shutdown();
         await server.stop();
@@ -1055,6 +1193,33 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(res.code, 0);
         t.equal(res.signal, null);
         t.ok(res.stdout.includes("OK restore=7"));
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client can restore and save inherited persistent Node from capnp-es AppHooks",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsSandstormAppHooksServer();
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "sandstorm-apphooks",
+        );
+        t.equal(
+          res.code,
+          0,
+          `stdout=${res.stdout.trim()} stderr=${res.stderr.trim()}`,
+        );
+        t.equal(res.signal, null);
+        t.ok(res.stdout.includes("OK sandstorm-apphooks=/cpp/restored-node"));
+        t.equal(server.seen.getViewInfoCalls, 1);
+        t.equal(server.seen.restoreCalls, 1);
+        t.deepEqual(server.seen.restoredObjectIds, ["/cpp/restored-node"]);
       } finally {
         await server.stop();
       }
