@@ -34,7 +34,7 @@ class TestConn extends Conn {
 class DummyClient implements Client {
   closed = false;
 
-  call<P extends Struct, R extends Struct>(_call: any): any {
+  call(_call: any): any {
     throw new Error("not implemented");
   }
 
@@ -75,7 +75,7 @@ describe("sandstorm release bookkeeping", () => {
     });
 
     class OkClient implements Client {
-      call<P extends Struct, R extends Struct>(_call: any): any {
+      call(_call: any): any {
         return new ImmediateAnswer(new Message().initRoot(AnyStruct) as any);
       }
 
@@ -119,7 +119,7 @@ describe("sandstorm release bookkeeping", () => {
     });
 
     class FailingClient implements Client {
-      call<P extends Struct, R extends Struct>(_call: any): any {
+      call(_call: any): any {
         throw new Error("boom");
       }
 
@@ -235,7 +235,7 @@ describe("sandstorm release bookkeeping", () => {
         this.next = next;
       }
 
-      call<P extends Struct, R extends Struct>(_call: any): any {
+      call(_call: any): any {
         const msg = new Message();
         const out = msg.initRoot(OneCapStruct);
         out.setCap(this.next);

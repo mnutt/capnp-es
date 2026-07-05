@@ -133,9 +133,10 @@ export function generateServer(
     );
   }
 
-  const ownMethodsTable = superclasses.length === 0
-    ? `${clientName}.methods`
-    : `${clientName}.ownMethods`;
+  const ownMethodsTable =
+    superclasses.length === 0
+      ? `${clientName}.methods`
+      : `${clientName}.ownMethods`;
   let index = 0;
   for (const method of node.interface.methods) {
     codeServerMethods.push(`{

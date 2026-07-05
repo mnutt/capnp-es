@@ -37,7 +37,10 @@ export class Server implements Client {
     public methods: Array<ServerMethod<any, any>>,
   ) {
     for (const method of methods) {
-      this.#methodsById.set(methodKey(method.interfaceId, method.methodId), method);
+      this.#methodsById.set(
+        methodKey(method.interfaceId, method.methodId),
+        method,
+      );
     }
   }
 
@@ -83,11 +86,13 @@ export class Server implements Client {
     }
 
     try {
-      void Promise.resolve(dispose.call(this.target)).catch((err: unknown) => {
-        console.error("Error disposing capnp server target:", err);
-      });
-    } catch (err) {
-      console.error("Error disposing capnp server target:", err);
+      void Promise.resolve(dispose.call(this.target)).catch(
+        (error_: unknown) => {
+          console.error("Error disposing capnp server target:", error_);
+        },
+      );
+    } catch (error_) {
+      console.error("Error disposing capnp server target:", error_);
     }
   }
 }

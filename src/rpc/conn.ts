@@ -497,9 +497,10 @@ export class Conn {
       return;
     }
 
-    const methodTable: typeof interfaceDef.methods = "ownMethods" in interfaceDef
-      ? (interfaceDef.ownMethods as typeof interfaceDef.methods)
-      : interfaceDef.methods;
+    const methodTable: typeof interfaceDef.methods =
+      "ownMethods" in interfaceDef
+        ? (interfaceDef.ownMethods as typeof interfaceDef.methods)
+        : interfaceDef.methods;
     const method = methodTable[mcall.methodId];
     if (!method) {
       this.popAnswer(id);
