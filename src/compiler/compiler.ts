@@ -191,22 +191,28 @@ function tsCompile(
   compilerHost.resolveModuleNames = (moduleNames, containingFile) =>
     moduleNames.map((moduleName) => {
       if (moduleName === RUNTIME_MODULE_NAME) {
-        return {
-          resolvedFileName: join(process.cwd(), "src/index.ts"),
-          extension: ts.Extension.Ts,
-        };
+        const resolvedFileName = join(process.cwd(), "src/index.ts");
+        if (_fileExists(resolvedFileName)) {
+          return {
+            resolvedFileName,
+            extension: ts.Extension.Ts,
+          };
+        }
       }
 
       const runtimeModulePrefix = `${RUNTIME_MODULE_NAME}/`;
       if (moduleName.startsWith(runtimeModulePrefix)) {
-        return {
-          resolvedFileName: join(
-            process.cwd(),
-            "src",
-            `${moduleName.slice(runtimeModulePrefix.length)}.ts`,
-          ),
-          extension: ts.Extension.Ts,
-        };
+        const resolvedFileName = join(
+          process.cwd(),
+          "src",
+          `${moduleName.slice(runtimeModulePrefix.length)}.ts`,
+        );
+        if (_fileExists(resolvedFileName)) {
+          return {
+            resolvedFileName,
+            extension: ts.Extension.Ts,
+          };
+        }
       }
 
       if (moduleName.startsWith(".") && moduleName.endsWith(".js")) {
