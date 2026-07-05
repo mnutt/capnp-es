@@ -10,6 +10,9 @@ export class HashFactory_NewSha1$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: HashFactory_NewSha1$Params, value: $.Init<HashFactory_NewSha1$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "HashFactory_NewSha1$Params_" + super.toString(); }
 }
 export class HashFactory_NewSha1$Results extends $.Struct {
@@ -23,8 +26,26 @@ export class HashFactory_NewSha1$Results extends $.Struct {
       { name: "hash", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xe9620cda4245af9an, typeIdHex: "e9620cda4245af9a", displayName: "Hash" } }
     ] as const,
   };
+  static _applyInit(target: HashFactory_NewSha1$Results, value: $.Init<HashFactory_NewSha1$Results>): void {
+    const init = value as any;
+    if (init["hash"] !== undefined) {
+      target.hash = init["hash"] as any;
+    }
+  }
   get hash(): Hash$Client {
     return new Hash$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get hashOrNull(): Hash$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new Hash$Client(client);
+  }
+  set hashOrNull(value: Hash$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.hash = value;
+    }
   }
   set hash(value: Hash$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -41,6 +62,15 @@ export class HashFactory_NewSha1$Results$Promise {
   }
   async promise(): Promise<HashFactory_NewSha1$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = HashFactory_NewSha1$Results, TResult2 = never>(onfulfilled?: ((value: HashFactory_NewSha1$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<HashFactory_NewSha1$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<HashFactory_NewSha1$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class HashFactory$Client {
@@ -63,10 +93,15 @@ export class HashFactory$Client {
       resultFields: HashFactory_NewSha1$Results._capnp.fields
     }
   ];
-  newSha1(paramsFunc?: (params: HashFactory_NewSha1$Params) => void): HashFactory_NewSha1$Results$Promise {
+  newSha1(): HashFactory_NewSha1$Results$Promise;
+  newSha1(params: $.Init<HashFactory_NewSha1$Params>): HashFactory_NewSha1$Results$Promise;
+  newSha1(paramsFunc: (params: HashFactory_NewSha1$Params) => void): HashFactory_NewSha1$Results$Promise;
+  newSha1(params?: $.Initializer<HashFactory_NewSha1$Params>): HashFactory_NewSha1$Results$Promise {
     const answer = this.client.call({
       method: HashFactory$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: HashFactory_NewSha1$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(HashFactory_NewSha1$Results, answer);
     return new HashFactory_NewSha1$Results$Promise(pipeline);
@@ -74,7 +109,7 @@ export class HashFactory$Client {
 }
 $.Registry.register(HashFactory$Client.interfaceId, HashFactory$Client);
 export interface HashFactory$Server$Target {
-  newSha1(params: HashFactory_NewSha1$Params, results: HashFactory_NewSha1$Results): Promise<void>;
+  newSha1(params: HashFactory_NewSha1$Params, results: HashFactory_NewSha1$Results): $.MaybePromise<void | $.Init<HashFactory_NewSha1$Results>>;
 }
 export class HashFactory$Server extends $.Server {
   readonly target: HashFactory$Server$Target;
@@ -82,7 +117,12 @@ export class HashFactory$Server extends $.Server {
     super(target, [
       {
         ...HashFactory$Client.methods[0],
-        impl: target.newSha1
+        impl: async (params: HashFactory_NewSha1$Params, results: HashFactory_NewSha1$Results) => {
+          const value = await target.newSha1(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<HashFactory_NewSha1$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -115,6 +155,18 @@ export class Hash_Write$Params extends $.Struct {
       { name: "data", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: Hash_Write$Params, value: $.Init<Hash_Write$Params>): void {
+    const init = value as any;
+    if (init["data"] !== undefined) {
+      if (init["data"] instanceof $.Data) {
+        target.data = init["data"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["data"]);
+        target._initData(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   _adoptData(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -144,6 +196,9 @@ export class Hash_Write$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: Hash_Write$Results, value: $.Init<Hash_Write$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "Hash_Write$Results_" + super.toString(); }
 }
 export class Hash_Write$Results$Promise {
@@ -153,6 +208,15 @@ export class Hash_Write$Results$Promise {
   }
   async promise(): Promise<Hash_Write$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = Hash_Write$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Write$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Write$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<Hash_Write$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class Hash_Sum$Params extends $.Struct {
@@ -164,6 +228,9 @@ export class Hash_Sum$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: Hash_Sum$Params, value: $.Init<Hash_Sum$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "Hash_Sum$Params_" + super.toString(); }
 }
 export class Hash_Sum$Results extends $.Struct {
@@ -177,6 +244,18 @@ export class Hash_Sum$Results extends $.Struct {
       { name: "hash", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: Hash_Sum$Results, value: $.Init<Hash_Sum$Results>): void {
+    const init = value as any;
+    if (init["hash"] !== undefined) {
+      if (init["hash"] instanceof $.Data) {
+        target.hash = init["hash"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["hash"]);
+        target._initHash(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   _adoptHash(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -204,6 +283,15 @@ export class Hash_Sum$Results$Promise {
   }
   async promise(): Promise<Hash_Sum$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = Hash_Sum$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Sum$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Sum$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<Hash_Sum$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class Hash$Client {
@@ -237,18 +325,28 @@ export class Hash$Client {
       resultFields: Hash_Sum$Results._capnp.fields
     }
   ];
-  write(paramsFunc?: (params: Hash_Write$Params) => void): Hash_Write$Results$Promise {
+  write(): Hash_Write$Results$Promise;
+  write(params: $.Init<Hash_Write$Params>): Hash_Write$Results$Promise;
+  write(paramsFunc: (params: Hash_Write$Params) => void): Hash_Write$Results$Promise;
+  write(params?: $.Initializer<Hash_Write$Params>): Hash_Write$Results$Promise {
     const answer = this.client.call({
       method: Hash$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: Hash_Write$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Hash_Write$Results, answer);
     return new Hash_Write$Results$Promise(pipeline);
   }
-  sum(paramsFunc?: (params: Hash_Sum$Params) => void): Hash_Sum$Results$Promise {
+  sum(): Hash_Sum$Results$Promise;
+  sum(params: $.Init<Hash_Sum$Params>): Hash_Sum$Results$Promise;
+  sum(paramsFunc: (params: Hash_Sum$Params) => void): Hash_Sum$Results$Promise;
+  sum(params?: $.Initializer<Hash_Sum$Params>): Hash_Sum$Results$Promise {
     const answer = this.client.call({
       method: Hash$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: Hash_Sum$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Hash_Sum$Results, answer);
     return new Hash_Sum$Results$Promise(pipeline);
@@ -256,8 +354,8 @@ export class Hash$Client {
 }
 $.Registry.register(Hash$Client.interfaceId, Hash$Client);
 export interface Hash$Server$Target {
-  write(params: Hash_Write$Params, results: Hash_Write$Results): Promise<void>;
-  sum(params: Hash_Sum$Params, results: Hash_Sum$Results): Promise<void>;
+  write(params: Hash_Write$Params, results: Hash_Write$Results): $.MaybePromise<void | $.Init<Hash_Write$Results>>;
+  sum(params: Hash_Sum$Params, results: Hash_Sum$Results): $.MaybePromise<void | $.Init<Hash_Sum$Results>>;
 }
 export class Hash$Server extends $.Server {
   readonly target: Hash$Server$Target;
@@ -265,11 +363,21 @@ export class Hash$Server extends $.Server {
     super(target, [
       {
         ...Hash$Client.methods[0],
-        impl: target.write
+        impl: async (params: Hash_Write$Params, results: Hash_Write$Results) => {
+          const value = await target.write(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<Hash_Write$Results>);
+          }
+        }
       },
       {
         ...Hash$Client.methods[1],
-        impl: target.sum
+        impl: async (params: Hash_Sum$Params, results: Hash_Sum$Results) => {
+          const value = await target.sum(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<Hash_Sum$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

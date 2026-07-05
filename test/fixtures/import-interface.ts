@@ -13,6 +13,12 @@ export class ReturnCapability_Get$Params extends $.Struct {
       { name: "index", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: ReturnCapability_Get$Params, value: $.Init<ReturnCapability_Get$Params>): void {
+    const init = value as any;
+    if (init["index"] !== undefined) {
+      target.index = init["index"] as any;
+    }
+  }
   get index(): number {
     return $.utils.getInt32(0, this);
   }
@@ -32,8 +38,26 @@ export class ReturnCapability_Get$Results extends $.Struct {
       { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
     ] as const,
   };
+  static _applyInit(target: ReturnCapability_Get$Results, value: $.Init<ReturnCapability_Get$Results>): void {
+    const init = value as any;
+    if (init["capability"] !== undefined) {
+      target.capability = init["capability"] as any;
+    }
+  }
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capabilityOrNull(): SimpleInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new SimpleInterface$Client(client);
+  }
+  set capabilityOrNull(value: SimpleInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.capability = value;
+    }
   }
   set capability(value: SimpleInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -50,6 +74,15 @@ export class ReturnCapability_Get$Results$Promise {
   }
   async promise(): Promise<ReturnCapability_Get$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = ReturnCapability_Get$Results, TResult2 = never>(onfulfilled?: ((value: ReturnCapability_Get$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<ReturnCapability_Get$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<ReturnCapability_Get$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class ReturnCapability$Client {
@@ -72,10 +105,15 @@ export class ReturnCapability$Client {
       resultFields: ReturnCapability_Get$Results._capnp.fields
     }
   ];
-  get(paramsFunc?: (params: ReturnCapability_Get$Params) => void): ReturnCapability_Get$Results$Promise {
+  get(): ReturnCapability_Get$Results$Promise;
+  get(params: $.Init<ReturnCapability_Get$Params>): ReturnCapability_Get$Results$Promise;
+  get(paramsFunc: (params: ReturnCapability_Get$Params) => void): ReturnCapability_Get$Results$Promise;
+  get(params?: $.Initializer<ReturnCapability_Get$Params>): ReturnCapability_Get$Results$Promise {
     const answer = this.client.call({
       method: ReturnCapability$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: ReturnCapability_Get$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(ReturnCapability_Get$Results, answer);
     return new ReturnCapability_Get$Results$Promise(pipeline);
@@ -83,7 +121,7 @@ export class ReturnCapability$Client {
 }
 $.Registry.register(ReturnCapability$Client.interfaceId, ReturnCapability$Client);
 export interface ReturnCapability$Server$Target {
-  get(params: ReturnCapability_Get$Params, results: ReturnCapability_Get$Results): Promise<void>;
+  get(params: ReturnCapability_Get$Params, results: ReturnCapability_Get$Results): $.MaybePromise<void | $.Init<ReturnCapability_Get$Results>>;
 }
 export class ReturnCapability$Server extends $.Server {
   readonly target: ReturnCapability$Server$Target;
@@ -91,7 +129,12 @@ export class ReturnCapability$Server extends $.Server {
     super(target, [
       {
         ...ReturnCapability$Client.methods[0],
-        impl: target.get
+        impl: async (params: ReturnCapability_Get$Params, results: ReturnCapability_Get$Results) => {
+          const value = await target.get(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<ReturnCapability_Get$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

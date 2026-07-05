@@ -2,7 +2,7 @@
 import * as $ from "capnp-es";
 import { Annotation, Brand, Brand_Binding, Brand_Scope, ElementSize, Enumerant, Field, Method, Node, Node_NestedNode, Node_Parameter, Superclass, Type, Value } from "capnp-es/capnp/schema";
 import { TestImport } from "./test-import.js";
-import { TestAllTypes, TestAnyOthers, TestAnyPointer, TestAnyPointerConstants, TestAuthenticatedBootstrap, TestAuthenticatedBootstrap$Client, TestCallOrder, TestCallOrder$Client, TestConstants, TestContainMembrane, TestContructorName, TestDefaults, TestEmptyStruct, TestEnum, TestExtends, TestExtends$Client, TestExtends2, TestExtends2$Client, TestFieldZeroIsBit, TestGenerics, TestGenericsUnion, TestGenericsWrapper, TestGenericsWrapper2, TestGenerics_Inner, TestGenerics_Inner2, TestGenerics_Inner2_DeepNest, TestGenerics_Inner2_DeepNest_DeepNestInterface, TestGenerics_Inner2_DeepNest_DeepNestInterface$Client, TestGenerics_Interface, TestGenerics_Interface$Client, TestGenerics_UseAliases, TestGroups, TestHandle, TestHandle$Client, TestImplicitMethodParams, TestImplicitMethodParams$Client, TestImplicitMethodParamsInGeneric, TestImplicitMethodParamsInGeneric$Client, TestInterface, TestInterface$Client, TestInterleavedGroups, TestJoinResult, TestKeywordMethods, TestKeywordMethods$Client, TestLateUnion, TestListDefaults, TestLists, TestLists_Struct0, TestLists_Struct0c, TestLists_Struct1, TestLists_Struct16, TestLists_Struct16c, TestLists_Struct1c, TestLists_Struct32, TestLists_Struct32c, TestLists_Struct64, TestLists_Struct64c, TestLists_Struct8, TestLists_Struct8c, TestLists_StructP, TestLists_StructPc, TestMembrane, TestMembrane$Client, TestMembrane_Result, TestMembrane_Thing, TestMembrane_Thing$Client, TestMoreStuff, TestMoreStuff$Client, TestNameAnnotation, TestNameAnnotationInterface, TestNameAnnotationInterface$Client, TestNameAnnotation_BadlyNamedEnum, TestNameAnnotation_NestedStruct, TestNameAnnotation_NestedStruct_DeeplyNestedEnum, TestNestedTypes, TestNestedTypes_NestedEnum, TestNestedTypes_NestedStruct, TestNestedTypes_NestedStruct_NestedEnum, TestNewUnionVersion, TestNewVersion, TestOldUnionVersion, TestOldVersion, TestOutOfOrder, TestPipeline, TestPipeline$Client, TestPipeline_AnyBox, TestPipeline_Box, TestPrintInlineStructs, TestPrintInlineStructs_InlineStruct, TestProvisionId, TestRecipientId, TestStructUnion, TestStructUnion_SomeStruct, TestSturdyRef, TestSturdyRefHostId, TestSturdyRefObjectId, TestSturdyRefObjectId_Tag, TestTailCallee, TestTailCallee$Client, TestTailCallee_TailResult, TestTailCaller, TestTailCaller$Client, TestThirdPartyCapId, TestTransferCap, TestTransferCap_Element, TestUnion, TestUnionDefaults, TestUnionInUnion, TestUnnamedUnion, TestUseGenerics, TestUsing, TestWholeFloatDefault } from "./test.js";
+import { TestAllTypes, TestAnyOthers, TestAnyPointer, TestAnyPointerConstants, TestAuthenticatedBootstrap, TestAuthenticatedBootstrap$Client, TestCallOrder, TestCallOrder$Client, TestConstants, TestContainMembrane, TestContructorName, TestDefaults, TestEmptyStruct, TestEnum, TestExtends, TestExtends$Client, TestExtends2, TestExtends2$Client, TestFieldZeroIsBit, TestGenerics, TestGenericsUnion, TestGenericsWrapper, TestGenericsWrapper2, TestGenerics_Inner, TestGenerics_Inner2, TestGenerics_Inner2_DeepNest, TestGenerics_Inner2_DeepNest_DeepNestInterface, TestGenerics_Inner2_DeepNest_DeepNestInterface$Client, TestGenerics_Interface, TestGenerics_Interface$Client, TestGenerics_UseAliases, TestGroups, TestHandle, TestHandle$Client, TestImplicitMethodParams, TestImplicitMethodParams$Client, TestImplicitMethodParamsInGeneric, TestImplicitMethodParamsInGeneric$Client, TestInterface, TestInterface$Client, TestInterleavedGroups, TestJoinResult, TestKeywordMethods, TestKeywordMethods$Client, TestLateUnion, TestListDefaults, TestLists, TestLists_Struct0, TestLists_Struct0c, TestLists_Struct1, TestLists_Struct16, TestLists_Struct16c, TestLists_Struct1c, TestLists_Struct32, TestLists_Struct32c, TestLists_Struct64, TestLists_Struct64c, TestLists_Struct8, TestLists_Struct8c, TestLists_StructP, TestLists_StructPc, TestMembrane, TestMembrane$Client, TestMembrane_Result, TestMembrane_Thing, TestMembrane_Thing$Client, TestMoreStuff, TestMoreStuff$Client, TestNameAnnotation, TestNameAnnotationInterface, TestNameAnnotationInterface$Client, TestNameAnnotation_BadlyNamedEnum, TestNameAnnotation_NestedStruct, TestNameAnnotation_NestedStruct_DeeplyNestedEnum, TestNestedTypes, TestNestedTypes_NestedEnum, TestNestedTypes_NestedStruct, TestNestedTypes_NestedStruct_NestedEnum, TestNewUnionVersion, TestNewVersion, TestOldUnionVersion, TestOldVersion, TestOutOfOrder, TestPipeline, TestPipeline$Client, TestPipeline_AnyBox, TestPipeline_Box, TestPrintInlineStructs, TestPrintInlineStructs_InlineStruct, TestProvisionId, TestRecipientId, TestStructUnion, TestStructUnion_SomeStruct, TestSturdyRef, TestSturdyRefHostId, TestSturdyRefObjectId, TestSturdyRefObjectId_Tag, TestTailCallee, TestTailCallee$Client, TestTailCallee_TailResult, TestTailCaller, TestTailCaller$Client, TestThirdPartyCapId, TestTransferCap, TestTransferCap_Element, TestUnion, TestUnionDefaults, TestUnionHelperNameCollision, TestUnionInUnion, TestUnnamedUnion, TestUseGenerics, TestUsing, TestWholeFloatDefault } from "./test.js";
 export const _capnpFileId = 0xc64a3bf0338a124an;
 export class TestImport2 extends $.Struct {
   static readonly _capnp = {
@@ -22,6 +22,68 @@ export class TestImport2 extends $.Struct {
       { name: "bep", codeOrder: 7, ordinal: 7, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xd1958f7dba521926n, typeIdHex: "d1958f7dba521926", displayName: "ElementSize" } }
     ] as const,
   };
+  static _applyInit(target: TestImport2, value: $.Init<TestImport2>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      if (init["foo"] instanceof TestAllTypes) {
+        target.foo = init["foo"] as TestAllTypes;
+      }
+      else {
+        TestAllTypes._applyInit(target._initFoo(), init["foo"] as $.Init<TestAllTypes>);
+      }
+    }
+    if (init["bar"] !== undefined) {
+      if (init["bar"] instanceof Node) {
+        target.bar = init["bar"] as Node;
+      }
+      else {
+        Node._applyInit(target._initBar(), init["bar"] as $.Init<Node>);
+      }
+    }
+    if (init["baz"] !== undefined) {
+      if (init["baz"] instanceof TestImport) {
+        target.baz = init["baz"] as TestImport;
+      }
+      else {
+        TestImport._applyInit(target._initBaz(), init["baz"] as $.Init<TestImport>);
+      }
+    }
+    if (init["box"] !== undefined) {
+      if (init["box"] instanceof Node_Parameter) {
+        target.box = init["box"] as Node_Parameter;
+      }
+      else {
+        Node_Parameter._applyInit(target._initBox(), init["box"] as $.Init<Node_Parameter>);
+      }
+    }
+    if (init["bee"] !== undefined) {
+      if (init["bee"] instanceof Node_NestedNode) {
+        target.bee = init["bee"] as Node_NestedNode;
+      }
+      else {
+        Node_NestedNode._applyInit(target._initBee(), init["bee"] as $.Init<Node_NestedNode>);
+      }
+    }
+    if (init["bok"] !== undefined) {
+      if (init["bok"] instanceof Brand_Scope) {
+        target.bok = init["bok"] as Brand_Scope;
+      }
+      else {
+        Brand_Scope._applyInit(target._initBok(), init["bok"] as $.Init<Brand_Scope>);
+      }
+    }
+    if (init["bip"] !== undefined) {
+      if (init["bip"] instanceof Brand_Binding) {
+        target.bip = init["bip"] as Brand_Binding;
+      }
+      else {
+        Brand_Binding._applyInit(target._initBip(), init["bip"] as $.Init<Brand_Binding>);
+      }
+    }
+    if (init["bep"] !== undefined) {
+      target.bep = init["bep"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<TestAllTypes>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }

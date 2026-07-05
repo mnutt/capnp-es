@@ -13,6 +13,15 @@ export class Foo extends $.Struct {
       { name: "baz", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: Foo, value: $.Init<Foo>): void {
+    const init = value as any;
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+  }
   get bar(): string {
     return $.utils.getText(0, this);
   }

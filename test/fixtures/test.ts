@@ -69,6 +69,301 @@ export class TestAllTypes extends $.Struct {
     ] as const,
   };
   static _StructList: $.ListCtor<TestAllTypes>;
+  static _applyInit(target: TestAllTypes, value: $.Init<TestAllTypes>): void {
+    const init = value as any;
+    if (init["voidField"] !== undefined) {
+    }
+    if (init["boolField"] !== undefined) {
+      target.boolField = init["boolField"] as any;
+    }
+    if (init["int8Field"] !== undefined) {
+      target.int8Field = init["int8Field"] as any;
+    }
+    if (init["int16Field"] !== undefined) {
+      target.int16Field = init["int16Field"] as any;
+    }
+    if (init["int32Field"] !== undefined) {
+      target.int32Field = init["int32Field"] as any;
+    }
+    if (init["int64Field"] !== undefined) {
+      target.int64Field = init["int64Field"] as any;
+    }
+    if (init["uInt8Field"] !== undefined) {
+      target.uInt8Field = init["uInt8Field"] as any;
+    }
+    if (init["uInt16Field"] !== undefined) {
+      target.uInt16Field = init["uInt16Field"] as any;
+    }
+    if (init["uInt32Field"] !== undefined) {
+      target.uInt32Field = init["uInt32Field"] as any;
+    }
+    if (init["uInt64Field"] !== undefined) {
+      target.uInt64Field = init["uInt64Field"] as any;
+    }
+    if (init["float32Field"] !== undefined) {
+      target.float32Field = init["float32Field"] as any;
+    }
+    if (init["float64Field"] !== undefined) {
+      target.float64Field = init["float64Field"] as any;
+    }
+    if (init["textField"] !== undefined) {
+      target.textField = init["textField"] as any;
+    }
+    if (init["dataField"] !== undefined) {
+      if (init["dataField"] instanceof $.Data) {
+        target.dataField = init["dataField"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["dataField"]);
+        target._initDataField(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+    if (init["structField"] !== undefined) {
+      if (init["structField"] instanceof TestAllTypes) {
+        target.structField = init["structField"] as TestAllTypes;
+      }
+      else {
+        TestAllTypes._applyInit(target._initStructField(), init["structField"] as $.Init<TestAllTypes>);
+      }
+    }
+    if (init["enumField"] !== undefined) {
+      target.enumField = init["enumField"] as any;
+    }
+    if (init["interfaceField"] !== undefined) {
+    }
+    if (init["voidList"] !== undefined) {
+      if (init["voidList"] instanceof $.List) {
+        target.voidList = init["voidList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["voidList"]) ? init["voidList"] : Array.from(init["voidList"] as Iterable<any>);
+        const list = target._initVoidList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["boolList"] !== undefined) {
+      if (init["boolList"] instanceof $.List) {
+        target.boolList = init["boolList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["boolList"]) ? init["boolList"] : Array.from(init["boolList"] as Iterable<any>);
+        const list = target._initBoolList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int8List"] !== undefined) {
+      if (init["int8List"] instanceof $.List) {
+        target.int8List = init["int8List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int8List"]) ? init["int8List"] : Array.from(init["int8List"] as Iterable<any>);
+        const list = target._initInt8List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int16List"] !== undefined) {
+      if (init["int16List"] instanceof $.List) {
+        target.int16List = init["int16List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int16List"]) ? init["int16List"] : Array.from(init["int16List"] as Iterable<any>);
+        const list = target._initInt16List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int32List"] !== undefined) {
+      if (init["int32List"] instanceof $.List) {
+        target.int32List = init["int32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int32List"]) ? init["int32List"] : Array.from(init["int32List"] as Iterable<any>);
+        const list = target._initInt32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int64List"] !== undefined) {
+      if (init["int64List"] instanceof $.List) {
+        target.int64List = init["int64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int64List"]) ? init["int64List"] : Array.from(init["int64List"] as Iterable<any>);
+        const list = target._initInt64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt8List"] !== undefined) {
+      if (init["uInt8List"] instanceof $.List) {
+        target.uInt8List = init["uInt8List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt8List"]) ? init["uInt8List"] : Array.from(init["uInt8List"] as Iterable<any>);
+        const list = target._initUInt8List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt16List"] !== undefined) {
+      if (init["uInt16List"] instanceof $.List) {
+        target.uInt16List = init["uInt16List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt16List"]) ? init["uInt16List"] : Array.from(init["uInt16List"] as Iterable<any>);
+        const list = target._initUInt16List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt32List"] !== undefined) {
+      if (init["uInt32List"] instanceof $.List) {
+        target.uInt32List = init["uInt32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt32List"]) ? init["uInt32List"] : Array.from(init["uInt32List"] as Iterable<any>);
+        const list = target._initUInt32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt64List"] !== undefined) {
+      if (init["uInt64List"] instanceof $.List) {
+        target.uInt64List = init["uInt64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt64List"]) ? init["uInt64List"] : Array.from(init["uInt64List"] as Iterable<any>);
+        const list = target._initUInt64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["float32List"] !== undefined) {
+      if (init["float32List"] instanceof $.List) {
+        target.float32List = init["float32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["float32List"]) ? init["float32List"] : Array.from(init["float32List"] as Iterable<any>);
+        const list = target._initFloat32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["float64List"] !== undefined) {
+      if (init["float64List"] instanceof $.List) {
+        target.float64List = init["float64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["float64List"]) ? init["float64List"] : Array.from(init["float64List"] as Iterable<any>);
+        const list = target._initFloat64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["textList"] !== undefined) {
+      if (init["textList"] instanceof $.List) {
+        target.textList = init["textList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["textList"]) ? init["textList"] : Array.from(init["textList"] as Iterable<any>);
+        const list = target._initTextList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["dataList"] !== undefined) {
+      if (init["dataList"] instanceof $.List) {
+        target.dataList = init["dataList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["dataList"]) ? init["dataList"] : Array.from(init["dataList"] as Iterable<any>);
+        const list = target._initDataList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof $.Data) {
+            list.set(index, item);
+          }
+          else {
+            const bytes = $.dataBytes(item);
+            $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+          }
+        }
+      }
+    }
+    if (init["structList"] !== undefined) {
+      if (init["structList"] instanceof $.List) {
+        target.structList = init["structList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
+        const list = target._initStructList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestAllTypes) {
+            list.set(index, item);
+          }
+          else {
+            TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+          }
+        }
+      }
+    }
+    if (init["enumList"] !== undefined) {
+      if (init["enumList"] instanceof $.List) {
+        target.enumList = init["enumList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["enumList"]) ? init["enumList"] : Array.from(init["enumList"] as Iterable<any>);
+        const list = target._initEnumList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["interfaceList"] !== undefined) {
+      if (init["interfaceList"] instanceof $.List) {
+        target.interfaceList = init["interfaceList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["interfaceList"]) ? init["interfaceList"] : Array.from(init["interfaceList"] as Iterable<any>);
+        const list = target._initInterfaceList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+  }
   get boolField(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -571,6 +866,301 @@ export class TestDefaults extends $.Struct {
     defaultEnumList: $.readRawPointer(new Uint8Array([16, 2, 17, 1, 19, 4, 7]).buffer)
   };
   static _StructList: $.ListCtor<TestAllTypes>;
+  static _applyInit(target: TestDefaults, value: $.Init<TestDefaults>): void {
+    const init = value as any;
+    if (init["voidField"] !== undefined) {
+    }
+    if (init["boolField"] !== undefined) {
+      target.boolField = init["boolField"] as any;
+    }
+    if (init["int8Field"] !== undefined) {
+      target.int8Field = init["int8Field"] as any;
+    }
+    if (init["int16Field"] !== undefined) {
+      target.int16Field = init["int16Field"] as any;
+    }
+    if (init["int32Field"] !== undefined) {
+      target.int32Field = init["int32Field"] as any;
+    }
+    if (init["int64Field"] !== undefined) {
+      target.int64Field = init["int64Field"] as any;
+    }
+    if (init["uInt8Field"] !== undefined) {
+      target.uInt8Field = init["uInt8Field"] as any;
+    }
+    if (init["uInt16Field"] !== undefined) {
+      target.uInt16Field = init["uInt16Field"] as any;
+    }
+    if (init["uInt32Field"] !== undefined) {
+      target.uInt32Field = init["uInt32Field"] as any;
+    }
+    if (init["uInt64Field"] !== undefined) {
+      target.uInt64Field = init["uInt64Field"] as any;
+    }
+    if (init["float32Field"] !== undefined) {
+      target.float32Field = init["float32Field"] as any;
+    }
+    if (init["float64Field"] !== undefined) {
+      target.float64Field = init["float64Field"] as any;
+    }
+    if (init["textField"] !== undefined) {
+      target.textField = init["textField"] as any;
+    }
+    if (init["dataField"] !== undefined) {
+      if (init["dataField"] instanceof $.Data) {
+        target.dataField = init["dataField"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["dataField"]);
+        target._initDataField(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+    if (init["structField"] !== undefined) {
+      if (init["structField"] instanceof TestAllTypes) {
+        target.structField = init["structField"] as TestAllTypes;
+      }
+      else {
+        TestAllTypes._applyInit(target._initStructField(), init["structField"] as $.Init<TestAllTypes>);
+      }
+    }
+    if (init["enumField"] !== undefined) {
+      target.enumField = init["enumField"] as any;
+    }
+    if (init["interfaceField"] !== undefined) {
+    }
+    if (init["voidList"] !== undefined) {
+      if (init["voidList"] instanceof $.List) {
+        target.voidList = init["voidList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["voidList"]) ? init["voidList"] : Array.from(init["voidList"] as Iterable<any>);
+        const list = target._initVoidList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["boolList"] !== undefined) {
+      if (init["boolList"] instanceof $.List) {
+        target.boolList = init["boolList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["boolList"]) ? init["boolList"] : Array.from(init["boolList"] as Iterable<any>);
+        const list = target._initBoolList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int8List"] !== undefined) {
+      if (init["int8List"] instanceof $.List) {
+        target.int8List = init["int8List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int8List"]) ? init["int8List"] : Array.from(init["int8List"] as Iterable<any>);
+        const list = target._initInt8List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int16List"] !== undefined) {
+      if (init["int16List"] instanceof $.List) {
+        target.int16List = init["int16List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int16List"]) ? init["int16List"] : Array.from(init["int16List"] as Iterable<any>);
+        const list = target._initInt16List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int32List"] !== undefined) {
+      if (init["int32List"] instanceof $.List) {
+        target.int32List = init["int32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int32List"]) ? init["int32List"] : Array.from(init["int32List"] as Iterable<any>);
+        const list = target._initInt32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["int64List"] !== undefined) {
+      if (init["int64List"] instanceof $.List) {
+        target.int64List = init["int64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int64List"]) ? init["int64List"] : Array.from(init["int64List"] as Iterable<any>);
+        const list = target._initInt64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt8List"] !== undefined) {
+      if (init["uInt8List"] instanceof $.List) {
+        target.uInt8List = init["uInt8List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt8List"]) ? init["uInt8List"] : Array.from(init["uInt8List"] as Iterable<any>);
+        const list = target._initUInt8List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt16List"] !== undefined) {
+      if (init["uInt16List"] instanceof $.List) {
+        target.uInt16List = init["uInt16List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt16List"]) ? init["uInt16List"] : Array.from(init["uInt16List"] as Iterable<any>);
+        const list = target._initUInt16List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt32List"] !== undefined) {
+      if (init["uInt32List"] instanceof $.List) {
+        target.uInt32List = init["uInt32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt32List"]) ? init["uInt32List"] : Array.from(init["uInt32List"] as Iterable<any>);
+        const list = target._initUInt32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["uInt64List"] !== undefined) {
+      if (init["uInt64List"] instanceof $.List) {
+        target.uInt64List = init["uInt64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["uInt64List"]) ? init["uInt64List"] : Array.from(init["uInt64List"] as Iterable<any>);
+        const list = target._initUInt64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["float32List"] !== undefined) {
+      if (init["float32List"] instanceof $.List) {
+        target.float32List = init["float32List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["float32List"]) ? init["float32List"] : Array.from(init["float32List"] as Iterable<any>);
+        const list = target._initFloat32List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["float64List"] !== undefined) {
+      if (init["float64List"] instanceof $.List) {
+        target.float64List = init["float64List"] as any;
+      }
+      else {
+        const values = Array.isArray(init["float64List"]) ? init["float64List"] : Array.from(init["float64List"] as Iterable<any>);
+        const list = target._initFloat64List(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["textList"] !== undefined) {
+      if (init["textList"] instanceof $.List) {
+        target.textList = init["textList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["textList"]) ? init["textList"] : Array.from(init["textList"] as Iterable<any>);
+        const list = target._initTextList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["dataList"] !== undefined) {
+      if (init["dataList"] instanceof $.List) {
+        target.dataList = init["dataList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["dataList"]) ? init["dataList"] : Array.from(init["dataList"] as Iterable<any>);
+        const list = target._initDataList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof $.Data) {
+            list.set(index, item);
+          }
+          else {
+            const bytes = $.dataBytes(item);
+            $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+          }
+        }
+      }
+    }
+    if (init["structList"] !== undefined) {
+      if (init["structList"] instanceof $.List) {
+        target.structList = init["structList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
+        const list = target._initStructList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestAllTypes) {
+            list.set(index, item);
+          }
+          else {
+            TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+          }
+        }
+      }
+    }
+    if (init["enumList"] !== undefined) {
+      if (init["enumList"] instanceof $.List) {
+        target.enumList = init["enumList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["enumList"]) ? init["enumList"] : Array.from(init["enumList"] as Iterable<any>);
+        const list = target._initEnumList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["interfaceList"] !== undefined) {
+      if (init["interfaceList"] instanceof $.List) {
+        target.interfaceList = init["interfaceList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["interfaceList"]) ? init["interfaceList"] : Array.from(init["interfaceList"] as Iterable<any>);
+        const list = target._initInterfaceList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+  }
   get boolField(): boolean {
     return $.utils.getBit(0, this, TestDefaults._capnp.defaultBoolField);
   }
@@ -1012,6 +1602,12 @@ export class TestAnyPointer extends $.Struct {
       { name: "anyPointerField", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestAnyPointer, value: $.Init<TestAnyPointer>): void {
+    const init = value as any;
+    if (init["anyPointerField"] !== undefined) {
+      target.anyPointerField = init["anyPointerField"] as any;
+    }
+  }
   _adoptAnyPointerField(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -1042,6 +1638,18 @@ export class TestAnyOthers extends $.Struct {
       { name: "capabilityField", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestAnyOthers, value: $.Init<TestAnyOthers>): void {
+    const init = value as any;
+    if (init["anyStructField"] !== undefined) {
+      target.anyStructField = init["anyStructField"] as any;
+    }
+    if (init["anyListField"] !== undefined) {
+      target.anyListField = init["anyListField"] as any;
+    }
+    if (init["capabilityField"] !== undefined) {
+      target.capabilityField = init["capabilityField"] as any;
+    }
+  }
   _adoptAnyStructField(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -1108,6 +1716,36 @@ export class TestOutOfOrder extends $.Struct {
       { name: "waldo", codeOrder: 8, ordinal: 5, kind: "slot", offset: 5, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestOutOfOrder, value: $.Init<TestOutOfOrder>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["quux"] !== undefined) {
+      target.quux = init["quux"] as any;
+    }
+    if (init["corge"] !== undefined) {
+      target.corge = init["corge"] as any;
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+    if (init["waldo"] !== undefined) {
+      target.waldo = init["waldo"] as any;
+    }
+  }
   get foo(): string {
     return $.utils.getText(3, this);
   }
@@ -1223,6 +1861,51 @@ export class TestUnion_Union0 extends $.Struct {
       { name: "u0f1sp", codeOrder: 13, ordinal: 17, discriminantValue: 13, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestUnion_Union0, value: $.Init<TestUnion_Union0>): void {
+    const init = value as any;
+    if (init["u0f0s0"] !== undefined) {
+      target.u0f0s0 = true;
+    }
+    if (init["u0f0s1"] !== undefined) {
+      target.u0f0s1 = init["u0f0s1"] as any;
+    }
+    if (init["u0f0s8"] !== undefined) {
+      target.u0f0s8 = init["u0f0s8"] as any;
+    }
+    if (init["u0f0s16"] !== undefined) {
+      target.u0f0s16 = init["u0f0s16"] as any;
+    }
+    if (init["u0f0s32"] !== undefined) {
+      target.u0f0s32 = init["u0f0s32"] as any;
+    }
+    if (init["u0f0s64"] !== undefined) {
+      target.u0f0s64 = init["u0f0s64"] as any;
+    }
+    if (init["u0f0sp"] !== undefined) {
+      target.u0f0sp = init["u0f0sp"] as any;
+    }
+    if (init["u0f1s0"] !== undefined) {
+      target.u0f1s0 = true;
+    }
+    if (init["u0f1s1"] !== undefined) {
+      target.u0f1s1 = init["u0f1s1"] as any;
+    }
+    if (init["u0f1s8"] !== undefined) {
+      target.u0f1s8 = init["u0f1s8"] as any;
+    }
+    if (init["u0f1s16"] !== undefined) {
+      target.u0f1s16 = init["u0f1s16"] as any;
+    }
+    if (init["u0f1s32"] !== undefined) {
+      target.u0f1s32 = init["u0f1s32"] as any;
+    }
+    if (init["u0f1s64"] !== undefined) {
+      target.u0f1s64 = init["u0f1s64"] as any;
+    }
+    if (init["u0f1sp"] !== undefined) {
+      target.u0f1sp = init["u0f1sp"] as any;
+    }
+  }
   get _isU0f0s0(): boolean {
     return $.utils.getUint16(0, this) === 0;
   }
@@ -1371,6 +2054,229 @@ export class TestUnion_Union0 extends $.Struct {
   which(): TestUnion_Union0_Which {
     return $.utils.getUint16(0, this) as TestUnion_Union0_Which;
   }
+  _set(value: {
+    which: "u0f0s0";
+  } | {
+    which: "u0f0s1";
+    value: boolean;
+  } | {
+    which: "u0f0s8";
+    value: number;
+  } | {
+    which: "u0f0s16";
+    value: number;
+  } | {
+    which: "u0f0s32";
+    value: number;
+  } | {
+    which: "u0f0s64";
+    value: bigint;
+  } | {
+    which: "u0f0sp";
+    value: string;
+  } | {
+    which: "u0f1s0";
+  } | {
+    which: "u0f1s1";
+    value: boolean;
+  } | {
+    which: "u0f1s8";
+    value: number;
+  } | {
+    which: "u0f1s16";
+    value: number;
+  } | {
+    which: "u0f1s32";
+    value: number;
+  } | {
+    which: "u0f1s64";
+    value: bigint;
+  } | {
+    which: "u0f1sp";
+    value: string;
+  }): void {
+    switch (value.which) {
+      case "u0f0s0": {
+        this.u0f0s0 = true;
+        return;
+      }
+      case "u0f0s1": {
+        this.u0f0s1 = value.value;
+        return;
+      }
+      case "u0f0s8": {
+        this.u0f0s8 = value.value;
+        return;
+      }
+      case "u0f0s16": {
+        this.u0f0s16 = value.value;
+        return;
+      }
+      case "u0f0s32": {
+        this.u0f0s32 = value.value;
+        return;
+      }
+      case "u0f0s64": {
+        this.u0f0s64 = value.value;
+        return;
+      }
+      case "u0f0sp": {
+        this.u0f0sp = value.value;
+        return;
+      }
+      case "u0f1s0": {
+        this.u0f1s0 = true;
+        return;
+      }
+      case "u0f1s1": {
+        this.u0f1s1 = value.value;
+        return;
+      }
+      case "u0f1s8": {
+        this.u0f1s8 = value.value;
+        return;
+      }
+      case "u0f1s16": {
+        this.u0f1s16 = value.value;
+        return;
+      }
+      case "u0f1s32": {
+        this.u0f1s32 = value.value;
+        return;
+      }
+      case "u0f1s64": {
+        this.u0f1s64 = value.value;
+        return;
+      }
+      case "u0f1sp": {
+        this.u0f1sp = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "u0f0s0"?: () => R;
+    "u0f0s1"?: (value: boolean) => R;
+    "u0f0s8"?: (value: number) => R;
+    "u0f0s16"?: (value: number) => R;
+    "u0f0s32"?: (value: number) => R;
+    "u0f0s64"?: (value: bigint) => R;
+    "u0f0sp"?: (value: string) => R;
+    "u0f1s0"?: () => R;
+    "u0f1s1"?: (value: boolean) => R;
+    "u0f1s8"?: (value: number) => R;
+    "u0f1s16"?: (value: number) => R;
+    "u0f1s32"?: (value: number) => R;
+    "u0f1s64"?: (value: bigint) => R;
+    "u0f1sp"?: (value: string) => R;
+    _?: (which: TestUnion_Union0_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["u0f0s0"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["u0f0s1"];
+        if (callback) {
+          return callback(this.u0f0s1);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["u0f0s8"];
+        if (callback) {
+          return callback(this.u0f0s8);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["u0f0s16"];
+        if (callback) {
+          return callback(this.u0f0s16);
+        }
+        break;
+      }
+      case 4: {
+        const callback = cases["u0f0s32"];
+        if (callback) {
+          return callback(this.u0f0s32);
+        }
+        break;
+      }
+      case 5: {
+        const callback = cases["u0f0s64"];
+        if (callback) {
+          return callback(this.u0f0s64);
+        }
+        break;
+      }
+      case 6: {
+        const callback = cases["u0f0sp"];
+        if (callback) {
+          return callback(this.u0f0sp);
+        }
+        break;
+      }
+      case 7: {
+        const callback = cases["u0f1s0"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 8: {
+        const callback = cases["u0f1s1"];
+        if (callback) {
+          return callback(this.u0f1s1);
+        }
+        break;
+      }
+      case 9: {
+        const callback = cases["u0f1s8"];
+        if (callback) {
+          return callback(this.u0f1s8);
+        }
+        break;
+      }
+      case 10: {
+        const callback = cases["u0f1s16"];
+        if (callback) {
+          return callback(this.u0f1s16);
+        }
+        break;
+      }
+      case 11: {
+        const callback = cases["u0f1s32"];
+        if (callback) {
+          return callback(this.u0f1s32);
+        }
+        break;
+      }
+      case 12: {
+        const callback = cases["u0f1s64"];
+        if (callback) {
+          return callback(this.u0f1s64);
+        }
+        break;
+      }
+      case 13: {
+        const callback = cases["u0f1sp"];
+        if (callback) {
+          return callback(this.u0f1sp);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnion_Union0 union case: " + which);
+  }
 }
 export const TestUnion_Union1_Which = {
   U1F0S0: 0,
@@ -1449,6 +2355,69 @@ export class TestUnion_Union1 extends $.Struct {
       { name: "u1f2sp", codeOrder: 19, ordinal: 38, discriminantValue: 19, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestUnion_Union1, value: $.Init<TestUnion_Union1>): void {
+    const init = value as any;
+    if (init["u1f0s0"] !== undefined) {
+      target.u1f0s0 = true;
+    }
+    if (init["u1f0s1"] !== undefined) {
+      target.u1f0s1 = init["u1f0s1"] as any;
+    }
+    if (init["u1f1s1"] !== undefined) {
+      target.u1f1s1 = init["u1f1s1"] as any;
+    }
+    if (init["u1f0s8"] !== undefined) {
+      target.u1f0s8 = init["u1f0s8"] as any;
+    }
+    if (init["u1f1s8"] !== undefined) {
+      target.u1f1s8 = init["u1f1s8"] as any;
+    }
+    if (init["u1f0s16"] !== undefined) {
+      target.u1f0s16 = init["u1f0s16"] as any;
+    }
+    if (init["u1f1s16"] !== undefined) {
+      target.u1f1s16 = init["u1f1s16"] as any;
+    }
+    if (init["u1f0s32"] !== undefined) {
+      target.u1f0s32 = init["u1f0s32"] as any;
+    }
+    if (init["u1f1s32"] !== undefined) {
+      target.u1f1s32 = init["u1f1s32"] as any;
+    }
+    if (init["u1f0s64"] !== undefined) {
+      target.u1f0s64 = init["u1f0s64"] as any;
+    }
+    if (init["u1f1s64"] !== undefined) {
+      target.u1f1s64 = init["u1f1s64"] as any;
+    }
+    if (init["u1f0sp"] !== undefined) {
+      target.u1f0sp = init["u1f0sp"] as any;
+    }
+    if (init["u1f1sp"] !== undefined) {
+      target.u1f1sp = init["u1f1sp"] as any;
+    }
+    if (init["u1f2s0"] !== undefined) {
+      target.u1f2s0 = true;
+    }
+    if (init["u1f2s1"] !== undefined) {
+      target.u1f2s1 = init["u1f2s1"] as any;
+    }
+    if (init["u1f2s8"] !== undefined) {
+      target.u1f2s8 = init["u1f2s8"] as any;
+    }
+    if (init["u1f2s16"] !== undefined) {
+      target.u1f2s16 = init["u1f2s16"] as any;
+    }
+    if (init["u1f2s32"] !== undefined) {
+      target.u1f2s32 = init["u1f2s32"] as any;
+    }
+    if (init["u1f2s64"] !== undefined) {
+      target.u1f2s64 = init["u1f2s64"] as any;
+    }
+    if (init["u1f2sp"] !== undefined) {
+      target.u1f2sp = init["u1f2sp"] as any;
+    }
+  }
   get _isU1f0s0(): boolean {
     return $.utils.getUint16(2, this) === 0;
   }
@@ -1663,6 +2632,319 @@ export class TestUnion_Union1 extends $.Struct {
   which(): TestUnion_Union1_Which {
     return $.utils.getUint16(2, this) as TestUnion_Union1_Which;
   }
+  _set(value: {
+    which: "u1f0s0";
+  } | {
+    which: "u1f0s1";
+    value: boolean;
+  } | {
+    which: "u1f1s1";
+    value: boolean;
+  } | {
+    which: "u1f0s8";
+    value: number;
+  } | {
+    which: "u1f1s8";
+    value: number;
+  } | {
+    which: "u1f0s16";
+    value: number;
+  } | {
+    which: "u1f1s16";
+    value: number;
+  } | {
+    which: "u1f0s32";
+    value: number;
+  } | {
+    which: "u1f1s32";
+    value: number;
+  } | {
+    which: "u1f0s64";
+    value: bigint;
+  } | {
+    which: "u1f1s64";
+    value: bigint;
+  } | {
+    which: "u1f0sp";
+    value: string;
+  } | {
+    which: "u1f1sp";
+    value: string;
+  } | {
+    which: "u1f2s0";
+  } | {
+    which: "u1f2s1";
+    value: boolean;
+  } | {
+    which: "u1f2s8";
+    value: number;
+  } | {
+    which: "u1f2s16";
+    value: number;
+  } | {
+    which: "u1f2s32";
+    value: number;
+  } | {
+    which: "u1f2s64";
+    value: bigint;
+  } | {
+    which: "u1f2sp";
+    value: string;
+  }): void {
+    switch (value.which) {
+      case "u1f0s0": {
+        this.u1f0s0 = true;
+        return;
+      }
+      case "u1f0s1": {
+        this.u1f0s1 = value.value;
+        return;
+      }
+      case "u1f1s1": {
+        this.u1f1s1 = value.value;
+        return;
+      }
+      case "u1f0s8": {
+        this.u1f0s8 = value.value;
+        return;
+      }
+      case "u1f1s8": {
+        this.u1f1s8 = value.value;
+        return;
+      }
+      case "u1f0s16": {
+        this.u1f0s16 = value.value;
+        return;
+      }
+      case "u1f1s16": {
+        this.u1f1s16 = value.value;
+        return;
+      }
+      case "u1f0s32": {
+        this.u1f0s32 = value.value;
+        return;
+      }
+      case "u1f1s32": {
+        this.u1f1s32 = value.value;
+        return;
+      }
+      case "u1f0s64": {
+        this.u1f0s64 = value.value;
+        return;
+      }
+      case "u1f1s64": {
+        this.u1f1s64 = value.value;
+        return;
+      }
+      case "u1f0sp": {
+        this.u1f0sp = value.value;
+        return;
+      }
+      case "u1f1sp": {
+        this.u1f1sp = value.value;
+        return;
+      }
+      case "u1f2s0": {
+        this.u1f2s0 = true;
+        return;
+      }
+      case "u1f2s1": {
+        this.u1f2s1 = value.value;
+        return;
+      }
+      case "u1f2s8": {
+        this.u1f2s8 = value.value;
+        return;
+      }
+      case "u1f2s16": {
+        this.u1f2s16 = value.value;
+        return;
+      }
+      case "u1f2s32": {
+        this.u1f2s32 = value.value;
+        return;
+      }
+      case "u1f2s64": {
+        this.u1f2s64 = value.value;
+        return;
+      }
+      case "u1f2sp": {
+        this.u1f2sp = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "u1f0s0"?: () => R;
+    "u1f0s1"?: (value: boolean) => R;
+    "u1f1s1"?: (value: boolean) => R;
+    "u1f0s8"?: (value: number) => R;
+    "u1f1s8"?: (value: number) => R;
+    "u1f0s16"?: (value: number) => R;
+    "u1f1s16"?: (value: number) => R;
+    "u1f0s32"?: (value: number) => R;
+    "u1f1s32"?: (value: number) => R;
+    "u1f0s64"?: (value: bigint) => R;
+    "u1f1s64"?: (value: bigint) => R;
+    "u1f0sp"?: (value: string) => R;
+    "u1f1sp"?: (value: string) => R;
+    "u1f2s0"?: () => R;
+    "u1f2s1"?: (value: boolean) => R;
+    "u1f2s8"?: (value: number) => R;
+    "u1f2s16"?: (value: number) => R;
+    "u1f2s32"?: (value: number) => R;
+    "u1f2s64"?: (value: bigint) => R;
+    "u1f2sp"?: (value: string) => R;
+    _?: (which: TestUnion_Union1_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["u1f0s0"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["u1f0s1"];
+        if (callback) {
+          return callback(this.u1f0s1);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["u1f1s1"];
+        if (callback) {
+          return callback(this.u1f1s1);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["u1f0s8"];
+        if (callback) {
+          return callback(this.u1f0s8);
+        }
+        break;
+      }
+      case 4: {
+        const callback = cases["u1f1s8"];
+        if (callback) {
+          return callback(this.u1f1s8);
+        }
+        break;
+      }
+      case 5: {
+        const callback = cases["u1f0s16"];
+        if (callback) {
+          return callback(this.u1f0s16);
+        }
+        break;
+      }
+      case 6: {
+        const callback = cases["u1f1s16"];
+        if (callback) {
+          return callback(this.u1f1s16);
+        }
+        break;
+      }
+      case 7: {
+        const callback = cases["u1f0s32"];
+        if (callback) {
+          return callback(this.u1f0s32);
+        }
+        break;
+      }
+      case 8: {
+        const callback = cases["u1f1s32"];
+        if (callback) {
+          return callback(this.u1f1s32);
+        }
+        break;
+      }
+      case 9: {
+        const callback = cases["u1f0s64"];
+        if (callback) {
+          return callback(this.u1f0s64);
+        }
+        break;
+      }
+      case 10: {
+        const callback = cases["u1f1s64"];
+        if (callback) {
+          return callback(this.u1f1s64);
+        }
+        break;
+      }
+      case 11: {
+        const callback = cases["u1f0sp"];
+        if (callback) {
+          return callback(this.u1f0sp);
+        }
+        break;
+      }
+      case 12: {
+        const callback = cases["u1f1sp"];
+        if (callback) {
+          return callback(this.u1f1sp);
+        }
+        break;
+      }
+      case 13: {
+        const callback = cases["u1f2s0"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 14: {
+        const callback = cases["u1f2s1"];
+        if (callback) {
+          return callback(this.u1f2s1);
+        }
+        break;
+      }
+      case 15: {
+        const callback = cases["u1f2s8"];
+        if (callback) {
+          return callback(this.u1f2s8);
+        }
+        break;
+      }
+      case 16: {
+        const callback = cases["u1f2s16"];
+        if (callback) {
+          return callback(this.u1f2s16);
+        }
+        break;
+      }
+      case 17: {
+        const callback = cases["u1f2s32"];
+        if (callback) {
+          return callback(this.u1f2s32);
+        }
+        break;
+      }
+      case 18: {
+        const callback = cases["u1f2s64"];
+        if (callback) {
+          return callback(this.u1f2s64);
+        }
+        break;
+      }
+      case 19: {
+        const callback = cases["u1f2sp"];
+        if (callback) {
+          return callback(this.u1f2sp);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnion_Union1 union case: " + which);
+  }
 }
 export const TestUnion_Union2_Which = {
   U2F0S64: 4,
@@ -1692,6 +2974,24 @@ export class TestUnion_Union2 extends $.Struct {
       { name: "u2f0s1", codeOrder: 4, ordinal: 45, discriminantValue: 0, kind: "slot", offset: 256, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestUnion_Union2, value: $.Init<TestUnion_Union2>): void {
+    const init = value as any;
+    if (init["u2f0s64"] !== undefined) {
+      target.u2f0s64 = init["u2f0s64"] as any;
+    }
+    if (init["u2f0s32"] !== undefined) {
+      target.u2f0s32 = init["u2f0s32"] as any;
+    }
+    if (init["u2f0s16"] !== undefined) {
+      target.u2f0s16 = init["u2f0s16"] as any;
+    }
+    if (init["u2f0s8"] !== undefined) {
+      target.u2f0s8 = init["u2f0s8"] as any;
+    }
+    if (init["u2f0s1"] !== undefined) {
+      target.u2f0s1 = init["u2f0s1"] as any;
+    }
+  }
   get u2f0s64(): bigint {
     $.utils.testWhich("u2f0s64", $.utils.getUint16(4, this), 4, this);
     return $.utils.getInt64(48, this);
@@ -1751,6 +3051,96 @@ export class TestUnion_Union2 extends $.Struct {
   which(): TestUnion_Union2_Which {
     return $.utils.getUint16(4, this) as TestUnion_Union2_Which;
   }
+  _set(value: {
+    which: "u2f0s64";
+    value: bigint;
+  } | {
+    which: "u2f0s32";
+    value: number;
+  } | {
+    which: "u2f0s16";
+    value: number;
+  } | {
+    which: "u2f0s8";
+    value: number;
+  } | {
+    which: "u2f0s1";
+    value: boolean;
+  }): void {
+    switch (value.which) {
+      case "u2f0s64": {
+        this.u2f0s64 = value.value;
+        return;
+      }
+      case "u2f0s32": {
+        this.u2f0s32 = value.value;
+        return;
+      }
+      case "u2f0s16": {
+        this.u2f0s16 = value.value;
+        return;
+      }
+      case "u2f0s8": {
+        this.u2f0s8 = value.value;
+        return;
+      }
+      case "u2f0s1": {
+        this.u2f0s1 = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "u2f0s64"?: (value: bigint) => R;
+    "u2f0s32"?: (value: number) => R;
+    "u2f0s16"?: (value: number) => R;
+    "u2f0s8"?: (value: number) => R;
+    "u2f0s1"?: (value: boolean) => R;
+    _?: (which: TestUnion_Union2_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 4: {
+        const callback = cases["u2f0s64"];
+        if (callback) {
+          return callback(this.u2f0s64);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["u2f0s32"];
+        if (callback) {
+          return callback(this.u2f0s32);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["u2f0s16"];
+        if (callback) {
+          return callback(this.u2f0s16);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["u2f0s8"];
+        if (callback) {
+          return callback(this.u2f0s8);
+        }
+        break;
+      }
+      case 0: {
+        const callback = cases["u2f0s1"];
+        if (callback) {
+          return callback(this.u2f0s1);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnion_Union2 union case: " + which);
+  }
 }
 export const TestUnion_Union3_Which = {
   U3F0S64: 4,
@@ -1780,6 +3170,24 @@ export class TestUnion_Union3 extends $.Struct {
       { name: "u3f0s1", codeOrder: 4, ordinal: 46, discriminantValue: 0, kind: "slot", offset: 257, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestUnion_Union3, value: $.Init<TestUnion_Union3>): void {
+    const init = value as any;
+    if (init["u3f0s64"] !== undefined) {
+      target.u3f0s64 = init["u3f0s64"] as any;
+    }
+    if (init["u3f0s32"] !== undefined) {
+      target.u3f0s32 = init["u3f0s32"] as any;
+    }
+    if (init["u3f0s16"] !== undefined) {
+      target.u3f0s16 = init["u3f0s16"] as any;
+    }
+    if (init["u3f0s8"] !== undefined) {
+      target.u3f0s8 = init["u3f0s8"] as any;
+    }
+    if (init["u3f0s1"] !== undefined) {
+      target.u3f0s1 = init["u3f0s1"] as any;
+    }
+  }
   get u3f0s64(): bigint {
     $.utils.testWhich("u3f0s64", $.utils.getUint16(6, this), 4, this);
     return $.utils.getInt64(56, this);
@@ -1839,6 +3247,96 @@ export class TestUnion_Union3 extends $.Struct {
   which(): TestUnion_Union3_Which {
     return $.utils.getUint16(6, this) as TestUnion_Union3_Which;
   }
+  _set(value: {
+    which: "u3f0s64";
+    value: bigint;
+  } | {
+    which: "u3f0s32";
+    value: number;
+  } | {
+    which: "u3f0s16";
+    value: number;
+  } | {
+    which: "u3f0s8";
+    value: number;
+  } | {
+    which: "u3f0s1";
+    value: boolean;
+  }): void {
+    switch (value.which) {
+      case "u3f0s64": {
+        this.u3f0s64 = value.value;
+        return;
+      }
+      case "u3f0s32": {
+        this.u3f0s32 = value.value;
+        return;
+      }
+      case "u3f0s16": {
+        this.u3f0s16 = value.value;
+        return;
+      }
+      case "u3f0s8": {
+        this.u3f0s8 = value.value;
+        return;
+      }
+      case "u3f0s1": {
+        this.u3f0s1 = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "u3f0s64"?: (value: bigint) => R;
+    "u3f0s32"?: (value: number) => R;
+    "u3f0s16"?: (value: number) => R;
+    "u3f0s8"?: (value: number) => R;
+    "u3f0s1"?: (value: boolean) => R;
+    _?: (which: TestUnion_Union3_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 4: {
+        const callback = cases["u3f0s64"];
+        if (callback) {
+          return callback(this.u3f0s64);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["u3f0s32"];
+        if (callback) {
+          return callback(this.u3f0s32);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["u3f0s16"];
+        if (callback) {
+          return callback(this.u3f0s16);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["u3f0s8"];
+        if (callback) {
+          return callback(this.u3f0s8);
+        }
+        break;
+      }
+      case 0: {
+        const callback = cases["u3f0s1"];
+        if (callback) {
+          return callback(this.u3f0s1);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnion_Union3 union case: " + which);
+  }
 }
 export class TestUnion extends $.Struct {
   static readonly _capnp = {
@@ -1862,6 +3360,45 @@ export class TestUnion extends $.Struct {
       { name: "byte0", codeOrder: 11, ordinal: 49, kind: "slot", offset: 35, type: { kind: "uint8" } }
     ] as const,
   };
+  static _applyInit(target: TestUnion, value: $.Init<TestUnion>): void {
+    const init = value as any;
+    if (init["union0"] !== undefined) {
+      TestUnion_Union0._applyInit(target._initUnion0(), init["union0"] as $.Init<TestUnion_Union0>);
+    }
+    if (init["bit0"] !== undefined) {
+      target.bit0 = init["bit0"] as any;
+    }
+    if (init["union1"] !== undefined) {
+      TestUnion_Union1._applyInit(target._initUnion1(), init["union1"] as $.Init<TestUnion_Union1>);
+    }
+    if (init["bit2"] !== undefined) {
+      target.bit2 = init["bit2"] as any;
+    }
+    if (init["bit3"] !== undefined) {
+      target.bit3 = init["bit3"] as any;
+    }
+    if (init["bit4"] !== undefined) {
+      target.bit4 = init["bit4"] as any;
+    }
+    if (init["bit5"] !== undefined) {
+      target.bit5 = init["bit5"] as any;
+    }
+    if (init["bit6"] !== undefined) {
+      target.bit6 = init["bit6"] as any;
+    }
+    if (init["bit7"] !== undefined) {
+      target.bit7 = init["bit7"] as any;
+    }
+    if (init["union2"] !== undefined) {
+      TestUnion_Union2._applyInit(target._initUnion2(), init["union2"] as $.Init<TestUnion_Union2>);
+    }
+    if (init["union3"] !== undefined) {
+      TestUnion_Union3._applyInit(target._initUnion3(), init["union3"] as $.Init<TestUnion_Union3>);
+    }
+    if (init["byte0"] !== undefined) {
+      target.byte0 = init["byte0"] as any;
+    }
+  }
   /**
 * Pack union 0 under ideal conditions: there is no unused padding space prior to it.
 *
@@ -1966,6 +3503,24 @@ export class TestUnnamedUnion extends $.Struct {
       { name: "after", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestUnnamedUnion, value: $.Init<TestUnnamedUnion>): void {
+    const init = value as any;
+    if (init["before"] !== undefined) {
+      target.before = init["before"] as any;
+    }
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["middle"] !== undefined) {
+      target.middle = init["middle"] as any;
+    }
+    if (init["after"] !== undefined) {
+      target.after = init["after"] as any;
+    }
+  }
   get before(): string {
     return $.utils.getText(0, this);
   }
@@ -2010,6 +3565,151 @@ export class TestUnnamedUnion extends $.Struct {
   which(): TestUnnamedUnion_Which {
     return $.utils.getUint16(4, this) as TestUnnamedUnion_Which;
   }
+  _set(value: {
+    which: "foo";
+    value: number;
+  } | {
+    which: "bar";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "foo": {
+        this.foo = value.value;
+        return;
+      }
+      case "bar": {
+        this.bar = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "foo"?: (value: number) => R;
+    "bar"?: (value: number) => R;
+    _?: (which: TestUnnamedUnion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["foo"];
+        if (callback) {
+          return callback(this.foo);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["bar"];
+        if (callback) {
+          return callback(this.bar);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnnamedUnion union case: " + which);
+  }
+}
+export const TestUnionHelperNameCollision_Which = {
+  SET: 0,
+  MATCH: 1
+} as const;
+export type TestUnionHelperNameCollision_Which = (typeof TestUnionHelperNameCollision_Which)[keyof typeof TestUnionHelperNameCollision_Which];
+export class TestUnionHelperNameCollision extends $.Struct {
+  static readonly SET = TestUnionHelperNameCollision_Which.SET;
+  static readonly MATCH = TestUnionHelperNameCollision_Which.MATCH;
+  static readonly _capnp = {
+    displayName: "TestUnionHelperNameCollision",
+    id: "d2a49b256db1b80c",
+    typeId: 0xd2a49b256db1b80cn,
+    typeIdHex: "d2a49b256db1b80c",
+    size: new $.ObjectSize(8, 1),
+    fields: [
+      { name: "set", codeOrder: 0, ordinal: 0, discriminantValue: 0, kind: "slot", offset: 0, type: { kind: "text" } },
+      { name: "match", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "text" } }
+    ] as const,
+  };
+  static _applyInit(target: TestUnionHelperNameCollision, value: $.Init<TestUnionHelperNameCollision>): void {
+    const init = value as any;
+    if (init["set"] !== undefined) {
+      target.set = init["set"] as any;
+    }
+    if (init["match"] !== undefined) {
+      target.match = init["match"] as any;
+    }
+  }
+  get set(): string {
+    $.utils.testWhich("set", $.utils.getUint16(0, this), 0, this);
+    return $.utils.getText(0, this);
+  }
+  get _isSet(): boolean {
+    return $.utils.getUint16(0, this) === 0;
+  }
+  set set(value: string) {
+    $.utils.setUint16(0, 0, this);
+    $.utils.setText(0, value, this);
+  }
+  get match(): string {
+    $.utils.testWhich("match", $.utils.getUint16(0, this), 1, this);
+    return $.utils.getText(0, this);
+  }
+  get _isMatch(): boolean {
+    return $.utils.getUint16(0, this) === 1;
+  }
+  set match(value: string) {
+    $.utils.setUint16(0, 1, this);
+    $.utils.setText(0, value, this);
+  }
+  toString(): string { return "TestUnionHelperNameCollision_" + super.toString(); }
+  which(): TestUnionHelperNameCollision_Which {
+    return $.utils.getUint16(0, this) as TestUnionHelperNameCollision_Which;
+  }
+  _set(value: {
+    which: "set";
+    value: string;
+  } | {
+    which: "match";
+    value: string;
+  }): void {
+    switch (value.which) {
+      case "set": {
+        this.set = value.value;
+        return;
+      }
+      case "match": {
+        this.match = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "set"?: (value: string) => R;
+    "match"?: (value: string) => R;
+    _?: (which: TestUnionHelperNameCollision_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["set"];
+        if (callback) {
+          return callback(this.set);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["match"];
+        if (callback) {
+          return callback(this.match);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnionHelperNameCollision union case: " + which);
+  }
 }
 export const TestUnionInUnion_Outer_Inner_Which = {
   FOO: 0,
@@ -2030,6 +3730,15 @@ export class TestUnionInUnion_Outer_Inner extends $.Struct {
       { name: "bar", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: TestUnionInUnion_Outer_Inner, value: $.Init<TestUnionInUnion_Outer_Inner>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+  }
   get foo(): number {
     $.utils.testWhich("foo", $.utils.getUint16(4, this), 0, this);
     return $.utils.getInt32(0, this);
@@ -2056,6 +3765,51 @@ export class TestUnionInUnion_Outer_Inner extends $.Struct {
   which(): TestUnionInUnion_Outer_Inner_Which {
     return $.utils.getUint16(4, this) as TestUnionInUnion_Outer_Inner_Which;
   }
+  _set(value: {
+    which: "foo";
+    value: number;
+  } | {
+    which: "bar";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "foo": {
+        this.foo = value.value;
+        return;
+      }
+      case "bar": {
+        this.bar = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "foo"?: (value: number) => R;
+    "bar"?: (value: number) => R;
+    _?: (which: TestUnionInUnion_Outer_Inner_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["foo"];
+        if (callback) {
+          return callback(this.foo);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["bar"];
+        if (callback) {
+          return callback(this.bar);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnionInUnion_Outer_Inner union case: " + which);
+  }
 }
 export const TestUnionInUnion_Outer_Which = {
   INNER: 0,
@@ -2076,6 +3830,15 @@ export class TestUnionInUnion_Outer extends $.Struct {
       { name: "baz", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: TestUnionInUnion_Outer, value: $.Init<TestUnionInUnion_Outer>): void {
+    const init = value as any;
+    if (init["inner"] !== undefined) {
+      TestUnionInUnion_Outer_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestUnionInUnion_Outer_Inner>);
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+  }
   get inner(): TestUnionInUnion_Outer_Inner {
     $.utils.testWhich("inner", $.utils.getUint16(8, this), 0, this);
     return $.utils.getAs(TestUnionInUnion_Outer_Inner, this);
@@ -2105,6 +3868,50 @@ export class TestUnionInUnion_Outer extends $.Struct {
   which(): TestUnionInUnion_Outer_Which {
     return $.utils.getUint16(8, this) as TestUnionInUnion_Outer_Which;
   }
+  _set(value: {
+    which: "inner";
+  } | {
+    which: "baz";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "inner": {
+        this.inner = true;
+        return;
+      }
+      case "baz": {
+        this.baz = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "inner"?: (value: TestUnionInUnion_Outer_Inner) => R;
+    "baz"?: (value: number) => R;
+    _?: (which: TestUnionInUnion_Outer_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["inner"];
+        if (callback) {
+          return callback(this.inner);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["baz"];
+        if (callback) {
+          return callback(this.baz);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestUnionInUnion_Outer union case: " + which);
+  }
 }
 /**
 * There is no reason to ever do this.
@@ -2121,6 +3928,12 @@ export class TestUnionInUnion extends $.Struct {
       { name: "outer", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xd005f6c63707670cn, typeIdHex: "d005f6c63707670c", displayName: "outer" } }
     ] as const,
   };
+  static _applyInit(target: TestUnionInUnion, value: $.Init<TestUnionInUnion>): void {
+    const init = value as any;
+    if (init["outer"] !== undefined) {
+      TestUnionInUnion_Outer._applyInit(target._initOuter(), init["outer"] as $.Init<TestUnionInUnion_Outer>);
+    }
+  }
   get outer(): TestUnionInUnion_Outer {
     return $.utils.getAs(TestUnionInUnion_Outer, this);
   }
@@ -2142,6 +3955,18 @@ export class TestGroups_Groups_Foo extends $.Struct {
       { name: "garply", codeOrder: 2, ordinal: 8, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestGroups_Groups_Foo, value: $.Init<TestGroups_Groups_Foo>): void {
+    const init = value as any;
+    if (init["corge"] !== undefined) {
+      target.corge = init["corge"] as any;
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+  }
   get corge(): number {
     return $.utils.getInt32(0, this);
   }
@@ -2175,6 +4000,18 @@ export class TestGroups_Groups_Baz extends $.Struct {
       { name: "garply", codeOrder: 2, ordinal: 7, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestGroups_Groups_Baz, value: $.Init<TestGroups_Groups_Baz>): void {
+    const init = value as any;
+    if (init["corge"] !== undefined) {
+      target.corge = init["corge"] as any;
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+  }
   get corge(): number {
     return $.utils.getInt32(0, this);
   }
@@ -2208,6 +4045,18 @@ export class TestGroups_Groups_Bar extends $.Struct {
       { name: "garply", codeOrder: 2, ordinal: 5, kind: "slot", offset: 1, type: { kind: "int64" } }
     ] as const,
   };
+  static _applyInit(target: TestGroups_Groups_Bar, value: $.Init<TestGroups_Groups_Bar>): void {
+    const init = value as any;
+    if (init["corge"] !== undefined) {
+      target.corge = init["corge"] as any;
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+  }
   get corge(): number {
     return $.utils.getInt32(0, this);
   }
@@ -2250,6 +4099,18 @@ export class TestGroups_Groups extends $.Struct {
       { name: "baz", codeOrder: 2, ordinal: 1, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xf0fa30304066a4b3n, typeIdHex: "f0fa30304066a4b3", displayName: "baz" } }
     ] as const,
   };
+  static _applyInit(target: TestGroups_Groups, value: $.Init<TestGroups_Groups>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      TestGroups_Groups_Foo._applyInit(target._initFoo(), init["foo"] as $.Init<TestGroups_Groups_Foo>);
+    }
+    if (init["bar"] !== undefined) {
+      TestGroups_Groups_Bar._applyInit(target._initBar(), init["bar"] as $.Init<TestGroups_Groups_Bar>);
+    }
+    if (init["baz"] !== undefined) {
+      TestGroups_Groups_Baz._applyInit(target._initBaz(), init["baz"] as $.Init<TestGroups_Groups_Baz>);
+    }
+  }
   get foo(): TestGroups_Groups_Foo {
     $.utils.testWhich("foo", $.utils.getUint16(4, this), 0, this);
     return $.utils.getAs(TestGroups_Groups_Foo, this);
@@ -2296,6 +4157,63 @@ export class TestGroups_Groups extends $.Struct {
   which(): TestGroups_Groups_Which {
     return $.utils.getUint16(4, this) as TestGroups_Groups_Which;
   }
+  _set(value: {
+    which: "foo";
+  } | {
+    which: "bar";
+  } | {
+    which: "baz";
+  }): void {
+    switch (value.which) {
+      case "foo": {
+        this.foo = true;
+        return;
+      }
+      case "bar": {
+        this.bar = true;
+        return;
+      }
+      case "baz": {
+        this.baz = true;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "foo"?: (value: TestGroups_Groups_Foo) => R;
+    "bar"?: (value: TestGroups_Groups_Bar) => R;
+    "baz"?: (value: TestGroups_Groups_Baz) => R;
+    _?: (which: TestGroups_Groups_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["foo"];
+        if (callback) {
+          return callback(this.foo);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["bar"];
+        if (callback) {
+          return callback(this.bar);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["baz"];
+        if (callback) {
+          return callback(this.baz);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestGroups_Groups union case: " + which);
+  }
 }
 export class TestGroups extends $.Struct {
   static readonly _capnp = {
@@ -2308,6 +4226,12 @@ export class TestGroups extends $.Struct {
       { name: "groups", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0xe22ae74ff9113268n, typeIdHex: "e22ae74ff9113268", displayName: "groups" } }
     ] as const,
   };
+  static _applyInit(target: TestGroups, value: $.Init<TestGroups>): void {
+    const init = value as any;
+    if (init["groups"] !== undefined) {
+      TestGroups_Groups._applyInit(target._initGroups(), init["groups"] as $.Init<TestGroups_Groups>);
+    }
+  }
   get groups(): TestGroups_Groups {
     return $.utils.getAs(TestGroups_Groups, this);
   }
@@ -2330,6 +4254,21 @@ export class TestInterleavedGroups_Group1_Corge extends $.Struct {
       { name: "xyzzy", codeOrder: 3, ordinal: 16, kind: "slot", offset: 4, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestInterleavedGroups_Group1_Corge, value: $.Init<TestInterleavedGroups_Group1_Corge>): void {
+    const init = value as any;
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+    if (init["plugh"] !== undefined) {
+      target.plugh = init["plugh"] as any;
+    }
+    if (init["xyzzy"] !== undefined) {
+      target.xyzzy = init["xyzzy"] as any;
+    }
+  }
   get grault(): bigint {
     return $.utils.getUint64(32, this);
   }
@@ -2381,6 +4320,27 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
       { name: "waldo", codeOrder: 5, ordinal: 10, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestInterleavedGroups_Group1, value: $.Init<TestInterleavedGroups_Group1>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["corge"] !== undefined) {
+      TestInterleavedGroups_Group1_Corge._applyInit(target._initCorge(), init["corge"] as $.Init<TestInterleavedGroups_Group1_Corge>);
+    }
+    if (init["fred"] !== undefined) {
+      target.fred = init["fred"] as any;
+    }
+    if (init["waldo"] !== undefined) {
+      target.waldo = init["waldo"] as any;
+    }
+  }
   get foo(): number {
     return $.utils.getUint32(0, this);
   }
@@ -2439,6 +4399,65 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
   which(): TestInterleavedGroups_Group1_Which {
     return $.utils.getUint16(28, this) as TestInterleavedGroups_Group1_Which;
   }
+  _set(value: {
+    which: "qux";
+    value: number;
+  } | {
+    which: "corge";
+  } | {
+    which: "fred";
+    value: string;
+  }): void {
+    switch (value.which) {
+      case "qux": {
+        this.qux = value.value;
+        return;
+      }
+      case "corge": {
+        this.corge = true;
+        return;
+      }
+      case "fred": {
+        this.fred = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "qux"?: (value: number) => R;
+    "corge"?: (value: TestInterleavedGroups_Group1_Corge) => R;
+    "fred"?: (value: string) => R;
+    _?: (which: TestInterleavedGroups_Group1_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["qux"];
+        if (callback) {
+          return callback(this.qux);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["corge"];
+        if (callback) {
+          return callback(this.corge);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["fred"];
+        if (callback) {
+          return callback(this.fred);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestInterleavedGroups_Group1 union case: " + which);
+  }
 }
 export class TestInterleavedGroups_Group2_Corge extends $.Struct {
   static readonly _capnp = {
@@ -2454,6 +4473,21 @@ export class TestInterleavedGroups_Group2_Corge extends $.Struct {
       { name: "xyzzy", codeOrder: 3, ordinal: 17, kind: "slot", offset: 5, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestInterleavedGroups_Group2_Corge, value: $.Init<TestInterleavedGroups_Group2_Corge>): void {
+    const init = value as any;
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+    if (init["garply"] !== undefined) {
+      target.garply = init["garply"] as any;
+    }
+    if (init["plugh"] !== undefined) {
+      target.plugh = init["plugh"] as any;
+    }
+    if (init["xyzzy"] !== undefined) {
+      target.xyzzy = init["xyzzy"] as any;
+    }
+  }
   get grault(): bigint {
     return $.utils.getUint64(40, this);
   }
@@ -2505,6 +4539,27 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
       { name: "waldo", codeOrder: 5, ordinal: 11, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestInterleavedGroups_Group2, value: $.Init<TestInterleavedGroups_Group2>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["corge"] !== undefined) {
+      TestInterleavedGroups_Group2_Corge._applyInit(target._initCorge(), init["corge"] as $.Init<TestInterleavedGroups_Group2_Corge>);
+    }
+    if (init["fred"] !== undefined) {
+      target.fred = init["fred"] as any;
+    }
+    if (init["waldo"] !== undefined) {
+      target.waldo = init["waldo"] as any;
+    }
+  }
   get foo(): number {
     return $.utils.getUint32(4, this);
   }
@@ -2563,6 +4618,65 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
   which(): TestInterleavedGroups_Group2_Which {
     return $.utils.getUint16(30, this) as TestInterleavedGroups_Group2_Which;
   }
+  _set(value: {
+    which: "qux";
+    value: number;
+  } | {
+    which: "corge";
+  } | {
+    which: "fred";
+    value: string;
+  }): void {
+    switch (value.which) {
+      case "qux": {
+        this.qux = value.value;
+        return;
+      }
+      case "corge": {
+        this.corge = true;
+        return;
+      }
+      case "fred": {
+        this.fred = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "qux"?: (value: number) => R;
+    "corge"?: (value: TestInterleavedGroups_Group2_Corge) => R;
+    "fred"?: (value: string) => R;
+    _?: (which: TestInterleavedGroups_Group2_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["qux"];
+        if (callback) {
+          return callback(this.qux);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["corge"];
+        if (callback) {
+          return callback(this.corge);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["fred"];
+        if (callback) {
+          return callback(this.fred);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestInterleavedGroups_Group2 union case: " + which);
+  }
 }
 export class TestInterleavedGroups extends $.Struct {
   static readonly _capnp = {
@@ -2576,6 +4690,15 @@ export class TestInterleavedGroups extends $.Struct {
       { name: "group2", codeOrder: 1, ordinal: 1, kind: "group", type: { kind: "group", typeId: 0xcc85a335569990e9n, typeIdHex: "cc85a335569990e9", displayName: "group2" } }
     ] as const,
   };
+  static _applyInit(target: TestInterleavedGroups, value: $.Init<TestInterleavedGroups>): void {
+    const init = value as any;
+    if (init["group1"] !== undefined) {
+      TestInterleavedGroups_Group1._applyInit(target._initGroup1(), init["group1"] as $.Init<TestInterleavedGroups_Group1>);
+    }
+    if (init["group2"] !== undefined) {
+      TestInterleavedGroups_Group2._applyInit(target._initGroup2(), init["group2"] as $.Init<TestInterleavedGroups_Group2>);
+    }
+  }
   get group1(): TestInterleavedGroups_Group1 {
     return $.utils.getAs(TestInterleavedGroups_Group1, this);
   }
@@ -2608,6 +4731,41 @@ export class TestUnionDefaults extends $.Struct {
     defaultUnnamed1: $.readRawPointer(new Uint8Array([16, 5, 80, 2, 2, 1, 123, 0, 2]).buffer),
     defaultUnnamed2: $.readRawPointer(new Uint8Array([16, 7, 80, 2, 2, 16, 1, 3, 65, 1, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114]).buffer)
   };
+  static _applyInit(target: TestUnionDefaults, value: $.Init<TestUnionDefaults>): void {
+    const init = value as any;
+    if (init["s16s8s64s8Set"] !== undefined) {
+      if (init["s16s8s64s8Set"] instanceof TestUnion) {
+        target.s16s8s64s8Set = init["s16s8s64s8Set"] as TestUnion;
+      }
+      else {
+        TestUnion._applyInit(target._initS16s8s64s8Set(), init["s16s8s64s8Set"] as $.Init<TestUnion>);
+      }
+    }
+    if (init["s0sps1s32Set"] !== undefined) {
+      if (init["s0sps1s32Set"] instanceof TestUnion) {
+        target.s0sps1s32Set = init["s0sps1s32Set"] as TestUnion;
+      }
+      else {
+        TestUnion._applyInit(target._initS0sps1s32Set(), init["s0sps1s32Set"] as $.Init<TestUnion>);
+      }
+    }
+    if (init["unnamed1"] !== undefined) {
+      if (init["unnamed1"] instanceof TestUnnamedUnion) {
+        target.unnamed1 = init["unnamed1"] as TestUnnamedUnion;
+      }
+      else {
+        TestUnnamedUnion._applyInit(target._initUnnamed1(), init["unnamed1"] as $.Init<TestUnnamedUnion>);
+      }
+    }
+    if (init["unnamed2"] !== undefined) {
+      if (init["unnamed2"] instanceof TestUnnamedUnion) {
+        target.unnamed2 = init["unnamed2"] as TestUnnamedUnion;
+      }
+      else {
+        TestUnnamedUnion._applyInit(target._initUnnamed2(), init["unnamed2"] as $.Init<TestUnnamedUnion>);
+      }
+    }
+  }
   _adoptS16s8s64s8Set(value: $.Orphan<TestUnion>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -2708,6 +4866,15 @@ export class TestNestedTypes_NestedStruct extends $.Struct {
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
+  static _applyInit(target: TestNestedTypes_NestedStruct, value: $.Init<TestNestedTypes_NestedStruct>): void {
+    const init = value as any;
+    if (init["outerNestedEnum"] !== undefined) {
+      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    }
+    if (init["innerNestedEnum"] !== undefined) {
+      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    }
+  }
   get outerNestedEnum(): TestNestedTypes_NestedEnum {
     return $.utils.getUint16(0, this, TestNestedTypes_NestedStruct._capnp.defaultOuterNestedEnum) as TestNestedTypes_NestedEnum;
   }
@@ -2739,6 +4906,23 @@ export class TestNestedTypes extends $.Struct {
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
+  static _applyInit(target: TestNestedTypes, value: $.Init<TestNestedTypes>): void {
+    const init = value as any;
+    if (init["nestedStruct"] !== undefined) {
+      if (init["nestedStruct"] instanceof TestNestedTypes_NestedStruct) {
+        target.nestedStruct = init["nestedStruct"] as TestNestedTypes_NestedStruct;
+      }
+      else {
+        TestNestedTypes_NestedStruct._applyInit(target._initNestedStruct(), init["nestedStruct"] as $.Init<TestNestedTypes_NestedStruct>);
+      }
+    }
+    if (init["outerNestedEnum"] !== undefined) {
+      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    }
+    if (init["innerNestedEnum"] !== undefined) {
+      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    }
+  }
   _adoptNestedStruct(value: $.Orphan<TestNestedTypes_NestedStruct>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -2785,6 +4969,15 @@ export class TestUsing extends $.Struct {
     defaultOuterNestedEnum: $.getUint16Mask(1),
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
+  static _applyInit(target: TestUsing, value: $.Init<TestUsing>): void {
+    const init = value as any;
+    if (init["outerNestedEnum"] !== undefined) {
+      target.outerNestedEnum = init["outerNestedEnum"] as any;
+    }
+    if (init["innerNestedEnum"] !== undefined) {
+      target.innerNestedEnum = init["innerNestedEnum"] as any;
+    }
+  }
   get outerNestedEnum(): TestNestedTypes_NestedEnum {
     return $.utils.getUint16(2, this, TestUsing._capnp.defaultOuterNestedEnum) as TestNestedTypes_NestedEnum;
   }
@@ -2810,6 +5003,11 @@ export class TestLists_Struct0 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "void" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct0, value: $.Init<TestLists_Struct0>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+    }
+  }
   toString(): string { return "TestLists_Struct0_" + super.toString(); }
 }
 export class TestLists_Struct1 extends $.Struct {
@@ -2823,6 +5021,12 @@ export class TestLists_Struct1 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct1, value: $.Init<TestLists_Struct1>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -2842,6 +5046,12 @@ export class TestLists_Struct8 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint8" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct8, value: $.Init<TestLists_Struct8>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint8(0, this);
   }
@@ -2861,6 +5071,12 @@ export class TestLists_Struct16 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint16" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct16, value: $.Init<TestLists_Struct16>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint16(0, this);
   }
@@ -2880,6 +5096,12 @@ export class TestLists_Struct32 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct32, value: $.Init<TestLists_Struct32>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint32(0, this);
   }
@@ -2899,6 +5121,12 @@ export class TestLists_Struct64 extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint64" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct64, value: $.Init<TestLists_Struct64>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): bigint {
     return $.utils.getUint64(0, this);
   }
@@ -2918,6 +5146,12 @@ export class TestLists_StructP extends $.Struct {
       { name: "f", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_StructP, value: $.Init<TestLists_StructP>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+  }
   get f(): string {
     return $.utils.getText(0, this);
   }
@@ -2938,6 +5172,14 @@ export class TestLists_Struct0c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct0c, value: $.Init<TestLists_Struct0c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get pad(): string {
     return $.utils.getText(0, this);
   }
@@ -2958,6 +5200,15 @@ export class TestLists_Struct1c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct1c, value: $.Init<TestLists_Struct1c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -2984,6 +5235,15 @@ export class TestLists_Struct8c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct8c, value: $.Init<TestLists_Struct8c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint8(0, this);
   }
@@ -3010,6 +5270,15 @@ export class TestLists_Struct16c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct16c, value: $.Init<TestLists_Struct16c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint16(0, this);
   }
@@ -3036,6 +5305,15 @@ export class TestLists_Struct32c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct32c, value: $.Init<TestLists_Struct32c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): number {
     return $.utils.getUint32(0, this);
   }
@@ -3062,6 +5340,15 @@ export class TestLists_Struct64c extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_Struct64c, value: $.Init<TestLists_Struct64c>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): bigint {
     return $.utils.getUint64(0, this);
   }
@@ -3088,6 +5375,15 @@ export class TestLists_StructPc extends $.Struct {
       { name: "pad", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint64" } }
     ] as const,
   };
+  static _applyInit(target: TestLists_StructPc, value: $.Init<TestLists_StructPc>): void {
+    const init = value as any;
+    if (init["f"] !== undefined) {
+      target.f = init["f"] as any;
+    }
+    if (init["pad"] !== undefined) {
+      target.pad = init["pad"] as any;
+    }
+  }
   get f(): string {
     return $.utils.getText(0, this);
   }
@@ -3151,6 +5447,218 @@ export class TestLists extends $.Struct {
   static _Int32ListList: $.ListCtor<$.List<number>>;
   static _TextListList: $.ListCtor<$.List<string>>;
   static _StructListList: $.ListCtor<$.List<TestAllTypes>>;
+  static _applyInit(target: TestLists, value: $.Init<TestLists>): void {
+    const init = value as any;
+    if (init["list0"] !== undefined) {
+      if (init["list0"] instanceof $.List) {
+        target.list0 = init["list0"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list0"]) ? init["list0"] : Array.from(init["list0"] as Iterable<any>);
+        const list = target._initList0(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct0) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct0._applyInit(list.get(index), item as $.Init<TestLists_Struct0>);
+          }
+        }
+      }
+    }
+    if (init["list1"] !== undefined) {
+      if (init["list1"] instanceof $.List) {
+        target.list1 = init["list1"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list1"]) ? init["list1"] : Array.from(init["list1"] as Iterable<any>);
+        const list = target._initList1(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct1) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct1._applyInit(list.get(index), item as $.Init<TestLists_Struct1>);
+          }
+        }
+      }
+    }
+    if (init["list8"] !== undefined) {
+      if (init["list8"] instanceof $.List) {
+        target.list8 = init["list8"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list8"]) ? init["list8"] : Array.from(init["list8"] as Iterable<any>);
+        const list = target._initList8(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct8) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct8._applyInit(list.get(index), item as $.Init<TestLists_Struct8>);
+          }
+        }
+      }
+    }
+    if (init["list16"] !== undefined) {
+      if (init["list16"] instanceof $.List) {
+        target.list16 = init["list16"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list16"]) ? init["list16"] : Array.from(init["list16"] as Iterable<any>);
+        const list = target._initList16(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct16) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct16._applyInit(list.get(index), item as $.Init<TestLists_Struct16>);
+          }
+        }
+      }
+    }
+    if (init["list32"] !== undefined) {
+      if (init["list32"] instanceof $.List) {
+        target.list32 = init["list32"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list32"]) ? init["list32"] : Array.from(init["list32"] as Iterable<any>);
+        const list = target._initList32(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct32) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct32._applyInit(list.get(index), item as $.Init<TestLists_Struct32>);
+          }
+        }
+      }
+    }
+    if (init["list64"] !== undefined) {
+      if (init["list64"] instanceof $.List) {
+        target.list64 = init["list64"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list64"]) ? init["list64"] : Array.from(init["list64"] as Iterable<any>);
+        const list = target._initList64(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_Struct64) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_Struct64._applyInit(list.get(index), item as $.Init<TestLists_Struct64>);
+          }
+        }
+      }
+    }
+    if (init["listP"] !== undefined) {
+      if (init["listP"] instanceof $.List) {
+        target.listP = init["listP"] as any;
+      }
+      else {
+        const values = Array.isArray(init["listP"]) ? init["listP"] : Array.from(init["listP"] as Iterable<any>);
+        const list = target._initListP(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestLists_StructP) {
+            list.set(index, item);
+          }
+          else {
+            TestLists_StructP._applyInit(list.get(index), item as $.Init<TestLists_StructP>);
+          }
+        }
+      }
+    }
+    if (init["int32ListList"] !== undefined) {
+      if (init["int32ListList"] instanceof $.List) {
+        target.int32ListList = init["int32ListList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["int32ListList"]) ? init["int32ListList"] : Array.from(init["int32ListList"] as Iterable<any>);
+        const list = target._initInt32ListList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof $.List) {
+            list.set(index, item);
+          }
+          else {
+            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+            const nested = list.get(index);
+            $.initListValue(nested, nestedValues.length);
+            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+              const item = nestedValues[nestedIndex];
+              const index = nestedIndex;
+              const list = nested;
+              list.set(index, item);
+            }
+          }
+        }
+      }
+    }
+    if (init["textListList"] !== undefined) {
+      if (init["textListList"] instanceof $.List) {
+        target.textListList = init["textListList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["textListList"]) ? init["textListList"] : Array.from(init["textListList"] as Iterable<any>);
+        const list = target._initTextListList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof $.List) {
+            list.set(index, item);
+          }
+          else {
+            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+            const nested = list.get(index);
+            $.initListValue(nested, nestedValues.length);
+            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+              const item = nestedValues[nestedIndex];
+              const index = nestedIndex;
+              const list = nested;
+              list.set(index, item);
+            }
+          }
+        }
+      }
+    }
+    if (init["structListList"] !== undefined) {
+      if (init["structListList"] instanceof $.List) {
+        target.structListList = init["structListList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["structListList"]) ? init["structListList"] : Array.from(init["structListList"] as Iterable<any>);
+        const list = target._initStructListList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof $.List) {
+            list.set(index, item);
+          }
+          else {
+            const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+            const nested = list.get(index);
+            $.initListValue(nested, nestedValues.length);
+            for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+              const item = nestedValues[nestedIndex];
+              const index = nestedIndex;
+              const list = nested;
+              if (item instanceof TestAllTypes) {
+                list.set(index, item);
+              }
+              else {
+                TestAllTypes._applyInit(list.get(index), item as $.Init<TestAllTypes>);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   _adoptList0(value: $.Orphan<$.List<TestLists_Struct0>>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -3348,6 +5856,18 @@ export class TestFieldZeroIsBit extends $.Struct {
     defaultSecondBit: $.getBitMask(true, 1),
     defaultThirdField: $.getUint8Mask(123)
   };
+  static _applyInit(target: TestFieldZeroIsBit, value: $.Init<TestFieldZeroIsBit>): void {
+    const init = value as any;
+    if (init["bit"] !== undefined) {
+      target.bit = init["bit"] as any;
+    }
+    if (init["secondBit"] !== undefined) {
+      target.secondBit = init["secondBit"] as any;
+    }
+    if (init["thirdField"] !== undefined) {
+      target.thirdField = init["thirdField"] as any;
+    }
+  }
   get bit(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -3380,6 +5900,17 @@ export class TestListDefaults extends $.Struct {
     ] as const,
     defaultLists: $.readRawPointer(new Uint8Array([16, 136, 64, 10, 17, 37, 7, 17, 37, 39, 17, 53, 23, 17, 61, 23, 17, 69, 23, 17, 77, 23, 17, 85, 23, 17, 101, 30, 17, 125, 30, 17, 173, 22, 1, 8, 17, 16, 1, 1, 1, 0, 0, 1, 1, 1, 1, 17, 8, 1, 1, 123, 1, 45, 17, 8, 1, 3, 57, 48, 3, 133, 26, 17, 8, 1, 15, 21, 205, 91, 7, 15, 210, 56, 251, 13, 17, 8, 1, 127, 192, 186, 138, 60, 213, 98, 4, 127, 135, 75, 170, 237, 97, 85, 8, 65, 8, 1, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 9, 28, 17, 13, 20, 17, 13, 12, 17, 1, 2, 1, 3, 17, 4, 5, 7, 242, 79, 188, 17, 9, 22, 17, 21, 14, 17, 25, 22, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 1, 34, 7, 98, 97, 122, 17, 5, 34, 17, 5, 50, 7, 113, 117, 120, 31, 99, 111, 114, 103, 101, 49, 5, 167, 1, 17, 213, 215, 81, 8, 6, 20, 16, 123, 0, 24, 48, 200, 1, 0, 24, 81, 4, 6, 20, 48, 21, 3, 0, 24]).buffer)
   };
+  static _applyInit(target: TestListDefaults, value: $.Init<TestListDefaults>): void {
+    const init = value as any;
+    if (init["lists"] !== undefined) {
+      if (init["lists"] instanceof TestLists) {
+        target.lists = init["lists"] as TestLists;
+      }
+      else {
+        TestLists._applyInit(target._initLists(), init["lists"] as $.Init<TestLists>);
+      }
+    }
+  }
   _adoptLists(value: $.Orphan<TestLists>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -3422,6 +5953,28 @@ export class TestLateUnion_TheUnion extends $.Struct {
       { name: "grault", codeOrder: 2, ordinal: 6, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "float32" } }
     ] as const,
   };
+  static _applyInit(target: TestLateUnion_TheUnion, value: $.Init<TestLateUnion_TheUnion>): void {
+    const init = value as any;
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["corge"] !== undefined) {
+      if (init["corge"] instanceof $.List) {
+        target.corge = init["corge"] as any;
+      }
+      else {
+        const values = Array.isArray(init["corge"]) ? init["corge"] : Array.from(init["corge"] as Iterable<any>);
+        const list = target._initCorge(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+  }
   get qux(): string {
     $.utils.testWhich("qux", $.utils.getUint16(6, this), 0, this);
     return $.utils.getText(1, this);
@@ -3473,6 +6026,66 @@ export class TestLateUnion_TheUnion extends $.Struct {
   which(): TestLateUnion_TheUnion_Which {
     return $.utils.getUint16(6, this) as TestLateUnion_TheUnion_Which;
   }
+  _set(value: {
+    which: "qux";
+    value: string;
+  } | {
+    which: "corge";
+    value: $.List<number>;
+  } | {
+    which: "grault";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "qux": {
+        this.qux = value.value;
+        return;
+      }
+      case "corge": {
+        this.corge = value.value;
+        return;
+      }
+      case "grault": {
+        this.grault = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "qux"?: (value: string) => R;
+    "corge"?: (value: $.List<number>) => R;
+    "grault"?: (value: number) => R;
+    _?: (which: TestLateUnion_TheUnion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["qux"];
+        if (callback) {
+          return callback(this.qux);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["corge"];
+        if (callback) {
+          return callback(this.corge);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["grault"];
+        if (callback) {
+          return callback(this.grault);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestLateUnion_TheUnion union case: " + which);
+  }
 }
 export const TestLateUnion_AnotherUnion_Which = {
   QUX: 0,
@@ -3496,6 +6109,28 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
       { name: "grault", codeOrder: 2, ordinal: 10, discriminantValue: 2, kind: "slot", offset: 4, type: { kind: "float32" } }
     ] as const,
   };
+  static _applyInit(target: TestLateUnion_AnotherUnion, value: $.Init<TestLateUnion_AnotherUnion>): void {
+    const init = value as any;
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["corge"] !== undefined) {
+      if (init["corge"] instanceof $.List) {
+        target.corge = init["corge"] as any;
+      }
+      else {
+        const values = Array.isArray(init["corge"]) ? init["corge"] : Array.from(init["corge"] as Iterable<any>);
+        const list = target._initCorge(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+    if (init["grault"] !== undefined) {
+      target.grault = init["grault"] as any;
+    }
+  }
   get qux(): string {
     $.utils.testWhich("qux", $.utils.getUint16(12, this), 0, this);
     return $.utils.getText(2, this);
@@ -3547,6 +6182,66 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
   which(): TestLateUnion_AnotherUnion_Which {
     return $.utils.getUint16(12, this) as TestLateUnion_AnotherUnion_Which;
   }
+  _set(value: {
+    which: "qux";
+    value: string;
+  } | {
+    which: "corge";
+    value: $.List<number>;
+  } | {
+    which: "grault";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "qux": {
+        this.qux = value.value;
+        return;
+      }
+      case "corge": {
+        this.corge = value.value;
+        return;
+      }
+      case "grault": {
+        this.grault = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "qux"?: (value: string) => R;
+    "corge"?: (value: $.List<number>) => R;
+    "grault"?: (value: number) => R;
+    _?: (which: TestLateUnion_AnotherUnion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["qux"];
+        if (callback) {
+          return callback(this.qux);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["corge"];
+        if (callback) {
+          return callback(this.corge);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["grault"];
+        if (callback) {
+          return callback(this.grault);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestLateUnion_AnotherUnion union case: " + which);
+  }
 }
 /**
 * Test what happens if the unions are not the first ordinals in the struct.  At one point this
@@ -3568,6 +6263,24 @@ export class TestLateUnion extends $.Struct {
       { name: "anotherUnion", codeOrder: 4, ordinal: 7, kind: "group", type: { kind: "group", typeId: 0xc1973984dee98e3an, typeIdHex: "c1973984dee98e3a", displayName: "anotherUnion" } }
     ] as const,
   };
+  static _applyInit(target: TestLateUnion, value: $.Init<TestLateUnion>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+    if (init["theUnion"] !== undefined) {
+      TestLateUnion_TheUnion._applyInit(target._initTheUnion(), init["theUnion"] as $.Init<TestLateUnion_TheUnion>);
+    }
+    if (init["anotherUnion"] !== undefined) {
+      TestLateUnion_AnotherUnion._applyInit(target._initAnotherUnion(), init["anotherUnion"] as $.Init<TestLateUnion_AnotherUnion>);
+    }
+  }
   get foo(): number {
     return $.utils.getInt32(0, this);
   }
@@ -3617,6 +6330,23 @@ export class TestOldVersion extends $.Struct {
       { name: "old3", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x95b30dd14e01dda8n, typeIdHex: "95b30dd14e01dda8", displayName: "TestOldVersion" } }
     ] as const,
   };
+  static _applyInit(target: TestOldVersion, value: $.Init<TestOldVersion>): void {
+    const init = value as any;
+    if (init["old1"] !== undefined) {
+      target.old1 = init["old1"] as any;
+    }
+    if (init["old2"] !== undefined) {
+      target.old2 = init["old2"] as any;
+    }
+    if (init["old3"] !== undefined) {
+      if (init["old3"] instanceof TestOldVersion) {
+        target.old3 = init["old3"] as TestOldVersion;
+      }
+      else {
+        TestOldVersion._applyInit(target._initOld3(), init["old3"] as $.Init<TestOldVersion>);
+      }
+    }
+  }
   get old1(): bigint {
     return $.utils.getInt64(0, this);
   }
@@ -3670,6 +6400,29 @@ export class TestNewVersion extends $.Struct {
     defaultNew1: $.getInt64Mask(0x3dbn),
     defaultNew2: "baz"
   };
+  static _applyInit(target: TestNewVersion, value: $.Init<TestNewVersion>): void {
+    const init = value as any;
+    if (init["old1"] !== undefined) {
+      target.old1 = init["old1"] as any;
+    }
+    if (init["old2"] !== undefined) {
+      target.old2 = init["old2"] as any;
+    }
+    if (init["old3"] !== undefined) {
+      if (init["old3"] instanceof TestNewVersion) {
+        target.old3 = init["old3"] as TestNewVersion;
+      }
+      else {
+        TestNewVersion._applyInit(target._initOld3(), init["old3"] as $.Init<TestNewVersion>);
+      }
+    }
+    if (init["new1"] !== undefined) {
+      target.new1 = init["new1"] as any;
+    }
+    if (init["new2"] !== undefined) {
+      target.new2 = init["new2"] as any;
+    }
+  }
   get old1(): bigint {
     return $.utils.getInt64(0, this);
   }
@@ -3733,6 +6486,15 @@ export class TestOldUnionVersion extends $.Struct {
       { name: "b", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint64" } }
     ] as const,
   };
+  static _applyInit(target: TestOldUnionVersion, value: $.Init<TestOldUnionVersion>): void {
+    const init = value as any;
+    if (init["a"] !== undefined) {
+      target.a = true;
+    }
+    if (init["b"] !== undefined) {
+      target.b = init["b"] as any;
+    }
+  }
   get _isA(): boolean {
     return $.utils.getUint16(0, this) === 0;
   }
@@ -3754,6 +6516,50 @@ export class TestOldUnionVersion extends $.Struct {
   which(): TestOldUnionVersion_Which {
     return $.utils.getUint16(0, this) as TestOldUnionVersion_Which;
   }
+  _set(value: {
+    which: "a";
+  } | {
+    which: "b";
+    value: bigint;
+  }): void {
+    switch (value.which) {
+      case "a": {
+        this.a = true;
+        return;
+      }
+      case "b": {
+        this.b = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "a"?: () => R;
+    "b"?: (value: bigint) => R;
+    _?: (which: TestOldUnionVersion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["a"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["b"];
+        if (callback) {
+          return callback(this.b);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestOldUnionVersion union case: " + which);
+  }
 }
 export const TestNewUnionVersion_A_Which = {
   A0: 0,
@@ -3774,6 +6580,15 @@ export class TestNewUnionVersion_A extends $.Struct {
       { name: "a1", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 2, type: { kind: "uint64" } }
     ] as const,
   };
+  static _applyInit(target: TestNewUnionVersion_A, value: $.Init<TestNewUnionVersion_A>): void {
+    const init = value as any;
+    if (init["a0"] !== undefined) {
+      target.a0 = true;
+    }
+    if (init["a1"] !== undefined) {
+      target.a1 = init["a1"] as any;
+    }
+  }
   get _isA0(): boolean {
     return $.utils.getUint16(8, this) === 0;
   }
@@ -3795,6 +6610,50 @@ export class TestNewUnionVersion_A extends $.Struct {
   which(): TestNewUnionVersion_A_Which {
     return $.utils.getUint16(8, this) as TestNewUnionVersion_A_Which;
   }
+  _set(value: {
+    which: "a0";
+  } | {
+    which: "a1";
+    value: bigint;
+  }): void {
+    switch (value.which) {
+      case "a0": {
+        this.a0 = true;
+        return;
+      }
+      case "a1": {
+        this.a1 = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "a0"?: () => R;
+    "a1"?: (value: bigint) => R;
+    _?: (which: TestNewUnionVersion_A_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["a0"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["a1"];
+        if (callback) {
+          return callback(this.a1);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestNewUnionVersion_A union case: " + which);
+  }
 }
 export const TestNewUnionVersion_Which = {
   A: 0,
@@ -3815,6 +6674,15 @@ export class TestNewUnionVersion extends $.Struct {
       { name: "b", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint64" } }
     ] as const,
   };
+  static _applyInit(target: TestNewUnionVersion, value: $.Init<TestNewUnionVersion>): void {
+    const init = value as any;
+    if (init["a"] !== undefined) {
+      TestNewUnionVersion_A._applyInit(target._initA(), init["a"] as $.Init<TestNewUnionVersion_A>);
+    }
+    if (init["b"] !== undefined) {
+      target.b = init["b"] as any;
+    }
+  }
   get a(): TestNewUnionVersion_A {
     $.utils.testWhich("a", $.utils.getUint16(0, this), 0, this);
     return $.utils.getAs(TestNewUnionVersion_A, this);
@@ -3844,6 +6712,50 @@ export class TestNewUnionVersion extends $.Struct {
   which(): TestNewUnionVersion_Which {
     return $.utils.getUint16(0, this) as TestNewUnionVersion_Which;
   }
+  _set(value: {
+    which: "a";
+  } | {
+    which: "b";
+    value: bigint;
+  }): void {
+    switch (value.which) {
+      case "a": {
+        this.a = true;
+        return;
+      }
+      case "b": {
+        this.b = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "a"?: (value: TestNewUnionVersion_A) => R;
+    "b"?: (value: bigint) => R;
+    _?: (which: TestNewUnionVersion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["a"];
+        if (callback) {
+          return callback(this.a);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["b"];
+        if (callback) {
+          return callback(this.b);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestNewUnionVersion union case: " + which);
+  }
 }
 export class TestStructUnion_SomeStruct extends $.Struct {
   static readonly _capnp = {
@@ -3857,6 +6769,15 @@ export class TestStructUnion_SomeStruct extends $.Struct {
       { name: "moreText", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestStructUnion_SomeStruct, value: $.Init<TestStructUnion_SomeStruct>): void {
+    const init = value as any;
+    if (init["someText"] !== undefined) {
+      target.someText = init["someText"] as any;
+    }
+    if (init["moreText"] !== undefined) {
+      target.moreText = init["moreText"] as any;
+    }
+  }
   get someText(): string {
     return $.utils.getText(0, this);
   }
@@ -3890,6 +6811,25 @@ export class TestStructUnion_Un extends $.Struct {
       { name: "object", codeOrder: 1, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xe3da5a2ccd28c0d8n, typeIdHex: "e3da5a2ccd28c0d8", displayName: "TestAnyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestStructUnion_Un, value: $.Init<TestStructUnion_Un>): void {
+    const init = value as any;
+    if (init["struct"] !== undefined) {
+      if (init["struct"] instanceof TestStructUnion_SomeStruct) {
+        target.struct = init["struct"] as TestStructUnion_SomeStruct;
+      }
+      else {
+        TestStructUnion_SomeStruct._applyInit(target._initStruct(), init["struct"] as $.Init<TestStructUnion_SomeStruct>);
+      }
+    }
+    if (init["object"] !== undefined) {
+      if (init["object"] instanceof TestAnyPointer) {
+        target.object = init["object"] as TestAnyPointer;
+      }
+      else {
+        TestAnyPointer._applyInit(target._initObject(), init["object"] as $.Init<TestAnyPointer>);
+      }
+    }
+  }
   _adoptStruct(value: $.Orphan<TestStructUnion_SomeStruct>): void {
     $.utils.setUint16(0, 0, this);
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -3944,6 +6884,51 @@ export class TestStructUnion_Un extends $.Struct {
   which(): TestStructUnion_Un_Which {
     return $.utils.getUint16(0, this) as TestStructUnion_Un_Which;
   }
+  _set(value: {
+    which: "struct";
+    value: TestStructUnion_SomeStruct;
+  } | {
+    which: "object";
+    value: TestAnyPointer;
+  }): void {
+    switch (value.which) {
+      case "struct": {
+        this.struct = value.value;
+        return;
+      }
+      case "object": {
+        this.object = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "struct"?: (value: TestStructUnion_SomeStruct) => R;
+    "object"?: (value: TestAnyPointer) => R;
+    _?: (which: TestStructUnion_Un_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["struct"];
+        if (callback) {
+          return callback(this.struct);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["object"];
+        if (callback) {
+          return callback(this.object);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestStructUnion_Un union case: " + which);
+  }
 }
 export class TestStructUnion extends $.Struct {
   static readonly SomeStruct = TestStructUnion_SomeStruct;
@@ -3957,6 +6942,12 @@ export class TestStructUnion extends $.Struct {
       { name: "un", codeOrder: 0, ordinal: 0, kind: "group", type: { kind: "group", typeId: 0x992edc677bef5a3cn, typeIdHex: "992edc677bef5a3c", displayName: "un" } }
     ] as const,
   };
+  static _applyInit(target: TestStructUnion, value: $.Init<TestStructUnion>): void {
+    const init = value as any;
+    if (init["un"] !== undefined) {
+      TestStructUnion_Un._applyInit(target._initUn(), init["un"] as $.Init<TestStructUnion_Un>);
+    }
+  }
   get un(): TestStructUnion_Un {
     return $.utils.getAs(TestStructUnion_Un, this);
   }
@@ -3977,6 +6968,15 @@ export class TestPrintInlineStructs_InlineStruct extends $.Struct {
       { name: "textField", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestPrintInlineStructs_InlineStruct, value: $.Init<TestPrintInlineStructs_InlineStruct>): void {
+    const init = value as any;
+    if (init["int32Field"] !== undefined) {
+      target.int32Field = init["int32Field"] as any;
+    }
+    if (init["textField"] !== undefined) {
+      target.textField = init["textField"] as any;
+    }
+  }
   get int32Field(): number {
     return $.utils.getInt32(0, this);
   }
@@ -4005,6 +7005,30 @@ export class TestPrintInlineStructs extends $.Struct {
     ] as const,
   };
   static _StructList: $.ListCtor<TestPrintInlineStructs_InlineStruct>;
+  static _applyInit(target: TestPrintInlineStructs, value: $.Init<TestPrintInlineStructs>): void {
+    const init = value as any;
+    if (init["someText"] !== undefined) {
+      target.someText = init["someText"] as any;
+    }
+    if (init["structList"] !== undefined) {
+      if (init["structList"] instanceof $.List) {
+        target.structList = init["structList"] as any;
+      }
+      else {
+        const values = Array.isArray(init["structList"]) ? init["structList"] : Array.from(init["structList"] as Iterable<any>);
+        const list = target._initStructList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestPrintInlineStructs_InlineStruct) {
+            list.set(index, item);
+          }
+          else {
+            TestPrintInlineStructs_InlineStruct._applyInit(list.get(index), item as $.Init<TestPrintInlineStructs_InlineStruct>);
+          }
+        }
+      }
+    }
+  }
   get someText(): string {
     return $.utils.getText(0, this);
   }
@@ -4052,6 +7076,15 @@ export class TestWholeFloatDefault extends $.Struct {
     defaultField: $.getFloat32Mask(123),
     defaultBigField: $.getFloat32Mask(2.0000000300949324e+30)
   };
+  static _applyInit(target: TestWholeFloatDefault, value: $.Init<TestWholeFloatDefault>): void {
+    const init = value as any;
+    if (init["field"] !== undefined) {
+      target.field = init["field"] as any;
+    }
+    if (init["bigField"] !== undefined) {
+      target.bigField = init["bigField"] as any;
+    }
+  }
   get field(): number {
     return $.utils.getFloat32(0, this, TestWholeFloatDefault._capnp.defaultField);
   }
@@ -4078,6 +7111,15 @@ export class TestGenerics_Inner extends $.Struct {
       { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_Inner, value: $.Init<TestGenerics_Inner>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4119,6 +7161,9 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params extends 
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, value: $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params_" + super.toString(); }
 }
 export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results extends $.Struct {
@@ -4130,6 +7175,9 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results extends
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, value: $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results_" + super.toString(); }
 }
 export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise {
@@ -4139,6 +7187,15 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise
   }
   async promise(): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Client {
@@ -4161,10 +7218,15 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Client {
       resultFields: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results._capnp.fields
     }
   ];
-  call(paramsFunc?: (params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => void): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise {
+  call(): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise;
+  call(params: $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params>): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise;
+  call(paramsFunc: (params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => void): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise;
+  call(params?: $.Initializer<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params>): TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise {
     const answer = this.client.call({
       method: TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, answer);
     return new TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise(pipeline);
@@ -4172,7 +7234,7 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Client {
 }
 $.Registry.register(TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.interfaceId, TestGenerics_Inner2_DeepNest_DeepNestInterface$Client);
 export interface TestGenerics_Inner2_DeepNest_DeepNestInterface$Server$Target {
-  call(params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, results: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results): Promise<void>;
+  call(params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, results: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results): $.MaybePromise<void | $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>>;
 }
 export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Server extends $.Server {
   readonly target: TestGenerics_Inner2_DeepNest_DeepNestInterface$Server$Target;
@@ -4180,7 +7242,12 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface$Server extends $.Ser
     super(target, [
       {
         ...TestGenerics_Inner2_DeepNest_DeepNestInterface$Client.methods[0],
-        impl: target.call
+        impl: async (params: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, results: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => {
+          const value = await target.call(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -4221,6 +7288,21 @@ export class TestGenerics_Inner2_DeepNest extends $.Struct {
       { name: "qux", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_Inner2_DeepNest, value: $.Init<TestGenerics_Inner2_DeepNest>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4298,6 +7380,31 @@ export class TestGenerics_Inner2 extends $.Struct {
       { name: "innerUnbound", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "struct", typeId: 0xf6a841117e19ac73n, typeIdHex: "f6a841117e19ac73", displayName: "Inner" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_Inner2, value: $.Init<TestGenerics_Inner2>): void {
+    const init = value as any;
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["baz"] !== undefined) {
+      target.baz = init["baz"] as any;
+    }
+    if (init["innerBound"] !== undefined) {
+      if (init["innerBound"] instanceof TestGenerics_Inner) {
+        target.innerBound = init["innerBound"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initInnerBound(), init["innerBound"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+    if (init["innerUnbound"] !== undefined) {
+      if (init["innerUnbound"] instanceof TestGenerics_Inner) {
+        target.innerUnbound = init["innerUnbound"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initInnerUnbound(), init["innerUnbound"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+  }
   _adoptBar(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4378,6 +7485,20 @@ export class TestGenerics_Interface_Call$Results extends $.Struct {
       { name: "gen", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_Interface_Call$Results, value: $.Init<TestGenerics_Interface_Call$Results>): void {
+    const init = value as any;
+    if (init["qux"] !== undefined) {
+      target.qux = init["qux"] as any;
+    }
+    if (init["gen"] !== undefined) {
+      if (init["gen"] instanceof TestGenerics) {
+        target.gen = init["gen"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initGen(), init["gen"] as $.Init<TestGenerics>);
+      }
+    }
+  }
   _adoptQux(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4421,6 +7542,15 @@ export class TestGenerics_Interface_Call$Results$Promise {
   async promise(): Promise<TestGenerics_Interface_Call$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestGenerics_Interface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Interface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Interface_Call$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestGenerics_Interface_Call$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestGenerics_Interface$Client {
   client: $.Client;
@@ -4442,10 +7572,15 @@ export class TestGenerics_Interface$Client {
       resultFields: TestGenerics_Interface_Call$Results._capnp.fields
     }
   ];
-  call(paramsFunc?: (params: TestGenerics_Inner2) => void): TestGenerics_Interface_Call$Results$Promise {
+  call(): TestGenerics_Interface_Call$Results$Promise;
+  call(params: $.Init<TestGenerics_Inner2>): TestGenerics_Interface_Call$Results$Promise;
+  call(paramsFunc: (params: TestGenerics_Inner2) => void): TestGenerics_Interface_Call$Results$Promise;
+  call(params?: $.Initializer<TestGenerics_Inner2>): TestGenerics_Interface_Call$Results$Promise {
     const answer = this.client.call({
       method: TestGenerics_Interface$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestGenerics_Inner2) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics_Interface_Call$Results, answer);
     return new TestGenerics_Interface_Call$Results$Promise(pipeline);
@@ -4453,7 +7588,7 @@ export class TestGenerics_Interface$Client {
 }
 $.Registry.register(TestGenerics_Interface$Client.interfaceId, TestGenerics_Interface$Client);
 export interface TestGenerics_Interface$Server$Target {
-  call(params: TestGenerics_Inner2, results: TestGenerics_Interface_Call$Results): Promise<void>;
+  call(params: TestGenerics_Inner2, results: TestGenerics_Interface_Call$Results): $.MaybePromise<void | $.Init<TestGenerics_Interface_Call$Results>>;
 }
 export class TestGenerics_Interface$Server extends $.Server {
   readonly target: TestGenerics_Interface$Server$Target;
@@ -4461,7 +7596,12 @@ export class TestGenerics_Interface$Server extends $.Server {
     super(target, [
       {
         ...TestGenerics_Interface$Client.methods[0],
-        impl: target.call
+        impl: async (params: TestGenerics_Inner2, results: TestGenerics_Interface_Call$Results) => {
+          const value = await target.call(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestGenerics_Interface_Call$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -4499,6 +7639,47 @@ export class TestGenerics_UseAliases extends $.Struct {
       { name: "revFoo", codeOrder: 5, ordinal: 5, kind: "slot", offset: 5, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_UseAliases, value: $.Init<TestGenerics_UseAliases>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["inner"] !== undefined) {
+      if (init["inner"] instanceof TestGenerics_Inner) {
+        target.inner = init["inner"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+    if (init["inner2"] !== undefined) {
+      if (init["inner2"] instanceof TestGenerics_Inner2) {
+        target.inner2 = init["inner2"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initInner2(), init["inner2"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["inner2Bind"] !== undefined) {
+      if (init["inner2Bind"] instanceof TestGenerics_Inner2) {
+        target.inner2Bind = init["inner2Bind"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initInner2Bind(), init["inner2Bind"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["inner2Text"] !== undefined) {
+      if (init["inner2Text"] instanceof TestGenerics_Inner2) {
+        target.inner2Text = init["inner2Text"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initInner2Text(), init["inner2Text"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["revFoo"] !== undefined) {
+      target.revFoo = init["revFoo"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4614,6 +7795,12 @@ export class TestGenerics_Ug extends $.Struct {
       { name: "ugfoo", codeOrder: 0, ordinal: 3, kind: "slot", offset: 1, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics_Ug, value: $.Init<TestGenerics_Ug>): void {
+    const init = value as any;
+    if (init["ugfoo"] !== undefined) {
+      target.ugfoo = init["ugfoo"] as any;
+    }
+  }
   get ugfoo(): number {
     return $.utils.getInt32(4, this);
   }
@@ -4647,6 +7834,26 @@ export class TestGenerics extends $.Struct {
       { name: "ug", codeOrder: 3, ordinal: 3, discriminantValue: 1, kind: "group", type: { kind: "group", typeId: 0xb46a779beaf3384en, typeIdHex: "b46a779beaf3384e", displayName: "ug" } }
     ] as const,
   };
+  static _applyInit(target: TestGenerics, value: $.Init<TestGenerics>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["rev"] !== undefined) {
+      if (init["rev"] instanceof TestGenerics) {
+        target.rev = init["rev"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initRev(), init["rev"] as $.Init<TestGenerics>);
+      }
+    }
+    if (init["uv"] !== undefined) {
+      target.uv = true;
+    }
+    if (init["ug"] !== undefined) {
+      TestGenerics_Ug._applyInit(target._initUg(), init["ug"] as $.Init<TestGenerics_Ug>);
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4704,6 +7911,49 @@ export class TestGenerics extends $.Struct {
   which(): TestGenerics_Which {
     return $.utils.getUint16(0, this) as TestGenerics_Which;
   }
+  _set(value: {
+    which: "uv";
+  } | {
+    which: "ug";
+  }): void {
+    switch (value.which) {
+      case "uv": {
+        this.uv = true;
+        return;
+      }
+      case "ug": {
+        this.ug = true;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "uv"?: () => R;
+    "ug"?: (value: TestGenerics_Ug) => R;
+    _?: (which: TestGenerics_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["uv"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["ug"];
+        if (callback) {
+          return callback(this.ug);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestGenerics union case: " + which);
+  }
 }
 export class TestGenericsWrapper extends $.Struct {
   static readonly _capnp = {
@@ -4716,6 +7966,17 @@ export class TestGenericsWrapper extends $.Struct {
       { name: "value", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0x9d5b8cd8de9922ebn, typeIdHex: "9d5b8cd8de9922eb", displayName: "TestGenerics" } }
     ] as const,
   };
+  static _applyInit(target: TestGenericsWrapper, value: $.Init<TestGenericsWrapper>): void {
+    const init = value as any;
+    if (init["value"] !== undefined) {
+      if (init["value"] instanceof TestGenerics) {
+        target.value = init["value"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initValue(), init["value"] as $.Init<TestGenerics>);
+      }
+    }
+  }
   _adoptValue(value: $.Orphan<TestGenerics>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4747,6 +8008,17 @@ export class TestGenericsWrapper2 extends $.Struct {
       { name: "value", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa9b2b1f52dde845dn, typeIdHex: "a9b2b1f52dde845d", displayName: "TestGenericsWrapper" } }
     ] as const,
   };
+  static _applyInit(target: TestGenericsWrapper2, value: $.Init<TestGenericsWrapper2>): void {
+    const init = value as any;
+    if (init["value"] !== undefined) {
+      if (init["value"] instanceof TestGenericsWrapper) {
+        target.value = init["value"] as TestGenericsWrapper;
+      }
+      else {
+        TestGenericsWrapper._applyInit(target._initValue(), init["value"] as $.Init<TestGenericsWrapper>);
+      }
+    }
+  }
   _adoptValue(value: $.Orphan<TestGenericsWrapper>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4779,6 +8051,15 @@ export class TestImplicitMethodParams_Call$Params extends $.Struct {
       { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestImplicitMethodParams_Call$Params, value: $.Init<TestImplicitMethodParams_Call$Params>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4819,6 +8100,15 @@ export class TestGenerics$Promise {
   async promise(): Promise<TestGenerics> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestGenerics, TResult2 = never>(onfulfilled?: ((value: TestGenerics) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestGenerics> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestImplicitMethodParams$Client {
   client: $.Client;
@@ -4840,10 +8130,15 @@ export class TestImplicitMethodParams$Client {
       resultFields: TestGenerics._capnp.fields
     }
   ];
-  call(paramsFunc?: (params: TestImplicitMethodParams_Call$Params) => void): TestGenerics$Promise {
+  call(): TestGenerics$Promise;
+  call(params: $.Init<TestImplicitMethodParams_Call$Params>): TestGenerics$Promise;
+  call(paramsFunc: (params: TestImplicitMethodParams_Call$Params) => void): TestGenerics$Promise;
+  call(params?: $.Initializer<TestImplicitMethodParams_Call$Params>): TestGenerics$Promise {
     const answer = this.client.call({
       method: TestImplicitMethodParams$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestImplicitMethodParams_Call$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics, answer);
     return new TestGenerics$Promise(pipeline);
@@ -4851,7 +8146,7 @@ export class TestImplicitMethodParams$Client {
 }
 $.Registry.register(TestImplicitMethodParams$Client.interfaceId, TestImplicitMethodParams$Client);
 export interface TestImplicitMethodParams$Server$Target {
-  call(params: TestImplicitMethodParams_Call$Params, results: TestGenerics): Promise<void>;
+  call(params: TestImplicitMethodParams_Call$Params, results: TestGenerics): $.MaybePromise<void | $.Init<TestGenerics>>;
 }
 export class TestImplicitMethodParams$Server extends $.Server {
   readonly target: TestImplicitMethodParams$Server$Target;
@@ -4859,7 +8154,12 @@ export class TestImplicitMethodParams$Server extends $.Server {
     super(target, [
       {
         ...TestImplicitMethodParams$Client.methods[0],
-        impl: target.call
+        impl: async (params: TestImplicitMethodParams_Call$Params, results: TestGenerics) => {
+          const value = await target.call(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestGenerics>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -4893,6 +8193,15 @@ export class TestImplicitMethodParamsInGeneric_Call$Params extends $.Struct {
       { name: "bar", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestImplicitMethodParamsInGeneric_Call$Params, value: $.Init<TestImplicitMethodParamsInGeneric_Call$Params>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -4945,10 +8254,15 @@ export class TestImplicitMethodParamsInGeneric$Client {
       resultFields: TestGenerics._capnp.fields
     }
   ];
-  call(paramsFunc?: (params: TestImplicitMethodParamsInGeneric_Call$Params) => void): TestGenerics$Promise {
+  call(): TestGenerics$Promise;
+  call(params: $.Init<TestImplicitMethodParamsInGeneric_Call$Params>): TestGenerics$Promise;
+  call(paramsFunc: (params: TestImplicitMethodParamsInGeneric_Call$Params) => void): TestGenerics$Promise;
+  call(params?: $.Initializer<TestImplicitMethodParamsInGeneric_Call$Params>): TestGenerics$Promise {
     const answer = this.client.call({
       method: TestImplicitMethodParamsInGeneric$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestImplicitMethodParamsInGeneric_Call$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestGenerics, answer);
     return new TestGenerics$Promise(pipeline);
@@ -4956,7 +8270,7 @@ export class TestImplicitMethodParamsInGeneric$Client {
 }
 $.Registry.register(TestImplicitMethodParamsInGeneric$Client.interfaceId, TestImplicitMethodParamsInGeneric$Client);
 export interface TestImplicitMethodParamsInGeneric$Server$Target {
-  call(params: TestImplicitMethodParamsInGeneric_Call$Params, results: TestGenerics): Promise<void>;
+  call(params: TestImplicitMethodParamsInGeneric_Call$Params, results: TestGenerics): $.MaybePromise<void | $.Init<TestGenerics>>;
 }
 export class TestImplicitMethodParamsInGeneric$Server extends $.Server {
   readonly target: TestImplicitMethodParamsInGeneric$Server$Target;
@@ -4964,7 +8278,12 @@ export class TestImplicitMethodParamsInGeneric$Server extends $.Server {
     super(target, [
       {
         ...TestImplicitMethodParamsInGeneric$Client.methods[0],
-        impl: target.call
+        impl: async (params: TestImplicitMethodParamsInGeneric_Call$Params, results: TestGenerics) => {
+          const value = await target.call(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestGenerics>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -5009,6 +8328,15 @@ export class TestGenericsUnion extends $.Struct {
       { name: "bar", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestGenericsUnion, value: $.Init<TestGenericsUnion>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+      target.foo = init["foo"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+  }
   _adoptFoo(value: $.Orphan<$.Pointer>): void {
     $.utils.setUint16(0, 0, this);
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -5055,6 +8383,51 @@ export class TestGenericsUnion extends $.Struct {
   which(): TestGenericsUnion_Which {
     return $.utils.getUint16(0, this) as TestGenericsUnion_Which;
   }
+  _set(value: {
+    which: "foo";
+    value: $.Pointer;
+  } | {
+    which: "bar";
+    value: $.Pointer;
+  }): void {
+    switch (value.which) {
+      case "foo": {
+        this.foo = value.value;
+        return;
+      }
+      case "bar": {
+        this.bar = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "foo"?: (value: $.Pointer) => R;
+    "bar"?: (value: $.Pointer) => R;
+    _?: (which: TestGenericsUnion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["foo"];
+        if (callback) {
+          return callback(this.foo);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["bar"];
+        if (callback) {
+          return callback(this.bar);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestGenericsUnion union case: " + which);
+  }
 }
 export class TestUseGenerics extends $.Struct {
   static readonly _capnp = {
@@ -5098,6 +8471,159 @@ export class TestUseGenerics extends $.Struct {
     defaultAliasRev: "text",
     defaultUseAliases: $.readRawPointer(new Uint8Array([16, 161, 64, 6, 81, 20, 6, 20, 65, 120, 2, 65, 228, 4, 67, 96, 1, 4, 67, 224, 1, 4, 19, 97, 2, 28, 4, 123, 0, 24, 81, 4, 6, 20, 0, 0, 4, 123, 0, 26, 65, 4, 2, 0, 0, 81, 4, 6, 20, 0, 0, 4, 123, 0, 25, 17, 9, 42, 65, 8, 2, 0, 0, 15, 116, 101, 120, 116, 81, 4, 6, 20, 0, 0, 4, 123, 0, 25, 17, 9, 42, 65, 8, 2, 0, 0, 15, 116, 101, 120, 116, 81, 4, 6, 20, 0, 0, 4, 123, 0, 24, 17, 12, 34, 1, 56]).buffer)
   };
+  static _applyInit(target: TestUseGenerics, value: $.Init<TestUseGenerics>): void {
+    const init = value as any;
+    if (init["basic"] !== undefined) {
+      if (init["basic"] instanceof TestGenerics) {
+        target.basic = init["basic"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initBasic(), init["basic"] as $.Init<TestGenerics>);
+      }
+    }
+    if (init["inner"] !== undefined) {
+      if (init["inner"] instanceof TestGenerics_Inner) {
+        target.inner = init["inner"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initInner(), init["inner"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+    if (init["inner2"] !== undefined) {
+      if (init["inner2"] instanceof TestGenerics_Inner2) {
+        target.inner2 = init["inner2"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initInner2(), init["inner2"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["unspecified"] !== undefined) {
+      if (init["unspecified"] instanceof TestGenerics) {
+        target.unspecified = init["unspecified"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initUnspecified(), init["unspecified"] as $.Init<TestGenerics>);
+      }
+    }
+    if (init["unspecifiedInner"] !== undefined) {
+      if (init["unspecifiedInner"] instanceof TestGenerics_Inner2) {
+        target.unspecifiedInner = init["unspecifiedInner"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initUnspecifiedInner(), init["unspecifiedInner"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["wrapper"] !== undefined) {
+      if (init["wrapper"] instanceof TestGenericsWrapper) {
+        target.wrapper = init["wrapper"] as TestGenericsWrapper;
+      }
+      else {
+        TestGenericsWrapper._applyInit(target._initWrapper(), init["wrapper"] as $.Init<TestGenericsWrapper>);
+      }
+    }
+    if (init["cap"] !== undefined) {
+      if (init["cap"] instanceof TestGenerics) {
+        target.cap = init["cap"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initCap(), init["cap"] as $.Init<TestGenerics>);
+      }
+    }
+    if (init["genericCap"] !== undefined) {
+      target.genericCap = init["genericCap"] as any;
+    }
+    if (init["default"] !== undefined) {
+      if (init["default"] instanceof TestGenerics) {
+        target.default = init["default"] as TestGenerics;
+      }
+      else {
+        TestGenerics._applyInit(target._initDefault(), init["default"] as $.Init<TestGenerics>);
+      }
+    }
+    if (init["defaultInner"] !== undefined) {
+      if (init["defaultInner"] instanceof TestGenerics_Inner) {
+        target.defaultInner = init["defaultInner"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initDefaultInner(), init["defaultInner"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+    if (init["defaultUser"] !== undefined) {
+      if (init["defaultUser"] instanceof TestUseGenerics) {
+        target.defaultUser = init["defaultUser"] as TestUseGenerics;
+      }
+      else {
+        TestUseGenerics._applyInit(target._initDefaultUser(), init["defaultUser"] as $.Init<TestUseGenerics>);
+      }
+    }
+    if (init["defaultWrapper"] !== undefined) {
+      if (init["defaultWrapper"] instanceof TestGenericsWrapper) {
+        target.defaultWrapper = init["defaultWrapper"] as TestGenericsWrapper;
+      }
+      else {
+        TestGenericsWrapper._applyInit(target._initDefaultWrapper(), init["defaultWrapper"] as $.Init<TestGenericsWrapper>);
+      }
+    }
+    if (init["defaultWrapper2"] !== undefined) {
+      if (init["defaultWrapper2"] instanceof TestGenericsWrapper2) {
+        target.defaultWrapper2 = init["defaultWrapper2"] as TestGenericsWrapper2;
+      }
+      else {
+        TestGenericsWrapper2._applyInit(target._initDefaultWrapper2(), init["defaultWrapper2"] as $.Init<TestGenericsWrapper2>);
+      }
+    }
+    if (init["aliasFoo"] !== undefined) {
+      if (init["aliasFoo"] instanceof TestAllTypes) {
+        target.aliasFoo = init["aliasFoo"] as TestAllTypes;
+      }
+      else {
+        TestAllTypes._applyInit(target._initAliasFoo(), init["aliasFoo"] as $.Init<TestAllTypes>);
+      }
+    }
+    if (init["aliasInner"] !== undefined) {
+      if (init["aliasInner"] instanceof TestGenerics_Inner) {
+        target.aliasInner = init["aliasInner"] as TestGenerics_Inner;
+      }
+      else {
+        TestGenerics_Inner._applyInit(target._initAliasInner(), init["aliasInner"] as $.Init<TestGenerics_Inner>);
+      }
+    }
+    if (init["aliasInner2"] !== undefined) {
+      if (init["aliasInner2"] instanceof TestGenerics_Inner2) {
+        target.aliasInner2 = init["aliasInner2"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initAliasInner2(), init["aliasInner2"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["aliasInner2Bind"] !== undefined) {
+      if (init["aliasInner2Bind"] instanceof TestGenerics_Inner2) {
+        target.aliasInner2Bind = init["aliasInner2Bind"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initAliasInner2Bind(), init["aliasInner2Bind"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["aliasInner2Text"] !== undefined) {
+      if (init["aliasInner2Text"] instanceof TestGenerics_Inner2) {
+        target.aliasInner2Text = init["aliasInner2Text"] as TestGenerics_Inner2;
+      }
+      else {
+        TestGenerics_Inner2._applyInit(target._initAliasInner2Text(), init["aliasInner2Text"] as $.Init<TestGenerics_Inner2>);
+      }
+    }
+    if (init["aliasRev"] !== undefined) {
+      target.aliasRev = init["aliasRev"] as any;
+    }
+    if (init["useAliases"] !== undefined) {
+      if (init["useAliases"] instanceof TestGenerics_UseAliases) {
+        target.useAliases = init["useAliases"] as TestGenerics_UseAliases;
+      }
+      else {
+        TestGenerics_UseAliases._applyInit(target._initUseAliases(), init["useAliases"] as $.Init<TestGenerics_UseAliases>);
+      }
+    }
+  }
   _adoptBasic(value: $.Orphan<TestGenerics>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -5226,6 +8752,18 @@ export class TestUseGenerics extends $.Struct {
   }
   get genericCap(): TestGenerics_Interface$Client {
     return new TestGenerics_Interface$Client($.utils.getInterfaceClientOrNullAt(19, this));
+  }
+  get genericCapOrNull(): TestGenerics_Interface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(19, this))?.getClient() ?? null;
+    return client === null ? null : new TestGenerics_Interface$Client(client);
+  }
+  set genericCapOrNull(value: TestGenerics_Interface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(19, this));
+    }
+    else {
+      this.genericCap = value;
+    }
   }
   set genericCap(value: TestGenerics_Interface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(19, this));
@@ -5445,6 +8983,9 @@ export class TestEmptyStruct extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestEmptyStruct, value: $.Init<TestEmptyStruct>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestEmptyStruct_" + super.toString(); }
 }
 export class TestConstants extends $.Struct {
@@ -5488,6 +9029,9 @@ export class TestConstants extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestConstants, value: $.Init<TestConstants>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestConstants_" + super.toString(); }
 }
 export class TestAnyPointerConstants extends $.Struct {
@@ -5504,6 +9048,21 @@ export class TestAnyPointerConstants extends $.Struct {
       { name: "anyListAsList", codeOrder: 3, ordinal: 3, kind: "slot", offset: 3, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestAnyPointerConstants, value: $.Init<TestAnyPointerConstants>): void {
+    const init = value as any;
+    if (init["anyKindAsStruct"] !== undefined) {
+      target.anyKindAsStruct = init["anyKindAsStruct"] as any;
+    }
+    if (init["anyStructAsStruct"] !== undefined) {
+      target.anyStructAsStruct = init["anyStructAsStruct"] as any;
+    }
+    if (init["anyKindAsList"] !== undefined) {
+      target.anyKindAsList = init["anyKindAsList"] as any;
+    }
+    if (init["anyListAsList"] !== undefined) {
+      target.anyListAsList = init["anyListAsList"] as any;
+    }
+  }
   _adoptAnyKindAsStruct(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -5578,6 +9137,15 @@ export class TestInterface_Foo$Params extends $.Struct {
       { name: "j", codeOrder: 1, ordinal: 1, kind: "slot", offset: 32, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestInterface_Foo$Params, value: $.Init<TestInterface_Foo$Params>): void {
+    const init = value as any;
+    if (init["i"] !== undefined) {
+      target.i = init["i"] as any;
+    }
+    if (init["j"] !== undefined) {
+      target.j = init["j"] as any;
+    }
+  }
   get i(): number {
     return $.utils.getUint32(0, this);
   }
@@ -5603,6 +9171,12 @@ export class TestInterface_Foo$Results extends $.Struct {
       { name: "x", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestInterface_Foo$Results, value: $.Init<TestInterface_Foo$Results>): void {
+    const init = value as any;
+    if (init["x"] !== undefined) {
+      target.x = init["x"] as any;
+    }
+  }
   get x(): string {
     return $.utils.getText(0, this);
   }
@@ -5619,6 +9193,15 @@ export class TestInterface_Foo$Results$Promise {
   async promise(): Promise<TestInterface_Foo$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestInterface_Foo$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Foo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Foo$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestInterface_Foo$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestInterface_Bar$Params extends $.Struct {
   static readonly _capnp = {
@@ -5629,6 +9212,9 @@ export class TestInterface_Bar$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestInterface_Bar$Params, value: $.Init<TestInterface_Bar$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestInterface_Bar$Params_" + super.toString(); }
 }
 export class TestInterface_Bar$Results extends $.Struct {
@@ -5640,6 +9226,9 @@ export class TestInterface_Bar$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestInterface_Bar$Results, value: $.Init<TestInterface_Bar$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestInterface_Bar$Results_" + super.toString(); }
 }
 export class TestInterface_Bar$Results$Promise {
@@ -5649,6 +9238,15 @@ export class TestInterface_Bar$Results$Promise {
   }
   async promise(): Promise<TestInterface_Bar$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestInterface_Bar$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Bar$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Bar$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestInterface_Bar$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestInterface_Baz$Params extends $.Struct {
@@ -5662,6 +9260,17 @@ export class TestInterface_Baz$Params extends $.Struct {
       { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xa0a8f314b80b63fdn, typeIdHex: "a0a8f314b80b63fd", displayName: "TestAllTypes" } }
     ] as const,
   };
+  static _applyInit(target: TestInterface_Baz$Params, value: $.Init<TestInterface_Baz$Params>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      if (init["s"] instanceof TestAllTypes) {
+        target.s = init["s"] as TestAllTypes;
+      }
+      else {
+        TestAllTypes._applyInit(target._initS(), init["s"] as $.Init<TestAllTypes>);
+      }
+    }
+  }
   _adoptS(value: $.Orphan<TestAllTypes>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -5691,6 +9300,9 @@ export class TestInterface_Baz$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestInterface_Baz$Results, value: $.Init<TestInterface_Baz$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestInterface_Baz$Results_" + super.toString(); }
 }
 export class TestInterface_Baz$Results$Promise {
@@ -5700,6 +9312,15 @@ export class TestInterface_Baz$Results$Promise {
   }
   async promise(): Promise<TestInterface_Baz$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestInterface_Baz$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Baz$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Baz$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestInterface_Baz$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestInterface$Client {
@@ -5744,26 +9365,41 @@ export class TestInterface$Client {
       resultFields: TestInterface_Baz$Results._capnp.fields
     }
   ];
-  foo(paramsFunc?: (params: TestInterface_Foo$Params) => void): TestInterface_Foo$Results$Promise {
+  foo(): TestInterface_Foo$Results$Promise;
+  foo(params: $.Init<TestInterface_Foo$Params>): TestInterface_Foo$Results$Promise;
+  foo(paramsFunc: (params: TestInterface_Foo$Params) => void): TestInterface_Foo$Results$Promise;
+  foo(params?: $.Initializer<TestInterface_Foo$Params>): TestInterface_Foo$Results$Promise {
     const answer = this.client.call({
       method: TestInterface$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestInterface_Foo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Foo$Results, answer);
     return new TestInterface_Foo$Results$Promise(pipeline);
   }
-  bar(paramsFunc?: (params: TestInterface_Bar$Params) => void): TestInterface_Bar$Results$Promise {
+  bar(): TestInterface_Bar$Results$Promise;
+  bar(params: $.Init<TestInterface_Bar$Params>): TestInterface_Bar$Results$Promise;
+  bar(paramsFunc: (params: TestInterface_Bar$Params) => void): TestInterface_Bar$Results$Promise;
+  bar(params?: $.Initializer<TestInterface_Bar$Params>): TestInterface_Bar$Results$Promise {
     const answer = this.client.call({
       method: TestInterface$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestInterface_Bar$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Bar$Results, answer);
     return new TestInterface_Bar$Results$Promise(pipeline);
   }
-  baz(paramsFunc?: (params: TestInterface_Baz$Params) => void): TestInterface_Baz$Results$Promise {
+  baz(): TestInterface_Baz$Results$Promise;
+  baz(params: $.Init<TestInterface_Baz$Params>): TestInterface_Baz$Results$Promise;
+  baz(paramsFunc: (params: TestInterface_Baz$Params) => void): TestInterface_Baz$Results$Promise;
+  baz(params?: $.Initializer<TestInterface_Baz$Params>): TestInterface_Baz$Results$Promise {
     const answer = this.client.call({
       method: TestInterface$Client.methods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestInterface_Baz$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestInterface_Baz$Results, answer);
     return new TestInterface_Baz$Results$Promise(pipeline);
@@ -5771,9 +9407,9 @@ export class TestInterface$Client {
 }
 $.Registry.register(TestInterface$Client.interfaceId, TestInterface$Client);
 export interface TestInterface$Server$Target {
-  foo(params: TestInterface_Foo$Params, results: TestInterface_Foo$Results): Promise<void>;
-  bar(params: TestInterface_Bar$Params, results: TestInterface_Bar$Results): Promise<void>;
-  baz(params: TestInterface_Baz$Params, results: TestInterface_Baz$Results): Promise<void>;
+  foo(params: TestInterface_Foo$Params, results: TestInterface_Foo$Results): $.MaybePromise<void | $.Init<TestInterface_Foo$Results>>;
+  bar(params: TestInterface_Bar$Params, results: TestInterface_Bar$Results): $.MaybePromise<void | $.Init<TestInterface_Bar$Results>>;
+  baz(params: TestInterface_Baz$Params, results: TestInterface_Baz$Results): $.MaybePromise<void | $.Init<TestInterface_Baz$Results>>;
 }
 export class TestInterface$Server extends $.Server {
   readonly target: TestInterface$Server$Target;
@@ -5781,15 +9417,30 @@ export class TestInterface$Server extends $.Server {
     super(target, [
       {
         ...TestInterface$Client.methods[0],
-        impl: target.foo
+        impl: async (params: TestInterface_Foo$Params, results: TestInterface_Foo$Results) => {
+          const value = await target.foo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestInterface_Foo$Results>);
+          }
+        }
       },
       {
         ...TestInterface$Client.methods[1],
-        impl: target.bar
+        impl: async (params: TestInterface_Bar$Params, results: TestInterface_Bar$Results) => {
+          const value = await target.bar(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestInterface_Bar$Results>);
+          }
+        }
       },
       {
         ...TestInterface$Client.methods[2],
-        impl: target.baz
+        impl: async (params: TestInterface_Baz$Params, results: TestInterface_Baz$Results) => {
+          const value = await target.baz(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestInterface_Baz$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -5820,6 +9471,9 @@ export class TestExtends_Qux$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestExtends_Qux$Params, value: $.Init<TestExtends_Qux$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestExtends_Qux$Params_" + super.toString(); }
 }
 export class TestExtends_Qux$Results extends $.Struct {
@@ -5831,6 +9485,9 @@ export class TestExtends_Qux$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestExtends_Qux$Results, value: $.Init<TestExtends_Qux$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestExtends_Qux$Results_" + super.toString(); }
 }
 export class TestExtends_Qux$Results$Promise {
@@ -5840,6 +9497,15 @@ export class TestExtends_Qux$Results$Promise {
   }
   async promise(): Promise<TestExtends_Qux$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestExtends_Qux$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Qux$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Qux$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestExtends_Qux$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestExtends_Corge$Results extends $.Struct {
@@ -5851,6 +9517,9 @@ export class TestExtends_Corge$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestExtends_Corge$Results, value: $.Init<TestExtends_Corge$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestExtends_Corge$Results_" + super.toString(); }
 }
 export class TestExtends_Corge$Results$Promise {
@@ -5860,6 +9529,15 @@ export class TestExtends_Corge$Results$Promise {
   }
   async promise(): Promise<TestExtends_Corge$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestExtends_Corge$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Corge$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Corge$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestExtends_Corge$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestExtends_Grault$Params extends $.Struct {
@@ -5871,6 +9549,9 @@ export class TestExtends_Grault$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestExtends_Grault$Params, value: $.Init<TestExtends_Grault$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestExtends_Grault$Params_" + super.toString(); }
 }
 export class TestAllTypes$Promise {
@@ -5880,6 +9561,15 @@ export class TestAllTypes$Promise {
   }
   async promise(): Promise<TestAllTypes> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestAllTypes, TResult2 = never>(onfulfilled?: ((value: TestAllTypes) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAllTypes | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestAllTypes> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestExtends$Client {
@@ -5937,26 +9627,41 @@ export class TestExtends$Client {
   baz(...args: Parameters<TestInterface$Client["baz"]>): ReturnType<TestInterface$Client["baz"]> {
     return TestInterface$Client.prototype.baz.apply(this, args);
   }
-  qux(paramsFunc?: (params: TestExtends_Qux$Params) => void): TestExtends_Qux$Results$Promise {
+  qux(): TestExtends_Qux$Results$Promise;
+  qux(params: $.Init<TestExtends_Qux$Params>): TestExtends_Qux$Results$Promise;
+  qux(paramsFunc: (params: TestExtends_Qux$Params) => void): TestExtends_Qux$Results$Promise;
+  qux(params?: $.Initializer<TestExtends_Qux$Params>): TestExtends_Qux$Results$Promise {
     const answer = this.client.call({
       method: TestExtends$Client.ownMethods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestExtends_Qux$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestExtends_Qux$Results, answer);
     return new TestExtends_Qux$Results$Promise(pipeline);
   }
-  corge(paramsFunc?: (params: TestAllTypes) => void): TestExtends_Corge$Results$Promise {
+  corge(): TestExtends_Corge$Results$Promise;
+  corge(params: $.Init<TestAllTypes>): TestExtends_Corge$Results$Promise;
+  corge(paramsFunc: (params: TestAllTypes) => void): TestExtends_Corge$Results$Promise;
+  corge(params?: $.Initializer<TestAllTypes>): TestExtends_Corge$Results$Promise {
     const answer = this.client.call({
       method: TestExtends$Client.ownMethods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestAllTypes) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestExtends_Corge$Results, answer);
     return new TestExtends_Corge$Results$Promise(pipeline);
   }
-  grault(paramsFunc?: (params: TestExtends_Grault$Params) => void): TestAllTypes$Promise {
+  grault(): TestAllTypes$Promise;
+  grault(params: $.Init<TestExtends_Grault$Params>): TestAllTypes$Promise;
+  grault(paramsFunc: (params: TestExtends_Grault$Params) => void): TestAllTypes$Promise;
+  grault(params?: $.Initializer<TestExtends_Grault$Params>): TestAllTypes$Promise {
     const answer = this.client.call({
       method: TestExtends$Client.ownMethods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestExtends_Grault$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestAllTypes, answer);
     return new TestAllTypes$Promise(pipeline);
@@ -5964,9 +9669,9 @@ export class TestExtends$Client {
 }
 $.Registry.register(TestExtends$Client.interfaceId, TestExtends$Client);
 export interface TestExtends$Server$Target extends TestInterface$Server$Target {
-  qux(params: TestExtends_Qux$Params, results: TestExtends_Qux$Results): Promise<void>;
-  corge(params: TestAllTypes, results: TestExtends_Corge$Results): Promise<void>;
-  grault(params: TestExtends_Grault$Params, results: TestAllTypes): Promise<void>;
+  qux(params: TestExtends_Qux$Params, results: TestExtends_Qux$Results): $.MaybePromise<void | $.Init<TestExtends_Qux$Results>>;
+  corge(params: TestAllTypes, results: TestExtends_Corge$Results): $.MaybePromise<void | $.Init<TestExtends_Corge$Results>>;
+  grault(params: TestExtends_Grault$Params, results: TestAllTypes): $.MaybePromise<void | $.Init<TestAllTypes>>;
 }
 export class TestExtends$Server extends $.Server {
   readonly target: TestExtends$Server$Target;
@@ -5974,19 +9679,39 @@ export class TestExtends$Server extends $.Server {
     super(target, [
       ...(TestInterface$Client.methods as $.Method<any, any>[]).map((method) => ({
         ...(method as any),
-        impl: target[method.methodName as keyof TestExtends$Server$Target] as any
+        impl: async (params: any, results: any) => {
+          const value = await (target[method.methodName as keyof TestExtends$Server$Target] as any).call(target, params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as any);
+          }
+        }
       })),
       {
         ...TestExtends$Client.ownMethods[0],
-        impl: target.qux
+        impl: async (params: TestExtends_Qux$Params, results: TestExtends_Qux$Results) => {
+          const value = await target.qux(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestExtends_Qux$Results>);
+          }
+        }
       },
       {
         ...TestExtends$Client.ownMethods[1],
-        impl: target.corge
+        impl: async (params: TestAllTypes, results: TestExtends_Corge$Results) => {
+          const value = await target.corge(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestExtends_Corge$Results>);
+          }
+        }
       },
       {
         ...TestExtends$Client.ownMethods[2],
-        impl: target.grault
+        impl: async (params: TestExtends_Grault$Params, results: TestAllTypes) => {
+          const value = await target.grault(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestAllTypes>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -6048,7 +9773,12 @@ export class TestExtends2$Server extends $.Server {
     super(target, [
       ...(TestExtends$Client.methods as $.Method<any, any>[]).map((method) => ({
         ...(method as any),
-        impl: target[method.methodName as keyof TestExtends2$Server$Target] as any
+        impl: async (params: any, results: any) => {
+          const value = await (target[method.methodName as keyof TestExtends2$Server$Target] as any).call(target, params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as any);
+          }
+        }
       }))
     ]);
     this.target = target;
@@ -6081,8 +9811,26 @@ export class TestPipeline_Box extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_Box, value: $.Init<TestPipeline_Box>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6100,6 +9848,12 @@ export class TestPipeline_AnyBox extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_AnyBox, value: $.Init<TestPipeline_AnyBox>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   _adoptCap(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -6129,6 +9883,15 @@ export class TestPipeline_GetCap$Params extends $.Struct {
       { name: "inCap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_GetCap$Params, value: $.Init<TestPipeline_GetCap$Params>): void {
+    const init = value as any;
+    if (init["n"] !== undefined) {
+      target.n = init["n"] as any;
+    }
+    if (init["inCap"] !== undefined) {
+      target.inCap = init["inCap"] as any;
+    }
+  }
   get n(): number {
     return $.utils.getUint32(0, this);
   }
@@ -6137,6 +9900,18 @@ export class TestPipeline_GetCap$Params extends $.Struct {
   }
   get inCap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get inCapOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set inCapOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.inCap = value;
+    }
   }
   set inCap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6155,6 +9930,20 @@ export class TestPipeline_GetCap$Results extends $.Struct {
       { name: "outBox", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0xb0b29e51db0e26b1n, typeIdHex: "b0b29e51db0e26b1", displayName: "Box" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_GetCap$Results, value: $.Init<TestPipeline_GetCap$Results>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      target.s = init["s"] as any;
+    }
+    if (init["outBox"] !== undefined) {
+      if (init["outBox"] instanceof TestPipeline_Box) {
+        target.outBox = init["outBox"] as TestPipeline_Box;
+      }
+      else {
+        TestPipeline_Box._applyInit(target._initOutBox(), init["outBox"] as $.Init<TestPipeline_Box>);
+      }
+    }
+  }
   get s(): string {
     return $.utils.getText(0, this);
   }
@@ -6189,6 +9978,15 @@ export class TestPipeline_GetCap$Results$Promise {
   async promise(): Promise<TestPipeline_GetCap$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestPipeline_GetCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetCap$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetCap$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestPipeline_TestPointers$Params extends $.Struct {
   static readonly _capnp = {
@@ -6203,8 +10001,42 @@ export class TestPipeline_TestPointers$Params extends $.Struct {
       { name: "list", codeOrder: 2, ordinal: 2, kind: "slot", offset: 2, type: { kind: "list", elementType: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_TestPointers$Params, value: $.Init<TestPipeline_TestPointers$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+    if (init["obj"] !== undefined) {
+      target.obj = init["obj"] as any;
+    }
+    if (init["list"] !== undefined) {
+      if (init["list"] instanceof $.List) {
+        target.list = init["list"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
+        const list = target._initList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6253,6 +10085,9 @@ export class TestPipeline_TestPointers$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestPipeline_TestPointers$Results, value: $.Init<TestPipeline_TestPointers$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestPipeline_TestPointers$Results_" + super.toString(); }
 }
 export class TestPipeline_TestPointers$Results$Promise {
@@ -6262,6 +10097,15 @@ export class TestPipeline_TestPointers$Results$Promise {
   }
   async promise(): Promise<TestPipeline_TestPointers$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestPipeline_TestPointers$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_TestPointers$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_TestPointers$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestPipeline_TestPointers$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestPipeline_GetAnyCap$Params extends $.Struct {
@@ -6276,6 +10120,15 @@ export class TestPipeline_GetAnyCap$Params extends $.Struct {
       { name: "inCap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_GetAnyCap$Params, value: $.Init<TestPipeline_GetAnyCap$Params>): void {
+    const init = value as any;
+    if (init["n"] !== undefined) {
+      target.n = init["n"] as any;
+    }
+    if (init["inCap"] !== undefined) {
+      target.inCap = init["inCap"] as any;
+    }
+  }
   get n(): number {
     return $.utils.getUint32(0, this);
   }
@@ -6311,6 +10164,20 @@ export class TestPipeline_GetAnyCap$Results extends $.Struct {
       { name: "outBox", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x9442ad5a1d2c8acbn, typeIdHex: "9442ad5a1d2c8acb", displayName: "AnyBox" } }
     ] as const,
   };
+  static _applyInit(target: TestPipeline_GetAnyCap$Results, value: $.Init<TestPipeline_GetAnyCap$Results>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      target.s = init["s"] as any;
+    }
+    if (init["outBox"] !== undefined) {
+      if (init["outBox"] instanceof TestPipeline_AnyBox) {
+        target.outBox = init["outBox"] as TestPipeline_AnyBox;
+      }
+      else {
+        TestPipeline_AnyBox._applyInit(target._initOutBox(), init["outBox"] as $.Init<TestPipeline_AnyBox>);
+      }
+    }
+  }
   get s(): string {
     return $.utils.getText(0, this);
   }
@@ -6344,6 +10211,15 @@ export class TestPipeline_GetAnyCap$Results$Promise {
   }
   async promise(): Promise<TestPipeline_GetAnyCap$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestPipeline_GetAnyCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetAnyCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetAnyCap$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetAnyCap$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestPipeline$Client {
@@ -6388,26 +10264,41 @@ export class TestPipeline$Client {
       resultFields: TestPipeline_GetAnyCap$Results._capnp.fields
     }
   ];
-  getCap(paramsFunc?: (params: TestPipeline_GetCap$Params) => void): TestPipeline_GetCap$Results$Promise {
+  getCap(): TestPipeline_GetCap$Results$Promise;
+  getCap(params: $.Init<TestPipeline_GetCap$Params>): TestPipeline_GetCap$Results$Promise;
+  getCap(paramsFunc: (params: TestPipeline_GetCap$Params) => void): TestPipeline_GetCap$Results$Promise;
+  getCap(params?: $.Initializer<TestPipeline_GetCap$Params>): TestPipeline_GetCap$Results$Promise {
     const answer = this.client.call({
       method: TestPipeline$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestPipeline_GetCap$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_GetCap$Results, answer);
     return new TestPipeline_GetCap$Results$Promise(pipeline);
   }
-  testPointers(paramsFunc?: (params: TestPipeline_TestPointers$Params) => void): TestPipeline_TestPointers$Results$Promise {
+  testPointers(): TestPipeline_TestPointers$Results$Promise;
+  testPointers(params: $.Init<TestPipeline_TestPointers$Params>): TestPipeline_TestPointers$Results$Promise;
+  testPointers(paramsFunc: (params: TestPipeline_TestPointers$Params) => void): TestPipeline_TestPointers$Results$Promise;
+  testPointers(params?: $.Initializer<TestPipeline_TestPointers$Params>): TestPipeline_TestPointers$Results$Promise {
     const answer = this.client.call({
       method: TestPipeline$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestPipeline_TestPointers$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_TestPointers$Results, answer);
     return new TestPipeline_TestPointers$Results$Promise(pipeline);
   }
-  getAnyCap(paramsFunc?: (params: TestPipeline_GetAnyCap$Params) => void): TestPipeline_GetAnyCap$Results$Promise {
+  getAnyCap(): TestPipeline_GetAnyCap$Results$Promise;
+  getAnyCap(params: $.Init<TestPipeline_GetAnyCap$Params>): TestPipeline_GetAnyCap$Results$Promise;
+  getAnyCap(paramsFunc: (params: TestPipeline_GetAnyCap$Params) => void): TestPipeline_GetAnyCap$Results$Promise;
+  getAnyCap(params?: $.Initializer<TestPipeline_GetAnyCap$Params>): TestPipeline_GetAnyCap$Results$Promise {
     const answer = this.client.call({
       method: TestPipeline$Client.methods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestPipeline_GetAnyCap$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestPipeline_GetAnyCap$Results, answer);
     return new TestPipeline_GetAnyCap$Results$Promise(pipeline);
@@ -6415,9 +10306,9 @@ export class TestPipeline$Client {
 }
 $.Registry.register(TestPipeline$Client.interfaceId, TestPipeline$Client);
 export interface TestPipeline$Server$Target {
-  getCap(params: TestPipeline_GetCap$Params, results: TestPipeline_GetCap$Results): Promise<void>;
-  testPointers(params: TestPipeline_TestPointers$Params, results: TestPipeline_TestPointers$Results): Promise<void>;
-  getAnyCap(params: TestPipeline_GetAnyCap$Params, results: TestPipeline_GetAnyCap$Results): Promise<void>;
+  getCap(params: TestPipeline_GetCap$Params, results: TestPipeline_GetCap$Results): $.MaybePromise<void | $.Init<TestPipeline_GetCap$Results>>;
+  testPointers(params: TestPipeline_TestPointers$Params, results: TestPipeline_TestPointers$Results): $.MaybePromise<void | $.Init<TestPipeline_TestPointers$Results>>;
+  getAnyCap(params: TestPipeline_GetAnyCap$Params, results: TestPipeline_GetAnyCap$Results): $.MaybePromise<void | $.Init<TestPipeline_GetAnyCap$Results>>;
 }
 export class TestPipeline$Server extends $.Server {
   readonly target: TestPipeline$Server$Target;
@@ -6425,15 +10316,30 @@ export class TestPipeline$Server extends $.Server {
     super(target, [
       {
         ...TestPipeline$Client.methods[0],
-        impl: target.getCap
+        impl: async (params: TestPipeline_GetCap$Params, results: TestPipeline_GetCap$Results) => {
+          const value = await target.getCap(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestPipeline_GetCap$Results>);
+          }
+        }
       },
       {
         ...TestPipeline$Client.methods[1],
-        impl: target.testPointers
+        impl: async (params: TestPipeline_TestPointers$Params, results: TestPipeline_TestPointers$Results) => {
+          const value = await target.testPointers(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestPipeline_TestPointers$Results>);
+          }
+        }
       },
       {
         ...TestPipeline$Client.methods[2],
-        impl: target.getAnyCap
+        impl: async (params: TestPipeline_GetAnyCap$Params, results: TestPipeline_GetAnyCap$Results) => {
+          const value = await target.getAnyCap(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestPipeline_GetAnyCap$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -6468,6 +10374,12 @@ export class TestCallOrder_GetCallSequence$Params extends $.Struct {
       { name: "expected", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: TestCallOrder_GetCallSequence$Params, value: $.Init<TestCallOrder_GetCallSequence$Params>): void {
+    const init = value as any;
+    if (init["expected"] !== undefined) {
+      target.expected = init["expected"] as any;
+    }
+  }
   get expected(): number {
     return $.utils.getUint32(0, this);
   }
@@ -6487,6 +10399,12 @@ export class TestCallOrder_GetCallSequence$Results extends $.Struct {
       { name: "n", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: TestCallOrder_GetCallSequence$Results, value: $.Init<TestCallOrder_GetCallSequence$Results>): void {
+    const init = value as any;
+    if (init["n"] !== undefined) {
+      target.n = init["n"] as any;
+    }
+  }
   get n(): number {
     return $.utils.getUint32(0, this);
   }
@@ -6502,6 +10420,15 @@ export class TestCallOrder_GetCallSequence$Results$Promise {
   }
   async promise(): Promise<TestCallOrder_GetCallSequence$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestCallOrder_GetCallSequence$Results, TResult2 = never>(onfulfilled?: ((value: TestCallOrder_GetCallSequence$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestCallOrder_GetCallSequence$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestCallOrder_GetCallSequence$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestCallOrder$Client {
@@ -6530,10 +10457,15 @@ export class TestCallOrder$Client {
 * The input `expected` is ignored but useful for disambiguating debug logs.
 *
 */
-  getCallSequence(paramsFunc?: (params: TestCallOrder_GetCallSequence$Params) => void): TestCallOrder_GetCallSequence$Results$Promise {
+  getCallSequence(): TestCallOrder_GetCallSequence$Results$Promise;
+  getCallSequence(params: $.Init<TestCallOrder_GetCallSequence$Params>): TestCallOrder_GetCallSequence$Results$Promise;
+  getCallSequence(paramsFunc: (params: TestCallOrder_GetCallSequence$Params) => void): TestCallOrder_GetCallSequence$Results$Promise;
+  getCallSequence(params?: $.Initializer<TestCallOrder_GetCallSequence$Params>): TestCallOrder_GetCallSequence$Results$Promise {
     const answer = this.client.call({
       method: TestCallOrder$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestCallOrder_GetCallSequence$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestCallOrder_GetCallSequence$Results, answer);
     return new TestCallOrder_GetCallSequence$Results$Promise(pipeline);
@@ -6541,7 +10473,7 @@ export class TestCallOrder$Client {
 }
 $.Registry.register(TestCallOrder$Client.interfaceId, TestCallOrder$Client);
 export interface TestCallOrder$Server$Target {
-  getCallSequence(params: TestCallOrder_GetCallSequence$Params, results: TestCallOrder_GetCallSequence$Results): Promise<void>;
+  getCallSequence(params: TestCallOrder_GetCallSequence$Params, results: TestCallOrder_GetCallSequence$Results): $.MaybePromise<void | $.Init<TestCallOrder_GetCallSequence$Results>>;
 }
 export class TestCallOrder$Server extends $.Server {
   readonly target: TestCallOrder$Server$Target;
@@ -6549,7 +10481,12 @@ export class TestCallOrder$Server extends $.Server {
     super(target, [
       {
         ...TestCallOrder$Client.methods[0],
-        impl: target.getCallSequence
+        impl: async (params: TestCallOrder_GetCallSequence$Params, results: TestCallOrder_GetCallSequence$Results) => {
+          const value = await target.getCallSequence(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestCallOrder_GetCallSequence$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -6584,6 +10521,18 @@ export class TestTailCallee_TailResult extends $.Struct {
       { name: "c", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
     ] as const,
   };
+  static _applyInit(target: TestTailCallee_TailResult, value: $.Init<TestTailCallee_TailResult>): void {
+    const init = value as any;
+    if (init["i"] !== undefined) {
+      target.i = init["i"] as any;
+    }
+    if (init["t"] !== undefined) {
+      target.t = init["t"] as any;
+    }
+    if (init["c"] !== undefined) {
+      target.c = init["c"] as any;
+    }
+  }
   get i(): number {
     return $.utils.getUint32(0, this);
   }
@@ -6598,6 +10547,18 @@ export class TestTailCallee_TailResult extends $.Struct {
   }
   get c(): TestCallOrder$Client {
     return new TestCallOrder$Client($.utils.getInterfaceClientOrNullAt(1, this));
+  }
+  get cOrNull(): TestCallOrder$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(1, this))?.getClient() ?? null;
+    return client === null ? null : new TestCallOrder$Client(client);
+  }
+  set cOrNull(value: TestCallOrder$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(1, this));
+    }
+    else {
+      this.c = value;
+    }
   }
   set c(value: TestCallOrder$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(1, this));
@@ -6616,6 +10577,15 @@ export class TestTailCallee_Foo$Params extends $.Struct {
       { name: "t", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestTailCallee_Foo$Params, value: $.Init<TestTailCallee_Foo$Params>): void {
+    const init = value as any;
+    if (init["i"] !== undefined) {
+      target.i = init["i"] as any;
+    }
+    if (init["t"] !== undefined) {
+      target.t = init["t"] as any;
+    }
+  }
   get i(): number {
     return $.utils.getInt32(0, this);
   }
@@ -6641,6 +10611,15 @@ export class TestTailCallee_TailResult$Promise {
   async promise(): Promise<TestTailCallee_TailResult> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestTailCallee_TailResult, TResult2 = never>(onfulfilled?: ((value: TestTailCallee_TailResult) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestTailCallee_TailResult | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestTailCallee_TailResult> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestTailCallee$Client {
   client: $.Client;
@@ -6662,10 +10641,15 @@ export class TestTailCallee$Client {
       resultFields: TestTailCallee_TailResult._capnp.fields
     }
   ];
-  foo(paramsFunc?: (params: TestTailCallee_Foo$Params) => void): TestTailCallee_TailResult$Promise {
+  foo(): TestTailCallee_TailResult$Promise;
+  foo(params: $.Init<TestTailCallee_Foo$Params>): TestTailCallee_TailResult$Promise;
+  foo(paramsFunc: (params: TestTailCallee_Foo$Params) => void): TestTailCallee_TailResult$Promise;
+  foo(params?: $.Initializer<TestTailCallee_Foo$Params>): TestTailCallee_TailResult$Promise {
     const answer = this.client.call({
       method: TestTailCallee$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestTailCallee_Foo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestTailCallee_TailResult, answer);
     return new TestTailCallee_TailResult$Promise(pipeline);
@@ -6673,7 +10657,7 @@ export class TestTailCallee$Client {
 }
 $.Registry.register(TestTailCallee$Client.interfaceId, TestTailCallee$Client);
 export interface TestTailCallee$Server$Target {
-  foo(params: TestTailCallee_Foo$Params, results: TestTailCallee_TailResult): Promise<void>;
+  foo(params: TestTailCallee_Foo$Params, results: TestTailCallee_TailResult): $.MaybePromise<void | $.Init<TestTailCallee_TailResult>>;
 }
 export class TestTailCallee$Server extends $.Server {
   readonly target: TestTailCallee$Server$Target;
@@ -6681,7 +10665,12 @@ export class TestTailCallee$Server extends $.Server {
     super(target, [
       {
         ...TestTailCallee$Client.methods[0],
-        impl: target.foo
+        impl: async (params: TestTailCallee_Foo$Params, results: TestTailCallee_TailResult) => {
+          const value = await target.foo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestTailCallee_TailResult>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -6716,6 +10705,15 @@ export class TestTailCaller_Foo$Params extends $.Struct {
       { name: "callee", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xddd699207eb8e23bn, typeIdHex: "ddd699207eb8e23b", displayName: "TestTailCallee" } }
     ] as const,
   };
+  static _applyInit(target: TestTailCaller_Foo$Params, value: $.Init<TestTailCaller_Foo$Params>): void {
+    const init = value as any;
+    if (init["i"] !== undefined) {
+      target.i = init["i"] as any;
+    }
+    if (init["callee"] !== undefined) {
+      target.callee = init["callee"] as any;
+    }
+  }
   get i(): number {
     return $.utils.getInt32(0, this);
   }
@@ -6724,6 +10722,18 @@ export class TestTailCaller_Foo$Params extends $.Struct {
   }
   get callee(): TestTailCallee$Client {
     return new TestTailCallee$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get calleeOrNull(): TestTailCallee$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestTailCallee$Client(client);
+  }
+  set calleeOrNull(value: TestTailCallee$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.callee = value;
+    }
   }
   set callee(value: TestTailCallee$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6750,10 +10760,15 @@ export class TestTailCaller$Client {
       resultFields: TestTailCallee_TailResult._capnp.fields
     }
   ];
-  foo(paramsFunc?: (params: TestTailCaller_Foo$Params) => void): TestTailCallee_TailResult$Promise {
+  foo(): TestTailCallee_TailResult$Promise;
+  foo(params: $.Init<TestTailCaller_Foo$Params>): TestTailCallee_TailResult$Promise;
+  foo(paramsFunc: (params: TestTailCaller_Foo$Params) => void): TestTailCallee_TailResult$Promise;
+  foo(params?: $.Initializer<TestTailCaller_Foo$Params>): TestTailCallee_TailResult$Promise {
     const answer = this.client.call({
       method: TestTailCaller$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestTailCaller_Foo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestTailCallee_TailResult, answer);
     return new TestTailCallee_TailResult$Promise(pipeline);
@@ -6761,7 +10776,7 @@ export class TestTailCaller$Client {
 }
 $.Registry.register(TestTailCaller$Client.interfaceId, TestTailCaller$Client);
 export interface TestTailCaller$Server$Target {
-  foo(params: TestTailCaller_Foo$Params, results: TestTailCallee_TailResult): Promise<void>;
+  foo(params: TestTailCaller_Foo$Params, results: TestTailCallee_TailResult): $.MaybePromise<void | $.Init<TestTailCallee_TailResult>>;
 }
 export class TestTailCaller$Server extends $.Server {
   readonly target: TestTailCaller$Server$Target;
@@ -6769,7 +10784,12 @@ export class TestTailCaller$Server extends $.Server {
     super(target, [
       {
         ...TestTailCaller$Client.methods[0],
-        impl: target.foo
+        impl: async (params: TestTailCaller_Foo$Params, results: TestTailCallee_TailResult) => {
+          const value = await target.foo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestTailCallee_TailResult>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -6837,8 +10857,26 @@ export class TestMoreStuff_CallFoo$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallFoo$Params, value: $.Init<TestMoreStuff_CallFoo$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6856,6 +10894,12 @@ export class TestMoreStuff_CallFoo$Results extends $.Struct {
       { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallFoo$Results, value: $.Init<TestMoreStuff_CallFoo$Results>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      target.s = init["s"] as any;
+    }
+  }
   get s(): string {
     return $.utils.getText(0, this);
   }
@@ -6872,6 +10916,15 @@ export class TestMoreStuff_CallFoo$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallFoo$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_CallFoo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFoo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFoo$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFoo$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_CallFooWhenResolved$Params extends $.Struct {
   static readonly _capnp = {
@@ -6884,8 +10937,26 @@ export class TestMoreStuff_CallFooWhenResolved$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Params, value: $.Init<TestMoreStuff_CallFooWhenResolved$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6903,6 +10974,12 @@ export class TestMoreStuff_CallFooWhenResolved$Results extends $.Struct {
       { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Results, value: $.Init<TestMoreStuff_CallFooWhenResolved$Results>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      target.s = init["s"] as any;
+    }
+  }
   get s(): string {
     return $.utils.getText(0, this);
   }
@@ -6919,6 +10996,15 @@ export class TestMoreStuff_CallFooWhenResolved$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_CallFooWhenResolved$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFooWhenResolved$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_NeverReturn$Params extends $.Struct {
   static readonly _capnp = {
@@ -6931,8 +11017,26 @@ export class TestMoreStuff_NeverReturn$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_NeverReturn$Params, value: $.Init<TestMoreStuff_NeverReturn$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6950,8 +11054,26 @@ export class TestMoreStuff_NeverReturn$Results extends $.Struct {
       { name: "capCopy", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_NeverReturn$Results, value: $.Init<TestMoreStuff_NeverReturn$Results>): void {
+    const init = value as any;
+    if (init["capCopy"] !== undefined) {
+      target.capCopy = init["capCopy"] as any;
+    }
+  }
   get capCopy(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capCopyOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capCopyOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.capCopy = value;
+    }
   }
   set capCopy(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6969,6 +11091,15 @@ export class TestMoreStuff_NeverReturn$Results$Promise {
   async promise(): Promise<TestMoreStuff_NeverReturn$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_NeverReturn$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_NeverReturn$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_NeverReturn$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_NeverReturn$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_Hold$Params extends $.Struct {
   static readonly _capnp = {
@@ -6981,8 +11112,26 @@ export class TestMoreStuff_Hold$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_Hold$Params, value: $.Init<TestMoreStuff_Hold$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -6998,6 +11147,9 @@ export class TestMoreStuff_Hold$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_Hold$Results, value: $.Init<TestMoreStuff_Hold$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_Hold$Results_" + super.toString(); }
 }
 export class TestMoreStuff_Hold$Results$Promise {
@@ -7007,6 +11159,15 @@ export class TestMoreStuff_Hold$Results$Promise {
   }
   async promise(): Promise<TestMoreStuff_Hold$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestMoreStuff_Hold$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Hold$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Hold$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Hold$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestMoreStuff_CallHeld$Params extends $.Struct {
@@ -7018,6 +11179,9 @@ export class TestMoreStuff_CallHeld$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallHeld$Params, value: $.Init<TestMoreStuff_CallHeld$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_CallHeld$Params_" + super.toString(); }
 }
 export class TestMoreStuff_CallHeld$Results extends $.Struct {
@@ -7031,6 +11195,12 @@ export class TestMoreStuff_CallHeld$Results extends $.Struct {
       { name: "s", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_CallHeld$Results, value: $.Init<TestMoreStuff_CallHeld$Results>): void {
+    const init = value as any;
+    if (init["s"] !== undefined) {
+      target.s = init["s"] as any;
+    }
+  }
   get s(): string {
     return $.utils.getText(0, this);
   }
@@ -7047,6 +11217,15 @@ export class TestMoreStuff_CallHeld$Results$Promise {
   async promise(): Promise<TestMoreStuff_CallHeld$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_CallHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallHeld$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallHeld$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_GetHeld$Params extends $.Struct {
   static readonly _capnp = {
@@ -7057,6 +11236,9 @@ export class TestMoreStuff_GetHeld$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetHeld$Params, value: $.Init<TestMoreStuff_GetHeld$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_GetHeld$Params_" + super.toString(); }
 }
 export class TestMoreStuff_GetHeld$Results extends $.Struct {
@@ -7070,8 +11252,26 @@ export class TestMoreStuff_GetHeld$Results extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetHeld$Results, value: $.Init<TestMoreStuff_GetHeld$Results>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7089,6 +11289,15 @@ export class TestMoreStuff_GetHeld$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHeld$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_GetHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHeld$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHeld$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_Echo$Params extends $.Struct {
   static readonly _capnp = {
@@ -7101,8 +11310,26 @@ export class TestMoreStuff_Echo$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_Echo$Params, value: $.Init<TestMoreStuff_Echo$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestCallOrder$Client {
     return new TestCallOrder$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestCallOrder$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestCallOrder$Client(client);
+  }
+  set capOrNull(value: TestCallOrder$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestCallOrder$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7120,8 +11347,26 @@ export class TestMoreStuff_Echo$Results extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa0e77035bdff0051n, typeIdHex: "a0e77035bdff0051", displayName: "TestCallOrder" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_Echo$Results, value: $.Init<TestMoreStuff_Echo$Results>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestCallOrder$Client {
     return new TestCallOrder$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestCallOrder$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestCallOrder$Client(client);
+  }
+  set capOrNull(value: TestCallOrder$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestCallOrder$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7139,6 +11384,15 @@ export class TestMoreStuff_Echo$Results$Promise {
   async promise(): Promise<TestMoreStuff_Echo$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_Echo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Echo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Echo$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Echo$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_ExpectCancel$Params extends $.Struct {
   static readonly _capnp = {
@@ -7151,8 +11405,26 @@ export class TestMoreStuff_ExpectCancel$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_ExpectCancel$Params, value: $.Init<TestMoreStuff_ExpectCancel$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7168,6 +11440,9 @@ export class TestMoreStuff_ExpectCancel$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_ExpectCancel$Results, value: $.Init<TestMoreStuff_ExpectCancel$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_ExpectCancel$Results_" + super.toString(); }
 }
 export class TestMoreStuff_ExpectCancel$Results$Promise {
@@ -7177,6 +11452,15 @@ export class TestMoreStuff_ExpectCancel$Results$Promise {
   }
   async promise(): Promise<TestMoreStuff_ExpectCancel$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestMoreStuff_ExpectCancel$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_ExpectCancel$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_ExpectCancel$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_ExpectCancel$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestMoreStuff_MethodWithDefaults$Params extends $.Struct {
@@ -7194,6 +11478,18 @@ export class TestMoreStuff_MethodWithDefaults$Params extends $.Struct {
     defaultB: $.getUint32Mask(123),
     defaultC: "foo"
   };
+  static _applyInit(target: TestMoreStuff_MethodWithDefaults$Params, value: $.Init<TestMoreStuff_MethodWithDefaults$Params>): void {
+    const init = value as any;
+    if (init["a"] !== undefined) {
+      target.a = init["a"] as any;
+    }
+    if (init["b"] !== undefined) {
+      target.b = init["b"] as any;
+    }
+    if (init["c"] !== undefined) {
+      target.c = init["c"] as any;
+    }
+  }
   get a(): string {
     return $.utils.getText(0, this);
   }
@@ -7227,6 +11523,15 @@ export class TestMoreStuff_MethodWithDefaults$Results extends $.Struct {
     ] as const,
     defaultE: "bar"
   };
+  static _applyInit(target: TestMoreStuff_MethodWithDefaults$Results, value: $.Init<TestMoreStuff_MethodWithDefaults$Results>): void {
+    const init = value as any;
+    if (init["d"] !== undefined) {
+      target.d = init["d"] as any;
+    }
+    if (init["e"] !== undefined) {
+      target.e = init["e"] as any;
+    }
+  }
   get d(): string {
     return $.utils.getText(0, this);
   }
@@ -7249,6 +11554,15 @@ export class TestMoreStuff_MethodWithDefaults$Results$Promise {
   async promise(): Promise<TestMoreStuff_MethodWithDefaults$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_MethodWithDefaults$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithDefaults$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithDefaults$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithDefaults$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_GetHandle$Params extends $.Struct {
   static readonly _capnp = {
@@ -7259,6 +11573,9 @@ export class TestMoreStuff_GetHandle$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetHandle$Params, value: $.Init<TestMoreStuff_GetHandle$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_GetHandle$Params_" + super.toString(); }
 }
 export class TestMoreStuff_GetHandle$Results extends $.Struct {
@@ -7272,8 +11589,26 @@ export class TestMoreStuff_GetHandle$Results extends $.Struct {
       { name: "handle", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xa38e5efe41e53a15n, typeIdHex: "a38e5efe41e53a15", displayName: "TestHandle" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetHandle$Results, value: $.Init<TestMoreStuff_GetHandle$Results>): void {
+    const init = value as any;
+    if (init["handle"] !== undefined) {
+      target.handle = init["handle"] as any;
+    }
+  }
   get handle(): TestHandle$Client {
     return new TestHandle$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get handleOrNull(): TestHandle$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestHandle$Client(client);
+  }
+  set handleOrNull(value: TestHandle$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.handle = value;
+    }
   }
   set handle(value: TestHandle$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7291,6 +11626,15 @@ export class TestMoreStuff_GetHandle$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHandle$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_GetHandle$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHandle$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHandle$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHandle$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_GetNull$Params extends $.Struct {
   static readonly _capnp = {
@@ -7301,6 +11645,9 @@ export class TestMoreStuff_GetNull$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetNull$Params, value: $.Init<TestMoreStuff_GetNull$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_GetNull$Params_" + super.toString(); }
 }
 export class TestMoreStuff_GetNull$Results extends $.Struct {
@@ -7314,8 +11661,26 @@ export class TestMoreStuff_GetNull$Results extends $.Struct {
       { name: "nullCap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xddc70bf9784133cfn, typeIdHex: "ddc70bf9784133cf", displayName: "TestMoreStuff" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetNull$Results, value: $.Init<TestMoreStuff_GetNull$Results>): void {
+    const init = value as any;
+    if (init["nullCap"] !== undefined) {
+      target.nullCap = init["nullCap"] as any;
+    }
+  }
   get nullCap(): TestMoreStuff$Client {
     return new TestMoreStuff$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get nullCapOrNull(): TestMoreStuff$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMoreStuff$Client(client);
+  }
+  set nullCapOrNull(value: TestMoreStuff$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.nullCap = value;
+    }
   }
   set nullCap(value: TestMoreStuff$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -7333,6 +11698,15 @@ export class TestMoreStuff_GetNull$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetNull$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_GetNull$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetNull$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetNull$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetNull$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_GetEnormousString$Params extends $.Struct {
   static readonly _capnp = {
@@ -7343,6 +11717,9 @@ export class TestMoreStuff_GetEnormousString$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetEnormousString$Params, value: $.Init<TestMoreStuff_GetEnormousString$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_GetEnormousString$Params_" + super.toString(); }
 }
 export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
@@ -7356,6 +11733,12 @@ export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
       { name: "str", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestMoreStuff_GetEnormousString$Results, value: $.Init<TestMoreStuff_GetEnormousString$Results>): void {
+    const init = value as any;
+    if (init["str"] !== undefined) {
+      target.str = init["str"] as any;
+    }
+  }
   get str(): string {
     return $.utils.getText(0, this);
   }
@@ -7372,6 +11755,15 @@ export class TestMoreStuff_GetEnormousString$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetEnormousString$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMoreStuff_GetEnormousString$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetEnormousString$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetEnormousString$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetEnormousString$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
   static readonly _capnp = {
@@ -7386,6 +11778,15 @@ export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
     ] as const,
     defaultB: $.readRawPointer(new Uint8Array([16, 1, 0, 0]).buffer)
   };
+  static _applyInit(target: TestMoreStuff_MethodWithNullDefault$Params, value: $.Init<TestMoreStuff_MethodWithNullDefault$Params>): void {
+    const init = value as any;
+    if (init["a"] !== undefined) {
+      target.a = init["a"] as any;
+    }
+    if (init["b"] !== undefined) {
+      target.b = init["b"] as any;
+    }
+  }
   get a(): string {
     return $.utils.getText(0, this);
   }
@@ -7394,6 +11795,18 @@ export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
   }
   get b(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(1, this));
+  }
+  get bOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(1, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set bOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(1, this));
+    }
+    else {
+      this.b = value;
+    }
   }
   set b(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(1, this));
@@ -7409,6 +11822,9 @@ export class TestMoreStuff_MethodWithNullDefault$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMoreStuff_MethodWithNullDefault$Results, value: $.Init<TestMoreStuff_MethodWithNullDefault$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMoreStuff_MethodWithNullDefault$Results_" + super.toString(); }
 }
 export class TestMoreStuff_MethodWithNullDefault$Results$Promise {
@@ -7418,6 +11834,15 @@ export class TestMoreStuff_MethodWithNullDefault$Results$Promise {
   }
   async promise(): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestMoreStuff_MethodWithNullDefault$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithNullDefault$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestMoreStuff$Client {
@@ -7583,10 +12008,15 @@ export class TestMoreStuff$Client {
 * Call `cap.foo()`, check the result, and return "bar".
 *
 */
-  callFoo(paramsFunc?: (params: TestMoreStuff_CallFoo$Params) => void): TestMoreStuff_CallFoo$Results$Promise {
+  callFoo(): TestMoreStuff_CallFoo$Results$Promise;
+  callFoo(params: $.Init<TestMoreStuff_CallFoo$Params>): TestMoreStuff_CallFoo$Results$Promise;
+  callFoo(paramsFunc: (params: TestMoreStuff_CallFoo$Params) => void): TestMoreStuff_CallFoo$Results$Promise;
+  callFoo(params?: $.Initializer<TestMoreStuff_CallFoo$Params>): TestMoreStuff_CallFoo$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_CallFoo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFoo$Results, answer);
     return new TestMoreStuff_CallFoo$Results$Promise(pipeline);
@@ -7595,10 +12025,15 @@ export class TestMoreStuff$Client {
 * Like callFoo but waits for `cap` to resolve first.
 *
 */
-  callFooWhenResolved(paramsFunc?: (params: TestMoreStuff_CallFooWhenResolved$Params) => void): TestMoreStuff_CallFooWhenResolved$Results$Promise {
+  callFooWhenResolved(): TestMoreStuff_CallFooWhenResolved$Results$Promise;
+  callFooWhenResolved(params: $.Init<TestMoreStuff_CallFooWhenResolved$Params>): TestMoreStuff_CallFooWhenResolved$Results$Promise;
+  callFooWhenResolved(paramsFunc: (params: TestMoreStuff_CallFooWhenResolved$Params) => void): TestMoreStuff_CallFooWhenResolved$Results$Promise;
+  callFooWhenResolved(params?: $.Initializer<TestMoreStuff_CallFooWhenResolved$Params>): TestMoreStuff_CallFooWhenResolved$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_CallFooWhenResolved$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallFooWhenResolved$Results, answer);
     return new TestMoreStuff_CallFooWhenResolved$Results$Promise(pipeline);
@@ -7607,10 +12042,15 @@ export class TestMoreStuff$Client {
 * Doesn't return.  You should cancel it.
 *
 */
-  neverReturn(paramsFunc?: (params: TestMoreStuff_NeverReturn$Params) => void): TestMoreStuff_NeverReturn$Results$Promise {
+  neverReturn(): TestMoreStuff_NeverReturn$Results$Promise;
+  neverReturn(params: $.Init<TestMoreStuff_NeverReturn$Params>): TestMoreStuff_NeverReturn$Results$Promise;
+  neverReturn(paramsFunc: (params: TestMoreStuff_NeverReturn$Params) => void): TestMoreStuff_NeverReturn$Results$Promise;
+  neverReturn(params?: $.Initializer<TestMoreStuff_NeverReturn$Params>): TestMoreStuff_NeverReturn$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_NeverReturn$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_NeverReturn$Results, answer);
     return new TestMoreStuff_NeverReturn$Results$Promise(pipeline);
@@ -7619,10 +12059,15 @@ export class TestMoreStuff$Client {
 * Returns immediately but holds on to the capability.
 *
 */
-  hold(paramsFunc?: (params: TestMoreStuff_Hold$Params) => void): TestMoreStuff_Hold$Results$Promise {
+  hold(): TestMoreStuff_Hold$Results$Promise;
+  hold(params: $.Init<TestMoreStuff_Hold$Params>): TestMoreStuff_Hold$Results$Promise;
+  hold(paramsFunc: (params: TestMoreStuff_Hold$Params) => void): TestMoreStuff_Hold$Results$Promise;
+  hold(params?: $.Initializer<TestMoreStuff_Hold$Params>): TestMoreStuff_Hold$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[3],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_Hold$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Hold$Results, answer);
     return new TestMoreStuff_Hold$Results$Promise(pipeline);
@@ -7631,10 +12076,15 @@ export class TestMoreStuff$Client {
 * Calls the capability previously held using `hold` (and keeps holding it).
 *
 */
-  callHeld(paramsFunc?: (params: TestMoreStuff_CallHeld$Params) => void): TestMoreStuff_CallHeld$Results$Promise {
+  callHeld(): TestMoreStuff_CallHeld$Results$Promise;
+  callHeld(params: $.Init<TestMoreStuff_CallHeld$Params>): TestMoreStuff_CallHeld$Results$Promise;
+  callHeld(paramsFunc: (params: TestMoreStuff_CallHeld$Params) => void): TestMoreStuff_CallHeld$Results$Promise;
+  callHeld(params?: $.Initializer<TestMoreStuff_CallHeld$Params>): TestMoreStuff_CallHeld$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[4],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_CallHeld$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_CallHeld$Results, answer);
     return new TestMoreStuff_CallHeld$Results$Promise(pipeline);
@@ -7643,10 +12093,15 @@ export class TestMoreStuff$Client {
 * Returns the capability previously held using `hold` (and keeps holding it).
 *
 */
-  getHeld(paramsFunc?: (params: TestMoreStuff_GetHeld$Params) => void): TestMoreStuff_GetHeld$Results$Promise {
+  getHeld(): TestMoreStuff_GetHeld$Results$Promise;
+  getHeld(params: $.Init<TestMoreStuff_GetHeld$Params>): TestMoreStuff_GetHeld$Results$Promise;
+  getHeld(paramsFunc: (params: TestMoreStuff_GetHeld$Params) => void): TestMoreStuff_GetHeld$Results$Promise;
+  getHeld(params?: $.Initializer<TestMoreStuff_GetHeld$Params>): TestMoreStuff_GetHeld$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[5],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_GetHeld$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHeld$Results, answer);
     return new TestMoreStuff_GetHeld$Results$Promise(pipeline);
@@ -7655,10 +12110,15 @@ export class TestMoreStuff$Client {
 * Just returns the input cap.
 *
 */
-  echo(paramsFunc?: (params: TestMoreStuff_Echo$Params) => void): TestMoreStuff_Echo$Results$Promise {
+  echo(): TestMoreStuff_Echo$Results$Promise;
+  echo(params: $.Init<TestMoreStuff_Echo$Params>): TestMoreStuff_Echo$Results$Promise;
+  echo(paramsFunc: (params: TestMoreStuff_Echo$Params) => void): TestMoreStuff_Echo$Results$Promise;
+  echo(params?: $.Initializer<TestMoreStuff_Echo$Params>): TestMoreStuff_Echo$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[6],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_Echo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_Echo$Results, answer);
     return new TestMoreStuff_Echo$Results$Promise(pipeline);
@@ -7667,18 +12127,28 @@ export class TestMoreStuff$Client {
 * evalLater()-loops forever, holding `cap`.  Must be canceled.
 *
 */
-  expectCancel(paramsFunc?: (params: TestMoreStuff_ExpectCancel$Params) => void): TestMoreStuff_ExpectCancel$Results$Promise {
+  expectCancel(): TestMoreStuff_ExpectCancel$Results$Promise;
+  expectCancel(params: $.Init<TestMoreStuff_ExpectCancel$Params>): TestMoreStuff_ExpectCancel$Results$Promise;
+  expectCancel(paramsFunc: (params: TestMoreStuff_ExpectCancel$Params) => void): TestMoreStuff_ExpectCancel$Results$Promise;
+  expectCancel(params?: $.Initializer<TestMoreStuff_ExpectCancel$Params>): TestMoreStuff_ExpectCancel$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[7],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_ExpectCancel$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_ExpectCancel$Results, answer);
     return new TestMoreStuff_ExpectCancel$Results$Promise(pipeline);
   }
-  methodWithDefaults(paramsFunc?: (params: TestMoreStuff_MethodWithDefaults$Params) => void): TestMoreStuff_MethodWithDefaults$Results$Promise {
+  methodWithDefaults(): TestMoreStuff_MethodWithDefaults$Results$Promise;
+  methodWithDefaults(params: $.Init<TestMoreStuff_MethodWithDefaults$Params>): TestMoreStuff_MethodWithDefaults$Results$Promise;
+  methodWithDefaults(paramsFunc: (params: TestMoreStuff_MethodWithDefaults$Params) => void): TestMoreStuff_MethodWithDefaults$Results$Promise;
+  methodWithDefaults(params?: $.Initializer<TestMoreStuff_MethodWithDefaults$Params>): TestMoreStuff_MethodWithDefaults$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[8],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_MethodWithDefaults$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithDefaults$Results, answer);
     return new TestMoreStuff_MethodWithDefaults$Results$Promise(pipeline);
@@ -7688,10 +12158,15 @@ export class TestMoreStuff$Client {
 * this can be used to test garbage collection.
 *
 */
-  getHandle(paramsFunc?: (params: TestMoreStuff_GetHandle$Params) => void): TestMoreStuff_GetHandle$Results$Promise {
+  getHandle(): TestMoreStuff_GetHandle$Results$Promise;
+  getHandle(params: $.Init<TestMoreStuff_GetHandle$Params>): TestMoreStuff_GetHandle$Results$Promise;
+  getHandle(paramsFunc: (params: TestMoreStuff_GetHandle$Params) => void): TestMoreStuff_GetHandle$Results$Promise;
+  getHandle(params?: $.Initializer<TestMoreStuff_GetHandle$Params>): TestMoreStuff_GetHandle$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[9],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_GetHandle$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetHandle$Results, answer);
     return new TestMoreStuff_GetHandle$Results$Promise(pipeline);
@@ -7700,10 +12175,15 @@ export class TestMoreStuff$Client {
 * Always returns a null capability.
 *
 */
-  getNull(paramsFunc?: (params: TestMoreStuff_GetNull$Params) => void): TestMoreStuff_GetNull$Results$Promise {
+  getNull(): TestMoreStuff_GetNull$Results$Promise;
+  getNull(params: $.Init<TestMoreStuff_GetNull$Params>): TestMoreStuff_GetNull$Results$Promise;
+  getNull(paramsFunc: (params: TestMoreStuff_GetNull$Params) => void): TestMoreStuff_GetNull$Results$Promise;
+  getNull(params?: $.Initializer<TestMoreStuff_GetNull$Params>): TestMoreStuff_GetNull$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[10],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_GetNull$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetNull$Results, answer);
     return new TestMoreStuff_GetNull$Results$Promise(pipeline);
@@ -7712,18 +12192,28 @@ export class TestMoreStuff$Client {
 * Attempts to return an 100MB string. Should always fail.
 *
 */
-  getEnormousString(paramsFunc?: (params: TestMoreStuff_GetEnormousString$Params) => void): TestMoreStuff_GetEnormousString$Results$Promise {
+  getEnormousString(): TestMoreStuff_GetEnormousString$Results$Promise;
+  getEnormousString(params: $.Init<TestMoreStuff_GetEnormousString$Params>): TestMoreStuff_GetEnormousString$Results$Promise;
+  getEnormousString(paramsFunc: (params: TestMoreStuff_GetEnormousString$Params) => void): TestMoreStuff_GetEnormousString$Results$Promise;
+  getEnormousString(params?: $.Initializer<TestMoreStuff_GetEnormousString$Params>): TestMoreStuff_GetEnormousString$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[11],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_GetEnormousString$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_GetEnormousString$Results, answer);
     return new TestMoreStuff_GetEnormousString$Results$Promise(pipeline);
   }
-  methodWithNullDefault(paramsFunc?: (params: TestMoreStuff_MethodWithNullDefault$Params) => void): TestMoreStuff_MethodWithNullDefault$Results$Promise {
+  methodWithNullDefault(): TestMoreStuff_MethodWithNullDefault$Results$Promise;
+  methodWithNullDefault(params: $.Init<TestMoreStuff_MethodWithNullDefault$Params>): TestMoreStuff_MethodWithNullDefault$Results$Promise;
+  methodWithNullDefault(paramsFunc: (params: TestMoreStuff_MethodWithNullDefault$Params) => void): TestMoreStuff_MethodWithNullDefault$Results$Promise;
+  methodWithNullDefault(params?: $.Initializer<TestMoreStuff_MethodWithNullDefault$Params>): TestMoreStuff_MethodWithNullDefault$Results$Promise {
     const answer = this.client.call({
       method: TestMoreStuff$Client.ownMethods[12],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMoreStuff_MethodWithNullDefault$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMoreStuff_MethodWithNullDefault$Results, answer);
     return new TestMoreStuff_MethodWithNullDefault$Results$Promise(pipeline);
@@ -7731,19 +12221,19 @@ export class TestMoreStuff$Client {
 }
 $.Registry.register(TestMoreStuff$Client.interfaceId, TestMoreStuff$Client);
 export interface TestMoreStuff$Server$Target extends TestCallOrder$Server$Target {
-  callFoo(params: TestMoreStuff_CallFoo$Params, results: TestMoreStuff_CallFoo$Results): Promise<void>;
-  callFooWhenResolved(params: TestMoreStuff_CallFooWhenResolved$Params, results: TestMoreStuff_CallFooWhenResolved$Results): Promise<void>;
-  neverReturn(params: TestMoreStuff_NeverReturn$Params, results: TestMoreStuff_NeverReturn$Results): Promise<void>;
-  hold(params: TestMoreStuff_Hold$Params, results: TestMoreStuff_Hold$Results): Promise<void>;
-  callHeld(params: TestMoreStuff_CallHeld$Params, results: TestMoreStuff_CallHeld$Results): Promise<void>;
-  getHeld(params: TestMoreStuff_GetHeld$Params, results: TestMoreStuff_GetHeld$Results): Promise<void>;
-  echo(params: TestMoreStuff_Echo$Params, results: TestMoreStuff_Echo$Results): Promise<void>;
-  expectCancel(params: TestMoreStuff_ExpectCancel$Params, results: TestMoreStuff_ExpectCancel$Results): Promise<void>;
-  methodWithDefaults(params: TestMoreStuff_MethodWithDefaults$Params, results: TestMoreStuff_MethodWithDefaults$Results): Promise<void>;
-  getHandle(params: TestMoreStuff_GetHandle$Params, results: TestMoreStuff_GetHandle$Results): Promise<void>;
-  getNull(params: TestMoreStuff_GetNull$Params, results: TestMoreStuff_GetNull$Results): Promise<void>;
-  getEnormousString(params: TestMoreStuff_GetEnormousString$Params, results: TestMoreStuff_GetEnormousString$Results): Promise<void>;
-  methodWithNullDefault(params: TestMoreStuff_MethodWithNullDefault$Params, results: TestMoreStuff_MethodWithNullDefault$Results): Promise<void>;
+  callFoo(params: TestMoreStuff_CallFoo$Params, results: TestMoreStuff_CallFoo$Results): $.MaybePromise<void | $.Init<TestMoreStuff_CallFoo$Results>>;
+  callFooWhenResolved(params: TestMoreStuff_CallFooWhenResolved$Params, results: TestMoreStuff_CallFooWhenResolved$Results): $.MaybePromise<void | $.Init<TestMoreStuff_CallFooWhenResolved$Results>>;
+  neverReturn(params: TestMoreStuff_NeverReturn$Params, results: TestMoreStuff_NeverReturn$Results): $.MaybePromise<void | $.Init<TestMoreStuff_NeverReturn$Results>>;
+  hold(params: TestMoreStuff_Hold$Params, results: TestMoreStuff_Hold$Results): $.MaybePromise<void | $.Init<TestMoreStuff_Hold$Results>>;
+  callHeld(params: TestMoreStuff_CallHeld$Params, results: TestMoreStuff_CallHeld$Results): $.MaybePromise<void | $.Init<TestMoreStuff_CallHeld$Results>>;
+  getHeld(params: TestMoreStuff_GetHeld$Params, results: TestMoreStuff_GetHeld$Results): $.MaybePromise<void | $.Init<TestMoreStuff_GetHeld$Results>>;
+  echo(params: TestMoreStuff_Echo$Params, results: TestMoreStuff_Echo$Results): $.MaybePromise<void | $.Init<TestMoreStuff_Echo$Results>>;
+  expectCancel(params: TestMoreStuff_ExpectCancel$Params, results: TestMoreStuff_ExpectCancel$Results): $.MaybePromise<void | $.Init<TestMoreStuff_ExpectCancel$Results>>;
+  methodWithDefaults(params: TestMoreStuff_MethodWithDefaults$Params, results: TestMoreStuff_MethodWithDefaults$Results): $.MaybePromise<void | $.Init<TestMoreStuff_MethodWithDefaults$Results>>;
+  getHandle(params: TestMoreStuff_GetHandle$Params, results: TestMoreStuff_GetHandle$Results): $.MaybePromise<void | $.Init<TestMoreStuff_GetHandle$Results>>;
+  getNull(params: TestMoreStuff_GetNull$Params, results: TestMoreStuff_GetNull$Results): $.MaybePromise<void | $.Init<TestMoreStuff_GetNull$Results>>;
+  getEnormousString(params: TestMoreStuff_GetEnormousString$Params, results: TestMoreStuff_GetEnormousString$Results): $.MaybePromise<void | $.Init<TestMoreStuff_GetEnormousString$Results>>;
+  methodWithNullDefault(params: TestMoreStuff_MethodWithNullDefault$Params, results: TestMoreStuff_MethodWithNullDefault$Results): $.MaybePromise<void | $.Init<TestMoreStuff_MethodWithNullDefault$Results>>;
 }
 export class TestMoreStuff$Server extends $.Server {
   readonly target: TestMoreStuff$Server$Target;
@@ -7751,59 +12241,129 @@ export class TestMoreStuff$Server extends $.Server {
     super(target, [
       ...(TestCallOrder$Client.methods as $.Method<any, any>[]).map((method) => ({
         ...(method as any),
-        impl: target[method.methodName as keyof TestMoreStuff$Server$Target] as any
+        impl: async (params: any, results: any) => {
+          const value = await (target[method.methodName as keyof TestMoreStuff$Server$Target] as any).call(target, params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as any);
+          }
+        }
       })),
       {
         ...TestMoreStuff$Client.ownMethods[0],
-        impl: target.callFoo
+        impl: async (params: TestMoreStuff_CallFoo$Params, results: TestMoreStuff_CallFoo$Results) => {
+          const value = await target.callFoo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_CallFoo$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[1],
-        impl: target.callFooWhenResolved
+        impl: async (params: TestMoreStuff_CallFooWhenResolved$Params, results: TestMoreStuff_CallFooWhenResolved$Results) => {
+          const value = await target.callFooWhenResolved(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_CallFooWhenResolved$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[2],
-        impl: target.neverReturn
+        impl: async (params: TestMoreStuff_NeverReturn$Params, results: TestMoreStuff_NeverReturn$Results) => {
+          const value = await target.neverReturn(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_NeverReturn$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[3],
-        impl: target.hold
+        impl: async (params: TestMoreStuff_Hold$Params, results: TestMoreStuff_Hold$Results) => {
+          const value = await target.hold(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_Hold$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[4],
-        impl: target.callHeld
+        impl: async (params: TestMoreStuff_CallHeld$Params, results: TestMoreStuff_CallHeld$Results) => {
+          const value = await target.callHeld(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_CallHeld$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[5],
-        impl: target.getHeld
+        impl: async (params: TestMoreStuff_GetHeld$Params, results: TestMoreStuff_GetHeld$Results) => {
+          const value = await target.getHeld(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_GetHeld$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[6],
-        impl: target.echo
+        impl: async (params: TestMoreStuff_Echo$Params, results: TestMoreStuff_Echo$Results) => {
+          const value = await target.echo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_Echo$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[7],
-        impl: target.expectCancel
+        impl: async (params: TestMoreStuff_ExpectCancel$Params, results: TestMoreStuff_ExpectCancel$Results) => {
+          const value = await target.expectCancel(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_ExpectCancel$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[8],
-        impl: target.methodWithDefaults
+        impl: async (params: TestMoreStuff_MethodWithDefaults$Params, results: TestMoreStuff_MethodWithDefaults$Results) => {
+          const value = await target.methodWithDefaults(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_MethodWithDefaults$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[9],
-        impl: target.getHandle
+        impl: async (params: TestMoreStuff_GetHandle$Params, results: TestMoreStuff_GetHandle$Results) => {
+          const value = await target.getHandle(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_GetHandle$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[10],
-        impl: target.getNull
+        impl: async (params: TestMoreStuff_GetNull$Params, results: TestMoreStuff_GetNull$Results) => {
+          const value = await target.getNull(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_GetNull$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[11],
-        impl: target.getEnormousString
+        impl: async (params: TestMoreStuff_GetEnormousString$Params, results: TestMoreStuff_GetEnormousString$Results) => {
+          const value = await target.getEnormousString(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_GetEnormousString$Results>);
+          }
+        }
       },
       {
         ...TestMoreStuff$Client.ownMethods[12],
-        impl: target.methodWithNullDefault
+        impl: async (params: TestMoreStuff_MethodWithNullDefault$Params, results: TestMoreStuff_MethodWithNullDefault$Results) => {
+          const value = await target.methodWithNullDefault(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMoreStuff_MethodWithNullDefault$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -7838,6 +12398,9 @@ export class TestMembrane_Thing_PassThrough$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMembrane_Thing_PassThrough$Params, value: $.Init<TestMembrane_Thing_PassThrough$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMembrane_Thing_PassThrough$Params_" + super.toString(); }
 }
 export class TestMembrane_Result extends $.Struct {
@@ -7851,6 +12414,12 @@ export class TestMembrane_Result extends $.Struct {
       { name: "text", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_Result, value: $.Init<TestMembrane_Result>): void {
+    const init = value as any;
+    if (init["text"] !== undefined) {
+      target.text = init["text"] as any;
+    }
+  }
   get text(): string {
     return $.utils.getText(0, this);
   }
@@ -7867,6 +12436,15 @@ export class TestMembrane_Result$Promise {
   async promise(): Promise<TestMembrane_Result> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMembrane_Result, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Result) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Result | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMembrane_Result> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMembrane_Thing_Intercept$Params extends $.Struct {
   static readonly _capnp = {
@@ -7877,6 +12455,9 @@ export class TestMembrane_Thing_Intercept$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMembrane_Thing_Intercept$Params, value: $.Init<TestMembrane_Thing_Intercept$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMembrane_Thing_Intercept$Params_" + super.toString(); }
 }
 export class TestMembrane_Thing$Client {
@@ -7910,18 +12491,28 @@ export class TestMembrane_Thing$Client {
       resultFields: TestMembrane_Result._capnp.fields
     }
   ];
-  passThrough(paramsFunc?: (params: TestMembrane_Thing_PassThrough$Params) => void): TestMembrane_Result$Promise {
+  passThrough(): TestMembrane_Result$Promise;
+  passThrough(params: $.Init<TestMembrane_Thing_PassThrough$Params>): TestMembrane_Result$Promise;
+  passThrough(paramsFunc: (params: TestMembrane_Thing_PassThrough$Params) => void): TestMembrane_Result$Promise;
+  passThrough(params?: $.Initializer<TestMembrane_Thing_PassThrough$Params>): TestMembrane_Result$Promise {
     const answer = this.client.call({
       method: TestMembrane_Thing$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_Thing_PassThrough$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
   }
-  intercept(paramsFunc?: (params: TestMembrane_Thing_Intercept$Params) => void): TestMembrane_Result$Promise {
+  intercept(): TestMembrane_Result$Promise;
+  intercept(params: $.Init<TestMembrane_Thing_Intercept$Params>): TestMembrane_Result$Promise;
+  intercept(paramsFunc: (params: TestMembrane_Thing_Intercept$Params) => void): TestMembrane_Result$Promise;
+  intercept(params?: $.Initializer<TestMembrane_Thing_Intercept$Params>): TestMembrane_Result$Promise {
     const answer = this.client.call({
       method: TestMembrane_Thing$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_Thing_Intercept$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
@@ -7929,8 +12520,8 @@ export class TestMembrane_Thing$Client {
 }
 $.Registry.register(TestMembrane_Thing$Client.interfaceId, TestMembrane_Thing$Client);
 export interface TestMembrane_Thing$Server$Target {
-  passThrough(params: TestMembrane_Thing_PassThrough$Params, results: TestMembrane_Result): Promise<void>;
-  intercept(params: TestMembrane_Thing_Intercept$Params, results: TestMembrane_Result): Promise<void>;
+  passThrough(params: TestMembrane_Thing_PassThrough$Params, results: TestMembrane_Result): $.MaybePromise<void | $.Init<TestMembrane_Result>>;
+  intercept(params: TestMembrane_Thing_Intercept$Params, results: TestMembrane_Result): $.MaybePromise<void | $.Init<TestMembrane_Result>>;
 }
 export class TestMembrane_Thing$Server extends $.Server {
   readonly target: TestMembrane_Thing$Server$Target;
@@ -7938,11 +12529,21 @@ export class TestMembrane_Thing$Server extends $.Server {
     super(target, [
       {
         ...TestMembrane_Thing$Client.methods[0],
-        impl: target.passThrough
+        impl: async (params: TestMembrane_Thing_PassThrough$Params, results: TestMembrane_Result) => {
+          const value = await target.passThrough(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+          }
+        }
       },
       {
         ...TestMembrane_Thing$Client.methods[1],
-        impl: target.intercept
+        impl: async (params: TestMembrane_Thing_Intercept$Params, results: TestMembrane_Result) => {
+          const value = await target.intercept(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -7973,6 +12574,9 @@ export class TestMembrane_MakeThing$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestMembrane_MakeThing$Params, value: $.Init<TestMembrane_MakeThing$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestMembrane_MakeThing$Params_" + super.toString(); }
 }
 export class TestMembrane_MakeThing$Results extends $.Struct {
@@ -7986,8 +12590,26 @@ export class TestMembrane_MakeThing$Results extends $.Struct {
       { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_MakeThing$Results, value: $.Init<TestMembrane_MakeThing$Results>): void {
+    const init = value as any;
+    if (init["thing"] !== undefined) {
+      target.thing = init["thing"] as any;
+    }
+  }
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get thingOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set thingOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.thing = value;
+    }
   }
   set thing(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8005,6 +12627,15 @@ export class TestMembrane_MakeThing$Results$Promise {
   async promise(): Promise<TestMembrane_MakeThing$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestMembrane_MakeThing$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_MakeThing$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_MakeThing$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMembrane_MakeThing$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestMembrane_CallPassThrough$Params extends $.Struct {
   static readonly _capnp = {
@@ -8018,8 +12649,29 @@ export class TestMembrane_CallPassThrough$Params extends $.Struct {
       { name: "tailCall", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_CallPassThrough$Params, value: $.Init<TestMembrane_CallPassThrough$Params>): void {
+    const init = value as any;
+    if (init["thing"] !== undefined) {
+      target.thing = init["thing"] as any;
+    }
+    if (init["tailCall"] !== undefined) {
+      target.tailCall = init["tailCall"] as any;
+    }
+  }
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get thingOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set thingOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.thing = value;
+    }
   }
   set thing(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8044,8 +12696,29 @@ export class TestMembrane_CallIntercept$Params extends $.Struct {
       { name: "tailCall", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_CallIntercept$Params, value: $.Init<TestMembrane_CallIntercept$Params>): void {
+    const init = value as any;
+    if (init["thing"] !== undefined) {
+      target.thing = init["thing"] as any;
+    }
+    if (init["tailCall"] !== undefined) {
+      target.tailCall = init["tailCall"] as any;
+    }
+  }
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get thingOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set thingOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.thing = value;
+    }
   }
   set thing(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8069,8 +12742,26 @@ export class TestMembrane_Loopback$Params extends $.Struct {
       { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_Loopback$Params, value: $.Init<TestMembrane_Loopback$Params>): void {
+    const init = value as any;
+    if (init["thing"] !== undefined) {
+      target.thing = init["thing"] as any;
+    }
+  }
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get thingOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set thingOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.thing = value;
+    }
   }
   set thing(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8088,8 +12779,26 @@ export class TestMembrane_Loopback$Results extends $.Struct {
       { name: "thing", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } }
     ] as const,
   };
+  static _applyInit(target: TestMembrane_Loopback$Results, value: $.Init<TestMembrane_Loopback$Results>): void {
+    const init = value as any;
+    if (init["thing"] !== undefined) {
+      target.thing = init["thing"] as any;
+    }
+  }
   get thing(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get thingOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set thingOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.thing = value;
+    }
   }
   set thing(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8106,6 +12815,15 @@ export class TestMembrane_Loopback$Results$Promise {
   }
   async promise(): Promise<TestMembrane_Loopback$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestMembrane_Loopback$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Loopback$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Loopback$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestMembrane_Loopback$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestMembrane$Client {
@@ -8161,34 +12879,54 @@ export class TestMembrane$Client {
       resultFields: TestMembrane_Loopback$Results._capnp.fields
     }
   ];
-  makeThing(paramsFunc?: (params: TestMembrane_MakeThing$Params) => void): TestMembrane_MakeThing$Results$Promise {
+  makeThing(): TestMembrane_MakeThing$Results$Promise;
+  makeThing(params: $.Init<TestMembrane_MakeThing$Params>): TestMembrane_MakeThing$Results$Promise;
+  makeThing(paramsFunc: (params: TestMembrane_MakeThing$Params) => void): TestMembrane_MakeThing$Results$Promise;
+  makeThing(params?: $.Initializer<TestMembrane_MakeThing$Params>): TestMembrane_MakeThing$Results$Promise {
     const answer = this.client.call({
       method: TestMembrane$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_MakeThing$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_MakeThing$Results, answer);
     return new TestMembrane_MakeThing$Results$Promise(pipeline);
   }
-  callPassThrough(paramsFunc?: (params: TestMembrane_CallPassThrough$Params) => void): TestMembrane_Result$Promise {
+  callPassThrough(): TestMembrane_Result$Promise;
+  callPassThrough(params: $.Init<TestMembrane_CallPassThrough$Params>): TestMembrane_Result$Promise;
+  callPassThrough(paramsFunc: (params: TestMembrane_CallPassThrough$Params) => void): TestMembrane_Result$Promise;
+  callPassThrough(params?: $.Initializer<TestMembrane_CallPassThrough$Params>): TestMembrane_Result$Promise {
     const answer = this.client.call({
       method: TestMembrane$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_CallPassThrough$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
   }
-  callIntercept(paramsFunc?: (params: TestMembrane_CallIntercept$Params) => void): TestMembrane_Result$Promise {
+  callIntercept(): TestMembrane_Result$Promise;
+  callIntercept(params: $.Init<TestMembrane_CallIntercept$Params>): TestMembrane_Result$Promise;
+  callIntercept(paramsFunc: (params: TestMembrane_CallIntercept$Params) => void): TestMembrane_Result$Promise;
+  callIntercept(params?: $.Initializer<TestMembrane_CallIntercept$Params>): TestMembrane_Result$Promise {
     const answer = this.client.call({
       method: TestMembrane$Client.methods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_CallIntercept$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Result, answer);
     return new TestMembrane_Result$Promise(pipeline);
   }
-  loopback(paramsFunc?: (params: TestMembrane_Loopback$Params) => void): TestMembrane_Loopback$Results$Promise {
+  loopback(): TestMembrane_Loopback$Results$Promise;
+  loopback(params: $.Init<TestMembrane_Loopback$Params>): TestMembrane_Loopback$Results$Promise;
+  loopback(paramsFunc: (params: TestMembrane_Loopback$Params) => void): TestMembrane_Loopback$Results$Promise;
+  loopback(params?: $.Initializer<TestMembrane_Loopback$Params>): TestMembrane_Loopback$Results$Promise {
     const answer = this.client.call({
       method: TestMembrane$Client.methods[3],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestMembrane_Loopback$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestMembrane_Loopback$Results, answer);
     return new TestMembrane_Loopback$Results$Promise(pipeline);
@@ -8196,10 +12934,10 @@ export class TestMembrane$Client {
 }
 $.Registry.register(TestMembrane$Client.interfaceId, TestMembrane$Client);
 export interface TestMembrane$Server$Target {
-  makeThing(params: TestMembrane_MakeThing$Params, results: TestMembrane_MakeThing$Results): Promise<void>;
-  callPassThrough(params: TestMembrane_CallPassThrough$Params, results: TestMembrane_Result): Promise<void>;
-  callIntercept(params: TestMembrane_CallIntercept$Params, results: TestMembrane_Result): Promise<void>;
-  loopback(params: TestMembrane_Loopback$Params, results: TestMembrane_Loopback$Results): Promise<void>;
+  makeThing(params: TestMembrane_MakeThing$Params, results: TestMembrane_MakeThing$Results): $.MaybePromise<void | $.Init<TestMembrane_MakeThing$Results>>;
+  callPassThrough(params: TestMembrane_CallPassThrough$Params, results: TestMembrane_Result): $.MaybePromise<void | $.Init<TestMembrane_Result>>;
+  callIntercept(params: TestMembrane_CallIntercept$Params, results: TestMembrane_Result): $.MaybePromise<void | $.Init<TestMembrane_Result>>;
+  loopback(params: TestMembrane_Loopback$Params, results: TestMembrane_Loopback$Results): $.MaybePromise<void | $.Init<TestMembrane_Loopback$Results>>;
 }
 export class TestMembrane$Server extends $.Server {
   readonly target: TestMembrane$Server$Target;
@@ -8207,19 +12945,39 @@ export class TestMembrane$Server extends $.Server {
     super(target, [
       {
         ...TestMembrane$Client.methods[0],
-        impl: target.makeThing
+        impl: async (params: TestMembrane_MakeThing$Params, results: TestMembrane_MakeThing$Results) => {
+          const value = await target.makeThing(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_MakeThing$Results>);
+          }
+        }
       },
       {
         ...TestMembrane$Client.methods[1],
-        impl: target.callPassThrough
+        impl: async (params: TestMembrane_CallPassThrough$Params, results: TestMembrane_Result) => {
+          const value = await target.callPassThrough(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+          }
+        }
       },
       {
         ...TestMembrane$Client.methods[2],
-        impl: target.callIntercept
+        impl: async (params: TestMembrane_CallIntercept$Params, results: TestMembrane_Result) => {
+          const value = await target.callIntercept(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_Result>);
+          }
+        }
       },
       {
         ...TestMembrane$Client.methods[3],
-        impl: target.loopback
+        impl: async (params: TestMembrane_Loopback$Params, results: TestMembrane_Loopback$Results) => {
+          const value = await target.loopback(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestMembrane_Loopback$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -8255,8 +13013,39 @@ export class TestContainMembrane extends $.Struct {
       { name: "list", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "list", elementType: { kind: "interface", typeId: 0x9352e4e41f173917n, typeIdHex: "9352e4e41f173917", displayName: "Thing" } } }
     ] as const,
   };
+  static _applyInit(target: TestContainMembrane, value: $.Init<TestContainMembrane>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+    if (init["list"] !== undefined) {
+      if (init["list"] instanceof $.List) {
+        target.list = init["list"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
+        const list = target._initList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          list.set(index, item);
+        }
+      }
+    }
+  }
   get cap(): TestMembrane_Thing$Client {
     return new TestMembrane_Thing$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): TestMembrane_Thing$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new TestMembrane_Thing$Client(client);
+  }
+  set capOrNull(value: TestMembrane_Thing$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestMembrane_Thing$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -8292,6 +13081,12 @@ export class TestContructorName extends $.Struct {
       { name: "constructor", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestContructorName, value: $.Init<TestContructorName>): void {
+    const init = value as any;
+    if (init["$constructor"] !== undefined) {
+      target.$constructor = init["$constructor"] as any;
+    }
+  }
   get $constructor(): string {
     return $.utils.getText(0, this);
   }
@@ -8312,6 +13107,15 @@ export class TestTransferCap_Element extends $.Struct {
       { name: "cap", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "interface", typeId: 0x88eb12a0e0af92b2n, typeIdHex: "88eb12a0e0af92b2", displayName: "TestInterface" } }
     ] as const,
   };
+  static _applyInit(target: TestTransferCap_Element, value: $.Init<TestTransferCap_Element>): void {
+    const init = value as any;
+    if (init["text"] !== undefined) {
+      target.text = init["text"] as any;
+    }
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get text(): string {
     return $.utils.getText(0, this);
   }
@@ -8320,6 +13124,18 @@ export class TestTransferCap_Element extends $.Struct {
   }
   get cap(): TestInterface$Client {
     return new TestInterface$Client($.utils.getInterfaceClientOrNullAt(1, this));
+  }
+  get capOrNull(): TestInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(1, this))?.getClient() ?? null;
+    return client === null ? null : new TestInterface$Client(client);
+  }
+  set capOrNull(value: TestInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(1, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: TestInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(1, this));
@@ -8339,6 +13155,27 @@ export class TestTransferCap extends $.Struct {
     ] as const,
   };
   static _List: $.ListCtor<TestTransferCap_Element>;
+  static _applyInit(target: TestTransferCap, value: $.Init<TestTransferCap>): void {
+    const init = value as any;
+    if (init["list"] !== undefined) {
+      if (init["list"] instanceof $.List) {
+        target.list = init["list"] as any;
+      }
+      else {
+        const values = Array.isArray(init["list"]) ? init["list"] : Array.from(init["list"] as Iterable<any>);
+        const list = target._initList(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof TestTransferCap_Element) {
+            list.set(index, item);
+          }
+          else {
+            TestTransferCap_Element._applyInit(list.get(index), item as $.Init<TestTransferCap_Element>);
+          }
+        }
+      }
+    }
+  }
   _adoptList(value: $.Orphan<$.List<TestTransferCap_Element>>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -8368,6 +13205,9 @@ export class TestKeywordMethods_Delete$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Delete$Params, value: $.Init<TestKeywordMethods_Delete$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Delete$Params_" + super.toString(); }
 }
 export class TestKeywordMethods_Delete$Results extends $.Struct {
@@ -8379,6 +13219,9 @@ export class TestKeywordMethods_Delete$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Delete$Results, value: $.Init<TestKeywordMethods_Delete$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Delete$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Delete$Results$Promise {
@@ -8388,6 +13231,15 @@ export class TestKeywordMethods_Delete$Results$Promise {
   }
   async promise(): Promise<TestKeywordMethods_Delete$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestKeywordMethods_Delete$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Delete$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Delete$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Delete$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestKeywordMethods_Class$Params extends $.Struct {
@@ -8399,6 +13251,9 @@ export class TestKeywordMethods_Class$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Class$Params, value: $.Init<TestKeywordMethods_Class$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Class$Params_" + super.toString(); }
 }
 export class TestKeywordMethods_Class$Results extends $.Struct {
@@ -8410,6 +13265,9 @@ export class TestKeywordMethods_Class$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Class$Results, value: $.Init<TestKeywordMethods_Class$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Class$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Class$Results$Promise {
@@ -8419,6 +13277,15 @@ export class TestKeywordMethods_Class$Results$Promise {
   }
   async promise(): Promise<TestKeywordMethods_Class$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestKeywordMethods_Class$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Class$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Class$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Class$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestKeywordMethods_Void$Params extends $.Struct {
@@ -8430,6 +13297,9 @@ export class TestKeywordMethods_Void$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Void$Params, value: $.Init<TestKeywordMethods_Void$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Void$Params_" + super.toString(); }
 }
 export class TestKeywordMethods_Void$Results extends $.Struct {
@@ -8441,6 +13311,9 @@ export class TestKeywordMethods_Void$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Void$Results, value: $.Init<TestKeywordMethods_Void$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Void$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Void$Results$Promise {
@@ -8450,6 +13323,15 @@ export class TestKeywordMethods_Void$Results$Promise {
   }
   async promise(): Promise<TestKeywordMethods_Void$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestKeywordMethods_Void$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Void$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Void$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Void$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestKeywordMethods_Return$Params extends $.Struct {
@@ -8461,6 +13343,9 @@ export class TestKeywordMethods_Return$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Return$Params, value: $.Init<TestKeywordMethods_Return$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Return$Params_" + super.toString(); }
 }
 export class TestKeywordMethods_Return$Results extends $.Struct {
@@ -8472,6 +13357,9 @@ export class TestKeywordMethods_Return$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestKeywordMethods_Return$Results, value: $.Init<TestKeywordMethods_Return$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestKeywordMethods_Return$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Return$Results$Promise {
@@ -8481,6 +13369,15 @@ export class TestKeywordMethods_Return$Results$Promise {
   }
   async promise(): Promise<TestKeywordMethods_Return$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestKeywordMethods_Return$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Return$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Return$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Return$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestKeywordMethods$Client {
@@ -8536,34 +13433,54 @@ export class TestKeywordMethods$Client {
       resultFields: TestKeywordMethods_Return$Results._capnp.fields
     }
   ];
-  delete(paramsFunc?: (params: TestKeywordMethods_Delete$Params) => void): TestKeywordMethods_Delete$Results$Promise {
+  delete(): TestKeywordMethods_Delete$Results$Promise;
+  delete(params: $.Init<TestKeywordMethods_Delete$Params>): TestKeywordMethods_Delete$Results$Promise;
+  delete(paramsFunc: (params: TestKeywordMethods_Delete$Params) => void): TestKeywordMethods_Delete$Results$Promise;
+  delete(params?: $.Initializer<TestKeywordMethods_Delete$Params>): TestKeywordMethods_Delete$Results$Promise {
     const answer = this.client.call({
       method: TestKeywordMethods$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestKeywordMethods_Delete$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Delete$Results, answer);
     return new TestKeywordMethods_Delete$Results$Promise(pipeline);
   }
-  class(paramsFunc?: (params: TestKeywordMethods_Class$Params) => void): TestKeywordMethods_Class$Results$Promise {
+  class(): TestKeywordMethods_Class$Results$Promise;
+  class(params: $.Init<TestKeywordMethods_Class$Params>): TestKeywordMethods_Class$Results$Promise;
+  class(paramsFunc: (params: TestKeywordMethods_Class$Params) => void): TestKeywordMethods_Class$Results$Promise;
+  class(params?: $.Initializer<TestKeywordMethods_Class$Params>): TestKeywordMethods_Class$Results$Promise {
     const answer = this.client.call({
       method: TestKeywordMethods$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestKeywordMethods_Class$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Class$Results, answer);
     return new TestKeywordMethods_Class$Results$Promise(pipeline);
   }
-  void(paramsFunc?: (params: TestKeywordMethods_Void$Params) => void): TestKeywordMethods_Void$Results$Promise {
+  void(): TestKeywordMethods_Void$Results$Promise;
+  void(params: $.Init<TestKeywordMethods_Void$Params>): TestKeywordMethods_Void$Results$Promise;
+  void(paramsFunc: (params: TestKeywordMethods_Void$Params) => void): TestKeywordMethods_Void$Results$Promise;
+  void(params?: $.Initializer<TestKeywordMethods_Void$Params>): TestKeywordMethods_Void$Results$Promise {
     const answer = this.client.call({
       method: TestKeywordMethods$Client.methods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestKeywordMethods_Void$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Void$Results, answer);
     return new TestKeywordMethods_Void$Results$Promise(pipeline);
   }
-  return(paramsFunc?: (params: TestKeywordMethods_Return$Params) => void): TestKeywordMethods_Return$Results$Promise {
+  return(): TestKeywordMethods_Return$Results$Promise;
+  return(params: $.Init<TestKeywordMethods_Return$Params>): TestKeywordMethods_Return$Results$Promise;
+  return(paramsFunc: (params: TestKeywordMethods_Return$Params) => void): TestKeywordMethods_Return$Results$Promise;
+  return(params?: $.Initializer<TestKeywordMethods_Return$Params>): TestKeywordMethods_Return$Results$Promise {
     const answer = this.client.call({
       method: TestKeywordMethods$Client.methods[3],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestKeywordMethods_Return$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestKeywordMethods_Return$Results, answer);
     return new TestKeywordMethods_Return$Results$Promise(pipeline);
@@ -8571,10 +13488,10 @@ export class TestKeywordMethods$Client {
 }
 $.Registry.register(TestKeywordMethods$Client.interfaceId, TestKeywordMethods$Client);
 export interface TestKeywordMethods$Server$Target {
-  delete(params: TestKeywordMethods_Delete$Params, results: TestKeywordMethods_Delete$Results): Promise<void>;
-  class(params: TestKeywordMethods_Class$Params, results: TestKeywordMethods_Class$Results): Promise<void>;
-  void(params: TestKeywordMethods_Void$Params, results: TestKeywordMethods_Void$Results): Promise<void>;
-  return(params: TestKeywordMethods_Return$Params, results: TestKeywordMethods_Return$Results): Promise<void>;
+  delete(params: TestKeywordMethods_Delete$Params, results: TestKeywordMethods_Delete$Results): $.MaybePromise<void | $.Init<TestKeywordMethods_Delete$Results>>;
+  class(params: TestKeywordMethods_Class$Params, results: TestKeywordMethods_Class$Results): $.MaybePromise<void | $.Init<TestKeywordMethods_Class$Results>>;
+  void(params: TestKeywordMethods_Void$Params, results: TestKeywordMethods_Void$Results): $.MaybePromise<void | $.Init<TestKeywordMethods_Void$Results>>;
+  return(params: TestKeywordMethods_Return$Params, results: TestKeywordMethods_Return$Results): $.MaybePromise<void | $.Init<TestKeywordMethods_Return$Results>>;
 }
 export class TestKeywordMethods$Server extends $.Server {
   readonly target: TestKeywordMethods$Server$Target;
@@ -8582,19 +13499,39 @@ export class TestKeywordMethods$Server extends $.Server {
     super(target, [
       {
         ...TestKeywordMethods$Client.methods[0],
-        impl: target.delete
+        impl: async (params: TestKeywordMethods_Delete$Params, results: TestKeywordMethods_Delete$Results) => {
+          const value = await target.delete(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestKeywordMethods_Delete$Results>);
+          }
+        }
       },
       {
         ...TestKeywordMethods$Client.methods[1],
-        impl: target.class
+        impl: async (params: TestKeywordMethods_Class$Params, results: TestKeywordMethods_Class$Results) => {
+          const value = await target.class(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestKeywordMethods_Class$Results>);
+          }
+        }
       },
       {
         ...TestKeywordMethods$Client.methods[2],
-        impl: target.void
+        impl: async (params: TestKeywordMethods_Void$Params, results: TestKeywordMethods_Void$Results) => {
+          const value = await target.void(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestKeywordMethods_Void$Results>);
+          }
+        }
       },
       {
         ...TestKeywordMethods$Client.methods[3],
-        impl: target.return
+        impl: async (params: TestKeywordMethods_Return$Params, results: TestKeywordMethods_Return$Results) => {
+          const value = await target.return(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestKeywordMethods_Return$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -8625,6 +13562,9 @@ export class TestAuthenticatedBootstrap_GetCallerId$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestAuthenticatedBootstrap_GetCallerId$Params, value: $.Init<TestAuthenticatedBootstrap_GetCallerId$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestAuthenticatedBootstrap_GetCallerId$Params_" + super.toString(); }
 }
 export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
@@ -8638,6 +13578,12 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
       { name: "caller", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestAuthenticatedBootstrap_GetCallerId$Results, value: $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>): void {
+    const init = value as any;
+    if (init["caller"] !== undefined) {
+      target.caller = init["caller"] as any;
+    }
+  }
   _adoptCaller(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -8663,6 +13609,15 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
   async promise(): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = TestAuthenticatedBootstrap_GetCallerId$Results, TResult2 = never>(onfulfilled?: ((value: TestAuthenticatedBootstrap_GetCallerId$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class TestAuthenticatedBootstrap$Client {
   client: $.Client;
@@ -8684,10 +13639,15 @@ export class TestAuthenticatedBootstrap$Client {
       resultFields: TestAuthenticatedBootstrap_GetCallerId$Results._capnp.fields
     }
   ];
-  getCallerId(paramsFunc?: (params: TestAuthenticatedBootstrap_GetCallerId$Params) => void): TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
+  getCallerId(): TestAuthenticatedBootstrap_GetCallerId$Results$Promise;
+  getCallerId(params: $.Init<TestAuthenticatedBootstrap_GetCallerId$Params>): TestAuthenticatedBootstrap_GetCallerId$Results$Promise;
+  getCallerId(paramsFunc: (params: TestAuthenticatedBootstrap_GetCallerId$Params) => void): TestAuthenticatedBootstrap_GetCallerId$Results$Promise;
+  getCallerId(params?: $.Initializer<TestAuthenticatedBootstrap_GetCallerId$Params>): TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
     const answer = this.client.call({
       method: TestAuthenticatedBootstrap$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestAuthenticatedBootstrap_GetCallerId$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestAuthenticatedBootstrap_GetCallerId$Results, answer);
     return new TestAuthenticatedBootstrap_GetCallerId$Results$Promise(pipeline);
@@ -8695,7 +13655,7 @@ export class TestAuthenticatedBootstrap$Client {
 }
 $.Registry.register(TestAuthenticatedBootstrap$Client.interfaceId, TestAuthenticatedBootstrap$Client);
 export interface TestAuthenticatedBootstrap$Server$Target {
-  getCallerId(params: TestAuthenticatedBootstrap_GetCallerId$Params, results: TestAuthenticatedBootstrap_GetCallerId$Results): Promise<void>;
+  getCallerId(params: TestAuthenticatedBootstrap_GetCallerId$Params, results: TestAuthenticatedBootstrap_GetCallerId$Results): $.MaybePromise<void | $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>>;
 }
 export class TestAuthenticatedBootstrap$Server extends $.Server {
   readonly target: TestAuthenticatedBootstrap$Server$Target;
@@ -8703,7 +13663,12 @@ export class TestAuthenticatedBootstrap$Server extends $.Server {
     super(target, [
       {
         ...TestAuthenticatedBootstrap$Client.methods[0],
-        impl: target.getCallerId
+        impl: async (params: TestAuthenticatedBootstrap_GetCallerId$Params, results: TestAuthenticatedBootstrap_GetCallerId$Results) => {
+          const value = await target.getCallerId(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -8737,6 +13702,20 @@ export class TestSturdyRef extends $.Struct {
       { name: "objectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: TestSturdyRef, value: $.Init<TestSturdyRef>): void {
+    const init = value as any;
+    if (init["hostId"] !== undefined) {
+      if (init["hostId"] instanceof TestSturdyRefHostId) {
+        target.hostId = init["hostId"] as TestSturdyRefHostId;
+      }
+      else {
+        TestSturdyRefHostId._applyInit(target._initHostId(), init["hostId"] as $.Init<TestSturdyRefHostId>);
+      }
+    }
+    if (init["objectId"] !== undefined) {
+      target.objectId = init["objectId"] as any;
+    }
+  }
   _adoptHostId(value: $.Orphan<TestSturdyRefHostId>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -8783,6 +13762,12 @@ export class TestSturdyRefHostId extends $.Struct {
       { name: "host", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: TestSturdyRefHostId, value: $.Init<TestSturdyRefHostId>): void {
+    const init = value as any;
+    if (init["host"] !== undefined) {
+      target.host = init["host"] as any;
+    }
+  }
   get host(): string {
     return $.utils.getText(0, this);
   }
@@ -8820,6 +13805,12 @@ export class TestSturdyRefObjectId extends $.Struct {
       { name: "tag", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0xef428f2f67c4d439n, typeIdHex: "ef428f2f67c4d439", displayName: "Tag" } }
     ] as const,
   };
+  static _applyInit(target: TestSturdyRefObjectId, value: $.Init<TestSturdyRefObjectId>): void {
+    const init = value as any;
+    if (init["tag"] !== undefined) {
+      target.tag = init["tag"] as any;
+    }
+  }
   get tag(): TestSturdyRefObjectId_Tag {
     return $.utils.getUint16(0, this) as TestSturdyRefObjectId_Tag;
   }
@@ -8837,6 +13828,9 @@ export class TestProvisionId extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestProvisionId, value: $.Init<TestProvisionId>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestProvisionId_" + super.toString(); }
 }
 export class TestRecipientId extends $.Struct {
@@ -8848,6 +13842,9 @@ export class TestRecipientId extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestRecipientId, value: $.Init<TestRecipientId>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestRecipientId_" + super.toString(); }
 }
 export class TestThirdPartyCapId extends $.Struct {
@@ -8859,6 +13856,9 @@ export class TestThirdPartyCapId extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestThirdPartyCapId, value: $.Init<TestThirdPartyCapId>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestThirdPartyCapId_" + super.toString(); }
 }
 export class TestJoinResult extends $.Struct {
@@ -8870,6 +13870,9 @@ export class TestJoinResult extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestJoinResult, value: $.Init<TestJoinResult>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestJoinResult_" + super.toString(); }
 }
 export const TestNameAnnotation_BadlyNamedEnum = {
@@ -8897,6 +13900,20 @@ export class TestNameAnnotation_NestedStruct extends $.Struct {
       { name: "anotherBadNestedFieldName", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xbe406b6341d52284n, typeIdHex: "be406b6341d52284", displayName: "NestedStruct" } }
     ] as const,
   };
+  static _applyInit(target: TestNameAnnotation_NestedStruct, value: $.Init<TestNameAnnotation_NestedStruct>): void {
+    const init = value as any;
+    if (init["badNestedFieldName"] !== undefined) {
+      target.badNestedFieldName = init["badNestedFieldName"] as any;
+    }
+    if (init["anotherBadNestedFieldName"] !== undefined) {
+      if (init["anotherBadNestedFieldName"] instanceof TestNameAnnotation_NestedStruct) {
+        target.anotherBadNestedFieldName = init["anotherBadNestedFieldName"] as TestNameAnnotation_NestedStruct;
+      }
+      else {
+        TestNameAnnotation_NestedStruct._applyInit(target._initAnotherBadNestedFieldName(), init["anotherBadNestedFieldName"] as $.Init<TestNameAnnotation_NestedStruct>);
+      }
+    }
+  }
   get badNestedFieldName(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -8935,6 +13952,13 @@ export class TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup extends $.Struct
       { name: "bar", codeOrder: 1, ordinal: 4, kind: "slot", offset: 0, type: { kind: "void" } }
     ] as const,
   };
+  static _applyInit(target: TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup, value: $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>): void {
+    const init = value as any;
+    if (init["foo"] !== undefined) {
+    }
+    if (init["bar"] !== undefined) {
+    }
+  }
   toString(): string { return "TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup_" + super.toString(); }
 }
 export const TestNameAnnotation_BadlyNamedUnion_Which = {
@@ -8956,6 +13980,20 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
       { name: "baz", codeOrder: 1, ordinal: 5, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xbe406b6341d52284n, typeIdHex: "be406b6341d52284", displayName: "NestedStruct" } }
     ] as const,
   };
+  static _applyInit(target: TestNameAnnotation_BadlyNamedUnion, value: $.Init<TestNameAnnotation_BadlyNamedUnion>): void {
+    const init = value as any;
+    if (init["badlyNamedGroup"] !== undefined) {
+      TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup._applyInit(target._initBadlyNamedGroup(), init["badlyNamedGroup"] as $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>);
+    }
+    if (init["baz"] !== undefined) {
+      if (init["baz"] instanceof TestNameAnnotation_NestedStruct) {
+        target.baz = init["baz"] as TestNameAnnotation_NestedStruct;
+      }
+      else {
+        TestNameAnnotation_NestedStruct._applyInit(target._initBaz(), init["baz"] as $.Init<TestNameAnnotation_NestedStruct>);
+      }
+    }
+  }
   get badlyNamedGroup(): TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup {
     $.utils.testWhich("badlyNamedGroup", $.utils.getUint16(6, this), 0, this);
     return $.utils.getAs(TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup, this);
@@ -8999,6 +14037,50 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
   which(): TestNameAnnotation_BadlyNamedUnion_Which {
     return $.utils.getUint16(6, this) as TestNameAnnotation_BadlyNamedUnion_Which;
   }
+  _set(value: {
+    which: "badlyNamedGroup";
+  } | {
+    which: "baz";
+    value: TestNameAnnotation_NestedStruct;
+  }): void {
+    switch (value.which) {
+      case "badlyNamedGroup": {
+        this.badlyNamedGroup = true;
+        return;
+      }
+      case "baz": {
+        this.baz = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "badlyNamedGroup"?: (value: TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup) => R;
+    "baz"?: (value: TestNameAnnotation_NestedStruct) => R;
+    _?: (which: TestNameAnnotation_BadlyNamedUnion_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["badlyNamedGroup"];
+        if (callback) {
+          return callback(this.badlyNamedGroup);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["baz"];
+        if (callback) {
+          return callback(this.baz);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestNameAnnotation_BadlyNamedUnion union case: " + which);
+  }
 }
 export const TestNameAnnotation_Which = {
   BAD_FIELD_NAME: 0,
@@ -9023,6 +14105,21 @@ export class TestNameAnnotation extends $.Struct {
       { name: "badlyNamedUnion", codeOrder: 3, ordinal: 3, kind: "group", type: { kind: "group", typeId: 0x89d9d1626b34017cn, typeIdHex: "89d9d1626b34017c", displayName: "badlyNamedUnion" } }
     ] as const,
   };
+  static _applyInit(target: TestNameAnnotation, value: $.Init<TestNameAnnotation>): void {
+    const init = value as any;
+    if (init["badFieldName"] !== undefined) {
+      target.badFieldName = init["badFieldName"] as any;
+    }
+    if (init["bar"] !== undefined) {
+      target.bar = init["bar"] as any;
+    }
+    if (init["anotherBadFieldName"] !== undefined) {
+      target.anotherBadFieldName = init["anotherBadFieldName"] as any;
+    }
+    if (init["badlyNamedUnion"] !== undefined) {
+      TestNameAnnotation_BadlyNamedUnion._applyInit(target._initBadlyNamedUnion(), init["badlyNamedUnion"] as $.Init<TestNameAnnotation_BadlyNamedUnion>);
+    }
+  }
   get badFieldName(): boolean {
     $.utils.testWhich("badFieldName", $.utils.getUint16(2, this), 0, this);
     return $.utils.getBit(0, this);
@@ -9061,6 +14158,51 @@ export class TestNameAnnotation extends $.Struct {
   which(): TestNameAnnotation_Which {
     return $.utils.getUint16(2, this) as TestNameAnnotation_Which;
   }
+  _set(value: {
+    which: "badFieldName";
+    value: boolean;
+  } | {
+    which: "bar";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "badFieldName": {
+        this.badFieldName = value.value;
+        return;
+      }
+      case "bar": {
+        this.bar = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "badFieldName"?: (value: boolean) => R;
+    "bar"?: (value: number) => R;
+    _?: (which: TestNameAnnotation_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["badFieldName"];
+        if (callback) {
+          return callback(this.badFieldName);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["bar"];
+        if (callback) {
+          return callback(this.bar);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled TestNameAnnotation union case: " + which);
+  }
 }
 export class TestNameAnnotationInterface_BadlyNamedMethod$Params extends $.Struct {
   static readonly _capnp = {
@@ -9073,6 +14215,12 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Params extends $.Struc
       { name: "badlyNamedParam", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint8" } }
     ] as const,
   };
+  static _applyInit(target: TestNameAnnotationInterface_BadlyNamedMethod$Params, value: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Params>): void {
+    const init = value as any;
+    if (init["badlyNamedParam"] !== undefined) {
+      target.badlyNamedParam = init["badlyNamedParam"] as any;
+    }
+  }
   get badlyNamedParam(): number {
     return $.utils.getUint8(0, this);
   }
@@ -9090,6 +14238,9 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Results extends $.Stru
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: TestNameAnnotationInterface_BadlyNamedMethod$Results, value: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "TestNameAnnotationInterface_BadlyNamedMethod$Results_" + super.toString(); }
 }
 export class TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
@@ -9099,6 +14250,15 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
   }
   async promise(): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = TestNameAnnotationInterface_BadlyNamedMethod$Results, TResult2 = never>(onfulfilled?: ((value: TestNameAnnotationInterface_BadlyNamedMethod$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class TestNameAnnotationInterface$Client {
@@ -9121,10 +14281,15 @@ export class TestNameAnnotationInterface$Client {
       resultFields: TestNameAnnotationInterface_BadlyNamedMethod$Results._capnp.fields
     }
   ];
-  badlyNamedMethod(paramsFunc?: (params: TestNameAnnotationInterface_BadlyNamedMethod$Params) => void): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
+  badlyNamedMethod(): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise;
+  badlyNamedMethod(params: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Params>): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise;
+  badlyNamedMethod(paramsFunc: (params: TestNameAnnotationInterface_BadlyNamedMethod$Params) => void): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise;
+  badlyNamedMethod(params?: $.Initializer<TestNameAnnotationInterface_BadlyNamedMethod$Params>): TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
     const answer = this.client.call({
       method: TestNameAnnotationInterface$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: TestNameAnnotationInterface_BadlyNamedMethod$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(TestNameAnnotationInterface_BadlyNamedMethod$Results, answer);
     return new TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise(pipeline);
@@ -9132,7 +14297,7 @@ export class TestNameAnnotationInterface$Client {
 }
 $.Registry.register(TestNameAnnotationInterface$Client.interfaceId, TestNameAnnotationInterface$Client);
 export interface TestNameAnnotationInterface$Server$Target {
-  badlyNamedMethod(params: TestNameAnnotationInterface_BadlyNamedMethod$Params, results: TestNameAnnotationInterface_BadlyNamedMethod$Results): Promise<void>;
+  badlyNamedMethod(params: TestNameAnnotationInterface_BadlyNamedMethod$Params, results: TestNameAnnotationInterface_BadlyNamedMethod$Results): $.MaybePromise<void | $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>>;
 }
 export class TestNameAnnotationInterface$Server extends $.Server {
   readonly target: TestNameAnnotationInterface$Server$Target;
@@ -9140,7 +14305,12 @@ export class TestNameAnnotationInterface$Server extends $.Server {
     super(target, [
       {
         ...TestNameAnnotationInterface$Client.methods[0],
-        impl: target.badlyNamedMethod
+        impl: async (params: TestNameAnnotationInterface_BadlyNamedMethod$Params, results: TestNameAnnotationInterface_BadlyNamedMethod$Results) => {
+          const value = await target.badlyNamedMethod(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

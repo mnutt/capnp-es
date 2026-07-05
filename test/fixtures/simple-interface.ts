@@ -13,6 +13,15 @@ export class SimpleInterface_Subtract$Params extends $.Struct {
       { name: "b", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: SimpleInterface_Subtract$Params, value: $.Init<SimpleInterface_Subtract$Params>): void {
+    const init = value as any;
+    if (init["a"] !== undefined) {
+      target.a = init["a"] as any;
+    }
+    if (init["b"] !== undefined) {
+      target.b = init["b"] as any;
+    }
+  }
   get a(): number {
     return $.utils.getInt32(0, this);
   }
@@ -38,6 +47,12 @@ export class SimpleInterface_Subtract$Results extends $.Struct {
       { name: "result", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "int32" } }
     ] as const,
   };
+  static _applyInit(target: SimpleInterface_Subtract$Results, value: $.Init<SimpleInterface_Subtract$Results>): void {
+    const init = value as any;
+    if (init["result"] !== undefined) {
+      target.result = init["result"] as any;
+    }
+  }
   get result(): number {
     return $.utils.getInt32(0, this);
   }
@@ -53,6 +68,15 @@ export class SimpleInterface_Subtract$Results$Promise {
   }
   async promise(): Promise<SimpleInterface_Subtract$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = SimpleInterface_Subtract$Results, TResult2 = never>(onfulfilled?: ((value: SimpleInterface_Subtract$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SimpleInterface_Subtract$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<SimpleInterface_Subtract$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class SimpleInterface$Client {
@@ -75,10 +99,15 @@ export class SimpleInterface$Client {
       resultFields: SimpleInterface_Subtract$Results._capnp.fields
     }
   ];
-  subtract(paramsFunc?: (params: SimpleInterface_Subtract$Params) => void): SimpleInterface_Subtract$Results$Promise {
+  subtract(): SimpleInterface_Subtract$Results$Promise;
+  subtract(params: $.Init<SimpleInterface_Subtract$Params>): SimpleInterface_Subtract$Results$Promise;
+  subtract(paramsFunc: (params: SimpleInterface_Subtract$Params) => void): SimpleInterface_Subtract$Results$Promise;
+  subtract(params?: $.Initializer<SimpleInterface_Subtract$Params>): SimpleInterface_Subtract$Results$Promise {
     const answer = this.client.call({
       method: SimpleInterface$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: SimpleInterface_Subtract$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SimpleInterface_Subtract$Results, answer);
     return new SimpleInterface_Subtract$Results$Promise(pipeline);
@@ -86,7 +115,7 @@ export class SimpleInterface$Client {
 }
 $.Registry.register(SimpleInterface$Client.interfaceId, SimpleInterface$Client);
 export interface SimpleInterface$Server$Target {
-  subtract(params: SimpleInterface_Subtract$Params, results: SimpleInterface_Subtract$Results): Promise<void>;
+  subtract(params: SimpleInterface_Subtract$Params, results: SimpleInterface_Subtract$Results): $.MaybePromise<void | $.Init<SimpleInterface_Subtract$Results>>;
 }
 export class SimpleInterface$Server extends $.Server {
   readonly target: SimpleInterface$Server$Target;
@@ -94,7 +123,12 @@ export class SimpleInterface$Server extends $.Server {
     super(target, [
       {
         ...SimpleInterface$Client.methods[0],
-        impl: target.subtract
+        impl: async (params: SimpleInterface_Subtract$Params, results: SimpleInterface_Subtract$Results) => {
+          const value = await target.subtract(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<SimpleInterface_Subtract$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

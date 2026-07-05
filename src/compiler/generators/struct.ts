@@ -114,6 +114,11 @@ export function generateStructNode(
         ${defaultValues.join(",")}
       }`,
     ...concreteLists.map((field) => createConcreteListProperty(ctx, field)),
+    createApplyInitMethod(
+      ctx,
+      fullClassName,
+      fieldIndexInCodeOrder.map((index) => fields[index]),
+    ),
   );
 
   for (const index of fieldIndexInCodeOrder) {
@@ -132,6 +137,7 @@ export function generateStructNode(
         return $.utils.getUint16(${discriminantOffset * 2}, this) as ${fullClassName}_Which;
       }
     `);
+    members.push(createUnionHelpers(ctx, unionFields, fullClassName));
   }
 
   const docComment = extractJSDocs(lookupNodeSourceInfo(ctx, node));
@@ -367,6 +373,22 @@ export function generateStructFieldMethods(
     `);
   }
 
+  if (isInterface) {
+    members.push(`
+      get ${accessorName}OrNull(): ${jsType} | null {
+        const client = $.Interface.fromPointer($.utils.getPointer(${offset}, this))?.getClient() ?? null;
+        return client === null ? null : new ${jsType}(client);
+      }
+      set ${accessorName}OrNull(value: ${jsType} | null) {
+        if (value === null) {
+          $.utils.erase($.utils.getPointer(${offset}, this));
+        } else {
+          this.${accessorName} = value;
+        }
+      }
+    `);
+  }
+
   if (init) {
     const params =
       whichType === schema.Type.DATA || whichType === schema.Type.LIST
@@ -487,6 +509,308 @@ export function createUnionConstProperty(
   const initializer = `${fullClassName}_Which.${name}`;
 
   return `static readonly ${name} = ${initializer};`;
+}
+
+function createApplyInitMethod(
+  ctx: CodeGeneratorFileContext,
+  fullClassName: string,
+  fields: schema.Field[],
+): string {
+  const body = fields
+    .map((field) => createApplyInitField(ctx, field))
+    .filter(Boolean)
+    .join("\n");
+
+  return `
+    static _applyInit(target: ${fullClassName}, value: $.Init<${fullClassName}>): void {
+      const init = value as any;
+      ${body}
+    }
+  `;
+}
+
+function createApplyInitField(
+  ctx: CodeGeneratorFileContext,
+  field: schema.Field,
+): string {
+  const initName = `_init${util.c2t(field.name)}`;
+  const accessorName =
+    field.name === "constructor" ? "$constructor" : field.name;
+  const valueKey = JSON.stringify(accessorName);
+  const valueRef = `init[${valueKey}]`;
+  const discriminant =
+    field.discriminantValue === schema.Field.NO_DISCRIMINANT
+      ? ""
+      : `target.${accessorName} = true;`;
+
+  if (field._isGroup) {
+    const groupClassName = getFullClassName(
+      lookupNode(ctx, field.group.typeId),
+    );
+    return `
+      if (${valueRef} !== undefined) {
+        ${groupClassName}._applyInit(target.${initName}(), ${valueRef} as $.Init<${groupClassName}>);
+      }
+    `;
+  }
+
+  if (!field._isSlot) {
+    throw new Error(format(E.GEN_UNKNOWN_STRUCT_FIELD, field.which()));
+  }
+
+  const slotType = field.slot.type;
+  switch (slotType.which()) {
+    case schema.Type.VOID: {
+      return `
+        if (${valueRef} !== undefined) {
+          ${discriminant}
+        }
+      `;
+    }
+
+    case schema.Type.DATA: {
+      return `
+        if (${valueRef} !== undefined) {
+          if (${valueRef} instanceof $.Data) {
+            target.${accessorName} = ${valueRef} as $.Data;
+          } else {
+            const bytes = $.dataBytes(${valueRef});
+            target.${initName}(bytes.byteLength).copyBuffer(bytes);
+          }
+        }
+      `;
+    }
+
+    case schema.Type.LIST: {
+      return createApplyInitListField(
+        ctx,
+        field,
+        accessorName,
+        initName,
+        valueRef,
+      );
+    }
+
+    case schema.Type.STRUCT: {
+      const structClassName = getFullClassName(
+        lookupNode(ctx, slotType.struct.typeId),
+      );
+      return `
+        if (${valueRef} !== undefined) {
+          if (${valueRef} instanceof ${structClassName}) {
+            target.${accessorName} = ${valueRef} as ${structClassName};
+          } else {
+            ${structClassName}._applyInit(target.${initName}(), ${valueRef} as $.Init<${structClassName}>);
+          }
+        }
+      `;
+    }
+
+    case schema.Type.INTERFACE:
+    case schema.Type.ANY_POINTER:
+    case schema.Type.TEXT:
+    case schema.Type.BOOL:
+    case schema.Type.ENUM:
+    case schema.Type.FLOAT32:
+    case schema.Type.FLOAT64:
+    case schema.Type.INT16:
+    case schema.Type.INT32:
+    case schema.Type.INT64:
+    case schema.Type.INT8:
+    case schema.Type.UINT16:
+    case schema.Type.UINT32:
+    case schema.Type.UINT64:
+    case schema.Type.UINT8: {
+      return `
+        if (${valueRef} !== undefined) {
+          target.${accessorName} = ${valueRef} as any;
+        }
+      `;
+    }
+
+    default: {
+      return "";
+    }
+  }
+}
+
+function createApplyInitListField(
+  ctx: CodeGeneratorFileContext,
+  field: schema.Field,
+  accessorName: string,
+  initName: string,
+  valueRef: string,
+): string {
+  const elementType = field.slot.type.list.elementType;
+  const listSet = createApplyInitListElement(ctx, elementType);
+
+  return `
+    if (${valueRef} !== undefined) {
+      if (${valueRef} instanceof $.List) {
+        target.${accessorName} = ${valueRef} as any;
+      } else {
+        const values = Array.isArray(${valueRef}) ? ${valueRef} : Array.from(${valueRef} as Iterable<any>);
+        const list = target.${initName}(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          ${listSet}
+        }
+      }
+    }
+  `;
+}
+
+function createApplyInitListElement(
+  ctx: CodeGeneratorFileContext,
+  elementType: schema.Type,
+): string {
+  switch (elementType.which()) {
+    case schema.Type.STRUCT: {
+      const structClassName = getFullClassName(
+        lookupNode(ctx, elementType.struct.typeId),
+      );
+      return `
+        if (item instanceof ${structClassName}) {
+          list.set(index, item);
+        } else {
+          ${structClassName}._applyInit(list.get(index), item as $.Init<${structClassName}>);
+        }
+      `;
+    }
+
+    case schema.Type.DATA: {
+      return `
+        if (item instanceof $.Data) {
+          list.set(index, item);
+        } else {
+          const bytes = $.dataBytes(item);
+          $.initDataValue(list.get(index), bytes.byteLength).copyBuffer(bytes);
+        }
+      `;
+    }
+
+    case schema.Type.LIST: {
+      const nestedListSet = createApplyInitListElement(
+        ctx,
+        elementType.list.elementType,
+      );
+      return `
+        if (item instanceof $.List) {
+          list.set(index, item);
+        } else {
+          const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+          const nested = list.get(index);
+          $.initListValue(nested, nestedValues.length);
+          for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
+            const item = nestedValues[nestedIndex];
+            const index = nestedIndex;
+            const list = nested;
+            ${nestedListSet}
+          }
+        }
+      `;
+    }
+
+    default: {
+      return `list.set(index, item);`;
+    }
+  }
+}
+
+function createUnionHelpers(
+  ctx: CodeGeneratorFileContext,
+  unionFields: schema.Field[],
+  fullClassName: string,
+): string {
+  const fields = [...unionFields].sort(compareCodeOrder);
+  const valueType = fields
+    .map((field) => {
+      if (isSetOnlyUnionField(field)) {
+        return `{ which: ${JSON.stringify(field.name)} }`;
+      }
+      return `{ which: ${JSON.stringify(field.name)}, value: ${getFieldValueTsType(ctx, field)} }`;
+    })
+    .join(" | ");
+  const casesType = fields
+    .map((field) => {
+      const value = isVoidField(field)
+        ? ""
+        : `value: ${getFieldValueTsType(ctx, field)}`;
+      return `${JSON.stringify(field.name)}?: (${value}) => R`;
+    })
+    .join(",\n");
+  const setCases = fields
+    .map((field) => {
+      const accessorName =
+        field.name === "constructor" ? "$constructor" : field.name;
+      const assignment = isSetOnlyUnionField(field)
+        ? `this.${accessorName} = true;`
+        : `this.${accessorName} = value.value;`;
+      return `case ${JSON.stringify(field.name)}: {
+        ${assignment}
+        return;
+      }`;
+    })
+    .join("\n");
+  const matchCases = fields
+    .map((field) => {
+      const accessorName =
+        field.name === "constructor" ? "$constructor" : field.name;
+      return `case ${field.discriminantValue}: {
+        const callback = cases[${JSON.stringify(field.name)}];
+        if (callback) {
+          ${isVoidField(field) ? `return callback();` : `return callback(this.${accessorName});`}
+        }
+        break;
+      }`;
+    })
+    .join("\n");
+
+  return `
+    _set(value: ${valueType}): void {
+      switch (value.which) {
+        ${setCases}
+      }
+    }
+    _match<R>(cases: {
+      ${casesType},
+      _?: (which: ${fullClassName}_Which) => R
+    }): R {
+      const which = this.which();
+      switch (which) {
+        ${matchCases}
+      }
+      if (cases._) {
+        return cases._(which);
+      }
+      throw new Error("Unhandled ${fullClassName} union case: " + which);
+    }
+  `;
+}
+
+function isVoidField(field: schema.Field): boolean {
+  return field._isSlot && field.slot.type.which() === schema.Type.VOID;
+}
+
+function isSetOnlyUnionField(field: schema.Field): boolean {
+  return isVoidField(field) || field._isGroup;
+}
+
+function getFieldValueTsType(
+  ctx: CodeGeneratorFileContext,
+  field: schema.Field,
+): string {
+  if (field._isGroup) {
+    return getFullClassName(lookupNode(ctx, field.group.typeId));
+  }
+
+  if (!field._isSlot) {
+    throw new Error(format(E.GEN_UNKNOWN_STRUCT_FIELD, field.which()));
+  }
+
+  const type = field.slot.type;
+  const jsType = getJsType(ctx, type, false);
+  return type.which() === schema.Type.INTERFACE ? `${jsType}$Client` : jsType;
 }
 
 function createFieldMetadata(

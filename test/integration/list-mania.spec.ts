@@ -110,3 +110,15 @@ test("1 of each list", () => {
     for (let i = 8; i < s.byteLength; i += 8) t.ok(s.isWordZero(i));
   });
 });
+
+test("applyInit initializes data list elements", () => {
+  const m = new capnp.Message();
+  const listMania = m.initRoot(ListMania);
+
+  capnp.applyInit(listMania, {
+    dataList: [new Uint8Array([1, 2, 3]), new Uint8Array([4, 5])],
+  });
+
+  t.deepEqual([...listMania.dataList.get(0).toUint8Array()], [1, 2, 3]);
+  t.deepEqual([...listMania.dataList.get(1).toUint8Array()], [4, 5]);
+});

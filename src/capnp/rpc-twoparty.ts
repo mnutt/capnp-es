@@ -35,6 +35,12 @@ export class VatId extends $.Struct {
       { name: "side", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "enum", typeId: 0x9fd69ebc87b9719cn, typeIdHex: "9fd69ebc87b9719c", displayName: "Side" } }
     ] as const,
   };
+  static _applyInit(target: VatId, value: $.Init<VatId>): void {
+    const init = value as any;
+    if (init["side"] !== undefined) {
+      target.side = init["side"] as any;
+    }
+  }
   get side(): Side {
     return $.utils.getUint16(0, this) as Side;
   }
@@ -58,6 +64,12 @@ export class ProvisionId extends $.Struct {
       { name: "joinId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: ProvisionId, value: $.Init<ProvisionId>): void {
+    const init = value as any;
+    if (init["joinId"] !== undefined) {
+      target.joinId = init["joinId"] as any;
+    }
+  }
   /**
 * The ID from `JoinKeyPart`.
 *
@@ -83,6 +95,9 @@ export class RecipientId extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: RecipientId, value: $.Init<RecipientId>): void {
+    const init = value as any;
+  }
   toString(): string { return "RecipientId_" + super.toString(); }
 }
 /**
@@ -98,6 +113,9 @@ export class ThirdPartyCapId extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: ThirdPartyCapId, value: $.Init<ThirdPartyCapId>): void {
+    const init = value as any;
+  }
   toString(): string { return "ThirdPartyCapId_" + super.toString(); }
 }
 /**
@@ -146,6 +164,18 @@ export class JoinKeyPart extends $.Struct {
       { name: "partNum", codeOrder: 2, ordinal: 2, kind: "slot", offset: 3, type: { kind: "uint16" } }
     ] as const,
   };
+  static _applyInit(target: JoinKeyPart, value: $.Init<JoinKeyPart>): void {
+    const init = value as any;
+    if (init["joinId"] !== undefined) {
+      target.joinId = init["joinId"] as any;
+    }
+    if (init["partCount"] !== undefined) {
+      target.partCount = init["partCount"] as any;
+    }
+    if (init["partNum"] !== undefined) {
+      target.partNum = init["partNum"] as any;
+    }
+  }
   /**
 * A number identifying this join, chosen by the sender.  May be reused once `Finish` messages are
 * sent corresponding to all of the `Join` messages.
@@ -192,6 +222,18 @@ export class JoinResult extends $.Struct {
       { name: "cap", codeOrder: 2, ordinal: 2, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: JoinResult, value: $.Init<JoinResult>): void {
+    const init = value as any;
+    if (init["joinId"] !== undefined) {
+      target.joinId = init["joinId"] as any;
+    }
+    if (init["succeeded"] !== undefined) {
+      target.succeeded = init["succeeded"] as any;
+    }
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   /**
 * Matches `JoinKeyPart`.
 *

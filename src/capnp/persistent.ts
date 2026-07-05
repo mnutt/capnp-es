@@ -12,6 +12,12 @@ export class Persistent_SaveParams extends $.Struct {
       { name: "sealFor", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Persistent_SaveParams, value: $.Init<Persistent_SaveParams>): void {
+    const init = value as any;
+    if (init["sealFor"] !== undefined) {
+      target.sealFor = init["sealFor"] as any;
+    }
+  }
   _adoptSealFor(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -49,6 +55,12 @@ export class Persistent_SaveResults extends $.Struct {
       { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Persistent_SaveResults, value: $.Init<Persistent_SaveResults>): void {
+    const init = value as any;
+    if (init["sturdyRef"] !== undefined) {
+      target.sturdyRef = init["sturdyRef"] as any;
+    }
+  }
   _adoptSturdyRef(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -73,6 +85,15 @@ export class Persistent_SaveResults$Promise {
   }
   async promise(): Promise<Persistent_SaveResults> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = Persistent_SaveResults, TResult2 = never>(onfulfilled?: ((value: Persistent_SaveResults) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Persistent_SaveResults | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<Persistent_SaveResults> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class Persistent$Client {
@@ -101,10 +122,15 @@ export class Persistent$Client {
 * this and which do not.
 *
 */
-  save(paramsFunc?: (params: Persistent_SaveParams) => void): Persistent_SaveResults$Promise {
+  save(): Persistent_SaveResults$Promise;
+  save(params: $.Init<Persistent_SaveParams>): Persistent_SaveResults$Promise;
+  save(paramsFunc: (params: Persistent_SaveParams) => void): Persistent_SaveResults$Promise;
+  save(params?: $.Initializer<Persistent_SaveParams>): Persistent_SaveResults$Promise {
     const answer = this.client.call({
       method: Persistent$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: Persistent_SaveParams) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Persistent_SaveResults, answer);
     return new Persistent_SaveResults$Promise(pipeline);
@@ -112,7 +138,7 @@ export class Persistent$Client {
 }
 $.Registry.register(Persistent$Client.interfaceId, Persistent$Client);
 export interface Persistent$Server$Target {
-  save(params: Persistent_SaveParams, results: Persistent_SaveResults): Promise<void>;
+  save(params: Persistent_SaveParams, results: Persistent_SaveResults): $.MaybePromise<void | $.Init<Persistent_SaveResults>>;
 }
 export class Persistent$Server extends $.Server {
   readonly target: Persistent$Server$Target;
@@ -120,7 +146,12 @@ export class Persistent$Server extends $.Server {
     super(target, [
       {
         ...Persistent$Client.methods[0],
-        impl: target.save
+        impl: async (params: Persistent_SaveParams, results: Persistent_SaveResults) => {
+          const value = await target.save(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<Persistent_SaveResults>);
+          }
+        }
       }
     ]);
     this.target = target;

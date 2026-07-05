@@ -14,6 +14,17 @@ export class Foo extends $.Struct {
       { name: "baz", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xf2f28862b8e82db7n, typeIdHex: "f2f28862b8e82db7", displayName: "Baz" } }
     ] as const,
   };
+  static _applyInit(target: Foo, value: $.Init<Foo>): void {
+    const init = value as any;
+    if (init["baz"] !== undefined) {
+      if (init["baz"] instanceof Baz) {
+        target.baz = init["baz"] as Baz;
+      }
+      else {
+        Baz._applyInit(target._initBaz(), init["baz"] as $.Init<Baz>);
+      }
+    }
+  }
   _adoptBaz(value: $.Orphan<Baz>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }

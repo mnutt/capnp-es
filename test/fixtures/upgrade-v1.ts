@@ -16,6 +16,41 @@ export class Upgrade extends $.Struct {
     ] as const,
   };
   static _SelfReferences: $.ListCtor<Upgrade>;
+  static _applyInit(target: Upgrade, value: $.Init<Upgrade>): void {
+    const init = value as any;
+    if (init["legacyName"] !== undefined) {
+      target.legacyName = init["legacyName"] as any;
+    }
+    if (init["legacyId"] !== undefined) {
+      target.legacyId = init["legacyId"] as any;
+    }
+    if (init["selfReference"] !== undefined) {
+      if (init["selfReference"] instanceof Upgrade) {
+        target.selfReference = init["selfReference"] as Upgrade;
+      }
+      else {
+        Upgrade._applyInit(target._initSelfReference(), init["selfReference"] as $.Init<Upgrade>);
+      }
+    }
+    if (init["selfReferences"] !== undefined) {
+      if (init["selfReferences"] instanceof $.List) {
+        target.selfReferences = init["selfReferences"] as any;
+      }
+      else {
+        const values = Array.isArray(init["selfReferences"]) ? init["selfReferences"] : Array.from(init["selfReferences"] as Iterable<any>);
+        const list = target._initSelfReferences(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof Upgrade) {
+            list.set(index, item);
+          }
+          else {
+            Upgrade._applyInit(list.get(index), item as $.Init<Upgrade>);
+          }
+        }
+      }
+    }
+  }
   get legacyName(): string {
     return $.utils.getText(0, this);
   }

@@ -138,6 +138,111 @@ export class Message extends $.Struct {
       { name: "join", codeOrder: 13, ordinal: 12, discriminantValue: 12, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xfbe1980490e001afn, typeIdHex: "fbe1980490e001af", displayName: "Join" } }
     ] as const,
   };
+  static _applyInit(target: Message, value: $.Init<Message>): void {
+    const init = value as any;
+    if (init["unimplemented"] !== undefined) {
+      if (init["unimplemented"] instanceof Message) {
+        target.unimplemented = init["unimplemented"] as Message;
+      }
+      else {
+        Message._applyInit(target._initUnimplemented(), init["unimplemented"] as $.Init<Message>);
+      }
+    }
+    if (init["abort"] !== undefined) {
+      if (init["abort"] instanceof Exception) {
+        target.abort = init["abort"] as Exception;
+      }
+      else {
+        Exception._applyInit(target._initAbort(), init["abort"] as $.Init<Exception>);
+      }
+    }
+    if (init["bootstrap"] !== undefined) {
+      if (init["bootstrap"] instanceof Bootstrap) {
+        target.bootstrap = init["bootstrap"] as Bootstrap;
+      }
+      else {
+        Bootstrap._applyInit(target._initBootstrap(), init["bootstrap"] as $.Init<Bootstrap>);
+      }
+    }
+    if (init["call"] !== undefined) {
+      if (init["call"] instanceof Call) {
+        target.call = init["call"] as Call;
+      }
+      else {
+        Call._applyInit(target._initCall(), init["call"] as $.Init<Call>);
+      }
+    }
+    if (init["return"] !== undefined) {
+      if (init["return"] instanceof Return) {
+        target.return = init["return"] as Return;
+      }
+      else {
+        Return._applyInit(target._initReturn(), init["return"] as $.Init<Return>);
+      }
+    }
+    if (init["finish"] !== undefined) {
+      if (init["finish"] instanceof Finish) {
+        target.finish = init["finish"] as Finish;
+      }
+      else {
+        Finish._applyInit(target._initFinish(), init["finish"] as $.Init<Finish>);
+      }
+    }
+    if (init["resolve"] !== undefined) {
+      if (init["resolve"] instanceof Resolve) {
+        target.resolve = init["resolve"] as Resolve;
+      }
+      else {
+        Resolve._applyInit(target._initResolve(), init["resolve"] as $.Init<Resolve>);
+      }
+    }
+    if (init["release"] !== undefined) {
+      if (init["release"] instanceof Release) {
+        target.release = init["release"] as Release;
+      }
+      else {
+        Release._applyInit(target._initRelease(), init["release"] as $.Init<Release>);
+      }
+    }
+    if (init["disembargo"] !== undefined) {
+      if (init["disembargo"] instanceof Disembargo) {
+        target.disembargo = init["disembargo"] as Disembargo;
+      }
+      else {
+        Disembargo._applyInit(target._initDisembargo(), init["disembargo"] as $.Init<Disembargo>);
+      }
+    }
+    if (init["obsoleteSave"] !== undefined) {
+      target.obsoleteSave = init["obsoleteSave"] as any;
+    }
+    if (init["obsoleteDelete"] !== undefined) {
+      target.obsoleteDelete = init["obsoleteDelete"] as any;
+    }
+    if (init["provide"] !== undefined) {
+      if (init["provide"] instanceof Provide) {
+        target.provide = init["provide"] as Provide;
+      }
+      else {
+        Provide._applyInit(target._initProvide(), init["provide"] as $.Init<Provide>);
+      }
+    }
+    if (init["accept"] !== undefined) {
+      if (init["accept"] instanceof Accept) {
+        target.accept = init["accept"] as Accept;
+      }
+      else {
+        Accept._applyInit(target._initAccept(), init["accept"] as $.Init<Accept>);
+      }
+    }
+    if (init["join"] !== undefined) {
+      if (init["join"] instanceof Join) {
+        target.join = init["join"] as Join;
+      }
+      else {
+        Join._applyInit(target._initJoin(), init["join"] as $.Init<Join>);
+      }
+    }
+  }
   _adoptUnimplemented(value: $.Orphan<Message>): void {
     $.utils.setUint16(0, 0, this);
     $.utils.adopt(value, $.utils.getPointer(0, this));
@@ -562,6 +667,231 @@ export class Message extends $.Struct {
   which(): Message_Which {
     return $.utils.getUint16(0, this) as Message_Which;
   }
+  _set(value: {
+    which: "unimplemented";
+    value: Message;
+  } | {
+    which: "abort";
+    value: Exception;
+  } | {
+    which: "bootstrap";
+    value: Bootstrap;
+  } | {
+    which: "call";
+    value: Call;
+  } | {
+    which: "return";
+    value: Return;
+  } | {
+    which: "finish";
+    value: Finish;
+  } | {
+    which: "resolve";
+    value: Resolve;
+  } | {
+    which: "release";
+    value: Release;
+  } | {
+    which: "disembargo";
+    value: Disembargo;
+  } | {
+    which: "obsoleteSave";
+    value: $.Pointer;
+  } | {
+    which: "obsoleteDelete";
+    value: $.Pointer;
+  } | {
+    which: "provide";
+    value: Provide;
+  } | {
+    which: "accept";
+    value: Accept;
+  } | {
+    which: "join";
+    value: Join;
+  }): void {
+    switch (value.which) {
+      case "unimplemented": {
+        this.unimplemented = value.value;
+        return;
+      }
+      case "abort": {
+        this.abort = value.value;
+        return;
+      }
+      case "bootstrap": {
+        this.bootstrap = value.value;
+        return;
+      }
+      case "call": {
+        this.call = value.value;
+        return;
+      }
+      case "return": {
+        this.return = value.value;
+        return;
+      }
+      case "finish": {
+        this.finish = value.value;
+        return;
+      }
+      case "resolve": {
+        this.resolve = value.value;
+        return;
+      }
+      case "release": {
+        this.release = value.value;
+        return;
+      }
+      case "disembargo": {
+        this.disembargo = value.value;
+        return;
+      }
+      case "obsoleteSave": {
+        this.obsoleteSave = value.value;
+        return;
+      }
+      case "obsoleteDelete": {
+        this.obsoleteDelete = value.value;
+        return;
+      }
+      case "provide": {
+        this.provide = value.value;
+        return;
+      }
+      case "accept": {
+        this.accept = value.value;
+        return;
+      }
+      case "join": {
+        this.join = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "unimplemented"?: (value: Message) => R;
+    "abort"?: (value: Exception) => R;
+    "bootstrap"?: (value: Bootstrap) => R;
+    "call"?: (value: Call) => R;
+    "return"?: (value: Return) => R;
+    "finish"?: (value: Finish) => R;
+    "resolve"?: (value: Resolve) => R;
+    "release"?: (value: Release) => R;
+    "disembargo"?: (value: Disembargo) => R;
+    "obsoleteSave"?: (value: $.Pointer) => R;
+    "obsoleteDelete"?: (value: $.Pointer) => R;
+    "provide"?: (value: Provide) => R;
+    "accept"?: (value: Accept) => R;
+    "join"?: (value: Join) => R;
+    _?: (which: Message_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["unimplemented"];
+        if (callback) {
+          return callback(this.unimplemented);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["abort"];
+        if (callback) {
+          return callback(this.abort);
+        }
+        break;
+      }
+      case 8: {
+        const callback = cases["bootstrap"];
+        if (callback) {
+          return callback(this.bootstrap);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["call"];
+        if (callback) {
+          return callback(this.call);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["return"];
+        if (callback) {
+          return callback(this.return);
+        }
+        break;
+      }
+      case 4: {
+        const callback = cases["finish"];
+        if (callback) {
+          return callback(this.finish);
+        }
+        break;
+      }
+      case 5: {
+        const callback = cases["resolve"];
+        if (callback) {
+          return callback(this.resolve);
+        }
+        break;
+      }
+      case 6: {
+        const callback = cases["release"];
+        if (callback) {
+          return callback(this.release);
+        }
+        break;
+      }
+      case 13: {
+        const callback = cases["disembargo"];
+        if (callback) {
+          return callback(this.disembargo);
+        }
+        break;
+      }
+      case 7: {
+        const callback = cases["obsoleteSave"];
+        if (callback) {
+          return callback(this.obsoleteSave);
+        }
+        break;
+      }
+      case 9: {
+        const callback = cases["obsoleteDelete"];
+        if (callback) {
+          return callback(this.obsoleteDelete);
+        }
+        break;
+      }
+      case 10: {
+        const callback = cases["provide"];
+        if (callback) {
+          return callback(this.provide);
+        }
+        break;
+      }
+      case 11: {
+        const callback = cases["accept"];
+        if (callback) {
+          return callback(this.accept);
+        }
+        break;
+      }
+      case 12: {
+        const callback = cases["join"];
+        if (callback) {
+          return callback(this.join);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled Message union case: " + which);
+  }
 }
 /**
 * **(level 0)**
@@ -607,6 +937,15 @@ export class Bootstrap extends $.Struct {
       { name: "deprecatedObjectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Bootstrap, value: $.Init<Bootstrap>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["deprecatedObjectId"] !== undefined) {
+      target.deprecatedObjectId = init["deprecatedObjectId"] as any;
+    }
+  }
   /**
 * A new question ID identifying this request, which will eventually receive a Return message
 * containing the restored capability.
@@ -794,6 +1133,18 @@ export class Call_SendResultsTo extends $.Struct {
       { name: "thirdParty", codeOrder: 2, ordinal: 7, discriminantValue: 2, kind: "slot", offset: 2, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Call_SendResultsTo, value: $.Init<Call_SendResultsTo>): void {
+    const init = value as any;
+    if (init["caller"] !== undefined) {
+      target.caller = true;
+    }
+    if (init["yourself"] !== undefined) {
+      target.yourself = true;
+    }
+    if (init["thirdParty"] !== undefined) {
+      target.thirdParty = init["thirdParty"] as any;
+    }
+  }
   get _isCaller(): boolean {
     return $.utils.getUint16(6, this) === 0;
   }
@@ -845,6 +1196,64 @@ export class Call_SendResultsTo extends $.Struct {
   which(): Call_SendResultsTo_Which {
     return $.utils.getUint16(6, this) as Call_SendResultsTo_Which;
   }
+  _set(value: {
+    which: "caller";
+  } | {
+    which: "yourself";
+  } | {
+    which: "thirdParty";
+    value: $.Pointer;
+  }): void {
+    switch (value.which) {
+      case "caller": {
+        this.caller = true;
+        return;
+      }
+      case "yourself": {
+        this.yourself = true;
+        return;
+      }
+      case "thirdParty": {
+        this.thirdParty = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "caller"?: () => R;
+    "yourself"?: () => R;
+    "thirdParty"?: (value: $.Pointer) => R;
+    _?: (which: Call_SendResultsTo_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["caller"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["yourself"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["thirdParty"];
+        if (callback) {
+          return callback(this.thirdParty);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled Call_SendResultsTo union case: " + which);
+  }
 }
 /**
 * **(level 0)**
@@ -874,6 +1283,46 @@ export class Call extends $.Struct {
     defaultNoPromisePipelining: $.getBitMask(false, 1),
     defaultOnlyPromisePipeline: $.getBitMask(false, 2)
   };
+  static _applyInit(target: Call, value: $.Init<Call>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["target"] !== undefined) {
+      if (init["target"] instanceof MessageTarget) {
+        target.target = init["target"] as MessageTarget;
+      }
+      else {
+        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+      }
+    }
+    if (init["interfaceId"] !== undefined) {
+      target.interfaceId = init["interfaceId"] as any;
+    }
+    if (init["methodId"] !== undefined) {
+      target.methodId = init["methodId"] as any;
+    }
+    if (init["allowThirdPartyTailCall"] !== undefined) {
+      target.allowThirdPartyTailCall = init["allowThirdPartyTailCall"] as any;
+    }
+    if (init["noPromisePipelining"] !== undefined) {
+      target.noPromisePipelining = init["noPromisePipelining"] as any;
+    }
+    if (init["onlyPromisePipeline"] !== undefined) {
+      target.onlyPromisePipeline = init["onlyPromisePipeline"] as any;
+    }
+    if (init["params"] !== undefined) {
+      if (init["params"] instanceof Payload) {
+        target.params = init["params"] as Payload;
+      }
+      else {
+        Payload._applyInit(target._initParams(), init["params"] as $.Init<Payload>);
+      }
+    }
+    if (init["sendResultsTo"] !== undefined) {
+      Call_SendResultsTo._applyInit(target._initSendResultsTo(), init["sendResultsTo"] as $.Init<Call_SendResultsTo>);
+    }
+  }
   /**
 * A number, chosen by the caller, that identifies this call in future messages.  This number
 * must be different from all other calls originating from the same end of the connection (but
@@ -1103,6 +1552,46 @@ export class Return extends $.Struct {
     defaultReleaseParamCaps: $.getBitMask(true, 0),
     defaultNoFinishNeeded: $.getBitMask(false, 1)
   };
+  static _applyInit(target: Return, value: $.Init<Return>): void {
+    const init = value as any;
+    if (init["answerId"] !== undefined) {
+      target.answerId = init["answerId"] as any;
+    }
+    if (init["releaseParamCaps"] !== undefined) {
+      target.releaseParamCaps = init["releaseParamCaps"] as any;
+    }
+    if (init["noFinishNeeded"] !== undefined) {
+      target.noFinishNeeded = init["noFinishNeeded"] as any;
+    }
+    if (init["results"] !== undefined) {
+      if (init["results"] instanceof Payload) {
+        target.results = init["results"] as Payload;
+      }
+      else {
+        Payload._applyInit(target._initResults(), init["results"] as $.Init<Payload>);
+      }
+    }
+    if (init["exception"] !== undefined) {
+      if (init["exception"] instanceof Exception) {
+        target.exception = init["exception"] as Exception;
+      }
+      else {
+        Exception._applyInit(target._initException(), init["exception"] as $.Init<Exception>);
+      }
+    }
+    if (init["canceled"] !== undefined) {
+      target.canceled = true;
+    }
+    if (init["resultsSentElsewhere"] !== undefined) {
+      target.resultsSentElsewhere = true;
+    }
+    if (init["takeFromOtherQuestion"] !== undefined) {
+      target.takeFromOtherQuestion = init["takeFromOtherQuestion"] as any;
+    }
+    if (init["acceptFromThirdParty"] !== undefined) {
+      target.acceptFromThirdParty = init["acceptFromThirdParty"] as any;
+    }
+  }
   /**
 * Equal to the QuestionId of the corresponding `Call` message.
 *
@@ -1270,6 +1759,109 @@ export class Return extends $.Struct {
   which(): Return_Which {
     return $.utils.getUint16(6, this) as Return_Which;
   }
+  _set(value: {
+    which: "results";
+    value: Payload;
+  } | {
+    which: "exception";
+    value: Exception;
+  } | {
+    which: "canceled";
+  } | {
+    which: "resultsSentElsewhere";
+  } | {
+    which: "takeFromOtherQuestion";
+    value: number;
+  } | {
+    which: "acceptFromThirdParty";
+    value: $.Pointer;
+  }): void {
+    switch (value.which) {
+      case "results": {
+        this.results = value.value;
+        return;
+      }
+      case "exception": {
+        this.exception = value.value;
+        return;
+      }
+      case "canceled": {
+        this.canceled = true;
+        return;
+      }
+      case "resultsSentElsewhere": {
+        this.resultsSentElsewhere = true;
+        return;
+      }
+      case "takeFromOtherQuestion": {
+        this.takeFromOtherQuestion = value.value;
+        return;
+      }
+      case "acceptFromThirdParty": {
+        this.acceptFromThirdParty = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "results"?: (value: Payload) => R;
+    "exception"?: (value: Exception) => R;
+    "canceled"?: () => R;
+    "resultsSentElsewhere"?: () => R;
+    "takeFromOtherQuestion"?: (value: number) => R;
+    "acceptFromThirdParty"?: (value: $.Pointer) => R;
+    _?: (which: Return_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["results"];
+        if (callback) {
+          return callback(this.results);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["exception"];
+        if (callback) {
+          return callback(this.exception);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["canceled"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["resultsSentElsewhere"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 4: {
+        const callback = cases["takeFromOtherQuestion"];
+        if (callback) {
+          return callback(this.takeFromOtherQuestion);
+        }
+        break;
+      }
+      case 5: {
+        const callback = cases["acceptFromThirdParty"];
+        if (callback) {
+          return callback(this.acceptFromThirdParty);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled Return union case: " + which);
+  }
 }
 /**
 * **(level 0)**
@@ -1307,6 +1899,18 @@ export class Finish extends $.Struct {
     defaultReleaseResultCaps: $.getBitMask(true, 0),
     defaultRequireEarlyCancellationWorkaround: $.getBitMask(true, 1)
   };
+  static _applyInit(target: Finish, value: $.Init<Finish>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["releaseResultCaps"] !== undefined) {
+      target.releaseResultCaps = init["releaseResultCaps"] as any;
+    }
+    if (init["requireEarlyCancellationWorkaround"] !== undefined) {
+      target.requireEarlyCancellationWorkaround = init["requireEarlyCancellationWorkaround"] as any;
+    }
+  }
   /**
 * ID of the call whose result is to be released.
 *
@@ -1429,6 +2033,28 @@ export class Resolve extends $.Struct {
       { name: "exception", codeOrder: 2, ordinal: 2, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd625b7063acf691an, typeIdHex: "d625b7063acf691a", displayName: "Exception" } }
     ] as const,
   };
+  static _applyInit(target: Resolve, value: $.Init<Resolve>): void {
+    const init = value as any;
+    if (init["promiseId"] !== undefined) {
+      target.promiseId = init["promiseId"] as any;
+    }
+    if (init["cap"] !== undefined) {
+      if (init["cap"] instanceof CapDescriptor) {
+        target.cap = init["cap"] as CapDescriptor;
+      }
+      else {
+        CapDescriptor._applyInit(target._initCap(), init["cap"] as $.Init<CapDescriptor>);
+      }
+    }
+    if (init["exception"] !== undefined) {
+      if (init["exception"] instanceof Exception) {
+        target.exception = init["exception"] as Exception;
+      }
+      else {
+        Exception._applyInit(target._initException(), init["exception"] as $.Init<Exception>);
+      }
+    }
+  }
   /**
 * The ID of the promise to be resolved.
 *
@@ -1529,6 +2155,51 @@ export class Resolve extends $.Struct {
   which(): Resolve_Which {
     return $.utils.getUint16(4, this) as Resolve_Which;
   }
+  _set(value: {
+    which: "cap";
+    value: CapDescriptor;
+  } | {
+    which: "exception";
+    value: Exception;
+  }): void {
+    switch (value.which) {
+      case "cap": {
+        this.cap = value.value;
+        return;
+      }
+      case "exception": {
+        this.exception = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "cap"?: (value: CapDescriptor) => R;
+    "exception"?: (value: Exception) => R;
+    _?: (which: Resolve_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["cap"];
+        if (callback) {
+          return callback(this.cap);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["exception"];
+        if (callback) {
+          return callback(this.exception);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled Resolve union case: " + which);
+  }
 }
 /**
 * **(level 1)**
@@ -1549,6 +2220,15 @@ export class Release extends $.Struct {
       { name: "referenceCount", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: Release, value: $.Init<Release>): void {
+    const init = value as any;
+    if (init["id"] !== undefined) {
+      target.id = init["id"] as any;
+    }
+    if (init["referenceCount"] !== undefined) {
+      target.referenceCount = init["referenceCount"] as any;
+    }
+  }
   /**
 * What to release.
 *
@@ -1636,6 +2316,21 @@ export class Disembargo_Context extends $.Struct {
       { name: "provide", codeOrder: 3, ordinal: 4, discriminantValue: 3, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: Disembargo_Context, value: $.Init<Disembargo_Context>): void {
+    const init = value as any;
+    if (init["senderLoopback"] !== undefined) {
+      target.senderLoopback = init["senderLoopback"] as any;
+    }
+    if (init["receiverLoopback"] !== undefined) {
+      target.receiverLoopback = init["receiverLoopback"] as any;
+    }
+    if (init["accept"] !== undefined) {
+      target.accept = true;
+    }
+    if (init["provide"] !== undefined) {
+      target.provide = init["provide"] as any;
+    }
+  }
   /**
 * The sender is requesting a disembargo on a promise that is known to resolve back to a
 * capability hosted by the sender.  As soon as the receiver has echoed back all pipelined calls
@@ -1705,6 +2400,80 @@ export class Disembargo_Context extends $.Struct {
   toString(): string { return "Disembargo_Context_" + super.toString(); }
   which(): Disembargo_Context_Which {
     return $.utils.getUint16(4, this) as Disembargo_Context_Which;
+  }
+  _set(value: {
+    which: "senderLoopback";
+    value: number;
+  } | {
+    which: "receiverLoopback";
+    value: number;
+  } | {
+    which: "accept";
+  } | {
+    which: "provide";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "senderLoopback": {
+        this.senderLoopback = value.value;
+        return;
+      }
+      case "receiverLoopback": {
+        this.receiverLoopback = value.value;
+        return;
+      }
+      case "accept": {
+        this.accept = true;
+        return;
+      }
+      case "provide": {
+        this.provide = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "senderLoopback"?: (value: number) => R;
+    "receiverLoopback"?: (value: number) => R;
+    "accept"?: () => R;
+    "provide"?: (value: number) => R;
+    _?: (which: Disembargo_Context_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["senderLoopback"];
+        if (callback) {
+          return callback(this.senderLoopback);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["receiverLoopback"];
+        if (callback) {
+          return callback(this.receiverLoopback);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["accept"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["provide"];
+        if (callback) {
+          return callback(this.provide);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled Disembargo_Context union case: " + which);
   }
 }
 /**
@@ -1792,6 +2561,20 @@ export class Disembargo extends $.Struct {
       { name: "context", codeOrder: 1, ordinal: 1, kind: "group", type: { kind: "group", typeId: 0xd562b4df655bdd4dn, typeIdHex: "d562b4df655bdd4d", displayName: "context" } }
     ] as const,
   };
+  static _applyInit(target: Disembargo, value: $.Init<Disembargo>): void {
+    const init = value as any;
+    if (init["target"] !== undefined) {
+      if (init["target"] instanceof MessageTarget) {
+        target.target = init["target"] as MessageTarget;
+      }
+      else {
+        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+      }
+    }
+    if (init["context"] !== undefined) {
+      Disembargo_Context._applyInit(target._initContext(), init["context"] as $.Init<Disembargo_Context>);
+    }
+  }
   _adoptTarget(value: $.Orphan<MessageTarget>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -1846,6 +2629,23 @@ export class Provide extends $.Struct {
       { name: "recipient", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Provide, value: $.Init<Provide>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["target"] !== undefined) {
+      if (init["target"] instanceof MessageTarget) {
+        target.target = init["target"] as MessageTarget;
+      }
+      else {
+        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+      }
+    }
+    if (init["recipient"] !== undefined) {
+      target.recipient = init["recipient"] as any;
+    }
+  }
   /**
 * Question ID to be held open until the recipient has received the capability.  A result will be
 * returned once the third party has successfully received the capability.  The sender must at some
@@ -1924,6 +2724,18 @@ export class Accept extends $.Struct {
       { name: "embargo", codeOrder: 2, ordinal: 2, kind: "slot", offset: 32, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: Accept, value: $.Init<Accept>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["provision"] !== undefined) {
+      target.provision = init["provision"] as any;
+    }
+    if (init["embargo"] !== undefined) {
+      target.embargo = init["embargo"] as any;
+    }
+  }
   /**
 * A new question ID identifying this accept message, which will eventually receive a Return
 * message containing the provided capability (or the call result in the case of a redirected
@@ -2051,6 +2863,23 @@ export class Join extends $.Struct {
       { name: "keyPart", codeOrder: 2, ordinal: 2, kind: "slot", offset: 1, type: { kind: "anyPointer" } }
     ] as const,
   };
+  static _applyInit(target: Join, value: $.Init<Join>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["target"] !== undefined) {
+      if (init["target"] instanceof MessageTarget) {
+        target.target = init["target"] as MessageTarget;
+      }
+      else {
+        MessageTarget._applyInit(target._initTarget(), init["target"] as $.Init<MessageTarget>);
+      }
+    }
+    if (init["keyPart"] !== undefined) {
+      target.keyPart = init["keyPart"] as any;
+    }
+  }
   /**
 * Question ID used to respond to this Join.  (Note that this ID only identifies one part of the
 * request for one hop; each part has a different ID and relayed copies of the request have
@@ -2155,6 +2984,20 @@ export class MessageTarget extends $.Struct {
       { name: "promisedAnswer", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xd800b1d6cd6f1ca0n, typeIdHex: "d800b1d6cd6f1ca0", displayName: "PromisedAnswer" } }
     ] as const,
   };
+  static _applyInit(target: MessageTarget, value: $.Init<MessageTarget>): void {
+    const init = value as any;
+    if (init["importedCap"] !== undefined) {
+      target.importedCap = init["importedCap"] as any;
+    }
+    if (init["promisedAnswer"] !== undefined) {
+      if (init["promisedAnswer"] instanceof PromisedAnswer) {
+        target.promisedAnswer = init["promisedAnswer"] as PromisedAnswer;
+      }
+      else {
+        PromisedAnswer._applyInit(target._initPromisedAnswer(), init["promisedAnswer"] as $.Init<PromisedAnswer>);
+      }
+    }
+  }
   /**
 * This message is to a capability or promise previously imported by the caller (exported by
 * the receiver).
@@ -2208,6 +3051,51 @@ export class MessageTarget extends $.Struct {
   which(): MessageTarget_Which {
     return $.utils.getUint16(4, this) as MessageTarget_Which;
   }
+  _set(value: {
+    which: "importedCap";
+    value: number;
+  } | {
+    which: "promisedAnswer";
+    value: PromisedAnswer;
+  }): void {
+    switch (value.which) {
+      case "importedCap": {
+        this.importedCap = value.value;
+        return;
+      }
+      case "promisedAnswer": {
+        this.promisedAnswer = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "importedCap"?: (value: number) => R;
+    "promisedAnswer"?: (value: PromisedAnswer) => R;
+    _?: (which: MessageTarget_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["importedCap"];
+        if (callback) {
+          return callback(this.importedCap);
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["promisedAnswer"];
+        if (callback) {
+          return callback(this.promisedAnswer);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled MessageTarget union case: " + which);
+  }
 }
 /**
 * Represents some data structure that might contain capabilities.
@@ -2226,6 +3114,30 @@ export class Payload extends $.Struct {
     ] as const,
   };
   static _CapTable: $.ListCtor<CapDescriptor>;
+  static _applyInit(target: Payload, value: $.Init<Payload>): void {
+    const init = value as any;
+    if (init["content"] !== undefined) {
+      target.content = init["content"] as any;
+    }
+    if (init["capTable"] !== undefined) {
+      if (init["capTable"] instanceof $.List) {
+        target.capTable = init["capTable"] as any;
+      }
+      else {
+        const values = Array.isArray(init["capTable"]) ? init["capTable"] : Array.from(init["capTable"] as Iterable<any>);
+        const list = target._initCapTable(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof CapDescriptor) {
+            list.set(index, item);
+          }
+          else {
+            CapDescriptor._applyInit(list.get(index), item as $.Init<CapDescriptor>);
+          }
+        }
+      }
+    }
+  }
   _adoptContent(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -2362,6 +3274,40 @@ export class CapDescriptor extends $.Struct {
     ] as const,
     defaultAttachedFd: $.getUint8Mask(255)
   };
+  static _applyInit(target: CapDescriptor, value: $.Init<CapDescriptor>): void {
+    const init = value as any;
+    if (init["none"] !== undefined) {
+      target.none = true;
+    }
+    if (init["senderHosted"] !== undefined) {
+      target.senderHosted = init["senderHosted"] as any;
+    }
+    if (init["senderPromise"] !== undefined) {
+      target.senderPromise = init["senderPromise"] as any;
+    }
+    if (init["receiverHosted"] !== undefined) {
+      target.receiverHosted = init["receiverHosted"] as any;
+    }
+    if (init["receiverAnswer"] !== undefined) {
+      if (init["receiverAnswer"] instanceof PromisedAnswer) {
+        target.receiverAnswer = init["receiverAnswer"] as PromisedAnswer;
+      }
+      else {
+        PromisedAnswer._applyInit(target._initReceiverAnswer(), init["receiverAnswer"] as $.Init<PromisedAnswer>);
+      }
+    }
+    if (init["thirdPartyHosted"] !== undefined) {
+      if (init["thirdPartyHosted"] instanceof ThirdPartyCapDescriptor) {
+        target.thirdPartyHosted = init["thirdPartyHosted"] as ThirdPartyCapDescriptor;
+      }
+      else {
+        ThirdPartyCapDescriptor._applyInit(target._initThirdPartyHosted(), init["thirdPartyHosted"] as $.Init<ThirdPartyCapDescriptor>);
+      }
+    }
+    if (init["attachedFd"] !== undefined) {
+      target.attachedFd = init["attachedFd"] as any;
+    }
+  }
   get _isNone(): boolean {
     return $.utils.getUint16(0, this) === 0;
   }
@@ -2551,6 +3497,110 @@ export class CapDescriptor extends $.Struct {
   which(): CapDescriptor_Which {
     return $.utils.getUint16(0, this) as CapDescriptor_Which;
   }
+  _set(value: {
+    which: "none";
+  } | {
+    which: "senderHosted";
+    value: number;
+  } | {
+    which: "senderPromise";
+    value: number;
+  } | {
+    which: "receiverHosted";
+    value: number;
+  } | {
+    which: "receiverAnswer";
+    value: PromisedAnswer;
+  } | {
+    which: "thirdPartyHosted";
+    value: ThirdPartyCapDescriptor;
+  }): void {
+    switch (value.which) {
+      case "none": {
+        this.none = true;
+        return;
+      }
+      case "senderHosted": {
+        this.senderHosted = value.value;
+        return;
+      }
+      case "senderPromise": {
+        this.senderPromise = value.value;
+        return;
+      }
+      case "receiverHosted": {
+        this.receiverHosted = value.value;
+        return;
+      }
+      case "receiverAnswer": {
+        this.receiverAnswer = value.value;
+        return;
+      }
+      case "thirdPartyHosted": {
+        this.thirdPartyHosted = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "none"?: () => R;
+    "senderHosted"?: (value: number) => R;
+    "senderPromise"?: (value: number) => R;
+    "receiverHosted"?: (value: number) => R;
+    "receiverAnswer"?: (value: PromisedAnswer) => R;
+    "thirdPartyHosted"?: (value: ThirdPartyCapDescriptor) => R;
+    _?: (which: CapDescriptor_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["none"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["senderHosted"];
+        if (callback) {
+          return callback(this.senderHosted);
+        }
+        break;
+      }
+      case 2: {
+        const callback = cases["senderPromise"];
+        if (callback) {
+          return callback(this.senderPromise);
+        }
+        break;
+      }
+      case 3: {
+        const callback = cases["receiverHosted"];
+        if (callback) {
+          return callback(this.receiverHosted);
+        }
+        break;
+      }
+      case 4: {
+        const callback = cases["receiverAnswer"];
+        if (callback) {
+          return callback(this.receiverAnswer);
+        }
+        break;
+      }
+      case 5: {
+        const callback = cases["thirdPartyHosted"];
+        if (callback) {
+          return callback(this.thirdPartyHosted);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled CapDescriptor union case: " + which);
+  }
 }
 export const PromisedAnswer_Op_Which = {
   /**
@@ -2581,6 +3631,15 @@ export class PromisedAnswer_Op extends $.Struct {
       { name: "getPointerField", codeOrder: 1, ordinal: 1, discriminantValue: 1, kind: "slot", offset: 1, type: { kind: "uint16" } }
     ] as const,
   };
+  static _applyInit(target: PromisedAnswer_Op, value: $.Init<PromisedAnswer_Op>): void {
+    const init = value as any;
+    if (init["noop"] !== undefined) {
+      target.noop = true;
+    }
+    if (init["getPointerField"] !== undefined) {
+      target.getPointerField = init["getPointerField"] as any;
+    }
+  }
   get _isNoop(): boolean {
     return $.utils.getUint16(0, this) === 0;
   }
@@ -2606,6 +3665,50 @@ export class PromisedAnswer_Op extends $.Struct {
   toString(): string { return "PromisedAnswer_Op_" + super.toString(); }
   which(): PromisedAnswer_Op_Which {
     return $.utils.getUint16(0, this) as PromisedAnswer_Op_Which;
+  }
+  _set(value: {
+    which: "noop";
+  } | {
+    which: "getPointerField";
+    value: number;
+  }): void {
+    switch (value.which) {
+      case "noop": {
+        this.noop = true;
+        return;
+      }
+      case "getPointerField": {
+        this.getPointerField = value.value;
+        return;
+      }
+    }
+  }
+  _match<R>(cases: {
+    "noop"?: () => R;
+    "getPointerField"?: (value: number) => R;
+    _?: (which: PromisedAnswer_Op_Which) => R;
+  }): R {
+    const which = this.which();
+    switch (which) {
+      case 0: {
+        const callback = cases["noop"];
+        if (callback) {
+          return callback();
+        }
+        break;
+      }
+      case 1: {
+        const callback = cases["getPointerField"];
+        if (callback) {
+          return callback(this.getPointerField);
+        }
+        break;
+      }
+    }
+    if (cases._) {
+      return cases._(which);
+    }
+    throw new Error("Unhandled PromisedAnswer_Op union case: " + which);
   }
 }
 /**
@@ -2635,6 +3738,30 @@ export class PromisedAnswer extends $.Struct {
     ] as const,
   };
   static _Transform: $.ListCtor<PromisedAnswer_Op>;
+  static _applyInit(target: PromisedAnswer, value: $.Init<PromisedAnswer>): void {
+    const init = value as any;
+    if (init["questionId"] !== undefined) {
+      target.questionId = init["questionId"] as any;
+    }
+    if (init["transform"] !== undefined) {
+      if (init["transform"] instanceof $.List) {
+        target.transform = init["transform"] as any;
+      }
+      else {
+        const values = Array.isArray(init["transform"]) ? init["transform"] : Array.from(init["transform"] as Iterable<any>);
+        const list = target._initTransform(values.length);
+        for (let index = 0; index < values.length; index++) {
+          const item = values[index];
+          if (item instanceof PromisedAnswer_Op) {
+            list.set(index, item);
+          }
+          else {
+            PromisedAnswer_Op._applyInit(list.get(index), item as $.Init<PromisedAnswer_Op>);
+          }
+        }
+      }
+    }
+  }
   /**
 * ID of the question (in the sender's question table / receiver's answer table) whose answer is
 * expected to contain the capability.
@@ -2690,6 +3817,15 @@ export class ThirdPartyCapDescriptor extends $.Struct {
       { name: "vineId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 0, type: { kind: "uint32" } }
     ] as const,
   };
+  static _applyInit(target: ThirdPartyCapDescriptor, value: $.Init<ThirdPartyCapDescriptor>): void {
+    const init = value as any;
+    if (init["id"] !== undefined) {
+      target.id = init["id"] as any;
+    }
+    if (init["vineId"] !== undefined) {
+      target.vineId = init["vineId"] as any;
+    }
+  }
   _adoptId(value: $.Orphan<$.Pointer>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -2832,6 +3968,24 @@ export class Exception extends $.Struct {
       { name: "trace", codeOrder: 4, ordinal: 4, kind: "slot", offset: 1, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: Exception, value: $.Init<Exception>): void {
+    const init = value as any;
+    if (init["reason"] !== undefined) {
+      target.reason = init["reason"] as any;
+    }
+    if (init["type"] !== undefined) {
+      target.type = init["type"] as any;
+    }
+    if (init["obsoleteIsCallersFault"] !== undefined) {
+      target.obsoleteIsCallersFault = init["obsoleteIsCallersFault"] as any;
+    }
+    if (init["obsoleteDurability"] !== undefined) {
+      target.obsoleteDurability = init["obsoleteDurability"] as any;
+    }
+    if (init["trace"] !== undefined) {
+      target.trace = init["trace"] as any;
+    }
+  }
   /**
 * Human-readable failure description.
 *

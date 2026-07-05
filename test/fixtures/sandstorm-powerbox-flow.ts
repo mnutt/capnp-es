@@ -10,6 +10,9 @@ export class AppPersistent_Save$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: AppPersistent_Save$Params, value: $.Init<AppPersistent_Save$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "AppPersistent_Save$Params_" + super.toString(); }
 }
 export class AppPersistent_Save$Results extends $.Struct {
@@ -23,6 +26,18 @@ export class AppPersistent_Save$Results extends $.Struct {
       { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: AppPersistent_Save$Results, value: $.Init<AppPersistent_Save$Results>): void {
+    const init = value as any;
+    if (init["objectId"] !== undefined) {
+      if (init["objectId"] instanceof $.Data) {
+        target.objectId = init["objectId"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["objectId"]);
+        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -51,6 +66,15 @@ export class AppPersistent_Save$Results$Promise {
   async promise(): Promise<AppPersistent_Save$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = AppPersistent_Save$Results, TResult2 = never>(onfulfilled?: ((value: AppPersistent_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppPersistent_Save$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<AppPersistent_Save$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class AppPersistent$Client {
   client: $.Client;
@@ -72,10 +96,15 @@ export class AppPersistent$Client {
       resultFields: AppPersistent_Save$Results._capnp.fields
     }
   ];
-  save(paramsFunc?: (params: AppPersistent_Save$Params) => void): AppPersistent_Save$Results$Promise {
+  save(): AppPersistent_Save$Results$Promise;
+  save(params: $.Init<AppPersistent_Save$Params>): AppPersistent_Save$Results$Promise;
+  save(paramsFunc: (params: AppPersistent_Save$Params) => void): AppPersistent_Save$Results$Promise;
+  save(params?: $.Initializer<AppPersistent_Save$Params>): AppPersistent_Save$Results$Promise {
     const answer = this.client.call({
       method: AppPersistent$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: AppPersistent_Save$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppPersistent_Save$Results, answer);
     return new AppPersistent_Save$Results$Promise(pipeline);
@@ -83,7 +112,7 @@ export class AppPersistent$Client {
 }
 $.Registry.register(AppPersistent$Client.interfaceId, AppPersistent$Client);
 export interface AppPersistent$Server$Target {
-  save(params: AppPersistent_Save$Params, results: AppPersistent_Save$Results): Promise<void>;
+  save(params: AppPersistent_Save$Params, results: AppPersistent_Save$Results): $.MaybePromise<void | $.Init<AppPersistent_Save$Results>>;
 }
 export class AppPersistent$Server extends $.Server {
   readonly target: AppPersistent$Server$Target;
@@ -91,7 +120,12 @@ export class AppPersistent$Server extends $.Server {
     super(target, [
       {
         ...AppPersistent$Client.methods[0],
-        impl: target.save
+        impl: async (params: AppPersistent_Save$Params, results: AppPersistent_Save$Results) => {
+          const value = await target.save(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<AppPersistent_Save$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -122,6 +156,9 @@ export class Node_Stat$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: Node_Stat$Params, value: $.Init<Node_Stat$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "Node_Stat$Params_" + super.toString(); }
 }
 export class Node_Stat$Results extends $.Struct {
@@ -135,6 +172,12 @@ export class Node_Stat$Results extends $.Struct {
       { name: "isDir", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: Node_Stat$Results, value: $.Init<Node_Stat$Results>): void {
+    const init = value as any;
+    if (init["isDir"] !== undefined) {
+      target.isDir = init["isDir"] as any;
+    }
+  }
   get isDir(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -150,6 +193,15 @@ export class Node_Stat$Results$Promise {
   }
   async promise(): Promise<Node_Stat$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = Node_Stat$Results, TResult2 = never>(onfulfilled?: ((value: Node_Stat$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Node_Stat$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<Node_Stat$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class Node$Client {
@@ -179,10 +231,15 @@ export class Node$Client {
   save(...args: Parameters<AppPersistent$Client["save"]>): ReturnType<AppPersistent$Client["save"]> {
     return AppPersistent$Client.prototype.save.apply(this, args);
   }
-  stat(paramsFunc?: (params: Node_Stat$Params) => void): Node_Stat$Results$Promise {
+  stat(): Node_Stat$Results$Promise;
+  stat(params: $.Init<Node_Stat$Params>): Node_Stat$Results$Promise;
+  stat(paramsFunc: (params: Node_Stat$Params) => void): Node_Stat$Results$Promise;
+  stat(params?: $.Initializer<Node_Stat$Params>): Node_Stat$Results$Promise {
     const answer = this.client.call({
       method: Node$Client.ownMethods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: Node_Stat$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(Node_Stat$Results, answer);
     return new Node_Stat$Results$Promise(pipeline);
@@ -190,7 +247,7 @@ export class Node$Client {
 }
 $.Registry.register(Node$Client.interfaceId, Node$Client);
 export interface Node$Server$Target extends AppPersistent$Server$Target {
-  stat(params: Node_Stat$Params, results: Node_Stat$Results): Promise<void>;
+  stat(params: Node_Stat$Params, results: Node_Stat$Results): $.MaybePromise<void | $.Init<Node_Stat$Results>>;
 }
 export class Node$Server extends $.Server {
   readonly target: Node$Server$Target;
@@ -198,11 +255,21 @@ export class Node$Server extends $.Server {
     super(target, [
       ...(AppPersistent$Client.methods as $.Method<any, any>[]).map((method) => ({
         ...(method as any),
-        impl: target[method.methodName as keyof Node$Server$Target] as any
+        impl: async (params: any, results: any) => {
+          const value = await (target[method.methodName as keyof Node$Server$Target] as any).call(target, params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as any);
+          }
+        }
       })),
       {
         ...Node$Client.ownMethods[0],
-        impl: target.stat
+        impl: async (params: Node_Stat$Params, results: Node_Stat$Results) => {
+          const value = await target.stat(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<Node_Stat$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -233,6 +300,9 @@ export class AppHooks_GetViewInfo$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: AppHooks_GetViewInfo$Params, value: $.Init<AppHooks_GetViewInfo$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "AppHooks_GetViewInfo$Params_" + super.toString(); }
 }
 export class AppHooks_GetViewInfo$Results extends $.Struct {
@@ -246,6 +316,12 @@ export class AppHooks_GetViewInfo$Results extends $.Struct {
       { name: "supportsNode", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "bool" } }
     ] as const,
   };
+  static _applyInit(target: AppHooks_GetViewInfo$Results, value: $.Init<AppHooks_GetViewInfo$Results>): void {
+    const init = value as any;
+    if (init["supportsNode"] !== undefined) {
+      target.supportsNode = init["supportsNode"] as any;
+    }
+  }
   get supportsNode(): boolean {
     return $.utils.getBit(0, this);
   }
@@ -262,6 +338,15 @@ export class AppHooks_GetViewInfo$Results$Promise {
   async promise(): Promise<AppHooks_GetViewInfo$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = AppHooks_GetViewInfo$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_GetViewInfo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_GetViewInfo$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<AppHooks_GetViewInfo$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class AppHooks_Restore$Params extends $.Struct {
   static readonly _capnp = {
@@ -274,6 +359,18 @@ export class AppHooks_Restore$Params extends $.Struct {
       { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: AppHooks_Restore$Params, value: $.Init<AppHooks_Restore$Params>): void {
+    const init = value as any;
+    if (init["objectId"] !== undefined) {
+      if (init["objectId"] instanceof $.Data) {
+        target.objectId = init["objectId"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["objectId"]);
+        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -305,8 +402,26 @@ export class AppHooks_Restore$Results extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
     ] as const,
   };
+  static _applyInit(target: AppHooks_Restore$Results, value: $.Init<AppHooks_Restore$Results>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): Node$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new Node$Client(client);
+  }
+  set capOrNull(value: Node$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: Node$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -324,6 +439,15 @@ export class AppHooks_Restore$Results$Promise {
   async promise(): Promise<AppHooks_Restore$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = AppHooks_Restore$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Restore$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<AppHooks_Restore$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class AppHooks_Drop$Params extends $.Struct {
   static readonly _capnp = {
@@ -336,6 +460,18 @@ export class AppHooks_Drop$Params extends $.Struct {
       { name: "objectId", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: AppHooks_Drop$Params, value: $.Init<AppHooks_Drop$Params>): void {
+    const init = value as any;
+    if (init["objectId"] !== undefined) {
+      if (init["objectId"] instanceof $.Data) {
+        target.objectId = init["objectId"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["objectId"]);
+        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   _adoptObjectId(value: $.Orphan<$.Data>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -365,6 +501,9 @@ export class AppHooks_Drop$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: AppHooks_Drop$Results, value: $.Init<AppHooks_Drop$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "AppHooks_Drop$Results_" + super.toString(); }
 }
 export class AppHooks_Drop$Results$Promise {
@@ -374,6 +513,15 @@ export class AppHooks_Drop$Results$Promise {
   }
   async promise(): Promise<AppHooks_Drop$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = AppHooks_Drop$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Drop$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Drop$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<AppHooks_Drop$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class AppHooks$Client {
@@ -418,26 +566,41 @@ export class AppHooks$Client {
       resultFields: AppHooks_Drop$Results._capnp.fields
     }
   ];
-  getViewInfo(paramsFunc?: (params: AppHooks_GetViewInfo$Params) => void): AppHooks_GetViewInfo$Results$Promise {
+  getViewInfo(): AppHooks_GetViewInfo$Results$Promise;
+  getViewInfo(params: $.Init<AppHooks_GetViewInfo$Params>): AppHooks_GetViewInfo$Results$Promise;
+  getViewInfo(paramsFunc: (params: AppHooks_GetViewInfo$Params) => void): AppHooks_GetViewInfo$Results$Promise;
+  getViewInfo(params?: $.Initializer<AppHooks_GetViewInfo$Params>): AppHooks_GetViewInfo$Results$Promise {
     const answer = this.client.call({
       method: AppHooks$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: AppHooks_GetViewInfo$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_GetViewInfo$Results, answer);
     return new AppHooks_GetViewInfo$Results$Promise(pipeline);
   }
-  restore(paramsFunc?: (params: AppHooks_Restore$Params) => void): AppHooks_Restore$Results$Promise {
+  restore(): AppHooks_Restore$Results$Promise;
+  restore(params: $.Init<AppHooks_Restore$Params>): AppHooks_Restore$Results$Promise;
+  restore(paramsFunc: (params: AppHooks_Restore$Params) => void): AppHooks_Restore$Results$Promise;
+  restore(params?: $.Initializer<AppHooks_Restore$Params>): AppHooks_Restore$Results$Promise {
     const answer = this.client.call({
       method: AppHooks$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: AppHooks_Restore$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_Restore$Results, answer);
     return new AppHooks_Restore$Results$Promise(pipeline);
   }
-  drop(paramsFunc?: (params: AppHooks_Drop$Params) => void): AppHooks_Drop$Results$Promise {
+  drop(): AppHooks_Drop$Results$Promise;
+  drop(params: $.Init<AppHooks_Drop$Params>): AppHooks_Drop$Results$Promise;
+  drop(paramsFunc: (params: AppHooks_Drop$Params) => void): AppHooks_Drop$Results$Promise;
+  drop(params?: $.Initializer<AppHooks_Drop$Params>): AppHooks_Drop$Results$Promise {
     const answer = this.client.call({
       method: AppHooks$Client.methods[2],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: AppHooks_Drop$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(AppHooks_Drop$Results, answer);
     return new AppHooks_Drop$Results$Promise(pipeline);
@@ -445,9 +608,9 @@ export class AppHooks$Client {
 }
 $.Registry.register(AppHooks$Client.interfaceId, AppHooks$Client);
 export interface AppHooks$Server$Target {
-  getViewInfo(params: AppHooks_GetViewInfo$Params, results: AppHooks_GetViewInfo$Results): Promise<void>;
-  restore(params: AppHooks_Restore$Params, results: AppHooks_Restore$Results): Promise<void>;
-  drop(params: AppHooks_Drop$Params, results: AppHooks_Drop$Results): Promise<void>;
+  getViewInfo(params: AppHooks_GetViewInfo$Params, results: AppHooks_GetViewInfo$Results): $.MaybePromise<void | $.Init<AppHooks_GetViewInfo$Results>>;
+  restore(params: AppHooks_Restore$Params, results: AppHooks_Restore$Results): $.MaybePromise<void | $.Init<AppHooks_Restore$Results>>;
+  drop(params: AppHooks_Drop$Params, results: AppHooks_Drop$Results): $.MaybePromise<void | $.Init<AppHooks_Drop$Results>>;
 }
 export class AppHooks$Server extends $.Server {
   readonly target: AppHooks$Server$Target;
@@ -455,15 +618,30 @@ export class AppHooks$Server extends $.Server {
     super(target, [
       {
         ...AppHooks$Client.methods[0],
-        impl: target.getViewInfo
+        impl: async (params: AppHooks_GetViewInfo$Params, results: AppHooks_GetViewInfo$Results) => {
+          const value = await target.getViewInfo(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<AppHooks_GetViewInfo$Results>);
+          }
+        }
       },
       {
         ...AppHooks$Client.methods[1],
-        impl: target.restore
+        impl: async (params: AppHooks_Restore$Params, results: AppHooks_Restore$Results) => {
+          const value = await target.restore(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<AppHooks_Restore$Results>);
+          }
+        }
       },
       {
         ...AppHooks$Client.methods[2],
-        impl: target.drop
+        impl: async (params: AppHooks_Drop$Params, results: AppHooks_Drop$Results) => {
+          const value = await target.drop(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<AppHooks_Drop$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -496,8 +674,26 @@ export class SessionContext_FulfillRequest$Params extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
     ] as const,
   };
+  static _applyInit(target: SessionContext_FulfillRequest$Params, value: $.Init<SessionContext_FulfillRequest$Params>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): Node$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new Node$Client(client);
+  }
+  set capOrNull(value: Node$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: Node$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -513,6 +709,9 @@ export class SessionContext_FulfillRequest$Results extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: SessionContext_FulfillRequest$Results, value: $.Init<SessionContext_FulfillRequest$Results>): void {
+    const init = value as any;
+  }
   toString(): string { return "SessionContext_FulfillRequest$Results_" + super.toString(); }
 }
 export class SessionContext_FulfillRequest$Results$Promise {
@@ -522,6 +721,15 @@ export class SessionContext_FulfillRequest$Results$Promise {
   }
   async promise(): Promise<SessionContext_FulfillRequest$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = SessionContext_FulfillRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_FulfillRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_FulfillRequest$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<SessionContext_FulfillRequest$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class SessionContext_ClaimRequest$Params extends $.Struct {
@@ -533,6 +741,9 @@ export class SessionContext_ClaimRequest$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: SessionContext_ClaimRequest$Params, value: $.Init<SessionContext_ClaimRequest$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "SessionContext_ClaimRequest$Params_" + super.toString(); }
 }
 export class SessionContext_ClaimRequest$Results extends $.Struct {
@@ -546,8 +757,26 @@ export class SessionContext_ClaimRequest$Results extends $.Struct {
       { name: "cap", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xd17a48af23601b7cn, typeIdHex: "d17a48af23601b7c", displayName: "Node" } }
     ] as const,
   };
+  static _applyInit(target: SessionContext_ClaimRequest$Results, value: $.Init<SessionContext_ClaimRequest$Results>): void {
+    const init = value as any;
+    if (init["cap"] !== undefined) {
+      target.cap = init["cap"] as any;
+    }
+  }
   get cap(): Node$Client {
     return new Node$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capOrNull(): Node$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new Node$Client(client);
+  }
+  set capOrNull(value: Node$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.cap = value;
+    }
   }
   set cap(value: Node$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -564,6 +793,15 @@ export class SessionContext_ClaimRequest$Results$Promise {
   }
   async promise(): Promise<SessionContext_ClaimRequest$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = SessionContext_ClaimRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_ClaimRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_ClaimRequest$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<SessionContext_ClaimRequest$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class SessionContext$Client {
@@ -597,18 +835,28 @@ export class SessionContext$Client {
       resultFields: SessionContext_ClaimRequest$Results._capnp.fields
     }
   ];
-  fulfillRequest(paramsFunc?: (params: SessionContext_FulfillRequest$Params) => void): SessionContext_FulfillRequest$Results$Promise {
+  fulfillRequest(): SessionContext_FulfillRequest$Results$Promise;
+  fulfillRequest(params: $.Init<SessionContext_FulfillRequest$Params>): SessionContext_FulfillRequest$Results$Promise;
+  fulfillRequest(paramsFunc: (params: SessionContext_FulfillRequest$Params) => void): SessionContext_FulfillRequest$Results$Promise;
+  fulfillRequest(params?: $.Initializer<SessionContext_FulfillRequest$Params>): SessionContext_FulfillRequest$Results$Promise {
     const answer = this.client.call({
       method: SessionContext$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: SessionContext_FulfillRequest$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SessionContext_FulfillRequest$Results, answer);
     return new SessionContext_FulfillRequest$Results$Promise(pipeline);
   }
-  claimRequest(paramsFunc?: (params: SessionContext_ClaimRequest$Params) => void): SessionContext_ClaimRequest$Results$Promise {
+  claimRequest(): SessionContext_ClaimRequest$Results$Promise;
+  claimRequest(params: $.Init<SessionContext_ClaimRequest$Params>): SessionContext_ClaimRequest$Results$Promise;
+  claimRequest(paramsFunc: (params: SessionContext_ClaimRequest$Params) => void): SessionContext_ClaimRequest$Results$Promise;
+  claimRequest(params?: $.Initializer<SessionContext_ClaimRequest$Params>): SessionContext_ClaimRequest$Results$Promise {
     const answer = this.client.call({
       method: SessionContext$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: SessionContext_ClaimRequest$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SessionContext_ClaimRequest$Results, answer);
     return new SessionContext_ClaimRequest$Results$Promise(pipeline);
@@ -616,8 +864,8 @@ export class SessionContext$Client {
 }
 $.Registry.register(SessionContext$Client.interfaceId, SessionContext$Client);
 export interface SessionContext$Server$Target {
-  fulfillRequest(params: SessionContext_FulfillRequest$Params, results: SessionContext_FulfillRequest$Results): Promise<void>;
-  claimRequest(params: SessionContext_ClaimRequest$Params, results: SessionContext_ClaimRequest$Results): Promise<void>;
+  fulfillRequest(params: SessionContext_FulfillRequest$Params, results: SessionContext_FulfillRequest$Results): $.MaybePromise<void | $.Init<SessionContext_FulfillRequest$Results>>;
+  claimRequest(params: SessionContext_ClaimRequest$Params, results: SessionContext_ClaimRequest$Results): $.MaybePromise<void | $.Init<SessionContext_ClaimRequest$Results>>;
 }
 export class SessionContext$Server extends $.Server {
   readonly target: SessionContext$Server$Target;
@@ -625,11 +873,21 @@ export class SessionContext$Server extends $.Server {
     super(target, [
       {
         ...SessionContext$Client.methods[0],
-        impl: target.fulfillRequest
+        impl: async (params: SessionContext_FulfillRequest$Params, results: SessionContext_FulfillRequest$Results) => {
+          const value = await target.fulfillRequest(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<SessionContext_FulfillRequest$Results>);
+          }
+        }
       },
       {
         ...SessionContext$Client.methods[1],
-        impl: target.claimRequest
+        impl: async (params: SessionContext_ClaimRequest$Params, results: SessionContext_ClaimRequest$Results) => {
+          const value = await target.claimRequest(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<SessionContext_ClaimRequest$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -660,6 +918,9 @@ export class SandstormBridge_GetSessionContext$Params extends $.Struct {
     size: new $.ObjectSize(0, 0),
     fields: [] as const,
   };
+  static _applyInit(target: SandstormBridge_GetSessionContext$Params, value: $.Init<SandstormBridge_GetSessionContext$Params>): void {
+    const init = value as any;
+  }
   toString(): string { return "SandstormBridge_GetSessionContext$Params_" + super.toString(); }
 }
 export class SandstormBridge_GetSessionContext$Results extends $.Struct {
@@ -673,8 +934,26 @@ export class SandstormBridge_GetSessionContext$Results extends $.Struct {
       { name: "context", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xb82638dbadc07fe5n, typeIdHex: "b82638dbadc07fe5", displayName: "SessionContext" } }
     ] as const,
   };
+  static _applyInit(target: SandstormBridge_GetSessionContext$Results, value: $.Init<SandstormBridge_GetSessionContext$Results>): void {
+    const init = value as any;
+    if (init["context"] !== undefined) {
+      target.context = init["context"] as any;
+    }
+  }
   get context(): SessionContext$Client {
     return new SessionContext$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get contextOrNull(): SessionContext$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new SessionContext$Client(client);
+  }
+  set contextOrNull(value: SessionContext$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.context = value;
+    }
   }
   set context(value: SessionContext$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -691,6 +970,15 @@ export class SandstormBridge_GetSessionContext$Results$Promise {
   }
   async promise(): Promise<SandstormBridge_GetSessionContext$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = SandstormBridge_GetSessionContext$Results, TResult2 = never>(onfulfilled?: ((value: SandstormBridge_GetSessionContext$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SandstormBridge_GetSessionContext$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<SandstormBridge_GetSessionContext$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class SandstormBridge$Client {
@@ -713,10 +1001,15 @@ export class SandstormBridge$Client {
       resultFields: SandstormBridge_GetSessionContext$Results._capnp.fields
     }
   ];
-  getSessionContext(paramsFunc?: (params: SandstormBridge_GetSessionContext$Params) => void): SandstormBridge_GetSessionContext$Results$Promise {
+  getSessionContext(): SandstormBridge_GetSessionContext$Results$Promise;
+  getSessionContext(params: $.Init<SandstormBridge_GetSessionContext$Params>): SandstormBridge_GetSessionContext$Results$Promise;
+  getSessionContext(paramsFunc: (params: SandstormBridge_GetSessionContext$Params) => void): SandstormBridge_GetSessionContext$Results$Promise;
+  getSessionContext(params?: $.Initializer<SandstormBridge_GetSessionContext$Params>): SandstormBridge_GetSessionContext$Results$Promise {
     const answer = this.client.call({
       method: SandstormBridge$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: SandstormBridge_GetSessionContext$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(SandstormBridge_GetSessionContext$Results, answer);
     return new SandstormBridge_GetSessionContext$Results$Promise(pipeline);
@@ -724,7 +1017,7 @@ export class SandstormBridge$Client {
 }
 $.Registry.register(SandstormBridge$Client.interfaceId, SandstormBridge$Client);
 export interface SandstormBridge$Server$Target {
-  getSessionContext(params: SandstormBridge_GetSessionContext$Params, results: SandstormBridge_GetSessionContext$Results): Promise<void>;
+  getSessionContext(params: SandstormBridge_GetSessionContext$Params, results: SandstormBridge_GetSessionContext$Results): $.MaybePromise<void | $.Init<SandstormBridge_GetSessionContext$Results>>;
 }
 export class SandstormBridge$Server extends $.Server {
   readonly target: SandstormBridge$Server$Target;
@@ -732,7 +1025,12 @@ export class SandstormBridge$Server extends $.Server {
     super(target, [
       {
         ...SandstormBridge$Client.methods[0],
-        impl: target.getSessionContext
+        impl: async (params: SandstormBridge_GetSessionContext$Params, results: SandstormBridge_GetSessionContext$Results) => {
+          const value = await target.getSessionContext(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<SandstormBridge_GetSessionContext$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

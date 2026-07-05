@@ -79,6 +79,60 @@ test("write address book", () => {
   compareBuffers(out, SERIALIZATION_DEMO);
 });
 
+test("applyInit writes nested address book values", () => {
+  const message = new capnp.Message();
+  const addressBook = message.initRoot(AddressBook);
+
+  capnp.applyInit(addressBook, {
+    people: [
+      {
+        id: 456,
+        name: "Alice",
+        email: "alice@example.com",
+        phones: [
+          {
+            number: "555-1212",
+            type: Person.PhoneNumber.Type.MOBILE,
+          },
+        ],
+        employment: { school: "MIT" },
+      },
+      {
+        id: 456,
+        name: "Bob",
+        email: "bob@example.com",
+        phones: [
+          {
+            number: "555-4567",
+            type: Person.PhoneNumber.Type.HOME,
+          },
+          {
+            number: "555-7654",
+            type: Person.PhoneNumber.Type.WORK,
+          },
+        ],
+        employment: { unemployed: true },
+      },
+    ],
+  });
+
+  compareBuffers(message.toArrayBuffer(), SERIALIZATION_DEMO);
+});
+
+test("generated union helpers set and match", () => {
+  const message = new capnp.Message();
+  const person = message.initRoot(Person);
+
+  person.employment._set({ which: "school", value: "MIT" });
+
+  t.equal(
+    person.employment._match({
+      school: (school) => school,
+    }),
+    "MIT",
+  );
+});
+
 test("read address book", () => {
   const message = new capnp.Message(SERIALIZATION_DEMO, false);
 

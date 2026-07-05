@@ -13,6 +13,12 @@ export class RpcLevel2Owner extends $.Struct {
       { name: "id", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "text" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2Owner, value: $.Init<RpcLevel2Owner>): void {
+    const init = value as any;
+    if (init["id"] !== undefined) {
+      target.id = init["id"] as any;
+    }
+  }
   get id(): string {
     return $.utils.getText(0, this);
   }
@@ -33,6 +39,21 @@ export class RpcLevel2SturdyRef extends $.Struct {
       { name: "objectId", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "data" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2SturdyRef, value: $.Init<RpcLevel2SturdyRef>): void {
+    const init = value as any;
+    if (init["host"] !== undefined) {
+      target.host = init["host"] as any;
+    }
+    if (init["objectId"] !== undefined) {
+      if (init["objectId"] instanceof $.Data) {
+        target.objectId = init["objectId"] as $.Data;
+      }
+      else {
+        const bytes = $.dataBytes(init["objectId"]);
+        target._initObjectId(bytes.byteLength).copyBuffer(bytes);
+      }
+    }
+  }
   get host(): string {
     return $.utils.getText(0, this);
   }
@@ -71,6 +92,25 @@ export class RpcLevel2Restorer_Restore$Params extends $.Struct {
       { name: "owner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2Restorer_Restore$Params, value: $.Init<RpcLevel2Restorer_Restore$Params>): void {
+    const init = value as any;
+    if (init["sturdyRef"] !== undefined) {
+      if (init["sturdyRef"] instanceof RpcLevel2SturdyRef) {
+        target.sturdyRef = init["sturdyRef"] as RpcLevel2SturdyRef;
+      }
+      else {
+        RpcLevel2SturdyRef._applyInit(target._initSturdyRef(), init["sturdyRef"] as $.Init<RpcLevel2SturdyRef>);
+      }
+    }
+    if (init["owner"] !== undefined) {
+      if (init["owner"] instanceof RpcLevel2Owner) {
+        target.owner = init["owner"] as RpcLevel2Owner;
+      }
+      else {
+        RpcLevel2Owner._applyInit(target._initOwner(), init["owner"] as $.Init<RpcLevel2Owner>);
+      }
+    }
+  }
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -120,8 +160,26 @@ export class RpcLevel2Restorer_Restore$Results extends $.Struct {
       { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2Restorer_Restore$Results, value: $.Init<RpcLevel2Restorer_Restore$Results>): void {
+    const init = value as any;
+    if (init["capability"] !== undefined) {
+      target.capability = init["capability"] as any;
+    }
+  }
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capabilityOrNull(): SimpleInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new SimpleInterface$Client(client);
+  }
+  set capabilityOrNull(value: SimpleInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.capability = value;
+    }
   }
   set capability(value: SimpleInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -138,6 +196,15 @@ export class RpcLevel2Restorer_Restore$Results$Promise {
   }
   async promise(): Promise<RpcLevel2Restorer_Restore$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = RpcLevel2Restorer_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2Restorer_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2Restorer_Restore$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<RpcLevel2Restorer_Restore$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class RpcLevel2Restorer$Client {
@@ -160,10 +227,15 @@ export class RpcLevel2Restorer$Client {
       resultFields: RpcLevel2Restorer_Restore$Results._capnp.fields
     }
   ];
-  restore(paramsFunc?: (params: RpcLevel2Restorer_Restore$Params) => void): RpcLevel2Restorer_Restore$Results$Promise {
+  restore(): RpcLevel2Restorer_Restore$Results$Promise;
+  restore(params: $.Init<RpcLevel2Restorer_Restore$Params>): RpcLevel2Restorer_Restore$Results$Promise;
+  restore(paramsFunc: (params: RpcLevel2Restorer_Restore$Params) => void): RpcLevel2Restorer_Restore$Results$Promise;
+  restore(params?: $.Initializer<RpcLevel2Restorer_Restore$Params>): RpcLevel2Restorer_Restore$Results$Promise {
     const answer = this.client.call({
       method: RpcLevel2Restorer$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: RpcLevel2Restorer_Restore$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(RpcLevel2Restorer_Restore$Results, answer);
     return new RpcLevel2Restorer_Restore$Results$Promise(pipeline);
@@ -171,7 +243,7 @@ export class RpcLevel2Restorer$Client {
 }
 $.Registry.register(RpcLevel2Restorer$Client.interfaceId, RpcLevel2Restorer$Client);
 export interface RpcLevel2Restorer$Server$Target {
-  restore(params: RpcLevel2Restorer_Restore$Params, results: RpcLevel2Restorer_Restore$Results): Promise<void>;
+  restore(params: RpcLevel2Restorer_Restore$Params, results: RpcLevel2Restorer_Restore$Results): $.MaybePromise<void | $.Init<RpcLevel2Restorer_Restore$Results>>;
 }
 export class RpcLevel2Restorer$Server extends $.Server {
   readonly target: RpcLevel2Restorer$Server$Target;
@@ -179,7 +251,12 @@ export class RpcLevel2Restorer$Server extends $.Server {
     super(target, [
       {
         ...RpcLevel2Restorer$Client.methods[0],
-        impl: target.restore
+        impl: async (params: RpcLevel2Restorer_Restore$Params, results: RpcLevel2Restorer_Restore$Results) => {
+          const value = await target.restore(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<RpcLevel2Restorer_Restore$Results>);
+          }
+        }
       }
     ]);
     this.target = target;
@@ -213,8 +290,34 @@ export class RpcLevel2PersistenceService_Save$Params extends $.Struct {
       { name: "sealFor", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2PersistenceService_Save$Params, value: $.Init<RpcLevel2PersistenceService_Save$Params>): void {
+    const init = value as any;
+    if (init["capability"] !== undefined) {
+      target.capability = init["capability"] as any;
+    }
+    if (init["sealFor"] !== undefined) {
+      if (init["sealFor"] instanceof RpcLevel2Owner) {
+        target.sealFor = init["sealFor"] as RpcLevel2Owner;
+      }
+      else {
+        RpcLevel2Owner._applyInit(target._initSealFor(), init["sealFor"] as $.Init<RpcLevel2Owner>);
+      }
+    }
+  }
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capabilityOrNull(): SimpleInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new SimpleInterface$Client(client);
+  }
+  set capabilityOrNull(value: SimpleInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.capability = value;
+    }
   }
   set capability(value: SimpleInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -250,6 +353,17 @@ export class RpcLevel2PersistenceService_Save$Results extends $.Struct {
       { name: "sturdyRef", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "struct", typeId: 0xdc55e3c3188e2f10n, typeIdHex: "dc55e3c3188e2f10", displayName: "RpcLevel2SturdyRef" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2PersistenceService_Save$Results, value: $.Init<RpcLevel2PersistenceService_Save$Results>): void {
+    const init = value as any;
+    if (init["sturdyRef"] !== undefined) {
+      if (init["sturdyRef"] instanceof RpcLevel2SturdyRef) {
+        target.sturdyRef = init["sturdyRef"] as RpcLevel2SturdyRef;
+      }
+      else {
+        RpcLevel2SturdyRef._applyInit(target._initSturdyRef(), init["sturdyRef"] as $.Init<RpcLevel2SturdyRef>);
+      }
+    }
+  }
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -278,6 +392,15 @@ export class RpcLevel2PersistenceService_Save$Results$Promise {
   async promise(): Promise<RpcLevel2PersistenceService_Save$Results> {
     return await this.pipeline.struct();
   }
+  then<TResult1 = RpcLevel2PersistenceService_Save$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Save$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<RpcLevel2PersistenceService_Save$Results> {
+    return this.promise().finally(onfinally ?? undefined);
+  }
 }
 export class RpcLevel2PersistenceService_Restore$Params extends $.Struct {
   static readonly _capnp = {
@@ -291,6 +414,25 @@ export class RpcLevel2PersistenceService_Restore$Params extends $.Struct {
       { name: "owner", codeOrder: 1, ordinal: 1, kind: "slot", offset: 1, type: { kind: "struct", typeId: 0x91e080c1ac2ecb02n, typeIdHex: "91e080c1ac2ecb02", displayName: "RpcLevel2Owner" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2PersistenceService_Restore$Params, value: $.Init<RpcLevel2PersistenceService_Restore$Params>): void {
+    const init = value as any;
+    if (init["sturdyRef"] !== undefined) {
+      if (init["sturdyRef"] instanceof RpcLevel2SturdyRef) {
+        target.sturdyRef = init["sturdyRef"] as RpcLevel2SturdyRef;
+      }
+      else {
+        RpcLevel2SturdyRef._applyInit(target._initSturdyRef(), init["sturdyRef"] as $.Init<RpcLevel2SturdyRef>);
+      }
+    }
+    if (init["owner"] !== undefined) {
+      if (init["owner"] instanceof RpcLevel2Owner) {
+        target.owner = init["owner"] as RpcLevel2Owner;
+      }
+      else {
+        RpcLevel2Owner._applyInit(target._initOwner(), init["owner"] as $.Init<RpcLevel2Owner>);
+      }
+    }
+  }
   _adoptSturdyRef(value: $.Orphan<RpcLevel2SturdyRef>): void {
     $.utils.adopt(value, $.utils.getPointer(0, this));
   }
@@ -340,8 +482,26 @@ export class RpcLevel2PersistenceService_Restore$Results extends $.Struct {
       { name: "capability", codeOrder: 0, ordinal: 0, kind: "slot", offset: 0, type: { kind: "interface", typeId: 0xdaf73e960b8928d6n, typeIdHex: "daf73e960b8928d6", displayName: "SimpleInterface" } }
     ] as const,
   };
+  static _applyInit(target: RpcLevel2PersistenceService_Restore$Results, value: $.Init<RpcLevel2PersistenceService_Restore$Results>): void {
+    const init = value as any;
+    if (init["capability"] !== undefined) {
+      target.capability = init["capability"] as any;
+    }
+  }
   get capability(): SimpleInterface$Client {
     return new SimpleInterface$Client($.utils.getInterfaceClientOrNullAt(0, this));
+  }
+  get capabilityOrNull(): SimpleInterface$Client | null {
+    const client = $.Interface.fromPointer($.utils.getPointer(0, this))?.getClient() ?? null;
+    return client === null ? null : new SimpleInterface$Client(client);
+  }
+  set capabilityOrNull(value: SimpleInterface$Client | null) {
+    if (value === null) {
+      $.utils.erase($.utils.getPointer(0, this));
+    }
+    else {
+      this.capability = value;
+    }
   }
   set capability(value: SimpleInterface$Client) {
     $.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(0, this));
@@ -358,6 +518,15 @@ export class RpcLevel2PersistenceService_Restore$Results$Promise {
   }
   async promise(): Promise<RpcLevel2PersistenceService_Restore$Results> {
     return await this.pipeline.struct();
+  }
+  then<TResult1 = RpcLevel2PersistenceService_Restore$Results, TResult2 = never>(onfulfilled?: ((value: RpcLevel2PersistenceService_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return this.promise().then(onfulfilled, onrejected);
+  }
+  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<RpcLevel2PersistenceService_Restore$Results | TResult> {
+    return this.promise().catch(onrejected);
+  }
+  finally(onfinally?: (() => void) | null): Promise<RpcLevel2PersistenceService_Restore$Results> {
+    return this.promise().finally(onfinally ?? undefined);
   }
 }
 export class RpcLevel2PersistenceService$Client {
@@ -391,18 +560,28 @@ export class RpcLevel2PersistenceService$Client {
       resultFields: RpcLevel2PersistenceService_Restore$Results._capnp.fields
     }
   ];
-  save(paramsFunc?: (params: RpcLevel2PersistenceService_Save$Params) => void): RpcLevel2PersistenceService_Save$Results$Promise {
+  save(): RpcLevel2PersistenceService_Save$Results$Promise;
+  save(params: $.Init<RpcLevel2PersistenceService_Save$Params>): RpcLevel2PersistenceService_Save$Results$Promise;
+  save(paramsFunc: (params: RpcLevel2PersistenceService_Save$Params) => void): RpcLevel2PersistenceService_Save$Results$Promise;
+  save(params?: $.Initializer<RpcLevel2PersistenceService_Save$Params>): RpcLevel2PersistenceService_Save$Results$Promise {
     const answer = this.client.call({
       method: RpcLevel2PersistenceService$Client.methods[0],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: RpcLevel2PersistenceService_Save$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(RpcLevel2PersistenceService_Save$Results, answer);
     return new RpcLevel2PersistenceService_Save$Results$Promise(pipeline);
   }
-  restore(paramsFunc?: (params: RpcLevel2PersistenceService_Restore$Params) => void): RpcLevel2PersistenceService_Restore$Results$Promise {
+  restore(): RpcLevel2PersistenceService_Restore$Results$Promise;
+  restore(params: $.Init<RpcLevel2PersistenceService_Restore$Params>): RpcLevel2PersistenceService_Restore$Results$Promise;
+  restore(paramsFunc: (params: RpcLevel2PersistenceService_Restore$Params) => void): RpcLevel2PersistenceService_Restore$Results$Promise;
+  restore(params?: $.Initializer<RpcLevel2PersistenceService_Restore$Params>): RpcLevel2PersistenceService_Restore$Results$Promise {
     const answer = this.client.call({
       method: RpcLevel2PersistenceService$Client.methods[1],
-      paramsFunc: paramsFunc
+      paramsFunc: params === undefined
+        ? undefined
+        : (target: RpcLevel2PersistenceService_Restore$Params) => $.applyInit(target, params)
     });
     const pipeline = new $.Pipeline(RpcLevel2PersistenceService_Restore$Results, answer);
     return new RpcLevel2PersistenceService_Restore$Results$Promise(pipeline);
@@ -410,8 +589,8 @@ export class RpcLevel2PersistenceService$Client {
 }
 $.Registry.register(RpcLevel2PersistenceService$Client.interfaceId, RpcLevel2PersistenceService$Client);
 export interface RpcLevel2PersistenceService$Server$Target {
-  save(params: RpcLevel2PersistenceService_Save$Params, results: RpcLevel2PersistenceService_Save$Results): Promise<void>;
-  restore(params: RpcLevel2PersistenceService_Restore$Params, results: RpcLevel2PersistenceService_Restore$Results): Promise<void>;
+  save(params: RpcLevel2PersistenceService_Save$Params, results: RpcLevel2PersistenceService_Save$Results): $.MaybePromise<void | $.Init<RpcLevel2PersistenceService_Save$Results>>;
+  restore(params: RpcLevel2PersistenceService_Restore$Params, results: RpcLevel2PersistenceService_Restore$Results): $.MaybePromise<void | $.Init<RpcLevel2PersistenceService_Restore$Results>>;
 }
 export class RpcLevel2PersistenceService$Server extends $.Server {
   readonly target: RpcLevel2PersistenceService$Server$Target;
@@ -419,11 +598,21 @@ export class RpcLevel2PersistenceService$Server extends $.Server {
     super(target, [
       {
         ...RpcLevel2PersistenceService$Client.methods[0],
-        impl: target.save
+        impl: async (params: RpcLevel2PersistenceService_Save$Params, results: RpcLevel2PersistenceService_Save$Results) => {
+          const value = await target.save(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<RpcLevel2PersistenceService_Save$Results>);
+          }
+        }
       },
       {
         ...RpcLevel2PersistenceService$Client.methods[1],
-        impl: target.restore
+        impl: async (params: RpcLevel2PersistenceService_Restore$Params, results: RpcLevel2PersistenceService_Restore$Results) => {
+          const value = await target.restore(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<RpcLevel2PersistenceService_Restore$Results>);
+          }
+        }
       }
     ]);
     this.target = target;

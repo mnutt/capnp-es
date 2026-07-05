@@ -2,10 +2,12 @@ import { describe, test, assert as t } from "vitest";
 import type { Client } from "src/rpc/client";
 import type { Call } from "src/rpc/call";
 import type { Answer } from "src/rpc/answer";
+import type { Init } from "src/init";
 import { TestRPC } from "./rpc.utils";
 import {
   AppHooks,
   AppHooks$Client,
+  AppHooks_Restore$Results,
   AppPersistent$Client,
   AppPersistent$Server,
   Node$Client,
@@ -14,6 +16,11 @@ import {
   SandstormBridge$Client,
   SessionContext,
 } from "test/fixtures/sandstorm-powerbox-flow";
+
+const _restoreResultInitRejectsOrNull: Init<AppHooks_Restore$Results> = {
+  // @ts-expect-error nullable convenience accessors are not init object keys.
+  capOrNull: null,
+};
 
 class CompositeClient implements Client {
   private readonly servers: Map<string, Client>;

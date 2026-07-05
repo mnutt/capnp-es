@@ -276,6 +276,13 @@ struct TestUnnamedUnion {
   after @4 :Text;
 }
 
+struct TestUnionHelperNameCollision {
+  union {
+    set @0 :Text;
+    match @1 :Text;
+  }
+}
+
 struct TestUnionInUnion {
   # There is no reason to ever do this.
   outer :union {

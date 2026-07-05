@@ -112,3 +112,39 @@ test("TestConstructorName", () => {
   t.equal(cls.$constructor, "hello");
   t.doesNotThrow(() => m.toArrayBuffer());
 });
+
+test("applyInit initializes nested lists", () => {
+  const m = new capnp.Message();
+  const lists = m.initRoot(T.TestLists);
+
+  capnp.applyInit(lists, {
+    int32ListList: [
+      [1, 2],
+      [3, 4, 5],
+    ],
+    textListList: [["alpha"], ["beta", "gamma"]],
+    structListList: [[{ textField: "nested" }]],
+  });
+
+  t.equal(lists.int32ListList.get(0).get(1), 2);
+  t.equal(lists.int32ListList.get(1).get(2), 5);
+  t.equal(lists.textListList.get(1).get(0), "beta");
+  t.equal(lists.structListList.get(0).get(0).textField, "nested");
+});
+
+test("union helper names do not collide with fields", () => {
+  const m = new capnp.Message();
+  const collision = m.initRoot(T.TestUnionHelperNameCollision);
+
+  collision.set = "field";
+  t.equal(collision.set, "field");
+
+  collision._set({ which: "match", value: "helper" });
+  t.equal(collision.match, "helper");
+  t.equal(
+    collision._match({
+      match: (value) => value,
+    }),
+    "helper",
+  );
+});

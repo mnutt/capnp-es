@@ -72,6 +72,31 @@ describe("rpc", () => {
     t.equal(result, 10);
   });
 
+  test(
+    "SimpleInterface ergonomic params and results",
+    { timeout: 1000 },
+    async () => {
+      const server = async () => {
+        const s = await rpc.accept();
+        s.initMain(SimpleInterface, {
+          subtract: (p) => ({ result: p.a - p.b }),
+        });
+        return s;
+      };
+
+      const client = async () => {
+        const res = await rpc
+          .connect()
+          .bootstrap(SimpleInterface)
+          .subtract({ a: 9, b: 4 });
+        return res.result;
+      };
+
+      const [, result] = await Promise.all([server(), client()]);
+      t.equal(result, 5);
+    },
+  );
+
   test("HashFactory", { timeout: 1000 }, async () => {
     const server = async () => {
       const s = await rpc.accept();

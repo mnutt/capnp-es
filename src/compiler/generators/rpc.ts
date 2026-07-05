@@ -102,7 +102,7 @@ export function generateServer(
       const resultTypeName = getFullClassName(
         lookupNode(ctx, method.resultStructType),
       );
-      return `${method.name}(params: ${paramTypeName}, results: ${resultTypeName}): Promise<void>;`;
+      return `${method.name}(params: ${paramTypeName}, results: ${resultTypeName}): $.MaybePromise<void | $.Init<${resultTypeName}>>;`;
     })
     .join("\n");
 
@@ -128,7 +128,12 @@ export function generateServer(
     codeServerMethods.push(
       `...(${superClientName}.methods as $.Method<any, any>[]).map((method) => ({
         ...(method as any),
-        impl: target[method.methodName as keyof ${serverTargetName}] as any
+        impl: async (params: any, results: any) => {
+          const value = await (target[method.methodName as keyof ${serverTargetName}] as any).call(target, params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as any);
+          }
+        }
       }))`,
     );
   }
@@ -141,7 +146,12 @@ export function generateServer(
   for (const method of node.interface.methods) {
     codeServerMethods.push(`{
         ...${ownMethodsTable}[${index}],
-        impl: target.${method.name}
+        impl: async (params: ${getFullClassName(lookupNode(ctx, method.paramStructType))}, results: ${getFullClassName(lookupNode(ctx, method.resultStructType))}) => {
+          const value = await target.${method.name}(params, results);
+          if (value !== undefined) {
+            $.applyInit(results, value as $.Init<${getFullClassName(lookupNode(ctx, method.resultStructType))}>);
+          }
+        }
       }`);
 
     index++;
@@ -386,6 +396,20 @@ export function generateResultPromise(
     async promise(): Promise<${resultsClassName}> {
       return await this.pipeline.struct();
     }
+    then<TResult1 = ${resultsClassName}, TResult2 = never>(
+      onfulfilled?: ((value: ${resultsClassName}) => TResult1 | PromiseLike<TResult1>) | null,
+      onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
+    ): Promise<TResult1 | TResult2> {
+      return this.promise().then(onfulfilled, onrejected);
+    }
+    catch<TResult = never>(
+      onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null
+    ): Promise<${resultsClassName} | TResult> {
+      return this.promise().catch(onrejected);
+    }
+    finally(onfinally?: (() => void) | null): Promise<${resultsClassName}> {
+      return this.promise().finally(onfinally ?? undefined);
+    }
   `);
 
   ctx.codeParts.push(`
@@ -454,10 +478,15 @@ export function generateClientMethod(
   // Add method implementation to members
   methodsCode.push(`
     ${docComment}
-    ${name}(paramsFunc?: (params: ${paramTypeName}) => void): ${resultTypeName}$Promise {
+    ${name}(): ${resultTypeName}$Promise;
+    ${name}(params: $.Init<${paramTypeName}>): ${resultTypeName}$Promise;
+    ${name}(paramsFunc: (params: ${paramTypeName}) => void): ${resultTypeName}$Promise;
+    ${name}(params?: $.Initializer<${paramTypeName}>): ${resultTypeName}$Promise {
       const answer = this.client.call({
         method: ${clientName}.${methodArrayName}[${index}],
-        paramsFunc: paramsFunc
+        paramsFunc: params === undefined
+          ? undefined
+          : (target: ${paramTypeName}) => $.applyInit(target, params)
       });
       const pipeline = new $.Pipeline(${resultTypeName}, answer);
       return new ${resultTypeName}$Promise(pipeline);
