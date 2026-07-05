@@ -18,29 +18,29 @@ export class BigIntBag extends $.Struct {
     defaultDefaultUnsigned: $.getUint64Mask(0xdb4da5f7ef412b1n)
   };
   static _applyInit(target: BigIntBag, value: $.Init<BigIntBag>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["signed"];
       if (value !== undefined) {
-        target.signed = value as any;
+        target.signed = value;
       }
     }
     {
       const value = init["unsigned"];
       if (value !== undefined) {
-        target.unsigned = value as any;
+        target.unsigned = value;
       }
     }
     {
       const value = init["defaultSigned"];
       if (value !== undefined) {
-        target.defaultSigned = value as any;
+        target.defaultSigned = value;
       }
     }
     {
       const value = init["defaultUnsigned"];
       if (value !== undefined) {
-        target.defaultUnsigned = value as any;
+        target.defaultUnsigned = value;
       }
     }
   }

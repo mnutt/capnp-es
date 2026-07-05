@@ -11,7 +11,7 @@ export class HashFactory_NewSha1$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: HashFactory_NewSha1$Params, value: $.Init<HashFactory_NewSha1$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "HashFactory_NewSha1$Params_" + super.toString(); }
 }
@@ -27,11 +27,11 @@ export class HashFactory_NewSha1$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: HashFactory_NewSha1$Results, value: $.Init<HashFactory_NewSha1$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["hash"];
       if (value !== undefined) {
-        target.hash = value as any;
+        target.hash = value;
       }
     }
   }
@@ -56,8 +56,8 @@ export class HashFactory_NewSha1$Results extends $.Struct {
   toString(): string { return "HashFactory_NewSha1$Results_" + super.toString(); }
 }
 export class HashFactory_NewSha1$Results$Promise {
-  pipeline: $.Pipeline<any, any, HashFactory_NewSha1$Results>;
-  constructor(pipeline: $.Pipeline<any, any, HashFactory_NewSha1$Results>) {
+  pipeline: $.Pipeline<HashFactory_NewSha1$Results, $.Struct, HashFactory_NewSha1$Results>;
+  constructor(pipeline: $.Pipeline<HashFactory_NewSha1$Results, $.Struct, HashFactory_NewSha1$Results>) {
     this.pipeline = pipeline;
   }
   getHash(): Hash$Client {
@@ -66,10 +66,10 @@ export class HashFactory_NewSha1$Results$Promise {
   async promise(): Promise<HashFactory_NewSha1$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = HashFactory_NewSha1$Results, TResult2 = never>(onfulfilled?: ((value: HashFactory_NewSha1$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = HashFactory_NewSha1$Results, TResult2 = never>(onfulfilled?: ((value: HashFactory_NewSha1$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<HashFactory_NewSha1$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<HashFactory_NewSha1$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<HashFactory_NewSha1$Results> {
@@ -161,12 +161,12 @@ export class Hash_Write$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Hash_Write$Params, value: $.Init<Hash_Write$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["data"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.data = value as $.Data;
+          target.data = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -205,22 +205,22 @@ export class Hash_Write$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: Hash_Write$Results, value: $.Init<Hash_Write$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "Hash_Write$Results_" + super.toString(); }
 }
 export class Hash_Write$Results$Promise {
-  pipeline: $.Pipeline<any, any, Hash_Write$Results>;
-  constructor(pipeline: $.Pipeline<any, any, Hash_Write$Results>) {
+  pipeline: $.Pipeline<Hash_Write$Results, $.Struct, Hash_Write$Results>;
+  constructor(pipeline: $.Pipeline<Hash_Write$Results, $.Struct, Hash_Write$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<Hash_Write$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Hash_Write$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Write$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Hash_Write$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Write$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Write$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Write$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Hash_Write$Results> {
@@ -237,7 +237,7 @@ export class Hash_Sum$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: Hash_Sum$Params, value: $.Init<Hash_Sum$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "Hash_Sum$Params_" + super.toString(); }
 }
@@ -253,12 +253,12 @@ export class Hash_Sum$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Hash_Sum$Results, value: $.Init<Hash_Sum$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["hash"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.hash = value as $.Data;
+          target.hash = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -288,17 +288,17 @@ export class Hash_Sum$Results extends $.Struct {
   toString(): string { return "Hash_Sum$Results_" + super.toString(); }
 }
 export class Hash_Sum$Results$Promise {
-  pipeline: $.Pipeline<any, any, Hash_Sum$Results>;
-  constructor(pipeline: $.Pipeline<any, any, Hash_Sum$Results>) {
+  pipeline: $.Pipeline<Hash_Sum$Results, $.Struct, Hash_Sum$Results>;
+  constructor(pipeline: $.Pipeline<Hash_Sum$Results, $.Struct, Hash_Sum$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<Hash_Sum$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Hash_Sum$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Sum$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Hash_Sum$Results, TResult2 = never>(onfulfilled?: ((value: Hash_Sum$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Sum$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Hash_Sum$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Hash_Sum$Results> {

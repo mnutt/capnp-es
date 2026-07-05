@@ -81,7 +81,7 @@ const ConnWeakRefRegistry = globalThis.FinalizationRegistry
   : undefined;
 
 const ConDefaultFinalize: Finalize = (obj, finalizer): void => {
-  ConnWeakRefRegistry?.register(obj as object, finalizer);
+  ConnWeakRefRegistry?.register(obj, finalizer);
 };
 
 export class Conn {

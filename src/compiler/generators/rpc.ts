@@ -126,12 +126,13 @@ export function generateServer(
   for (const superclass of superclasses) {
     const superClientName = `${getFullClassName(superclass)}$Client`;
     codeServerMethods.push(
-      `...(${superClientName}.methods as $.Method<any, any>[]).map((method) => ({
-        ...(method as any),
-        impl: async (params: any, results: any) => {
-          const value = await (target[method.methodName as keyof ${serverTargetName}] as any).call(target, params, results);
+      `...(${superClientName}.methods as $.Method<$.Struct, $.Struct>[]).map((method) => ({
+        ...method,
+        impl: async (params: $.Struct, results: $.Struct) => {
+          const targetMethod = target[method.methodName as keyof ${serverTargetName}] as unknown as (params: $.Struct, results: $.Struct) => $.MaybePromise<void | $.Init<$.Struct>>;
+          const value = await targetMethod.call(target, params, results);
           if (value !== undefined) {
-            (method.ResultsClass as any)._applyInit(results, value);
+            $.applyInit(results, value);
           }
         }
       }))`,
@@ -244,7 +245,7 @@ export function generateClient(
     ${
       superclasses.length === 0
         ? ""
-        : `static readonly methods: $.Method<any, any>[] = [
+        : `static readonly methods: $.Method<$.Struct, $.Struct>[] = [
       ${superclasses.map((node) => `...${getFullClassName(node)}$Client.methods`).join(",\n")},
       ...${clientName}.ownMethods
     ];`
@@ -340,8 +341,8 @@ export function generateResultPromise(
   const members: string[] = [];
 
   members.push(`
-    pipeline: $.Pipeline<any, any, ${resultsClassName}>;
-    constructor(pipeline: $.Pipeline<any, any, ${resultsClassName}>) {
+    pipeline: $.Pipeline<${resultsClassName}, $.Struct, ${resultsClassName}>;
+    constructor(pipeline: $.Pipeline<${resultsClassName}, $.Struct, ${resultsClassName}>) {
       this.pipeline = pipeline;
     }
   `);
@@ -398,12 +399,12 @@ export function generateResultPromise(
     }
     then<TResult1 = ${resultsClassName}, TResult2 = never>(
       onfulfilled?: ((value: ${resultsClassName}) => TResult1 | PromiseLike<TResult1>) | null,
-      onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
+      onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
     ): Promise<TResult1 | TResult2> {
       return this.promise().then(onfulfilled, onrejected);
     }
     catch<TResult = never>(
-      onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null
+      onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null
     ): Promise<${resultsClassName} | TResult> {
       return this.promise().catch(onrejected);
     }

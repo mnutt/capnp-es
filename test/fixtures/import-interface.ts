@@ -14,11 +14,11 @@ export class ReturnCapability_Get$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: ReturnCapability_Get$Params, value: $.Init<ReturnCapability_Get$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["index"];
       if (value !== undefined) {
-        target.index = value as any;
+        target.index = value;
       }
     }
   }
@@ -42,11 +42,11 @@ export class ReturnCapability_Get$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: ReturnCapability_Get$Results, value: $.Init<ReturnCapability_Get$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["capability"];
       if (value !== undefined) {
-        target.capability = value as any;
+        target.capability = value;
       }
     }
   }
@@ -71,8 +71,8 @@ export class ReturnCapability_Get$Results extends $.Struct {
   toString(): string { return "ReturnCapability_Get$Results_" + super.toString(); }
 }
 export class ReturnCapability_Get$Results$Promise {
-  pipeline: $.Pipeline<any, any, ReturnCapability_Get$Results>;
-  constructor(pipeline: $.Pipeline<any, any, ReturnCapability_Get$Results>) {
+  pipeline: $.Pipeline<ReturnCapability_Get$Results, $.Struct, ReturnCapability_Get$Results>;
+  constructor(pipeline: $.Pipeline<ReturnCapability_Get$Results, $.Struct, ReturnCapability_Get$Results>) {
     this.pipeline = pipeline;
   }
   getCapability(): SimpleInterface$Client {
@@ -81,10 +81,10 @@ export class ReturnCapability_Get$Results$Promise {
   async promise(): Promise<ReturnCapability_Get$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = ReturnCapability_Get$Results, TResult2 = never>(onfulfilled?: ((value: ReturnCapability_Get$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = ReturnCapability_Get$Results, TResult2 = never>(onfulfilled?: ((value: ReturnCapability_Get$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<ReturnCapability_Get$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<ReturnCapability_Get$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<ReturnCapability_Get$Results> {

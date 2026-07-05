@@ -11,7 +11,7 @@ export class AppPersistent_Save$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: AppPersistent_Save$Params, value: $.Init<AppPersistent_Save$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "AppPersistent_Save$Params_" + super.toString(); }
 }
@@ -27,12 +27,12 @@ export class AppPersistent_Save$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: AppPersistent_Save$Results, value: $.Init<AppPersistent_Save$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["objectId"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.objectId = value as $.Data;
+          target.objectId = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -62,17 +62,17 @@ export class AppPersistent_Save$Results extends $.Struct {
   toString(): string { return "AppPersistent_Save$Results_" + super.toString(); }
 }
 export class AppPersistent_Save$Results$Promise {
-  pipeline: $.Pipeline<any, any, AppPersistent_Save$Results>;
-  constructor(pipeline: $.Pipeline<any, any, AppPersistent_Save$Results>) {
+  pipeline: $.Pipeline<AppPersistent_Save$Results, $.Struct, AppPersistent_Save$Results>;
+  constructor(pipeline: $.Pipeline<AppPersistent_Save$Results, $.Struct, AppPersistent_Save$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<AppPersistent_Save$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppPersistent_Save$Results, TResult2 = never>(onfulfilled?: ((value: AppPersistent_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppPersistent_Save$Results, TResult2 = never>(onfulfilled?: ((value: AppPersistent_Save$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppPersistent_Save$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppPersistent_Save$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppPersistent_Save$Results> {
@@ -162,7 +162,7 @@ export class Node_Stat$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: Node_Stat$Params, value: $.Init<Node_Stat$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "Node_Stat$Params_" + super.toString(); }
 }
@@ -178,11 +178,11 @@ export class Node_Stat$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Node_Stat$Results, value: $.Init<Node_Stat$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["isDir"];
       if (value !== undefined) {
-        target.isDir = value as any;
+        target.isDir = value;
       }
     }
   }
@@ -195,17 +195,17 @@ export class Node_Stat$Results extends $.Struct {
   toString(): string { return "Node_Stat$Results_" + super.toString(); }
 }
 export class Node_Stat$Results$Promise {
-  pipeline: $.Pipeline<any, any, Node_Stat$Results>;
-  constructor(pipeline: $.Pipeline<any, any, Node_Stat$Results>) {
+  pipeline: $.Pipeline<Node_Stat$Results, $.Struct, Node_Stat$Results>;
+  constructor(pipeline: $.Pipeline<Node_Stat$Results, $.Struct, Node_Stat$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<Node_Stat$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Node_Stat$Results, TResult2 = never>(onfulfilled?: ((value: Node_Stat$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Node_Stat$Results, TResult2 = never>(onfulfilled?: ((value: Node_Stat$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Node_Stat$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Node_Stat$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Node_Stat$Results> {
@@ -232,7 +232,7 @@ export class Node$Client {
       resultFields: Node_Stat$Results._capnp.fields
     }
   ];
-  static readonly methods: $.Method<any, any>[] = [
+  static readonly methods: $.Method<$.Struct, $.Struct>[] = [
     ...AppPersistent$Client.methods,
     ...Node$Client.ownMethods
   ];
@@ -263,12 +263,13 @@ export class Node$Server extends $.Server {
   readonly target: Node$Server$Target;
   constructor(target: Node$Server$Target) {
     super(target, [
-      ...(AppPersistent$Client.methods as $.Method<any, any>[]).map((method) => ({
-        ...(method as any),
-        impl: async (params: any, results: any) => {
-          const value = await (target[method.methodName as keyof Node$Server$Target] as any).call(target, params, results);
+      ...(AppPersistent$Client.methods as $.Method<$.Struct, $.Struct>[]).map((method) => ({
+        ...method,
+        impl: async (params: $.Struct, results: $.Struct) => {
+          const targetMethod = target[method.methodName as keyof Node$Server$Target] as unknown as (params: $.Struct, results: $.Struct) => $.MaybePromise<void | $.Init<$.Struct>>;
+          const value = await targetMethod.call(target, params, results);
           if (value !== undefined) {
-            (method.ResultsClass as any)._applyInit(results, value);
+            $.applyInit(results, value);
           }
         }
       })),
@@ -311,7 +312,7 @@ export class AppHooks_GetViewInfo$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: AppHooks_GetViewInfo$Params, value: $.Init<AppHooks_GetViewInfo$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "AppHooks_GetViewInfo$Params_" + super.toString(); }
 }
@@ -327,11 +328,11 @@ export class AppHooks_GetViewInfo$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: AppHooks_GetViewInfo$Results, value: $.Init<AppHooks_GetViewInfo$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["supportsNode"];
       if (value !== undefined) {
-        target.supportsNode = value as any;
+        target.supportsNode = value;
       }
     }
   }
@@ -344,17 +345,17 @@ export class AppHooks_GetViewInfo$Results extends $.Struct {
   toString(): string { return "AppHooks_GetViewInfo$Results_" + super.toString(); }
 }
 export class AppHooks_GetViewInfo$Results$Promise {
-  pipeline: $.Pipeline<any, any, AppHooks_GetViewInfo$Results>;
-  constructor(pipeline: $.Pipeline<any, any, AppHooks_GetViewInfo$Results>) {
+  pipeline: $.Pipeline<AppHooks_GetViewInfo$Results, $.Struct, AppHooks_GetViewInfo$Results>;
+  constructor(pipeline: $.Pipeline<AppHooks_GetViewInfo$Results, $.Struct, AppHooks_GetViewInfo$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<AppHooks_GetViewInfo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_GetViewInfo$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_GetViewInfo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_GetViewInfo$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_GetViewInfo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_GetViewInfo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_GetViewInfo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_GetViewInfo$Results> {
@@ -373,12 +374,12 @@ export class AppHooks_Restore$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: AppHooks_Restore$Params, value: $.Init<AppHooks_Restore$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["objectId"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.objectId = value as $.Data;
+          target.objectId = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -419,11 +420,11 @@ export class AppHooks_Restore$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: AppHooks_Restore$Results, value: $.Init<AppHooks_Restore$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -448,8 +449,8 @@ export class AppHooks_Restore$Results extends $.Struct {
   toString(): string { return "AppHooks_Restore$Results_" + super.toString(); }
 }
 export class AppHooks_Restore$Results$Promise {
-  pipeline: $.Pipeline<any, any, AppHooks_Restore$Results>;
-  constructor(pipeline: $.Pipeline<any, any, AppHooks_Restore$Results>) {
+  pipeline: $.Pipeline<AppHooks_Restore$Results, $.Struct, AppHooks_Restore$Results>;
+  constructor(pipeline: $.Pipeline<AppHooks_Restore$Results, $.Struct, AppHooks_Restore$Results>) {
     this.pipeline = pipeline;
   }
   getCap(): Node$Client {
@@ -458,10 +459,10 @@ export class AppHooks_Restore$Results$Promise {
   async promise(): Promise<AppHooks_Restore$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_Restore$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_Restore$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Restore$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Restore$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Restore$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_Restore$Results> {
@@ -480,12 +481,12 @@ export class AppHooks_Drop$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: AppHooks_Drop$Params, value: $.Init<AppHooks_Drop$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["objectId"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.objectId = value as $.Data;
+          target.objectId = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -524,22 +525,22 @@ export class AppHooks_Drop$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: AppHooks_Drop$Results, value: $.Init<AppHooks_Drop$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "AppHooks_Drop$Results_" + super.toString(); }
 }
 export class AppHooks_Drop$Results$Promise {
-  pipeline: $.Pipeline<any, any, AppHooks_Drop$Results>;
-  constructor(pipeline: $.Pipeline<any, any, AppHooks_Drop$Results>) {
+  pipeline: $.Pipeline<AppHooks_Drop$Results, $.Struct, AppHooks_Drop$Results>;
+  constructor(pipeline: $.Pipeline<AppHooks_Drop$Results, $.Struct, AppHooks_Drop$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<AppHooks_Drop$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = AppHooks_Drop$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Drop$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = AppHooks_Drop$Results, TResult2 = never>(onfulfilled?: ((value: AppHooks_Drop$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Drop$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<AppHooks_Drop$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<AppHooks_Drop$Results> {
@@ -703,11 +704,11 @@ export class SessionContext_FulfillRequest$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: SessionContext_FulfillRequest$Params, value: $.Init<SessionContext_FulfillRequest$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -741,22 +742,22 @@ export class SessionContext_FulfillRequest$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: SessionContext_FulfillRequest$Results, value: $.Init<SessionContext_FulfillRequest$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "SessionContext_FulfillRequest$Results_" + super.toString(); }
 }
 export class SessionContext_FulfillRequest$Results$Promise {
-  pipeline: $.Pipeline<any, any, SessionContext_FulfillRequest$Results>;
-  constructor(pipeline: $.Pipeline<any, any, SessionContext_FulfillRequest$Results>) {
+  pipeline: $.Pipeline<SessionContext_FulfillRequest$Results, $.Struct, SessionContext_FulfillRequest$Results>;
+  constructor(pipeline: $.Pipeline<SessionContext_FulfillRequest$Results, $.Struct, SessionContext_FulfillRequest$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<SessionContext_FulfillRequest$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SessionContext_FulfillRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_FulfillRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SessionContext_FulfillRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_FulfillRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_FulfillRequest$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_FulfillRequest$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SessionContext_FulfillRequest$Results> {
@@ -773,7 +774,7 @@ export class SessionContext_ClaimRequest$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: SessionContext_ClaimRequest$Params, value: $.Init<SessionContext_ClaimRequest$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "SessionContext_ClaimRequest$Params_" + super.toString(); }
 }
@@ -789,11 +790,11 @@ export class SessionContext_ClaimRequest$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: SessionContext_ClaimRequest$Results, value: $.Init<SessionContext_ClaimRequest$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -818,8 +819,8 @@ export class SessionContext_ClaimRequest$Results extends $.Struct {
   toString(): string { return "SessionContext_ClaimRequest$Results_" + super.toString(); }
 }
 export class SessionContext_ClaimRequest$Results$Promise {
-  pipeline: $.Pipeline<any, any, SessionContext_ClaimRequest$Results>;
-  constructor(pipeline: $.Pipeline<any, any, SessionContext_ClaimRequest$Results>) {
+  pipeline: $.Pipeline<SessionContext_ClaimRequest$Results, $.Struct, SessionContext_ClaimRequest$Results>;
+  constructor(pipeline: $.Pipeline<SessionContext_ClaimRequest$Results, $.Struct, SessionContext_ClaimRequest$Results>) {
     this.pipeline = pipeline;
   }
   getCap(): Node$Client {
@@ -828,10 +829,10 @@ export class SessionContext_ClaimRequest$Results$Promise {
   async promise(): Promise<SessionContext_ClaimRequest$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SessionContext_ClaimRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_ClaimRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SessionContext_ClaimRequest$Results, TResult2 = never>(onfulfilled?: ((value: SessionContext_ClaimRequest$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_ClaimRequest$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SessionContext_ClaimRequest$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SessionContext_ClaimRequest$Results> {
@@ -957,7 +958,7 @@ export class SandstormBridge_GetSessionContext$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: SandstormBridge_GetSessionContext$Params, value: $.Init<SandstormBridge_GetSessionContext$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "SandstormBridge_GetSessionContext$Params_" + super.toString(); }
 }
@@ -973,11 +974,11 @@ export class SandstormBridge_GetSessionContext$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: SandstormBridge_GetSessionContext$Results, value: $.Init<SandstormBridge_GetSessionContext$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["context"];
       if (value !== undefined) {
-        target.context = value as any;
+        target.context = value;
       }
     }
   }
@@ -1002,8 +1003,8 @@ export class SandstormBridge_GetSessionContext$Results extends $.Struct {
   toString(): string { return "SandstormBridge_GetSessionContext$Results_" + super.toString(); }
 }
 export class SandstormBridge_GetSessionContext$Results$Promise {
-  pipeline: $.Pipeline<any, any, SandstormBridge_GetSessionContext$Results>;
-  constructor(pipeline: $.Pipeline<any, any, SandstormBridge_GetSessionContext$Results>) {
+  pipeline: $.Pipeline<SandstormBridge_GetSessionContext$Results, $.Struct, SandstormBridge_GetSessionContext$Results>;
+  constructor(pipeline: $.Pipeline<SandstormBridge_GetSessionContext$Results, $.Struct, SandstormBridge_GetSessionContext$Results>) {
     this.pipeline = pipeline;
   }
   getContext(): SessionContext$Client {
@@ -1012,10 +1013,10 @@ export class SandstormBridge_GetSessionContext$Results$Promise {
   async promise(): Promise<SandstormBridge_GetSessionContext$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SandstormBridge_GetSessionContext$Results, TResult2 = never>(onfulfilled?: ((value: SandstormBridge_GetSessionContext$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SandstormBridge_GetSessionContext$Results, TResult2 = never>(onfulfilled?: ((value: SandstormBridge_GetSessionContext$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SandstormBridge_GetSessionContext$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SandstormBridge_GetSessionContext$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SandstormBridge_GetSessionContext$Results> {

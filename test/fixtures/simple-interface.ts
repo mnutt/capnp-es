@@ -14,17 +14,17 @@ export class SimpleInterface_Subtract$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: SimpleInterface_Subtract$Params, value: $.Init<SimpleInterface_Subtract$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["a"];
       if (value !== undefined) {
-        target.a = value as any;
+        target.a = value;
       }
     }
     {
       const value = init["b"];
       if (value !== undefined) {
-        target.b = value as any;
+        target.b = value;
       }
     }
   }
@@ -54,11 +54,11 @@ export class SimpleInterface_Subtract$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: SimpleInterface_Subtract$Results, value: $.Init<SimpleInterface_Subtract$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["result"];
       if (value !== undefined) {
-        target.result = value as any;
+        target.result = value;
       }
     }
   }
@@ -71,17 +71,17 @@ export class SimpleInterface_Subtract$Results extends $.Struct {
   toString(): string { return "SimpleInterface_Subtract$Results_" + super.toString(); }
 }
 export class SimpleInterface_Subtract$Results$Promise {
-  pipeline: $.Pipeline<any, any, SimpleInterface_Subtract$Results>;
-  constructor(pipeline: $.Pipeline<any, any, SimpleInterface_Subtract$Results>) {
+  pipeline: $.Pipeline<SimpleInterface_Subtract$Results, $.Struct, SimpleInterface_Subtract$Results>;
+  constructor(pipeline: $.Pipeline<SimpleInterface_Subtract$Results, $.Struct, SimpleInterface_Subtract$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<SimpleInterface_Subtract$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = SimpleInterface_Subtract$Results, TResult2 = never>(onfulfilled?: ((value: SimpleInterface_Subtract$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = SimpleInterface_Subtract$Results, TResult2 = never>(onfulfilled?: ((value: SimpleInterface_Subtract$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<SimpleInterface_Subtract$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<SimpleInterface_Subtract$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<SimpleInterface_Subtract$Results> {

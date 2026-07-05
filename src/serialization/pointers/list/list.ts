@@ -96,6 +96,10 @@ export class List<T> extends Pointer implements Array<T> {
     return this.get(index < 0 ? this.length + index : index);
   }
 
+  protected arrayCallbackTarget(): T[] {
+    return this as unknown as T[];
+  }
+
   concat(other: T[]): T[] {
     const { length } = this;
     const otherLength = other.length;
@@ -106,8 +110,9 @@ export class List<T> extends Pointer implements Array<T> {
   }
 
   some(cb: ArrayCb<T>, _this?: any): boolean {
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
-      if (cb.call(_this, this.at(i), i, this as unknown as T[])) {
+      if (cb.call(_this, this.at(i), i, array)) {
         return true;
       }
     }
@@ -116,9 +121,10 @@ export class List<T> extends Pointer implements Array<T> {
 
   filter(cb: ArrayCb<T>, _this?: any): T[] {
     const res: T[] = [];
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
       const value = this.at(i);
-      if (cb.call(_this, value, i, this as unknown as T[])) {
+      if (cb.call(_this, value, i, array)) {
         res.push(value);
       }
     }
@@ -126,9 +132,10 @@ export class List<T> extends Pointer implements Array<T> {
   }
 
   find(cb: ArrayCb<T>, _this?: any): T | undefined {
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
       const value = this.at(i);
-      if (cb.call(_this, value, i, this as unknown as T[])) {
+      if (cb.call(_this, value, i, array)) {
         return value;
       }
     }
@@ -136,9 +143,10 @@ export class List<T> extends Pointer implements Array<T> {
   }
 
   findIndex(cb: (v: T, i: number, arr: T[]) => boolean, _this?: any): number {
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
       const value = this.at(i);
-      if (cb.call(_this, value, i, this as unknown as T[])) {
+      if (cb.call(_this, value, i, array)) {
         return i;
       }
     }
@@ -146,24 +154,27 @@ export class List<T> extends Pointer implements Array<T> {
   }
 
   forEach(cb: ArrayCb<T, void>, _this?: any): void {
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
-      cb.call(_this, this.at(i), i, this as unknown as T[]);
+      cb.call(_this, this.at(i), i, array);
     }
   }
 
   map<U>(cb: ArrayCb<T, U>, _this?: any): U[] {
     const { length } = this;
     const res = Array.from({ length }) as U[];
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < length; i++) {
-      res[i] = cb.call(_this, this.at(i), i, this as unknown as T[]);
+      res[i] = cb.call(_this, this.at(i), i, array);
     }
     return res;
   }
 
   flatMap<U>(cb: ArrayCb<T, U | U[]>, _this?: any): U[] {
     const res: U[] = [];
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
-      const r = cb.call(_this, this.at(i), i, this as unknown as T[]);
+      const r = cb.call(_this, this.at(i), i, array);
       res.push(...(Array.isArray(r) ? r : [r]));
     }
     return res;
@@ -171,8 +182,9 @@ export class List<T> extends Pointer implements Array<T> {
 
   every<S extends T>(cb: (v: T, i: number) => v is S, t?: any): this is S[];
   every(cb: ArrayCb<T, unknown>, _this?: any): boolean {
+    const array = this.arrayCallbackTarget();
     for (let i = 0; i < this.length; i++) {
-      if (!cb.call(_this, this.at(i), i, this as unknown as T[])) {
+      if (!cb.call(_this, this.at(i), i, array)) {
         return false;
       }
     }
@@ -182,6 +194,7 @@ export class List<T> extends Pointer implements Array<T> {
   reduce(cb: (p: T, c: T, i: number, a: T[]) => T, initialValue?: T): T {
     let i = 0;
     let res: T;
+    const array = this.arrayCallbackTarget();
     if (initialValue === undefined) {
       res = this.at(0);
       i++;
@@ -189,7 +202,7 @@ export class List<T> extends Pointer implements Array<T> {
       res = initialValue;
     }
     for (; i < this.length; i++) {
-      res = cb(res, this.at(i), i, this as unknown as T[]);
+      res = cb(res, this.at(i), i, array);
     }
     return res;
   }
@@ -197,6 +210,7 @@ export class List<T> extends Pointer implements Array<T> {
   reduceRight(cb: (p: T, c: T, i: number, a: T[]) => T, initialValue?: T): T {
     let i = this.length - 1;
     let res: T;
+    const array = this.arrayCallbackTarget();
     if (initialValue === undefined) {
       res = this.at(i);
       i--;
@@ -204,7 +218,7 @@ export class List<T> extends Pointer implements Array<T> {
       res = initialValue;
     }
     for (; i >= 0; i--) {
-      res = cb(res, this.at(i), i, this as unknown as T[]);
+      res = cb(res, this.at(i), i, array);
     }
     return res;
   }
@@ -280,7 +294,14 @@ export class List<T> extends Pointer implements Array<T> {
     throw new Error(LIST_NO_SEARCH);
   }
 
-  findLast(_cb: unknown, _thisArg?: unknown): T | undefined {
+  findLast<S extends T>(
+    _cb: (value: T, index: number, array: T[]) => value is S,
+    _thisArg?: any,
+  ): S | undefined;
+  findLast(
+    _cb: (value: T, index: number, array: T[]) => unknown,
+    _thisArg?: any,
+  ): T | undefined {
     throw new Error(LIST_NO_SEARCH);
   }
 
@@ -316,7 +337,9 @@ export class List<T> extends Pointer implements Array<T> {
     throw new Error(LIST_NO_MUTABLE);
   }
 
-  splice(_start: unknown, _deleteCount?: unknown, ..._rest: unknown[]): T[] {
+  splice(_start: number, _deleteCount?: number): T[];
+  splice(_start: number, _deleteCount: number, ..._items: T[]): T[];
+  splice(_start: number, _deleteCount?: number, ..._items: T[]): T[] {
     throw new Error(LIST_NO_MUTABLE);
   }
 
@@ -340,7 +363,7 @@ export class List<T> extends Pointer implements Array<T> {
     return this.join(",");
   }
 
-  toLocaleString(_locales?: unknown, _options?: unknown): string {
+  toLocaleString(): string {
     return this.toString();
   }
 

@@ -11,7 +11,7 @@ export class StreamResult extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: StreamResult, value: $.Init<StreamResult>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "StreamResult_" + super.toString(); }
 }

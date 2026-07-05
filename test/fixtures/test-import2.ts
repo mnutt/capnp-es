@@ -23,12 +23,12 @@ export class TestImport2 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestImport2, value: $.Init<TestImport2>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.foo = value as TestAllTypes;
+          target.foo = value;
         }
         else {
           TestAllTypes._applyInit(target._initFoo(), value as $.Init<TestAllTypes>);
@@ -39,7 +39,7 @@ export class TestImport2 extends $.Struct {
       const value = init["bar"];
       if (value !== undefined) {
         if (value instanceof Node) {
-          target.bar = value as Node;
+          target.bar = value;
         }
         else {
           Node._applyInit(target._initBar(), value as $.Init<Node>);
@@ -50,7 +50,7 @@ export class TestImport2 extends $.Struct {
       const value = init["baz"];
       if (value !== undefined) {
         if (value instanceof TestImport) {
-          target.baz = value as TestImport;
+          target.baz = value;
         }
         else {
           TestImport._applyInit(target._initBaz(), value as $.Init<TestImport>);
@@ -61,7 +61,7 @@ export class TestImport2 extends $.Struct {
       const value = init["box"];
       if (value !== undefined) {
         if (value instanceof Node_Parameter) {
-          target.box = value as Node_Parameter;
+          target.box = value;
         }
         else {
           Node_Parameter._applyInit(target._initBox(), value as $.Init<Node_Parameter>);
@@ -72,7 +72,7 @@ export class TestImport2 extends $.Struct {
       const value = init["bee"];
       if (value !== undefined) {
         if (value instanceof Node_NestedNode) {
-          target.bee = value as Node_NestedNode;
+          target.bee = value;
         }
         else {
           Node_NestedNode._applyInit(target._initBee(), value as $.Init<Node_NestedNode>);
@@ -83,7 +83,7 @@ export class TestImport2 extends $.Struct {
       const value = init["bok"];
       if (value !== undefined) {
         if (value instanceof Brand_Scope) {
-          target.bok = value as Brand_Scope;
+          target.bok = value;
         }
         else {
           Brand_Scope._applyInit(target._initBok(), value as $.Init<Brand_Scope>);
@@ -94,7 +94,7 @@ export class TestImport2 extends $.Struct {
       const value = init["bip"];
       if (value !== undefined) {
         if (value instanceof Brand_Binding) {
-          target.bip = value as Brand_Binding;
+          target.bip = value;
         }
         else {
           Brand_Binding._applyInit(target._initBip(), value as $.Init<Brand_Binding>);
@@ -104,7 +104,7 @@ export class TestImport2 extends $.Struct {
     {
       const value = init["bep"];
       if (value !== undefined) {
-        target.bep = value as any;
+        target.bep = value;
       }
     }
   }

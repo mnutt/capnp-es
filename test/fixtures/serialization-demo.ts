@@ -21,17 +21,17 @@ export class Person_PhoneNumber extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Person_PhoneNumber, value: $.Init<Person_PhoneNumber>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["number"];
       if (value !== undefined) {
-        target.number = value as any;
+        target.number = value;
       }
     }
     {
       const value = init["type"];
       if (value !== undefined) {
-        target.type = value as any;
+        target.type = value;
       }
     }
   }
@@ -79,9 +79,11 @@ export class Person_Employment extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Person_Employment, value: $.Init<Person_Employment>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["unemployed"];
+      const value = (init as {
+        "unemployed"?: true;
+      })["unemployed"];
       if (value !== undefined) {
         target.unemployed = true;
       }
@@ -89,17 +91,19 @@ export class Person_Employment extends $.Struct {
     {
       const value = init["employer"];
       if (value !== undefined) {
-        target.employer = value as any;
+        target.employer = value;
       }
     }
     {
       const value = init["school"];
       if (value !== undefined) {
-        target.school = value as any;
+        target.school = value;
       }
     }
     {
-      const value = init["selfEmployed"];
+      const value = (init as {
+        "selfEmployed"?: true;
+      })["selfEmployed"];
       if (value !== undefined) {
         target.selfEmployed = true;
       }
@@ -235,33 +239,33 @@ export class Person extends $.Struct {
   };
   static _Phones: $.ListCtor<Person_PhoneNumber>;
   static _applyInit(target: Person, value: $.Init<Person>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["id"];
       if (value !== undefined) {
-        target.id = value as any;
+        target.id = value;
       }
     }
     {
       const value = init["name"];
       if (value !== undefined) {
-        target.name = value as any;
+        target.name = value;
       }
     }
     {
       const value = init["email"];
       if (value !== undefined) {
-        target.email = value as any;
+        target.email = value;
       }
     }
     {
       const value = init["phones"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.phones = value as any;
+          target.phones = value as typeof target.phones;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initPhones(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -339,15 +343,15 @@ export class AddressBook extends $.Struct {
   };
   static _People: $.ListCtor<Person>;
   static _applyInit(target: AddressBook, value: $.Init<AddressBook>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["people"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.people = value as any;
+          target.people = value as typeof target.people;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initPeople(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];

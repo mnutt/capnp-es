@@ -29,15 +29,15 @@ export class ListMania extends $.Struct {
   };
   static _CompositeList: $.ListCtor<ListManiaStruct>;
   static _applyInit(target: ListMania, value: $.Init<ListMania>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["boolList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.boolList = value as any;
+          target.boolList = value as typeof target.boolList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initBoolList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -50,10 +50,10 @@ export class ListMania extends $.Struct {
       const value = init["compositeList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.compositeList = value as any;
+          target.compositeList = value as typeof target.compositeList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initCompositeList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -71,10 +71,10 @@ export class ListMania extends $.Struct {
       const value = init["dataList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.dataList = value as any;
+          target.dataList = value as typeof target.dataList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initDataList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -93,10 +93,10 @@ export class ListMania extends $.Struct {
       const value = init["float32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float32List = value as any;
+          target.float32List = value as typeof target.float32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -109,10 +109,10 @@ export class ListMania extends $.Struct {
       const value = init["float64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float64List = value as any;
+          target.float64List = value as typeof target.float64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -125,10 +125,10 @@ export class ListMania extends $.Struct {
       const value = init["int8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int8List = value as any;
+          target.int8List = value as typeof target.int8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -141,10 +141,10 @@ export class ListMania extends $.Struct {
       const value = init["int16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int16List = value as any;
+          target.int16List = value as typeof target.int16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -157,10 +157,10 @@ export class ListMania extends $.Struct {
       const value = init["int32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int32List = value as any;
+          target.int32List = value as typeof target.int32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -173,10 +173,10 @@ export class ListMania extends $.Struct {
       const value = init["int64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int64List = value as any;
+          target.int64List = value as typeof target.int64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -189,10 +189,10 @@ export class ListMania extends $.Struct {
       const value = init["interfaceList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.interfaceList = value as any;
+          target.interfaceList = value as typeof target.interfaceList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInterfaceList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -205,10 +205,10 @@ export class ListMania extends $.Struct {
       const value = init["textList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.textList = value as any;
+          target.textList = value as typeof target.textList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initTextList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -221,10 +221,10 @@ export class ListMania extends $.Struct {
       const value = init["uint8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uint8List = value as any;
+          target.uint8List = value as typeof target.uint8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUint8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -237,10 +237,10 @@ export class ListMania extends $.Struct {
       const value = init["uint16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uint16List = value as any;
+          target.uint16List = value as typeof target.uint16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUint16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -253,10 +253,10 @@ export class ListMania extends $.Struct {
       const value = init["uint32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uint32List = value as any;
+          target.uint32List = value as typeof target.uint32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUint32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -269,10 +269,10 @@ export class ListMania extends $.Struct {
       const value = init["uint64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uint64List = value as any;
+          target.uint64List = value as typeof target.uint64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUint64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -285,10 +285,10 @@ export class ListMania extends $.Struct {
       const value = init["voidList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.voidList = value as any;
+          target.voidList = value as typeof target.voidList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initVoidList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -598,7 +598,7 @@ export class ListManiaInterface_GetListMania$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: ListManiaInterface_GetListMania$Params, value: $.Init<ListManiaInterface_GetListMania$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "ListManiaInterface_GetListMania$Params_" + super.toString(); }
 }
@@ -614,15 +614,15 @@ export class ListManiaInterface_GetListMania$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: ListManiaInterface_GetListMania$Results, value: $.Init<ListManiaInterface_GetListMania$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["result"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.result = value as any;
+          target.result = value as typeof target.result;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initResult(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -653,17 +653,17 @@ export class ListManiaInterface_GetListMania$Results extends $.Struct {
   toString(): string { return "ListManiaInterface_GetListMania$Results_" + super.toString(); }
 }
 export class ListManiaInterface_GetListMania$Results$Promise {
-  pipeline: $.Pipeline<any, any, ListManiaInterface_GetListMania$Results>;
-  constructor(pipeline: $.Pipeline<any, any, ListManiaInterface_GetListMania$Results>) {
+  pipeline: $.Pipeline<ListManiaInterface_GetListMania$Results, $.Struct, ListManiaInterface_GetListMania$Results>;
+  constructor(pipeline: $.Pipeline<ListManiaInterface_GetListMania$Results, $.Struct, ListManiaInterface_GetListMania$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<ListManiaInterface_GetListMania$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = ListManiaInterface_GetListMania$Results, TResult2 = never>(onfulfilled?: ((value: ListManiaInterface_GetListMania$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = ListManiaInterface_GetListMania$Results, TResult2 = never>(onfulfilled?: ((value: ListManiaInterface_GetListMania$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<ListManiaInterface_GetListMania$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<ListManiaInterface_GetListMania$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<ListManiaInterface_GetListMania$Results> {
@@ -756,9 +756,11 @@ export class ListManiaStruct extends $.Struct {
     ] as const,
   };
   static _applyInit(target: ListManiaStruct, value: $.Init<ListManiaStruct>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["void"];
+      const value = (init as {
+        "void"?: true;
+      })["void"];
       if (value !== undefined) {
       }
     }
@@ -766,7 +768,7 @@ export class ListManiaStruct extends $.Struct {
       const value = init["self"];
       if (value !== undefined) {
         if (value instanceof ListMania) {
-          target.self = value as ListMania;
+          target.self = value;
         }
         else {
           ListMania._applyInit(target._initSelf(), value as $.Init<ListMania>);

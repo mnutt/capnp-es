@@ -15,12 +15,12 @@ export class TestImport extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestImport, value: $.Init<TestImport>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["field"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.field = value as TestAllTypes;
+          target.field = value;
         }
         else {
           TestAllTypes._applyInit(target._initField(), value as $.Init<TestAllTypes>);
@@ -30,7 +30,7 @@ export class TestImport extends $.Struct {
     {
       const value = init["enumField"];
       if (value !== undefined) {
-        target.enumField = value as any;
+        target.enumField = value;
       }
     }
   }

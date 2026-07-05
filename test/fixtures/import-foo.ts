@@ -15,12 +15,12 @@ export class Foo extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Foo, value: $.Init<Foo>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["baz"];
       if (value !== undefined) {
         if (value instanceof Baz) {
-          target.baz = value as Baz;
+          target.baz = value;
         }
         else {
           Baz._applyInit(target._initBaz(), value as $.Init<Baz>);

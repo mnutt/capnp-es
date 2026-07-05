@@ -13,11 +13,11 @@ export class Persistent_SaveParams extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Persistent_SaveParams, value: $.Init<Persistent_SaveParams>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["sealFor"];
       if (value !== undefined) {
-        target.sealFor = value as any;
+        target.sealFor = value as $.Pointer;
       }
     }
   }
@@ -59,11 +59,11 @@ export class Persistent_SaveResults extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Persistent_SaveResults, value: $.Init<Persistent_SaveResults>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["sturdyRef"];
       if (value !== undefined) {
-        target.sturdyRef = value as any;
+        target.sturdyRef = value as $.Pointer;
       }
     }
   }
@@ -85,17 +85,17 @@ export class Persistent_SaveResults extends $.Struct {
   toString(): string { return "Persistent_SaveResults_" + super.toString(); }
 }
 export class Persistent_SaveResults$Promise {
-  pipeline: $.Pipeline<any, any, Persistent_SaveResults>;
-  constructor(pipeline: $.Pipeline<any, any, Persistent_SaveResults>) {
+  pipeline: $.Pipeline<Persistent_SaveResults, $.Struct, Persistent_SaveResults>;
+  constructor(pipeline: $.Pipeline<Persistent_SaveResults, $.Struct, Persistent_SaveResults>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<Persistent_SaveResults> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = Persistent_SaveResults, TResult2 = never>(onfulfilled?: ((value: Persistent_SaveResults) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = Persistent_SaveResults, TResult2 = never>(onfulfilled?: ((value: Persistent_SaveResults) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<Persistent_SaveResults | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<Persistent_SaveResults | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<Persistent_SaveResults> {

@@ -14,17 +14,17 @@ export class Foo extends $.Struct {
     ] as const,
   };
   static _applyInit(target: Foo, value: $.Init<Foo>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value;
       }
     }
   }

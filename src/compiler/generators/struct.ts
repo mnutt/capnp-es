@@ -523,7 +523,7 @@ function createApplyInitMethod(
 
   return `
     static _applyInit(target: ${fullClassName}, value: $.Init<${fullClassName}>): void {
-      const init = value as any;
+      const init = value;
       ${body}
     }
   `;
@@ -567,7 +567,7 @@ function createApplyInitField(
     case schema.Type.VOID: {
       return `
       {
-        const value = ${rawValueRef};
+        const value = (init as { ${valueKey}?: true })[${valueKey}];
         if (${valueRef} !== undefined) {
           ${discriminant}
         }
@@ -581,7 +581,7 @@ function createApplyInitField(
         const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           if (${valueRef} instanceof $.Data) {
-            target.${accessorName} = ${valueRef} as $.Data;
+            target.${accessorName} = ${valueRef};
           } else {
             const bytes = $.dataBytes(${valueRef});
             target.${initName}(bytes.byteLength).copyBuffer(bytes);
@@ -611,7 +611,7 @@ function createApplyInitField(
         const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
           if (${valueRef} instanceof ${structClassName}) {
-            target.${accessorName} = ${valueRef} as ${structClassName};
+            target.${accessorName} = ${valueRef};
           } else {
             ${structClassName}._applyInit(target.${initName}(), ${valueRef} as $.Init<${structClassName}>);
           }
@@ -620,8 +620,18 @@ function createApplyInitField(
       `;
     }
 
+    case schema.Type.ANY_POINTER: {
+      return `
+      {
+        const value = ${rawValueRef};
+        if (${valueRef} !== undefined) {
+          target.${accessorName} = ${valueRef} as $.Pointer;
+        }
+      }
+      `;
+    }
+
     case schema.Type.INTERFACE:
-    case schema.Type.ANY_POINTER:
     case schema.Type.TEXT:
     case schema.Type.BOOL:
     case schema.Type.ENUM:
@@ -639,7 +649,7 @@ function createApplyInitField(
       {
         const value = ${rawValueRef};
         if (${valueRef} !== undefined) {
-          target.${accessorName} = ${valueRef} as any;
+          target.${accessorName} = ${valueRef};
         }
       }
       `;
@@ -667,9 +677,9 @@ function createApplyInitListField(
       const value = ${rawValueRef};
     if (${valueRef} !== undefined) {
       if (${valueRef} instanceof $.List) {
-        target.${accessorName} = ${valueRef} as any;
+        target.${accessorName} = ${valueRef} as typeof target.${accessorName};
       } else {
-        const values = Array.isArray(${valueRef}) ? ${valueRef} : Array.from(${valueRef} as Iterable<any>);
+        const values = Array.isArray(${valueRef}) ? ${valueRef} : Array.from(${valueRef});
         const list = target.${initName}(values.length);
         for (let index = 0; index < values.length; index++) {
           const item = values[index];
@@ -719,7 +729,7 @@ function createApplyInitListElement(
         if (item instanceof $.List) {
           list.set(index, item);
         } else {
-          const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+          const nestedValues = Array.isArray(item) ? item : Array.from(item);
           const nested = list.get(index);
           $.initListValue(nested, nestedValues.length);
           for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {

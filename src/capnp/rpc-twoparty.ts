@@ -36,11 +36,11 @@ export class VatId extends $.Struct {
     ] as const,
   };
   static _applyInit(target: VatId, value: $.Init<VatId>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["side"];
       if (value !== undefined) {
-        target.side = value as any;
+        target.side = value;
       }
     }
   }
@@ -68,11 +68,11 @@ export class ProvisionId extends $.Struct {
     ] as const,
   };
   static _applyInit(target: ProvisionId, value: $.Init<ProvisionId>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["joinId"];
       if (value !== undefined) {
-        target.joinId = value as any;
+        target.joinId = value;
       }
     }
   }
@@ -102,7 +102,7 @@ export class RecipientId extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: RecipientId, value: $.Init<RecipientId>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "RecipientId_" + super.toString(); }
 }
@@ -120,7 +120,7 @@ export class ThirdPartyCapId extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: ThirdPartyCapId, value: $.Init<ThirdPartyCapId>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "ThirdPartyCapId_" + super.toString(); }
 }
@@ -171,23 +171,23 @@ export class JoinKeyPart extends $.Struct {
     ] as const,
   };
   static _applyInit(target: JoinKeyPart, value: $.Init<JoinKeyPart>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["joinId"];
       if (value !== undefined) {
-        target.joinId = value as any;
+        target.joinId = value;
       }
     }
     {
       const value = init["partCount"];
       if (value !== undefined) {
-        target.partCount = value as any;
+        target.partCount = value;
       }
     }
     {
       const value = init["partNum"];
       if (value !== undefined) {
-        target.partNum = value as any;
+        target.partNum = value;
       }
     }
   }
@@ -238,23 +238,23 @@ export class JoinResult extends $.Struct {
     ] as const,
   };
   static _applyInit(target: JoinResult, value: $.Init<JoinResult>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["joinId"];
       if (value !== undefined) {
-        target.joinId = value as any;
+        target.joinId = value;
       }
     }
     {
       const value = init["succeeded"];
       if (value !== undefined) {
-        target.succeeded = value as any;
+        target.succeeded = value;
       }
     }
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value as $.Pointer;
       }
     }
   }

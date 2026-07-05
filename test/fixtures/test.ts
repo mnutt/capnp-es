@@ -70,89 +70,91 @@ export class TestAllTypes extends $.Struct {
   };
   static _StructList: $.ListCtor<TestAllTypes>;
   static _applyInit(target: TestAllTypes, value: $.Init<TestAllTypes>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["voidField"];
+      const value = (init as {
+        "voidField"?: true;
+      })["voidField"];
       if (value !== undefined) {
       }
     }
     {
       const value = init["boolField"];
       if (value !== undefined) {
-        target.boolField = value as any;
+        target.boolField = value;
       }
     }
     {
       const value = init["int8Field"];
       if (value !== undefined) {
-        target.int8Field = value as any;
+        target.int8Field = value;
       }
     }
     {
       const value = init["int16Field"];
       if (value !== undefined) {
-        target.int16Field = value as any;
+        target.int16Field = value;
       }
     }
     {
       const value = init["int32Field"];
       if (value !== undefined) {
-        target.int32Field = value as any;
+        target.int32Field = value;
       }
     }
     {
       const value = init["int64Field"];
       if (value !== undefined) {
-        target.int64Field = value as any;
+        target.int64Field = value;
       }
     }
     {
       const value = init["uInt8Field"];
       if (value !== undefined) {
-        target.uInt8Field = value as any;
+        target.uInt8Field = value;
       }
     }
     {
       const value = init["uInt16Field"];
       if (value !== undefined) {
-        target.uInt16Field = value as any;
+        target.uInt16Field = value;
       }
     }
     {
       const value = init["uInt32Field"];
       if (value !== undefined) {
-        target.uInt32Field = value as any;
+        target.uInt32Field = value;
       }
     }
     {
       const value = init["uInt64Field"];
       if (value !== undefined) {
-        target.uInt64Field = value as any;
+        target.uInt64Field = value;
       }
     }
     {
       const value = init["float32Field"];
       if (value !== undefined) {
-        target.float32Field = value as any;
+        target.float32Field = value;
       }
     }
     {
       const value = init["float64Field"];
       if (value !== undefined) {
-        target.float64Field = value as any;
+        target.float64Field = value;
       }
     }
     {
       const value = init["textField"];
       if (value !== undefined) {
-        target.textField = value as any;
+        target.textField = value;
       }
     }
     {
       const value = init["dataField"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.dataField = value as $.Data;
+          target.dataField = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -164,7 +166,7 @@ export class TestAllTypes extends $.Struct {
       const value = init["structField"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.structField = value as TestAllTypes;
+          target.structField = value;
         }
         else {
           TestAllTypes._applyInit(target._initStructField(), value as $.Init<TestAllTypes>);
@@ -174,11 +176,13 @@ export class TestAllTypes extends $.Struct {
     {
       const value = init["enumField"];
       if (value !== undefined) {
-        target.enumField = value as any;
+        target.enumField = value;
       }
     }
     {
-      const value = init["interfaceField"];
+      const value = (init as {
+        "interfaceField"?: true;
+      })["interfaceField"];
       if (value !== undefined) {
       }
     }
@@ -186,10 +190,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["voidList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.voidList = value as any;
+          target.voidList = value as typeof target.voidList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initVoidList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -202,10 +206,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["boolList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.boolList = value as any;
+          target.boolList = value as typeof target.boolList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initBoolList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -218,10 +222,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["int8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int8List = value as any;
+          target.int8List = value as typeof target.int8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -234,10 +238,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["int16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int16List = value as any;
+          target.int16List = value as typeof target.int16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -250,10 +254,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["int32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int32List = value as any;
+          target.int32List = value as typeof target.int32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -266,10 +270,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["int64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int64List = value as any;
+          target.int64List = value as typeof target.int64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -282,10 +286,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["uInt8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt8List = value as any;
+          target.uInt8List = value as typeof target.uInt8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -298,10 +302,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["uInt16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt16List = value as any;
+          target.uInt16List = value as typeof target.uInt16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -314,10 +318,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["uInt32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt32List = value as any;
+          target.uInt32List = value as typeof target.uInt32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -330,10 +334,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["uInt64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt64List = value as any;
+          target.uInt64List = value as typeof target.uInt64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -346,10 +350,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["float32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float32List = value as any;
+          target.float32List = value as typeof target.float32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -362,10 +366,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["float64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float64List = value as any;
+          target.float64List = value as typeof target.float64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -378,10 +382,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["textList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.textList = value as any;
+          target.textList = value as typeof target.textList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initTextList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -394,10 +398,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["dataList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.dataList = value as any;
+          target.dataList = value as typeof target.dataList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initDataList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -416,10 +420,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["structList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.structList = value as any;
+          target.structList = value as typeof target.structList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initStructList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -437,10 +441,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["enumList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.enumList = value as any;
+          target.enumList = value as typeof target.enumList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initEnumList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -453,10 +457,10 @@ export class TestAllTypes extends $.Struct {
       const value = init["interfaceList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.interfaceList = value as any;
+          target.interfaceList = value as typeof target.interfaceList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInterfaceList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -969,89 +973,91 @@ export class TestDefaults extends $.Struct {
   };
   static _StructList: $.ListCtor<TestAllTypes>;
   static _applyInit(target: TestDefaults, value: $.Init<TestDefaults>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["voidField"];
+      const value = (init as {
+        "voidField"?: true;
+      })["voidField"];
       if (value !== undefined) {
       }
     }
     {
       const value = init["boolField"];
       if (value !== undefined) {
-        target.boolField = value as any;
+        target.boolField = value;
       }
     }
     {
       const value = init["int8Field"];
       if (value !== undefined) {
-        target.int8Field = value as any;
+        target.int8Field = value;
       }
     }
     {
       const value = init["int16Field"];
       if (value !== undefined) {
-        target.int16Field = value as any;
+        target.int16Field = value;
       }
     }
     {
       const value = init["int32Field"];
       if (value !== undefined) {
-        target.int32Field = value as any;
+        target.int32Field = value;
       }
     }
     {
       const value = init["int64Field"];
       if (value !== undefined) {
-        target.int64Field = value as any;
+        target.int64Field = value;
       }
     }
     {
       const value = init["uInt8Field"];
       if (value !== undefined) {
-        target.uInt8Field = value as any;
+        target.uInt8Field = value;
       }
     }
     {
       const value = init["uInt16Field"];
       if (value !== undefined) {
-        target.uInt16Field = value as any;
+        target.uInt16Field = value;
       }
     }
     {
       const value = init["uInt32Field"];
       if (value !== undefined) {
-        target.uInt32Field = value as any;
+        target.uInt32Field = value;
       }
     }
     {
       const value = init["uInt64Field"];
       if (value !== undefined) {
-        target.uInt64Field = value as any;
+        target.uInt64Field = value;
       }
     }
     {
       const value = init["float32Field"];
       if (value !== undefined) {
-        target.float32Field = value as any;
+        target.float32Field = value;
       }
     }
     {
       const value = init["float64Field"];
       if (value !== undefined) {
-        target.float64Field = value as any;
+        target.float64Field = value;
       }
     }
     {
       const value = init["textField"];
       if (value !== undefined) {
-        target.textField = value as any;
+        target.textField = value;
       }
     }
     {
       const value = init["dataField"];
       if (value !== undefined) {
         if (value instanceof $.Data) {
-          target.dataField = value as $.Data;
+          target.dataField = value;
         }
         else {
           const bytes = $.dataBytes(value);
@@ -1063,7 +1069,7 @@ export class TestDefaults extends $.Struct {
       const value = init["structField"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.structField = value as TestAllTypes;
+          target.structField = value;
         }
         else {
           TestAllTypes._applyInit(target._initStructField(), value as $.Init<TestAllTypes>);
@@ -1073,11 +1079,13 @@ export class TestDefaults extends $.Struct {
     {
       const value = init["enumField"];
       if (value !== undefined) {
-        target.enumField = value as any;
+        target.enumField = value;
       }
     }
     {
-      const value = init["interfaceField"];
+      const value = (init as {
+        "interfaceField"?: true;
+      })["interfaceField"];
       if (value !== undefined) {
       }
     }
@@ -1085,10 +1093,10 @@ export class TestDefaults extends $.Struct {
       const value = init["voidList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.voidList = value as any;
+          target.voidList = value as typeof target.voidList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initVoidList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1101,10 +1109,10 @@ export class TestDefaults extends $.Struct {
       const value = init["boolList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.boolList = value as any;
+          target.boolList = value as typeof target.boolList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initBoolList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1117,10 +1125,10 @@ export class TestDefaults extends $.Struct {
       const value = init["int8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int8List = value as any;
+          target.int8List = value as typeof target.int8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1133,10 +1141,10 @@ export class TestDefaults extends $.Struct {
       const value = init["int16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int16List = value as any;
+          target.int16List = value as typeof target.int16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1149,10 +1157,10 @@ export class TestDefaults extends $.Struct {
       const value = init["int32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int32List = value as any;
+          target.int32List = value as typeof target.int32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1165,10 +1173,10 @@ export class TestDefaults extends $.Struct {
       const value = init["int64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int64List = value as any;
+          target.int64List = value as typeof target.int64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1181,10 +1189,10 @@ export class TestDefaults extends $.Struct {
       const value = init["uInt8List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt8List = value as any;
+          target.uInt8List = value as typeof target.uInt8List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt8List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1197,10 +1205,10 @@ export class TestDefaults extends $.Struct {
       const value = init["uInt16List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt16List = value as any;
+          target.uInt16List = value as typeof target.uInt16List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt16List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1213,10 +1221,10 @@ export class TestDefaults extends $.Struct {
       const value = init["uInt32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt32List = value as any;
+          target.uInt32List = value as typeof target.uInt32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1229,10 +1237,10 @@ export class TestDefaults extends $.Struct {
       const value = init["uInt64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.uInt64List = value as any;
+          target.uInt64List = value as typeof target.uInt64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initUInt64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1245,10 +1253,10 @@ export class TestDefaults extends $.Struct {
       const value = init["float32List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float32List = value as any;
+          target.float32List = value as typeof target.float32List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat32List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1261,10 +1269,10 @@ export class TestDefaults extends $.Struct {
       const value = init["float64List"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.float64List = value as any;
+          target.float64List = value as typeof target.float64List;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initFloat64List(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1277,10 +1285,10 @@ export class TestDefaults extends $.Struct {
       const value = init["textList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.textList = value as any;
+          target.textList = value as typeof target.textList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initTextList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1293,10 +1301,10 @@ export class TestDefaults extends $.Struct {
       const value = init["dataList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.dataList = value as any;
+          target.dataList = value as typeof target.dataList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initDataList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1315,10 +1323,10 @@ export class TestDefaults extends $.Struct {
       const value = init["structList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.structList = value as any;
+          target.structList = value as typeof target.structList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initStructList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1336,10 +1344,10 @@ export class TestDefaults extends $.Struct {
       const value = init["enumList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.enumList = value as any;
+          target.enumList = value as typeof target.enumList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initEnumList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1352,10 +1360,10 @@ export class TestDefaults extends $.Struct {
       const value = init["interfaceList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.interfaceList = value as any;
+          target.interfaceList = value as typeof target.interfaceList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInterfaceList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -1807,11 +1815,11 @@ export class TestAnyPointer extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestAnyPointer, value: $.Init<TestAnyPointer>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["anyPointerField"];
       if (value !== undefined) {
-        target.anyPointerField = value as any;
+        target.anyPointerField = value as $.Pointer;
       }
     }
   }
@@ -1846,23 +1854,23 @@ export class TestAnyOthers extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestAnyOthers, value: $.Init<TestAnyOthers>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["anyStructField"];
       if (value !== undefined) {
-        target.anyStructField = value as any;
+        target.anyStructField = value as $.Pointer;
       }
     }
     {
       const value = init["anyListField"];
       if (value !== undefined) {
-        target.anyListField = value as any;
+        target.anyListField = value as $.Pointer;
       }
     }
     {
       const value = init["capabilityField"];
       if (value !== undefined) {
-        target.capabilityField = value as any;
+        target.capabilityField = value as $.Pointer;
       }
     }
   }
@@ -1933,59 +1941,59 @@ export class TestOutOfOrder extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestOutOfOrder, value: $.Init<TestOutOfOrder>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value;
       }
     }
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value;
       }
     }
     {
       const value = init["quux"];
       if (value !== undefined) {
-        target.quux = value as any;
+        target.quux = value;
       }
     }
     {
       const value = init["corge"];
       if (value !== undefined) {
-        target.corge = value as any;
+        target.corge = value;
       }
     }
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
     {
       const value = init["waldo"];
       if (value !== undefined) {
-        target.waldo = value as any;
+        target.waldo = value;
       }
     }
   }
@@ -2105,9 +2113,11 @@ export class TestUnion_Union0 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnion_Union0, value: $.Init<TestUnion_Union0>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["u0f0s0"];
+      const value = (init as {
+        "u0f0s0"?: true;
+      })["u0f0s0"];
       if (value !== undefined) {
         target.u0f0s0 = true;
       }
@@ -2115,41 +2125,43 @@ export class TestUnion_Union0 extends $.Struct {
     {
       const value = init["u0f0s1"];
       if (value !== undefined) {
-        target.u0f0s1 = value as any;
+        target.u0f0s1 = value;
       }
     }
     {
       const value = init["u0f0s8"];
       if (value !== undefined) {
-        target.u0f0s8 = value as any;
+        target.u0f0s8 = value;
       }
     }
     {
       const value = init["u0f0s16"];
       if (value !== undefined) {
-        target.u0f0s16 = value as any;
+        target.u0f0s16 = value;
       }
     }
     {
       const value = init["u0f0s32"];
       if (value !== undefined) {
-        target.u0f0s32 = value as any;
+        target.u0f0s32 = value;
       }
     }
     {
       const value = init["u0f0s64"];
       if (value !== undefined) {
-        target.u0f0s64 = value as any;
+        target.u0f0s64 = value;
       }
     }
     {
       const value = init["u0f0sp"];
       if (value !== undefined) {
-        target.u0f0sp = value as any;
+        target.u0f0sp = value;
       }
     }
     {
-      const value = init["u0f1s0"];
+      const value = (init as {
+        "u0f1s0"?: true;
+      })["u0f1s0"];
       if (value !== undefined) {
         target.u0f1s0 = true;
       }
@@ -2157,37 +2169,37 @@ export class TestUnion_Union0 extends $.Struct {
     {
       const value = init["u0f1s1"];
       if (value !== undefined) {
-        target.u0f1s1 = value as any;
+        target.u0f1s1 = value;
       }
     }
     {
       const value = init["u0f1s8"];
       if (value !== undefined) {
-        target.u0f1s8 = value as any;
+        target.u0f1s8 = value;
       }
     }
     {
       const value = init["u0f1s16"];
       if (value !== undefined) {
-        target.u0f1s16 = value as any;
+        target.u0f1s16 = value;
       }
     }
     {
       const value = init["u0f1s32"];
       if (value !== undefined) {
-        target.u0f1s32 = value as any;
+        target.u0f1s32 = value;
       }
     }
     {
       const value = init["u0f1s64"];
       if (value !== undefined) {
-        target.u0f1s64 = value as any;
+        target.u0f1s64 = value;
       }
     }
     {
       const value = init["u0f1sp"];
       if (value !== undefined) {
-        target.u0f1sp = value as any;
+        target.u0f1sp = value;
       }
     }
   }
@@ -2641,9 +2653,11 @@ export class TestUnion_Union1 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnion_Union1, value: $.Init<TestUnion_Union1>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["u1f0s0"];
+      const value = (init as {
+        "u1f0s0"?: true;
+      })["u1f0s0"];
       if (value !== undefined) {
         target.u1f0s0 = true;
       }
@@ -2651,77 +2665,79 @@ export class TestUnion_Union1 extends $.Struct {
     {
       const value = init["u1f0s1"];
       if (value !== undefined) {
-        target.u1f0s1 = value as any;
+        target.u1f0s1 = value;
       }
     }
     {
       const value = init["u1f1s1"];
       if (value !== undefined) {
-        target.u1f1s1 = value as any;
+        target.u1f1s1 = value;
       }
     }
     {
       const value = init["u1f0s8"];
       if (value !== undefined) {
-        target.u1f0s8 = value as any;
+        target.u1f0s8 = value;
       }
     }
     {
       const value = init["u1f1s8"];
       if (value !== undefined) {
-        target.u1f1s8 = value as any;
+        target.u1f1s8 = value;
       }
     }
     {
       const value = init["u1f0s16"];
       if (value !== undefined) {
-        target.u1f0s16 = value as any;
+        target.u1f0s16 = value;
       }
     }
     {
       const value = init["u1f1s16"];
       if (value !== undefined) {
-        target.u1f1s16 = value as any;
+        target.u1f1s16 = value;
       }
     }
     {
       const value = init["u1f0s32"];
       if (value !== undefined) {
-        target.u1f0s32 = value as any;
+        target.u1f0s32 = value;
       }
     }
     {
       const value = init["u1f1s32"];
       if (value !== undefined) {
-        target.u1f1s32 = value as any;
+        target.u1f1s32 = value;
       }
     }
     {
       const value = init["u1f0s64"];
       if (value !== undefined) {
-        target.u1f0s64 = value as any;
+        target.u1f0s64 = value;
       }
     }
     {
       const value = init["u1f1s64"];
       if (value !== undefined) {
-        target.u1f1s64 = value as any;
+        target.u1f1s64 = value;
       }
     }
     {
       const value = init["u1f0sp"];
       if (value !== undefined) {
-        target.u1f0sp = value as any;
+        target.u1f0sp = value;
       }
     }
     {
       const value = init["u1f1sp"];
       if (value !== undefined) {
-        target.u1f1sp = value as any;
+        target.u1f1sp = value;
       }
     }
     {
-      const value = init["u1f2s0"];
+      const value = (init as {
+        "u1f2s0"?: true;
+      })["u1f2s0"];
       if (value !== undefined) {
         target.u1f2s0 = true;
       }
@@ -2729,37 +2745,37 @@ export class TestUnion_Union1 extends $.Struct {
     {
       const value = init["u1f2s1"];
       if (value !== undefined) {
-        target.u1f2s1 = value as any;
+        target.u1f2s1 = value;
       }
     }
     {
       const value = init["u1f2s8"];
       if (value !== undefined) {
-        target.u1f2s8 = value as any;
+        target.u1f2s8 = value;
       }
     }
     {
       const value = init["u1f2s16"];
       if (value !== undefined) {
-        target.u1f2s16 = value as any;
+        target.u1f2s16 = value;
       }
     }
     {
       const value = init["u1f2s32"];
       if (value !== undefined) {
-        target.u1f2s32 = value as any;
+        target.u1f2s32 = value;
       }
     }
     {
       const value = init["u1f2s64"];
       if (value !== undefined) {
-        target.u1f2s64 = value as any;
+        target.u1f2s64 = value;
       }
     }
     {
       const value = init["u1f2sp"];
       if (value !== undefined) {
-        target.u1f2sp = value as any;
+        target.u1f2sp = value;
       }
     }
   }
@@ -3320,35 +3336,35 @@ export class TestUnion_Union2 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnion_Union2, value: $.Init<TestUnion_Union2>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["u2f0s64"];
       if (value !== undefined) {
-        target.u2f0s64 = value as any;
+        target.u2f0s64 = value;
       }
     }
     {
       const value = init["u2f0s32"];
       if (value !== undefined) {
-        target.u2f0s32 = value as any;
+        target.u2f0s32 = value;
       }
     }
     {
       const value = init["u2f0s16"];
       if (value !== undefined) {
-        target.u2f0s16 = value as any;
+        target.u2f0s16 = value;
       }
     }
     {
       const value = init["u2f0s8"];
       if (value !== undefined) {
-        target.u2f0s8 = value as any;
+        target.u2f0s8 = value;
       }
     }
     {
       const value = init["u2f0s1"];
       if (value !== undefined) {
-        target.u2f0s1 = value as any;
+        target.u2f0s1 = value;
       }
     }
   }
@@ -3531,35 +3547,35 @@ export class TestUnion_Union3 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnion_Union3, value: $.Init<TestUnion_Union3>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["u3f0s64"];
       if (value !== undefined) {
-        target.u3f0s64 = value as any;
+        target.u3f0s64 = value;
       }
     }
     {
       const value = init["u3f0s32"];
       if (value !== undefined) {
-        target.u3f0s32 = value as any;
+        target.u3f0s32 = value;
       }
     }
     {
       const value = init["u3f0s16"];
       if (value !== undefined) {
-        target.u3f0s16 = value as any;
+        target.u3f0s16 = value;
       }
     }
     {
       const value = init["u3f0s8"];
       if (value !== undefined) {
-        target.u3f0s8 = value as any;
+        target.u3f0s8 = value;
       }
     }
     {
       const value = init["u3f0s1"];
       if (value !== undefined) {
-        target.u3f0s1 = value as any;
+        target.u3f0s1 = value;
       }
     }
   }
@@ -3736,7 +3752,7 @@ export class TestUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnion, value: $.Init<TestUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["union0"];
       if (value !== undefined) {
@@ -3746,7 +3762,7 @@ export class TestUnion extends $.Struct {
     {
       const value = init["bit0"];
       if (value !== undefined) {
-        target.bit0 = value as any;
+        target.bit0 = value;
       }
     }
     {
@@ -3758,37 +3774,37 @@ export class TestUnion extends $.Struct {
     {
       const value = init["bit2"];
       if (value !== undefined) {
-        target.bit2 = value as any;
+        target.bit2 = value;
       }
     }
     {
       const value = init["bit3"];
       if (value !== undefined) {
-        target.bit3 = value as any;
+        target.bit3 = value;
       }
     }
     {
       const value = init["bit4"];
       if (value !== undefined) {
-        target.bit4 = value as any;
+        target.bit4 = value;
       }
     }
     {
       const value = init["bit5"];
       if (value !== undefined) {
-        target.bit5 = value as any;
+        target.bit5 = value;
       }
     }
     {
       const value = init["bit6"];
       if (value !== undefined) {
-        target.bit6 = value as any;
+        target.bit6 = value;
       }
     }
     {
       const value = init["bit7"];
       if (value !== undefined) {
-        target.bit7 = value as any;
+        target.bit7 = value;
       }
     }
     {
@@ -3806,7 +3822,7 @@ export class TestUnion extends $.Struct {
     {
       const value = init["byte0"];
       if (value !== undefined) {
-        target.byte0 = value as any;
+        target.byte0 = value;
       }
     }
   }
@@ -3915,35 +3931,35 @@ export class TestUnnamedUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnnamedUnion, value: $.Init<TestUnnamedUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["before"];
       if (value !== undefined) {
-        target.before = value as any;
+        target.before = value;
       }
     }
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["middle"];
       if (value !== undefined) {
-        target.middle = value as any;
+        target.middle = value;
       }
     }
     {
       const value = init["after"];
       if (value !== undefined) {
-        target.after = value as any;
+        target.after = value;
       }
     }
   }
@@ -4057,17 +4073,17 @@ export class TestUnionHelperNameCollision extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnionHelperNameCollision, value: $.Init<TestUnionHelperNameCollision>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["set"];
       if (value !== undefined) {
-        target.set = value as any;
+        target.set = value;
       }
     }
     {
       const value = init["match"];
       if (value !== undefined) {
-        target.match = value as any;
+        target.match = value;
       }
     }
   }
@@ -4163,17 +4179,17 @@ export class TestUnionInUnion_Outer_Inner extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnionInUnion_Outer_Inner, value: $.Init<TestUnionInUnion_Outer_Inner>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
   }
@@ -4269,7 +4285,7 @@ export class TestUnionInUnion_Outer extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnionInUnion_Outer, value: $.Init<TestUnionInUnion_Outer>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["inner"];
       if (value !== undefined) {
@@ -4279,7 +4295,7 @@ export class TestUnionInUnion_Outer extends $.Struct {
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value;
       }
     }
   }
@@ -4373,7 +4389,7 @@ export class TestUnionInUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestUnionInUnion, value: $.Init<TestUnionInUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["outer"];
       if (value !== undefined) {
@@ -4403,23 +4419,23 @@ export class TestGroups_Groups_Foo extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGroups_Groups_Foo, value: $.Init<TestGroups_Groups_Foo>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["corge"];
       if (value !== undefined) {
-        target.corge = value as any;
+        target.corge = value;
       }
     }
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
   }
@@ -4457,23 +4473,23 @@ export class TestGroups_Groups_Baz extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGroups_Groups_Baz, value: $.Init<TestGroups_Groups_Baz>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["corge"];
       if (value !== undefined) {
-        target.corge = value as any;
+        target.corge = value;
       }
     }
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
   }
@@ -4511,23 +4527,23 @@ export class TestGroups_Groups_Bar extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGroups_Groups_Bar, value: $.Init<TestGroups_Groups_Bar>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["corge"];
       if (value !== undefined) {
-        target.corge = value as any;
+        target.corge = value;
       }
     }
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
   }
@@ -4574,7 +4590,7 @@ export class TestGroups_Groups extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGroups_Groups, value: $.Init<TestGroups_Groups>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
@@ -4710,7 +4726,7 @@ export class TestGroups extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGroups, value: $.Init<TestGroups>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["groups"];
       if (value !== undefined) {
@@ -4741,29 +4757,29 @@ export class TestInterleavedGroups_Group1_Corge extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterleavedGroups_Group1_Corge, value: $.Init<TestInterleavedGroups_Group1_Corge>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
     {
       const value = init["plugh"];
       if (value !== undefined) {
-        target.plugh = value as any;
+        target.plugh = value;
       }
     }
     {
       const value = init["xyzzy"];
       if (value !== undefined) {
-        target.xyzzy = value as any;
+        target.xyzzy = value;
       }
     }
   }
@@ -4819,23 +4835,23 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterleavedGroups_Group1, value: $.Init<TestInterleavedGroups_Group1>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value;
       }
     }
     {
@@ -4847,13 +4863,13 @@ export class TestInterleavedGroups_Group1 extends $.Struct {
     {
       const value = init["fred"];
       if (value !== undefined) {
-        target.fred = value as any;
+        target.fred = value;
       }
     }
     {
       const value = init["waldo"];
       if (value !== undefined) {
-        target.waldo = value as any;
+        target.waldo = value;
       }
     }
   }
@@ -4990,29 +5006,29 @@ export class TestInterleavedGroups_Group2_Corge extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterleavedGroups_Group2_Corge, value: $.Init<TestInterleavedGroups_Group2_Corge>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
     {
       const value = init["garply"];
       if (value !== undefined) {
-        target.garply = value as any;
+        target.garply = value;
       }
     }
     {
       const value = init["plugh"];
       if (value !== undefined) {
-        target.plugh = value as any;
+        target.plugh = value;
       }
     }
     {
       const value = init["xyzzy"];
       if (value !== undefined) {
-        target.xyzzy = value as any;
+        target.xyzzy = value;
       }
     }
   }
@@ -5068,23 +5084,23 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterleavedGroups_Group2, value: $.Init<TestInterleavedGroups_Group2>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value;
       }
     }
     {
@@ -5096,13 +5112,13 @@ export class TestInterleavedGroups_Group2 extends $.Struct {
     {
       const value = init["fred"];
       if (value !== undefined) {
-        target.fred = value as any;
+        target.fred = value;
       }
     }
     {
       const value = init["waldo"];
       if (value !== undefined) {
-        target.waldo = value as any;
+        target.waldo = value;
       }
     }
   }
@@ -5237,7 +5253,7 @@ export class TestInterleavedGroups extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterleavedGroups, value: $.Init<TestInterleavedGroups>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["group1"];
       if (value !== undefined) {
@@ -5284,12 +5300,12 @@ export class TestUnionDefaults extends $.Struct {
     defaultUnnamed2: $.readRawPointer(new Uint8Array([16, 7, 80, 2, 2, 16, 1, 3, 65, 1, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114]).buffer)
   };
   static _applyInit(target: TestUnionDefaults, value: $.Init<TestUnionDefaults>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s16s8s64s8Set"];
       if (value !== undefined) {
         if (value instanceof TestUnion) {
-          target.s16s8s64s8Set = value as TestUnion;
+          target.s16s8s64s8Set = value;
         }
         else {
           TestUnion._applyInit(target._initS16s8s64s8Set(), value as $.Init<TestUnion>);
@@ -5300,7 +5316,7 @@ export class TestUnionDefaults extends $.Struct {
       const value = init["s0sps1s32Set"];
       if (value !== undefined) {
         if (value instanceof TestUnion) {
-          target.s0sps1s32Set = value as TestUnion;
+          target.s0sps1s32Set = value;
         }
         else {
           TestUnion._applyInit(target._initS0sps1s32Set(), value as $.Init<TestUnion>);
@@ -5311,7 +5327,7 @@ export class TestUnionDefaults extends $.Struct {
       const value = init["unnamed1"];
       if (value !== undefined) {
         if (value instanceof TestUnnamedUnion) {
-          target.unnamed1 = value as TestUnnamedUnion;
+          target.unnamed1 = value;
         }
         else {
           TestUnnamedUnion._applyInit(target._initUnnamed1(), value as $.Init<TestUnnamedUnion>);
@@ -5322,7 +5338,7 @@ export class TestUnionDefaults extends $.Struct {
       const value = init["unnamed2"];
       if (value !== undefined) {
         if (value instanceof TestUnnamedUnion) {
-          target.unnamed2 = value as TestUnnamedUnion;
+          target.unnamed2 = value;
         }
         else {
           TestUnnamedUnion._applyInit(target._initUnnamed2(), value as $.Init<TestUnnamedUnion>);
@@ -5431,17 +5447,17 @@ export class TestNestedTypes_NestedStruct extends $.Struct {
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
   static _applyInit(target: TestNestedTypes_NestedStruct, value: $.Init<TestNestedTypes_NestedStruct>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["outerNestedEnum"];
       if (value !== undefined) {
-        target.outerNestedEnum = value as any;
+        target.outerNestedEnum = value;
       }
     }
     {
       const value = init["innerNestedEnum"];
       if (value !== undefined) {
-        target.innerNestedEnum = value as any;
+        target.innerNestedEnum = value;
       }
     }
   }
@@ -5477,12 +5493,12 @@ export class TestNestedTypes extends $.Struct {
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
   static _applyInit(target: TestNestedTypes, value: $.Init<TestNestedTypes>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["nestedStruct"];
       if (value !== undefined) {
         if (value instanceof TestNestedTypes_NestedStruct) {
-          target.nestedStruct = value as TestNestedTypes_NestedStruct;
+          target.nestedStruct = value;
         }
         else {
           TestNestedTypes_NestedStruct._applyInit(target._initNestedStruct(), value as $.Init<TestNestedTypes_NestedStruct>);
@@ -5492,13 +5508,13 @@ export class TestNestedTypes extends $.Struct {
     {
       const value = init["outerNestedEnum"];
       if (value !== undefined) {
-        target.outerNestedEnum = value as any;
+        target.outerNestedEnum = value;
       }
     }
     {
       const value = init["innerNestedEnum"];
       if (value !== undefined) {
-        target.innerNestedEnum = value as any;
+        target.innerNestedEnum = value;
       }
     }
   }
@@ -5549,17 +5565,17 @@ export class TestUsing extends $.Struct {
     defaultInnerNestedEnum: $.getUint16Mask(2)
   };
   static _applyInit(target: TestUsing, value: $.Init<TestUsing>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["outerNestedEnum"];
       if (value !== undefined) {
-        target.outerNestedEnum = value as any;
+        target.outerNestedEnum = value;
       }
     }
     {
       const value = init["innerNestedEnum"];
       if (value !== undefined) {
-        target.innerNestedEnum = value as any;
+        target.innerNestedEnum = value;
       }
     }
   }
@@ -5589,9 +5605,11 @@ export class TestLists_Struct0 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct0, value: $.Init<TestLists_Struct0>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["f"];
+      const value = (init as {
+        "f"?: true;
+      })["f"];
       if (value !== undefined) {
       }
     }
@@ -5610,11 +5628,11 @@ export class TestLists_Struct1 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct1, value: $.Init<TestLists_Struct1>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5638,11 +5656,11 @@ export class TestLists_Struct8 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct8, value: $.Init<TestLists_Struct8>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5666,11 +5684,11 @@ export class TestLists_Struct16 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct16, value: $.Init<TestLists_Struct16>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5694,11 +5712,11 @@ export class TestLists_Struct32 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct32, value: $.Init<TestLists_Struct32>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5722,11 +5740,11 @@ export class TestLists_Struct64 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct64, value: $.Init<TestLists_Struct64>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5750,11 +5768,11 @@ export class TestLists_StructP extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_StructP, value: $.Init<TestLists_StructP>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
   }
@@ -5779,16 +5797,18 @@ export class TestLists_Struct0c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct0c, value: $.Init<TestLists_Struct0c>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["f"];
+      const value = (init as {
+        "f"?: true;
+      })["f"];
       if (value !== undefined) {
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -5813,17 +5833,17 @@ export class TestLists_Struct1c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct1c, value: $.Init<TestLists_Struct1c>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -5854,17 +5874,17 @@ export class TestLists_Struct8c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct8c, value: $.Init<TestLists_Struct8c>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -5895,17 +5915,17 @@ export class TestLists_Struct16c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct16c, value: $.Init<TestLists_Struct16c>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -5936,17 +5956,17 @@ export class TestLists_Struct32c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct32c, value: $.Init<TestLists_Struct32c>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -5977,17 +5997,17 @@ export class TestLists_Struct64c extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_Struct64c, value: $.Init<TestLists_Struct64c>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -6018,17 +6038,17 @@ export class TestLists_StructPc extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLists_StructPc, value: $.Init<TestLists_StructPc>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["f"];
       if (value !== undefined) {
-        target.f = value as any;
+        target.f = value;
       }
     }
     {
       const value = init["pad"];
       if (value !== undefined) {
-        target.pad = value as any;
+        target.pad = value;
       }
     }
   }
@@ -6096,15 +6116,15 @@ export class TestLists extends $.Struct {
   static _TextListList: $.ListCtor<$.List<string>>;
   static _StructListList: $.ListCtor<$.List<TestAllTypes>>;
   static _applyInit(target: TestLists, value: $.Init<TestLists>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["list0"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list0 = value as any;
+          target.list0 = value as typeof target.list0;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList0(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6122,10 +6142,10 @@ export class TestLists extends $.Struct {
       const value = init["list1"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list1 = value as any;
+          target.list1 = value as typeof target.list1;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList1(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6143,10 +6163,10 @@ export class TestLists extends $.Struct {
       const value = init["list8"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list8 = value as any;
+          target.list8 = value as typeof target.list8;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList8(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6164,10 +6184,10 @@ export class TestLists extends $.Struct {
       const value = init["list16"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list16 = value as any;
+          target.list16 = value as typeof target.list16;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList16(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6185,10 +6205,10 @@ export class TestLists extends $.Struct {
       const value = init["list32"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list32 = value as any;
+          target.list32 = value as typeof target.list32;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList32(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6206,10 +6226,10 @@ export class TestLists extends $.Struct {
       const value = init["list64"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list64 = value as any;
+          target.list64 = value as typeof target.list64;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList64(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6227,10 +6247,10 @@ export class TestLists extends $.Struct {
       const value = init["listP"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.listP = value as any;
+          target.listP = value as typeof target.listP;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initListP(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6248,10 +6268,10 @@ export class TestLists extends $.Struct {
       const value = init["int32ListList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.int32ListList = value as any;
+          target.int32ListList = value as typeof target.int32ListList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initInt32ListList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6259,7 +6279,7 @@ export class TestLists extends $.Struct {
               list.set(index, item);
             }
             else {
-              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nestedValues = Array.isArray(item) ? item : Array.from(item);
               const nested = list.get(index);
               $.initListValue(nested, nestedValues.length);
               for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
@@ -6277,10 +6297,10 @@ export class TestLists extends $.Struct {
       const value = init["textListList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.textListList = value as any;
+          target.textListList = value as typeof target.textListList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initTextListList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6288,7 +6308,7 @@ export class TestLists extends $.Struct {
               list.set(index, item);
             }
             else {
-              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nestedValues = Array.isArray(item) ? item : Array.from(item);
               const nested = list.get(index);
               $.initListValue(nested, nestedValues.length);
               for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
@@ -6306,10 +6326,10 @@ export class TestLists extends $.Struct {
       const value = init["structListList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.structListList = value as any;
+          target.structListList = value as typeof target.structListList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initStructListList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6317,7 +6337,7 @@ export class TestLists extends $.Struct {
               list.set(index, item);
             }
             else {
-              const nestedValues = Array.isArray(item) ? item : Array.from(item as Iterable<any>);
+              const nestedValues = Array.isArray(item) ? item : Array.from(item);
               const nested = list.get(index);
               $.initListValue(nested, nestedValues.length);
               for (let nestedIndex = 0; nestedIndex < nestedValues.length; nestedIndex++) {
@@ -6535,23 +6555,23 @@ export class TestFieldZeroIsBit extends $.Struct {
     defaultThirdField: $.getUint8Mask(123)
   };
   static _applyInit(target: TestFieldZeroIsBit, value: $.Init<TestFieldZeroIsBit>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["bit"];
       if (value !== undefined) {
-        target.bit = value as any;
+        target.bit = value;
       }
     }
     {
       const value = init["secondBit"];
       if (value !== undefined) {
-        target.secondBit = value as any;
+        target.secondBit = value;
       }
     }
     {
       const value = init["thirdField"];
       if (value !== undefined) {
-        target.thirdField = value as any;
+        target.thirdField = value;
       }
     }
   }
@@ -6588,12 +6608,12 @@ export class TestListDefaults extends $.Struct {
     defaultLists: $.readRawPointer(new Uint8Array([16, 136, 64, 10, 17, 37, 7, 17, 37, 39, 17, 53, 23, 17, 61, 23, 17, 69, 23, 17, 77, 23, 17, 85, 23, 17, 101, 30, 17, 125, 30, 17, 173, 22, 1, 8, 17, 16, 1, 1, 1, 0, 0, 1, 1, 1, 1, 17, 8, 1, 1, 123, 1, 45, 17, 8, 1, 3, 57, 48, 3, 133, 26, 17, 8, 1, 15, 21, 205, 91, 7, 15, 210, 56, 251, 13, 17, 8, 1, 127, 192, 186, 138, 60, 213, 98, 4, 127, 135, 75, 170, 237, 97, 85, 8, 65, 8, 1, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 9, 28, 17, 13, 20, 17, 13, 12, 17, 1, 2, 1, 3, 17, 4, 5, 7, 242, 79, 188, 17, 9, 22, 17, 21, 14, 17, 25, 22, 17, 5, 34, 17, 5, 34, 7, 102, 111, 111, 7, 98, 97, 114, 17, 1, 34, 7, 98, 97, 122, 17, 5, 34, 17, 5, 50, 7, 113, 117, 120, 31, 99, 111, 114, 103, 101, 49, 5, 167, 1, 17, 213, 215, 81, 8, 6, 20, 16, 123, 0, 24, 48, 200, 1, 0, 24, 81, 4, 6, 20, 48, 21, 3, 0, 24]).buffer)
   };
   static _applyInit(target: TestListDefaults, value: $.Init<TestListDefaults>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["lists"];
       if (value !== undefined) {
         if (value instanceof TestLists) {
-          target.lists = value as TestLists;
+          target.lists = value;
         }
         else {
           TestLists._applyInit(target._initLists(), value as $.Init<TestLists>);
@@ -6644,21 +6664,21 @@ export class TestLateUnion_TheUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLateUnion_TheUnion, value: $.Init<TestLateUnion_TheUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value;
       }
     }
     {
       const value = init["corge"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.corge = value as any;
+          target.corge = value as typeof target.corge;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initCorge(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6670,7 +6690,7 @@ export class TestLateUnion_TheUnion extends $.Struct {
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
   }
@@ -6809,21 +6829,21 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLateUnion_AnotherUnion, value: $.Init<TestLateUnion_AnotherUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value;
       }
     }
     {
       const value = init["corge"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.corge = value as any;
+          target.corge = value as typeof target.corge;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initCorge(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -6835,7 +6855,7 @@ export class TestLateUnion_AnotherUnion extends $.Struct {
     {
       const value = init["grault"];
       if (value !== undefined) {
-        target.grault = value as any;
+        target.grault = value;
       }
     }
   }
@@ -6972,23 +6992,23 @@ export class TestLateUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestLateUnion, value: $.Init<TestLateUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value;
       }
     }
     {
@@ -7054,24 +7074,24 @@ export class TestOldVersion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestOldVersion, value: $.Init<TestOldVersion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["old1"];
       if (value !== undefined) {
-        target.old1 = value as any;
+        target.old1 = value;
       }
     }
     {
       const value = init["old2"];
       if (value !== undefined) {
-        target.old2 = value as any;
+        target.old2 = value;
       }
     }
     {
       const value = init["old3"];
       if (value !== undefined) {
         if (value instanceof TestOldVersion) {
-          target.old3 = value as TestOldVersion;
+          target.old3 = value;
         }
         else {
           TestOldVersion._applyInit(target._initOld3(), value as $.Init<TestOldVersion>);
@@ -7133,24 +7153,24 @@ export class TestNewVersion extends $.Struct {
     defaultNew2: "baz"
   };
   static _applyInit(target: TestNewVersion, value: $.Init<TestNewVersion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["old1"];
       if (value !== undefined) {
-        target.old1 = value as any;
+        target.old1 = value;
       }
     }
     {
       const value = init["old2"];
       if (value !== undefined) {
-        target.old2 = value as any;
+        target.old2 = value;
       }
     }
     {
       const value = init["old3"];
       if (value !== undefined) {
         if (value instanceof TestNewVersion) {
-          target.old3 = value as TestNewVersion;
+          target.old3 = value;
         }
         else {
           TestNewVersion._applyInit(target._initOld3(), value as $.Init<TestNewVersion>);
@@ -7160,13 +7180,13 @@ export class TestNewVersion extends $.Struct {
     {
       const value = init["new1"];
       if (value !== undefined) {
-        target.new1 = value as any;
+        target.new1 = value;
       }
     }
     {
       const value = init["new2"];
       if (value !== undefined) {
-        target.new2 = value as any;
+        target.new2 = value;
       }
     }
   }
@@ -7234,9 +7254,11 @@ export class TestOldUnionVersion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestOldUnionVersion, value: $.Init<TestOldUnionVersion>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["a"];
+      const value = (init as {
+        "a"?: true;
+      })["a"];
       if (value !== undefined) {
         target.a = true;
       }
@@ -7244,7 +7266,7 @@ export class TestOldUnionVersion extends $.Struct {
     {
       const value = init["b"];
       if (value !== undefined) {
-        target.b = value as any;
+        target.b = value;
       }
     }
   }
@@ -7334,9 +7356,11 @@ export class TestNewUnionVersion_A extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestNewUnionVersion_A, value: $.Init<TestNewUnionVersion_A>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["a0"];
+      const value = (init as {
+        "a0"?: true;
+      })["a0"];
       if (value !== undefined) {
         target.a0 = true;
       }
@@ -7344,7 +7368,7 @@ export class TestNewUnionVersion_A extends $.Struct {
     {
       const value = init["a1"];
       if (value !== undefined) {
-        target.a1 = value as any;
+        target.a1 = value;
       }
     }
   }
@@ -7434,7 +7458,7 @@ export class TestNewUnionVersion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestNewUnionVersion, value: $.Init<TestNewUnionVersion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["a"];
       if (value !== undefined) {
@@ -7444,7 +7468,7 @@ export class TestNewUnionVersion extends $.Struct {
     {
       const value = init["b"];
       if (value !== undefined) {
-        target.b = value as any;
+        target.b = value;
       }
     }
   }
@@ -7535,17 +7559,17 @@ export class TestStructUnion_SomeStruct extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestStructUnion_SomeStruct, value: $.Init<TestStructUnion_SomeStruct>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["someText"];
       if (value !== undefined) {
-        target.someText = value as any;
+        target.someText = value;
       }
     }
     {
       const value = init["moreText"];
       if (value !== undefined) {
-        target.moreText = value as any;
+        target.moreText = value;
       }
     }
   }
@@ -7583,12 +7607,12 @@ export class TestStructUnion_Un extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestStructUnion_Un, value: $.Init<TestStructUnion_Un>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["struct"];
       if (value !== undefined) {
         if (value instanceof TestStructUnion_SomeStruct) {
-          target.struct = value as TestStructUnion_SomeStruct;
+          target.struct = value;
         }
         else {
           TestStructUnion_SomeStruct._applyInit(target._initStruct(), value as $.Init<TestStructUnion_SomeStruct>);
@@ -7599,7 +7623,7 @@ export class TestStructUnion_Un extends $.Struct {
       const value = init["object"];
       if (value !== undefined) {
         if (value instanceof TestAnyPointer) {
-          target.object = value as TestAnyPointer;
+          target.object = value;
         }
         else {
           TestAnyPointer._applyInit(target._initObject(), value as $.Init<TestAnyPointer>);
@@ -7720,7 +7744,7 @@ export class TestStructUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestStructUnion, value: $.Init<TestStructUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["un"];
       if (value !== undefined) {
@@ -7749,17 +7773,17 @@ export class TestPrintInlineStructs_InlineStruct extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPrintInlineStructs_InlineStruct, value: $.Init<TestPrintInlineStructs_InlineStruct>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["int32Field"];
       if (value !== undefined) {
-        target.int32Field = value as any;
+        target.int32Field = value;
       }
     }
     {
       const value = init["textField"];
       if (value !== undefined) {
-        target.textField = value as any;
+        target.textField = value;
       }
     }
   }
@@ -7792,21 +7816,21 @@ export class TestPrintInlineStructs extends $.Struct {
   };
   static _StructList: $.ListCtor<TestPrintInlineStructs_InlineStruct>;
   static _applyInit(target: TestPrintInlineStructs, value: $.Init<TestPrintInlineStructs>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["someText"];
       if (value !== undefined) {
-        target.someText = value as any;
+        target.someText = value;
       }
     }
     {
       const value = init["structList"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.structList = value as any;
+          target.structList = value as typeof target.structList;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initStructList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -7869,17 +7893,17 @@ export class TestWholeFloatDefault extends $.Struct {
     defaultBigField: $.getFloat32Mask(2.0000000300949324e+30)
   };
   static _applyInit(target: TestWholeFloatDefault, value: $.Init<TestWholeFloatDefault>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["field"];
       if (value !== undefined) {
-        target.field = value as any;
+        target.field = value;
       }
     }
     {
       const value = init["bigField"];
       if (value !== undefined) {
-        target.bigField = value as any;
+        target.bigField = value;
       }
     }
   }
@@ -7910,17 +7934,17 @@ export class TestGenerics_Inner extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_Inner, value: $.Init<TestGenerics_Inner>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
   }
@@ -7966,7 +7990,7 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params extends 
     fields: [] as const,
   };
   static _applyInit(target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params, value: $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Params_" + super.toString(); }
 }
@@ -7980,22 +8004,22 @@ export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results extends
     fields: [] as const,
   };
   static _applyInit(target: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, value: $.Init<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results_" + super.toString(); }
 }
 export class TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>) {
+  pipeline: $.Pipeline<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, $.Struct, TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>;
+  constructor(pipeline: $.Pipeline<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, $.Struct, TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics_Inner2_DeepNest_DeepNestInterface_Call$Results> {
@@ -8095,29 +8119,29 @@ export class TestGenerics_Inner2_DeepNest extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_Inner2_DeepNest, value: $.Init<TestGenerics_Inner2_DeepNest>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value as $.Pointer;
       }
     }
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value as $.Pointer;
       }
     }
   }
@@ -8199,24 +8223,24 @@ export class TestGenerics_Inner2 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_Inner2, value: $.Init<TestGenerics_Inner2>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
     {
       const value = init["baz"];
       if (value !== undefined) {
-        target.baz = value as any;
+        target.baz = value as $.Pointer;
       }
     }
     {
       const value = init["innerBound"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.innerBound = value as TestGenerics_Inner;
+          target.innerBound = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initInnerBound(), value as $.Init<TestGenerics_Inner>);
@@ -8227,7 +8251,7 @@ export class TestGenerics_Inner2 extends $.Struct {
       const value = init["innerUnbound"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.innerUnbound = value as TestGenerics_Inner;
+          target.innerUnbound = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initInnerUnbound(), value as $.Init<TestGenerics_Inner>);
@@ -8316,18 +8340,18 @@ export class TestGenerics_Interface_Call$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_Interface_Call$Results, value: $.Init<TestGenerics_Interface_Call$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["qux"];
       if (value !== undefined) {
-        target.qux = value as any;
+        target.qux = value as $.Pointer;
       }
     }
     {
       const value = init["gen"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.gen = value as TestGenerics;
+          target.gen = value;
         }
         else {
           TestGenerics._applyInit(target._initGen(), value as $.Init<TestGenerics>);
@@ -8371,17 +8395,17 @@ export class TestGenerics_Interface_Call$Results extends $.Struct {
   toString(): string { return "TestGenerics_Interface_Call$Results_" + super.toString(); }
 }
 export class TestGenerics_Interface_Call$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestGenerics_Interface_Call$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestGenerics_Interface_Call$Results>) {
+  pipeline: $.Pipeline<TestGenerics_Interface_Call$Results, $.Struct, TestGenerics_Interface_Call$Results>;
+  constructor(pipeline: $.Pipeline<TestGenerics_Interface_Call$Results, $.Struct, TestGenerics_Interface_Call$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestGenerics_Interface_Call$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics_Interface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Interface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics_Interface_Call$Results, TResult2 = never>(onfulfilled?: ((value: TestGenerics_Interface_Call$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Interface_Call$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics_Interface_Call$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics_Interface_Call$Results> {
@@ -8478,18 +8502,18 @@ export class TestGenerics_UseAliases extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_UseAliases, value: $.Init<TestGenerics_UseAliases>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["inner"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.inner = value as TestGenerics_Inner;
+          target.inner = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initInner(), value as $.Init<TestGenerics_Inner>);
@@ -8500,7 +8524,7 @@ export class TestGenerics_UseAliases extends $.Struct {
       const value = init["inner2"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.inner2 = value as TestGenerics_Inner2;
+          target.inner2 = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initInner2(), value as $.Init<TestGenerics_Inner2>);
@@ -8511,7 +8535,7 @@ export class TestGenerics_UseAliases extends $.Struct {
       const value = init["inner2Bind"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.inner2Bind = value as TestGenerics_Inner2;
+          target.inner2Bind = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initInner2Bind(), value as $.Init<TestGenerics_Inner2>);
@@ -8522,7 +8546,7 @@ export class TestGenerics_UseAliases extends $.Struct {
       const value = init["inner2Text"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.inner2Text = value as TestGenerics_Inner2;
+          target.inner2Text = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initInner2Text(), value as $.Init<TestGenerics_Inner2>);
@@ -8532,7 +8556,7 @@ export class TestGenerics_UseAliases extends $.Struct {
     {
       const value = init["revFoo"];
       if (value !== undefined) {
-        target.revFoo = value as any;
+        target.revFoo = value as $.Pointer;
       }
     }
   }
@@ -8652,11 +8676,11 @@ export class TestGenerics_Ug extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics_Ug, value: $.Init<TestGenerics_Ug>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["ugfoo"];
       if (value !== undefined) {
-        target.ugfoo = value as any;
+        target.ugfoo = value;
       }
     }
   }
@@ -8694,18 +8718,18 @@ export class TestGenerics extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenerics, value: $.Init<TestGenerics>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["rev"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.rev = value as TestGenerics;
+          target.rev = value;
         }
         else {
           TestGenerics._applyInit(target._initRev(), value as $.Init<TestGenerics>);
@@ -8713,7 +8737,9 @@ export class TestGenerics extends $.Struct {
       }
     }
     {
-      const value = init["uv"];
+      const value = (init as {
+        "uv"?: true;
+      })["uv"];
       if (value !== undefined) {
         target.uv = true;
       }
@@ -8838,12 +8864,12 @@ export class TestGenericsWrapper extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenericsWrapper, value: $.Init<TestGenericsWrapper>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["value"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.value = value as TestGenerics;
+          target.value = value;
         }
         else {
           TestGenerics._applyInit(target._initValue(), value as $.Init<TestGenerics>);
@@ -8883,12 +8909,12 @@ export class TestGenericsWrapper2 extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenericsWrapper2, value: $.Init<TestGenericsWrapper2>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["value"];
       if (value !== undefined) {
         if (value instanceof TestGenericsWrapper) {
-          target.value = value as TestGenericsWrapper;
+          target.value = value;
         }
         else {
           TestGenericsWrapper._applyInit(target._initValue(), value as $.Init<TestGenericsWrapper>);
@@ -8929,17 +8955,17 @@ export class TestImplicitMethodParams_Call$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestImplicitMethodParams_Call$Params, value: $.Init<TestImplicitMethodParams_Call$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
   }
@@ -8976,17 +9002,17 @@ export class TestImplicitMethodParams_Call$Params extends $.Struct {
   toString(): string { return "TestImplicitMethodParams_Call$Params_" + super.toString(); }
 }
 export class TestGenerics$Promise {
-  pipeline: $.Pipeline<any, any, TestGenerics>;
-  constructor(pipeline: $.Pipeline<any, any, TestGenerics>) {
+  pipeline: $.Pipeline<TestGenerics, $.Struct, TestGenerics>;
+  constructor(pipeline: $.Pipeline<TestGenerics, $.Struct, TestGenerics>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestGenerics> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestGenerics, TResult2 = never>(onfulfilled?: ((value: TestGenerics) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestGenerics, TResult2 = never>(onfulfilled?: ((value: TestGenerics) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestGenerics | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestGenerics> {
@@ -9079,17 +9105,17 @@ export class TestImplicitMethodParamsInGeneric_Call$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestImplicitMethodParamsInGeneric_Call$Params, value: $.Init<TestImplicitMethodParamsInGeneric_Call$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
   }
@@ -9222,17 +9248,17 @@ export class TestGenericsUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestGenericsUnion, value: $.Init<TestGenericsUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["foo"];
       if (value !== undefined) {
-        target.foo = value as any;
+        target.foo = value as $.Pointer;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value as $.Pointer;
       }
     }
   }
@@ -9371,12 +9397,12 @@ export class TestUseGenerics extends $.Struct {
     defaultUseAliases: $.readRawPointer(new Uint8Array([16, 161, 64, 6, 81, 20, 6, 20, 65, 120, 2, 65, 228, 4, 67, 96, 1, 4, 67, 224, 1, 4, 19, 97, 2, 28, 4, 123, 0, 24, 81, 4, 6, 20, 0, 0, 4, 123, 0, 26, 65, 4, 2, 0, 0, 81, 4, 6, 20, 0, 0, 4, 123, 0, 25, 17, 9, 42, 65, 8, 2, 0, 0, 15, 116, 101, 120, 116, 81, 4, 6, 20, 0, 0, 4, 123, 0, 25, 17, 9, 42, 65, 8, 2, 0, 0, 15, 116, 101, 120, 116, 81, 4, 6, 20, 0, 0, 4, 123, 0, 24, 17, 12, 34, 1, 56]).buffer)
   };
   static _applyInit(target: TestUseGenerics, value: $.Init<TestUseGenerics>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["basic"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.basic = value as TestGenerics;
+          target.basic = value;
         }
         else {
           TestGenerics._applyInit(target._initBasic(), value as $.Init<TestGenerics>);
@@ -9387,7 +9413,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["inner"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.inner = value as TestGenerics_Inner;
+          target.inner = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initInner(), value as $.Init<TestGenerics_Inner>);
@@ -9398,7 +9424,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["inner2"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.inner2 = value as TestGenerics_Inner2;
+          target.inner2 = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initInner2(), value as $.Init<TestGenerics_Inner2>);
@@ -9409,7 +9435,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["unspecified"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.unspecified = value as TestGenerics;
+          target.unspecified = value;
         }
         else {
           TestGenerics._applyInit(target._initUnspecified(), value as $.Init<TestGenerics>);
@@ -9420,7 +9446,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["unspecifiedInner"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.unspecifiedInner = value as TestGenerics_Inner2;
+          target.unspecifiedInner = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initUnspecifiedInner(), value as $.Init<TestGenerics_Inner2>);
@@ -9431,7 +9457,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["wrapper"];
       if (value !== undefined) {
         if (value instanceof TestGenericsWrapper) {
-          target.wrapper = value as TestGenericsWrapper;
+          target.wrapper = value;
         }
         else {
           TestGenericsWrapper._applyInit(target._initWrapper(), value as $.Init<TestGenericsWrapper>);
@@ -9442,7 +9468,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["cap"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.cap = value as TestGenerics;
+          target.cap = value;
         }
         else {
           TestGenerics._applyInit(target._initCap(), value as $.Init<TestGenerics>);
@@ -9452,14 +9478,14 @@ export class TestUseGenerics extends $.Struct {
     {
       const value = init["genericCap"];
       if (value !== undefined) {
-        target.genericCap = value as any;
+        target.genericCap = value;
       }
     }
     {
       const value = init["default"];
       if (value !== undefined) {
         if (value instanceof TestGenerics) {
-          target.default = value as TestGenerics;
+          target.default = value;
         }
         else {
           TestGenerics._applyInit(target._initDefault(), value as $.Init<TestGenerics>);
@@ -9470,7 +9496,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["defaultInner"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.defaultInner = value as TestGenerics_Inner;
+          target.defaultInner = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initDefaultInner(), value as $.Init<TestGenerics_Inner>);
@@ -9481,7 +9507,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["defaultUser"];
       if (value !== undefined) {
         if (value instanceof TestUseGenerics) {
-          target.defaultUser = value as TestUseGenerics;
+          target.defaultUser = value;
         }
         else {
           TestUseGenerics._applyInit(target._initDefaultUser(), value as $.Init<TestUseGenerics>);
@@ -9492,7 +9518,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["defaultWrapper"];
       if (value !== undefined) {
         if (value instanceof TestGenericsWrapper) {
-          target.defaultWrapper = value as TestGenericsWrapper;
+          target.defaultWrapper = value;
         }
         else {
           TestGenericsWrapper._applyInit(target._initDefaultWrapper(), value as $.Init<TestGenericsWrapper>);
@@ -9503,7 +9529,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["defaultWrapper2"];
       if (value !== undefined) {
         if (value instanceof TestGenericsWrapper2) {
-          target.defaultWrapper2 = value as TestGenericsWrapper2;
+          target.defaultWrapper2 = value;
         }
         else {
           TestGenericsWrapper2._applyInit(target._initDefaultWrapper2(), value as $.Init<TestGenericsWrapper2>);
@@ -9514,7 +9540,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["aliasFoo"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.aliasFoo = value as TestAllTypes;
+          target.aliasFoo = value;
         }
         else {
           TestAllTypes._applyInit(target._initAliasFoo(), value as $.Init<TestAllTypes>);
@@ -9525,7 +9551,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["aliasInner"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner) {
-          target.aliasInner = value as TestGenerics_Inner;
+          target.aliasInner = value;
         }
         else {
           TestGenerics_Inner._applyInit(target._initAliasInner(), value as $.Init<TestGenerics_Inner>);
@@ -9536,7 +9562,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["aliasInner2"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.aliasInner2 = value as TestGenerics_Inner2;
+          target.aliasInner2 = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initAliasInner2(), value as $.Init<TestGenerics_Inner2>);
@@ -9547,7 +9573,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["aliasInner2Bind"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.aliasInner2Bind = value as TestGenerics_Inner2;
+          target.aliasInner2Bind = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initAliasInner2Bind(), value as $.Init<TestGenerics_Inner2>);
@@ -9558,7 +9584,7 @@ export class TestUseGenerics extends $.Struct {
       const value = init["aliasInner2Text"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_Inner2) {
-          target.aliasInner2Text = value as TestGenerics_Inner2;
+          target.aliasInner2Text = value;
         }
         else {
           TestGenerics_Inner2._applyInit(target._initAliasInner2Text(), value as $.Init<TestGenerics_Inner2>);
@@ -9568,14 +9594,14 @@ export class TestUseGenerics extends $.Struct {
     {
       const value = init["aliasRev"];
       if (value !== undefined) {
-        target.aliasRev = value as any;
+        target.aliasRev = value;
       }
     }
     {
       const value = init["useAliases"];
       if (value !== undefined) {
         if (value instanceof TestGenerics_UseAliases) {
-          target.useAliases = value as TestGenerics_UseAliases;
+          target.useAliases = value;
         }
         else {
           TestGenerics_UseAliases._applyInit(target._initUseAliases(), value as $.Init<TestGenerics_UseAliases>);
@@ -9943,7 +9969,7 @@ export class TestEmptyStruct extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestEmptyStruct, value: $.Init<TestEmptyStruct>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestEmptyStruct_" + super.toString(); }
 }
@@ -9989,7 +10015,7 @@ export class TestConstants extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestConstants, value: $.Init<TestConstants>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestConstants_" + super.toString(); }
 }
@@ -10008,29 +10034,29 @@ export class TestAnyPointerConstants extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestAnyPointerConstants, value: $.Init<TestAnyPointerConstants>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["anyKindAsStruct"];
       if (value !== undefined) {
-        target.anyKindAsStruct = value as any;
+        target.anyKindAsStruct = value as $.Pointer;
       }
     }
     {
       const value = init["anyStructAsStruct"];
       if (value !== undefined) {
-        target.anyStructAsStruct = value as any;
+        target.anyStructAsStruct = value as $.Pointer;
       }
     }
     {
       const value = init["anyKindAsList"];
       if (value !== undefined) {
-        target.anyKindAsList = value as any;
+        target.anyKindAsList = value as $.Pointer;
       }
     }
     {
       const value = init["anyListAsList"];
       if (value !== undefined) {
-        target.anyListAsList = value as any;
+        target.anyListAsList = value as $.Pointer;
       }
     }
   }
@@ -10109,17 +10135,17 @@ export class TestInterface_Foo$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterface_Foo$Params, value: $.Init<TestInterface_Foo$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["i"];
       if (value !== undefined) {
-        target.i = value as any;
+        target.i = value;
       }
     }
     {
       const value = init["j"];
       if (value !== undefined) {
-        target.j = value as any;
+        target.j = value;
       }
     }
   }
@@ -10149,11 +10175,11 @@ export class TestInterface_Foo$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterface_Foo$Results, value: $.Init<TestInterface_Foo$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["x"];
       if (value !== undefined) {
-        target.x = value as any;
+        target.x = value;
       }
     }
   }
@@ -10166,17 +10192,17 @@ export class TestInterface_Foo$Results extends $.Struct {
   toString(): string { return "TestInterface_Foo$Results_" + super.toString(); }
 }
 export class TestInterface_Foo$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestInterface_Foo$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestInterface_Foo$Results>) {
+  pipeline: $.Pipeline<TestInterface_Foo$Results, $.Struct, TestInterface_Foo$Results>;
+  constructor(pipeline: $.Pipeline<TestInterface_Foo$Results, $.Struct, TestInterface_Foo$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestInterface_Foo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Foo$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Foo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Foo$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Foo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Foo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Foo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Foo$Results> {
@@ -10193,7 +10219,7 @@ export class TestInterface_Bar$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestInterface_Bar$Params, value: $.Init<TestInterface_Bar$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestInterface_Bar$Params_" + super.toString(); }
 }
@@ -10207,22 +10233,22 @@ export class TestInterface_Bar$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestInterface_Bar$Results, value: $.Init<TestInterface_Bar$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestInterface_Bar$Results_" + super.toString(); }
 }
 export class TestInterface_Bar$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestInterface_Bar$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestInterface_Bar$Results>) {
+  pipeline: $.Pipeline<TestInterface_Bar$Results, $.Struct, TestInterface_Bar$Results>;
+  constructor(pipeline: $.Pipeline<TestInterface_Bar$Results, $.Struct, TestInterface_Bar$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestInterface_Bar$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Bar$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Bar$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Bar$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Bar$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Bar$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Bar$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Bar$Results> {
@@ -10241,12 +10267,12 @@ export class TestInterface_Baz$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestInterface_Baz$Params, value: $.Init<TestInterface_Baz$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
         if (value instanceof TestAllTypes) {
-          target.s = value as TestAllTypes;
+          target.s = value;
         }
         else {
           TestAllTypes._applyInit(target._initS(), value as $.Init<TestAllTypes>);
@@ -10284,22 +10310,22 @@ export class TestInterface_Baz$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestInterface_Baz$Results, value: $.Init<TestInterface_Baz$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestInterface_Baz$Results_" + super.toString(); }
 }
 export class TestInterface_Baz$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestInterface_Baz$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestInterface_Baz$Results>) {
+  pipeline: $.Pipeline<TestInterface_Baz$Results, $.Struct, TestInterface_Baz$Results>;
+  constructor(pipeline: $.Pipeline<TestInterface_Baz$Results, $.Struct, TestInterface_Baz$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestInterface_Baz$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestInterface_Baz$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Baz$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestInterface_Baz$Results, TResult2 = never>(onfulfilled?: ((value: TestInterface_Baz$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Baz$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestInterface_Baz$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestInterface_Baz$Results> {
@@ -10461,7 +10487,7 @@ export class TestExtends_Qux$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestExtends_Qux$Params, value: $.Init<TestExtends_Qux$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestExtends_Qux$Params_" + super.toString(); }
 }
@@ -10475,22 +10501,22 @@ export class TestExtends_Qux$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestExtends_Qux$Results, value: $.Init<TestExtends_Qux$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestExtends_Qux$Results_" + super.toString(); }
 }
 export class TestExtends_Qux$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestExtends_Qux$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestExtends_Qux$Results>) {
+  pipeline: $.Pipeline<TestExtends_Qux$Results, $.Struct, TestExtends_Qux$Results>;
+  constructor(pipeline: $.Pipeline<TestExtends_Qux$Results, $.Struct, TestExtends_Qux$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestExtends_Qux$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestExtends_Qux$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Qux$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestExtends_Qux$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Qux$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Qux$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Qux$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestExtends_Qux$Results> {
@@ -10507,22 +10533,22 @@ export class TestExtends_Corge$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestExtends_Corge$Results, value: $.Init<TestExtends_Corge$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestExtends_Corge$Results_" + super.toString(); }
 }
 export class TestExtends_Corge$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestExtends_Corge$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestExtends_Corge$Results>) {
+  pipeline: $.Pipeline<TestExtends_Corge$Results, $.Struct, TestExtends_Corge$Results>;
+  constructor(pipeline: $.Pipeline<TestExtends_Corge$Results, $.Struct, TestExtends_Corge$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestExtends_Corge$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestExtends_Corge$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Corge$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestExtends_Corge$Results, TResult2 = never>(onfulfilled?: ((value: TestExtends_Corge$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Corge$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestExtends_Corge$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestExtends_Corge$Results> {
@@ -10539,22 +10565,22 @@ export class TestExtends_Grault$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestExtends_Grault$Params, value: $.Init<TestExtends_Grault$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestExtends_Grault$Params_" + super.toString(); }
 }
 export class TestAllTypes$Promise {
-  pipeline: $.Pipeline<any, any, TestAllTypes>;
-  constructor(pipeline: $.Pipeline<any, any, TestAllTypes>) {
+  pipeline: $.Pipeline<TestAllTypes, $.Struct, TestAllTypes>;
+  constructor(pipeline: $.Pipeline<TestAllTypes, $.Struct, TestAllTypes>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestAllTypes> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestAllTypes, TResult2 = never>(onfulfilled?: ((value: TestAllTypes) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestAllTypes, TResult2 = never>(onfulfilled?: ((value: TestAllTypes) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAllTypes | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestAllTypes | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestAllTypes> {
@@ -10603,7 +10629,7 @@ export class TestExtends$Client {
       resultFields: TestAllTypes._capnp.fields
     }
   ];
-  static readonly methods: $.Method<any, any>[] = [
+  static readonly methods: $.Method<$.Struct, $.Struct>[] = [
     ...TestInterface$Client.methods,
     ...TestExtends$Client.ownMethods
   ];
@@ -10672,12 +10698,13 @@ export class TestExtends$Server extends $.Server {
   readonly target: TestExtends$Server$Target;
   constructor(target: TestExtends$Server$Target) {
     super(target, [
-      ...(TestInterface$Client.methods as $.Method<any, any>[]).map((method) => ({
-        ...(method as any),
-        impl: async (params: any, results: any) => {
-          const value = await (target[method.methodName as keyof TestExtends$Server$Target] as any).call(target, params, results);
+      ...(TestInterface$Client.methods as $.Method<$.Struct, $.Struct>[]).map((method) => ({
+        ...method,
+        impl: async (params: $.Struct, results: $.Struct) => {
+          const targetMethod = target[method.methodName as keyof TestExtends$Server$Target] as unknown as (params: $.Struct, results: $.Struct) => $.MaybePromise<void | $.Init<$.Struct>>;
+          const value = await targetMethod.call(target, params, results);
           if (value !== undefined) {
-            (method.ResultsClass as any)._applyInit(results, value);
+            $.applyInit(results, value);
           }
         }
       })),
@@ -10736,7 +10763,7 @@ export class TestExtends2$Client {
   }
   static readonly ownMethods: [
   ] = [];
-  static readonly methods: $.Method<any, any>[] = [
+  static readonly methods: $.Method<$.Struct, $.Struct>[] = [
     ...TestExtends$Client.methods,
     ...TestExtends2$Client.ownMethods
   ];
@@ -10766,12 +10793,13 @@ export class TestExtends2$Server extends $.Server {
   readonly target: TestExtends2$Server$Target;
   constructor(target: TestExtends2$Server$Target) {
     super(target, [
-      ...(TestExtends$Client.methods as $.Method<any, any>[]).map((method) => ({
-        ...(method as any),
-        impl: async (params: any, results: any) => {
-          const value = await (target[method.methodName as keyof TestExtends2$Server$Target] as any).call(target, params, results);
+      ...(TestExtends$Client.methods as $.Method<$.Struct, $.Struct>[]).map((method) => ({
+        ...method,
+        impl: async (params: $.Struct, results: $.Struct) => {
+          const targetMethod = target[method.methodName as keyof TestExtends2$Server$Target] as unknown as (params: $.Struct, results: $.Struct) => $.MaybePromise<void | $.Init<$.Struct>>;
+          const value = await targetMethod.call(target, params, results);
           if (value !== undefined) {
-            (method.ResultsClass as any)._applyInit(results, value);
+            $.applyInit(results, value);
           }
         }
       }))
@@ -10807,11 +10835,11 @@ export class TestPipeline_Box extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_Box, value: $.Init<TestPipeline_Box>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -10847,11 +10875,11 @@ export class TestPipeline_AnyBox extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_AnyBox, value: $.Init<TestPipeline_AnyBox>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value as $.Pointer;
       }
     }
   }
@@ -10885,17 +10913,17 @@ export class TestPipeline_GetCap$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_GetCap$Params, value: $.Init<TestPipeline_GetCap$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["n"];
       if (value !== undefined) {
-        target.n = value as any;
+        target.n = value;
       }
     }
     {
       const value = init["inCap"];
       if (value !== undefined) {
-        target.inCap = value as any;
+        target.inCap = value;
       }
     }
   }
@@ -10938,18 +10966,18 @@ export class TestPipeline_GetCap$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_GetCap$Results, value: $.Init<TestPipeline_GetCap$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
-        target.s = value as any;
+        target.s = value;
       }
     }
     {
       const value = init["outBox"];
       if (value !== undefined) {
         if (value instanceof TestPipeline_Box) {
-          target.outBox = value as TestPipeline_Box;
+          target.outBox = value;
         }
         else {
           TestPipeline_Box._applyInit(target._initOutBox(), value as $.Init<TestPipeline_Box>);
@@ -10984,17 +11012,17 @@ export class TestPipeline_GetCap$Results extends $.Struct {
   toString(): string { return "TestPipeline_GetCap$Results_" + super.toString(); }
 }
 export class TestPipeline_GetCap$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestPipeline_GetCap$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestPipeline_GetCap$Results>) {
+  pipeline: $.Pipeline<TestPipeline_GetCap$Results, $.Struct, TestPipeline_GetCap$Results>;
+  constructor(pipeline: $.Pipeline<TestPipeline_GetCap$Results, $.Struct, TestPipeline_GetCap$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestPipeline_GetCap$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_GetCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_GetCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetCap$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetCap$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetCap$Results> {
@@ -11015,27 +11043,27 @@ export class TestPipeline_TestPointers$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_TestPointers$Params, value: $.Init<TestPipeline_TestPointers$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
     {
       const value = init["obj"];
       if (value !== undefined) {
-        target.obj = value as any;
+        target.obj = value as $.Pointer;
       }
     }
     {
       const value = init["list"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list = value as any;
+          target.list = value as typeof target.list;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -11108,22 +11136,22 @@ export class TestPipeline_TestPointers$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestPipeline_TestPointers$Results, value: $.Init<TestPipeline_TestPointers$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestPipeline_TestPointers$Results_" + super.toString(); }
 }
 export class TestPipeline_TestPointers$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestPipeline_TestPointers$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestPipeline_TestPointers$Results>) {
+  pipeline: $.Pipeline<TestPipeline_TestPointers$Results, $.Struct, TestPipeline_TestPointers$Results>;
+  constructor(pipeline: $.Pipeline<TestPipeline_TestPointers$Results, $.Struct, TestPipeline_TestPointers$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestPipeline_TestPointers$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_TestPointers$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_TestPointers$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_TestPointers$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_TestPointers$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_TestPointers$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_TestPointers$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_TestPointers$Results> {
@@ -11143,17 +11171,17 @@ export class TestPipeline_GetAnyCap$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_GetAnyCap$Params, value: $.Init<TestPipeline_GetAnyCap$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["n"];
       if (value !== undefined) {
-        target.n = value as any;
+        target.n = value;
       }
     }
     {
       const value = init["inCap"];
       if (value !== undefined) {
-        target.inCap = value as any;
+        target.inCap = value as $.Pointer;
       }
     }
   }
@@ -11193,18 +11221,18 @@ export class TestPipeline_GetAnyCap$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestPipeline_GetAnyCap$Results, value: $.Init<TestPipeline_GetAnyCap$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
-        target.s = value as any;
+        target.s = value;
       }
     }
     {
       const value = init["outBox"];
       if (value !== undefined) {
         if (value instanceof TestPipeline_AnyBox) {
-          target.outBox = value as TestPipeline_AnyBox;
+          target.outBox = value;
         }
         else {
           TestPipeline_AnyBox._applyInit(target._initOutBox(), value as $.Init<TestPipeline_AnyBox>);
@@ -11239,17 +11267,17 @@ export class TestPipeline_GetAnyCap$Results extends $.Struct {
   toString(): string { return "TestPipeline_GetAnyCap$Results_" + super.toString(); }
 }
 export class TestPipeline_GetAnyCap$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestPipeline_GetAnyCap$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestPipeline_GetAnyCap$Results>) {
+  pipeline: $.Pipeline<TestPipeline_GetAnyCap$Results, $.Struct, TestPipeline_GetAnyCap$Results>;
+  constructor(pipeline: $.Pipeline<TestPipeline_GetAnyCap$Results, $.Struct, TestPipeline_GetAnyCap$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestPipeline_GetAnyCap$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestPipeline_GetAnyCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetAnyCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestPipeline_GetAnyCap$Results, TResult2 = never>(onfulfilled?: ((value: TestPipeline_GetAnyCap$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetAnyCap$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestPipeline_GetAnyCap$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestPipeline_GetAnyCap$Results> {
@@ -11415,11 +11443,11 @@ export class TestCallOrder_GetCallSequence$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestCallOrder_GetCallSequence$Params, value: $.Init<TestCallOrder_GetCallSequence$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["expected"];
       if (value !== undefined) {
-        target.expected = value as any;
+        target.expected = value;
       }
     }
   }
@@ -11443,11 +11471,11 @@ export class TestCallOrder_GetCallSequence$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestCallOrder_GetCallSequence$Results, value: $.Init<TestCallOrder_GetCallSequence$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["n"];
       if (value !== undefined) {
-        target.n = value as any;
+        target.n = value;
       }
     }
   }
@@ -11460,17 +11488,17 @@ export class TestCallOrder_GetCallSequence$Results extends $.Struct {
   toString(): string { return "TestCallOrder_GetCallSequence$Results_" + super.toString(); }
 }
 export class TestCallOrder_GetCallSequence$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestCallOrder_GetCallSequence$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestCallOrder_GetCallSequence$Results>) {
+  pipeline: $.Pipeline<TestCallOrder_GetCallSequence$Results, $.Struct, TestCallOrder_GetCallSequence$Results>;
+  constructor(pipeline: $.Pipeline<TestCallOrder_GetCallSequence$Results, $.Struct, TestCallOrder_GetCallSequence$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestCallOrder_GetCallSequence$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestCallOrder_GetCallSequence$Results, TResult2 = never>(onfulfilled?: ((value: TestCallOrder_GetCallSequence$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestCallOrder_GetCallSequence$Results, TResult2 = never>(onfulfilled?: ((value: TestCallOrder_GetCallSequence$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestCallOrder_GetCallSequence$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestCallOrder_GetCallSequence$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestCallOrder_GetCallSequence$Results> {
@@ -11570,23 +11598,23 @@ export class TestTailCallee_TailResult extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestTailCallee_TailResult, value: $.Init<TestTailCallee_TailResult>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["i"];
       if (value !== undefined) {
-        target.i = value as any;
+        target.i = value;
       }
     }
     {
       const value = init["t"];
       if (value !== undefined) {
-        target.t = value as any;
+        target.t = value;
       }
     }
     {
       const value = init["c"];
       if (value !== undefined) {
-        target.c = value as any;
+        target.c = value;
       }
     }
   }
@@ -11635,17 +11663,17 @@ export class TestTailCallee_Foo$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestTailCallee_Foo$Params, value: $.Init<TestTailCallee_Foo$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["i"];
       if (value !== undefined) {
-        target.i = value as any;
+        target.i = value;
       }
     }
     {
       const value = init["t"];
       if (value !== undefined) {
-        target.t = value as any;
+        target.t = value;
       }
     }
   }
@@ -11664,8 +11692,8 @@ export class TestTailCallee_Foo$Params extends $.Struct {
   toString(): string { return "TestTailCallee_Foo$Params_" + super.toString(); }
 }
 export class TestTailCallee_TailResult$Promise {
-  pipeline: $.Pipeline<any, any, TestTailCallee_TailResult>;
-  constructor(pipeline: $.Pipeline<any, any, TestTailCallee_TailResult>) {
+  pipeline: $.Pipeline<TestTailCallee_TailResult, $.Struct, TestTailCallee_TailResult>;
+  constructor(pipeline: $.Pipeline<TestTailCallee_TailResult, $.Struct, TestTailCallee_TailResult>) {
     this.pipeline = pipeline;
   }
   getC(): TestCallOrder$Client {
@@ -11674,10 +11702,10 @@ export class TestTailCallee_TailResult$Promise {
   async promise(): Promise<TestTailCallee_TailResult> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestTailCallee_TailResult, TResult2 = never>(onfulfilled?: ((value: TestTailCallee_TailResult) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestTailCallee_TailResult, TResult2 = never>(onfulfilled?: ((value: TestTailCallee_TailResult) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestTailCallee_TailResult | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestTailCallee_TailResult | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestTailCallee_TailResult> {
@@ -11771,17 +11799,17 @@ export class TestTailCaller_Foo$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestTailCaller_Foo$Params, value: $.Init<TestTailCaller_Foo$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["i"];
       if (value !== undefined) {
-        target.i = value as any;
+        target.i = value;
       }
     }
     {
       const value = init["callee"];
       if (value !== undefined) {
-        target.callee = value as any;
+        target.callee = value;
       }
     }
   }
@@ -11931,11 +11959,11 @@ export class TestMoreStuff_CallFoo$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_CallFoo$Params, value: $.Init<TestMoreStuff_CallFoo$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -11971,11 +11999,11 @@ export class TestMoreStuff_CallFoo$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_CallFoo$Results, value: $.Init<TestMoreStuff_CallFoo$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
-        target.s = value as any;
+        target.s = value;
       }
     }
   }
@@ -11988,17 +12016,17 @@ export class TestMoreStuff_CallFoo$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_CallFoo$Results_" + super.toString(); }
 }
 export class TestMoreStuff_CallFoo$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_CallFoo$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_CallFoo$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_CallFoo$Results, $.Struct, TestMoreStuff_CallFoo$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_CallFoo$Results, $.Struct, TestMoreStuff_CallFoo$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_CallFoo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallFoo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFoo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallFoo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFoo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFoo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFoo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFoo$Results> {
@@ -12017,11 +12045,11 @@ export class TestMoreStuff_CallFooWhenResolved$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Params, value: $.Init<TestMoreStuff_CallFooWhenResolved$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12057,11 +12085,11 @@ export class TestMoreStuff_CallFooWhenResolved$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_CallFooWhenResolved$Results, value: $.Init<TestMoreStuff_CallFooWhenResolved$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
-        target.s = value as any;
+        target.s = value;
       }
     }
   }
@@ -12074,17 +12102,17 @@ export class TestMoreStuff_CallFooWhenResolved$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_CallFooWhenResolved$Results_" + super.toString(); }
 }
 export class TestMoreStuff_CallFooWhenResolved$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_CallFooWhenResolved$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_CallFooWhenResolved$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_CallFooWhenResolved$Results, $.Struct, TestMoreStuff_CallFooWhenResolved$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_CallFooWhenResolved$Results, $.Struct, TestMoreStuff_CallFooWhenResolved$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallFooWhenResolved$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFooWhenResolved$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallFooWhenResolved$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallFooWhenResolved$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallFooWhenResolved$Results> {
@@ -12103,11 +12131,11 @@ export class TestMoreStuff_NeverReturn$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_NeverReturn$Params, value: $.Init<TestMoreStuff_NeverReturn$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12143,11 +12171,11 @@ export class TestMoreStuff_NeverReturn$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_NeverReturn$Results, value: $.Init<TestMoreStuff_NeverReturn$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["capCopy"];
       if (value !== undefined) {
-        target.capCopy = value as any;
+        target.capCopy = value;
       }
     }
   }
@@ -12172,8 +12200,8 @@ export class TestMoreStuff_NeverReturn$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_NeverReturn$Results_" + super.toString(); }
 }
 export class TestMoreStuff_NeverReturn$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_NeverReturn$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_NeverReturn$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_NeverReturn$Results, $.Struct, TestMoreStuff_NeverReturn$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_NeverReturn$Results, $.Struct, TestMoreStuff_NeverReturn$Results>) {
     this.pipeline = pipeline;
   }
   getCapCopy(): TestInterface$Client {
@@ -12182,10 +12210,10 @@ export class TestMoreStuff_NeverReturn$Results$Promise {
   async promise(): Promise<TestMoreStuff_NeverReturn$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_NeverReturn$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_NeverReturn$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_NeverReturn$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_NeverReturn$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_NeverReturn$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_NeverReturn$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_NeverReturn$Results> {
@@ -12204,11 +12232,11 @@ export class TestMoreStuff_Hold$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_Hold$Params, value: $.Init<TestMoreStuff_Hold$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12242,22 +12270,22 @@ export class TestMoreStuff_Hold$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_Hold$Results, value: $.Init<TestMoreStuff_Hold$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_Hold$Results_" + super.toString(); }
 }
 export class TestMoreStuff_Hold$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_Hold$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_Hold$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_Hold$Results, $.Struct, TestMoreStuff_Hold$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_Hold$Results, $.Struct, TestMoreStuff_Hold$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_Hold$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_Hold$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Hold$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_Hold$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Hold$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Hold$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Hold$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Hold$Results> {
@@ -12274,7 +12302,7 @@ export class TestMoreStuff_CallHeld$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_CallHeld$Params, value: $.Init<TestMoreStuff_CallHeld$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_CallHeld$Params_" + super.toString(); }
 }
@@ -12290,11 +12318,11 @@ export class TestMoreStuff_CallHeld$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_CallHeld$Results, value: $.Init<TestMoreStuff_CallHeld$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["s"];
       if (value !== undefined) {
-        target.s = value as any;
+        target.s = value;
       }
     }
   }
@@ -12307,17 +12335,17 @@ export class TestMoreStuff_CallHeld$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_CallHeld$Results_" + super.toString(); }
 }
 export class TestMoreStuff_CallHeld$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_CallHeld$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_CallHeld$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_CallHeld$Results, $.Struct, TestMoreStuff_CallHeld$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_CallHeld$Results, $.Struct, TestMoreStuff_CallHeld$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_CallHeld$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_CallHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_CallHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_CallHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallHeld$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_CallHeld$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_CallHeld$Results> {
@@ -12334,7 +12362,7 @@ export class TestMoreStuff_GetHeld$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_GetHeld$Params, value: $.Init<TestMoreStuff_GetHeld$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_GetHeld$Params_" + super.toString(); }
 }
@@ -12350,11 +12378,11 @@ export class TestMoreStuff_GetHeld$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_GetHeld$Results, value: $.Init<TestMoreStuff_GetHeld$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12379,8 +12407,8 @@ export class TestMoreStuff_GetHeld$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_GetHeld$Results_" + super.toString(); }
 }
 export class TestMoreStuff_GetHeld$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_GetHeld$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_GetHeld$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_GetHeld$Results, $.Struct, TestMoreStuff_GetHeld$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_GetHeld$Results, $.Struct, TestMoreStuff_GetHeld$Results>) {
     this.pipeline = pipeline;
   }
   getCap(): TestInterface$Client {
@@ -12389,10 +12417,10 @@ export class TestMoreStuff_GetHeld$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHeld$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetHeld$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHeld$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHeld$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHeld$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHeld$Results> {
@@ -12411,11 +12439,11 @@ export class TestMoreStuff_Echo$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_Echo$Params, value: $.Init<TestMoreStuff_Echo$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12451,11 +12479,11 @@ export class TestMoreStuff_Echo$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_Echo$Results, value: $.Init<TestMoreStuff_Echo$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12480,8 +12508,8 @@ export class TestMoreStuff_Echo$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_Echo$Results_" + super.toString(); }
 }
 export class TestMoreStuff_Echo$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_Echo$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_Echo$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_Echo$Results, $.Struct, TestMoreStuff_Echo$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_Echo$Results, $.Struct, TestMoreStuff_Echo$Results>) {
     this.pipeline = pipeline;
   }
   getCap(): TestCallOrder$Client {
@@ -12490,10 +12518,10 @@ export class TestMoreStuff_Echo$Results$Promise {
   async promise(): Promise<TestMoreStuff_Echo$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_Echo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Echo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_Echo$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_Echo$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Echo$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_Echo$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_Echo$Results> {
@@ -12512,11 +12540,11 @@ export class TestMoreStuff_ExpectCancel$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_ExpectCancel$Params, value: $.Init<TestMoreStuff_ExpectCancel$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -12550,22 +12578,22 @@ export class TestMoreStuff_ExpectCancel$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_ExpectCancel$Results, value: $.Init<TestMoreStuff_ExpectCancel$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_ExpectCancel$Results_" + super.toString(); }
 }
 export class TestMoreStuff_ExpectCancel$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_ExpectCancel$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_ExpectCancel$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_ExpectCancel$Results, $.Struct, TestMoreStuff_ExpectCancel$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_ExpectCancel$Results, $.Struct, TestMoreStuff_ExpectCancel$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_ExpectCancel$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_ExpectCancel$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_ExpectCancel$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_ExpectCancel$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_ExpectCancel$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_ExpectCancel$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_ExpectCancel$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_ExpectCancel$Results> {
@@ -12588,23 +12616,23 @@ export class TestMoreStuff_MethodWithDefaults$Params extends $.Struct {
     defaultC: "foo"
   };
   static _applyInit(target: TestMoreStuff_MethodWithDefaults$Params, value: $.Init<TestMoreStuff_MethodWithDefaults$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["a"];
       if (value !== undefined) {
-        target.a = value as any;
+        target.a = value;
       }
     }
     {
       const value = init["b"];
       if (value !== undefined) {
-        target.b = value as any;
+        target.b = value;
       }
     }
     {
       const value = init["c"];
       if (value !== undefined) {
-        target.c = value as any;
+        target.c = value;
       }
     }
   }
@@ -12642,17 +12670,17 @@ export class TestMoreStuff_MethodWithDefaults$Results extends $.Struct {
     defaultE: "bar"
   };
   static _applyInit(target: TestMoreStuff_MethodWithDefaults$Results, value: $.Init<TestMoreStuff_MethodWithDefaults$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["d"];
       if (value !== undefined) {
-        target.d = value as any;
+        target.d = value;
       }
     }
     {
       const value = init["e"];
       if (value !== undefined) {
-        target.e = value as any;
+        target.e = value;
       }
     }
   }
@@ -12671,17 +12699,17 @@ export class TestMoreStuff_MethodWithDefaults$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_MethodWithDefaults$Results_" + super.toString(); }
 }
 export class TestMoreStuff_MethodWithDefaults$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_MethodWithDefaults$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_MethodWithDefaults$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_MethodWithDefaults$Results, $.Struct, TestMoreStuff_MethodWithDefaults$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_MethodWithDefaults$Results, $.Struct, TestMoreStuff_MethodWithDefaults$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_MethodWithDefaults$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_MethodWithDefaults$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithDefaults$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_MethodWithDefaults$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithDefaults$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithDefaults$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithDefaults$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithDefaults$Results> {
@@ -12698,7 +12726,7 @@ export class TestMoreStuff_GetHandle$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_GetHandle$Params, value: $.Init<TestMoreStuff_GetHandle$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_GetHandle$Params_" + super.toString(); }
 }
@@ -12714,11 +12742,11 @@ export class TestMoreStuff_GetHandle$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_GetHandle$Results, value: $.Init<TestMoreStuff_GetHandle$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["handle"];
       if (value !== undefined) {
-        target.handle = value as any;
+        target.handle = value;
       }
     }
   }
@@ -12743,8 +12771,8 @@ export class TestMoreStuff_GetHandle$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_GetHandle$Results_" + super.toString(); }
 }
 export class TestMoreStuff_GetHandle$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_GetHandle$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_GetHandle$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_GetHandle$Results, $.Struct, TestMoreStuff_GetHandle$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_GetHandle$Results, $.Struct, TestMoreStuff_GetHandle$Results>) {
     this.pipeline = pipeline;
   }
   getHandle(): TestHandle$Client {
@@ -12753,10 +12781,10 @@ export class TestMoreStuff_GetHandle$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetHandle$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetHandle$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHandle$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetHandle$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetHandle$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHandle$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetHandle$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetHandle$Results> {
@@ -12773,7 +12801,7 @@ export class TestMoreStuff_GetNull$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_GetNull$Params, value: $.Init<TestMoreStuff_GetNull$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_GetNull$Params_" + super.toString(); }
 }
@@ -12789,11 +12817,11 @@ export class TestMoreStuff_GetNull$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_GetNull$Results, value: $.Init<TestMoreStuff_GetNull$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["nullCap"];
       if (value !== undefined) {
-        target.nullCap = value as any;
+        target.nullCap = value;
       }
     }
   }
@@ -12818,8 +12846,8 @@ export class TestMoreStuff_GetNull$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_GetNull$Results_" + super.toString(); }
 }
 export class TestMoreStuff_GetNull$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_GetNull$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_GetNull$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_GetNull$Results, $.Struct, TestMoreStuff_GetNull$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_GetNull$Results, $.Struct, TestMoreStuff_GetNull$Results>) {
     this.pipeline = pipeline;
   }
   getNullCap(): TestMoreStuff$Client {
@@ -12828,10 +12856,10 @@ export class TestMoreStuff_GetNull$Results$Promise {
   async promise(): Promise<TestMoreStuff_GetNull$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetNull$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetNull$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetNull$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetNull$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetNull$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetNull$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetNull$Results> {
@@ -12848,7 +12876,7 @@ export class TestMoreStuff_GetEnormousString$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_GetEnormousString$Params, value: $.Init<TestMoreStuff_GetEnormousString$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_GetEnormousString$Params_" + super.toString(); }
 }
@@ -12864,11 +12892,11 @@ export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMoreStuff_GetEnormousString$Results, value: $.Init<TestMoreStuff_GetEnormousString$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["str"];
       if (value !== undefined) {
-        target.str = value as any;
+        target.str = value;
       }
     }
   }
@@ -12881,17 +12909,17 @@ export class TestMoreStuff_GetEnormousString$Results extends $.Struct {
   toString(): string { return "TestMoreStuff_GetEnormousString$Results_" + super.toString(); }
 }
 export class TestMoreStuff_GetEnormousString$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_GetEnormousString$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_GetEnormousString$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_GetEnormousString$Results, $.Struct, TestMoreStuff_GetEnormousString$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_GetEnormousString$Results, $.Struct, TestMoreStuff_GetEnormousString$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_GetEnormousString$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_GetEnormousString$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetEnormousString$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_GetEnormousString$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_GetEnormousString$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetEnormousString$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_GetEnormousString$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_GetEnormousString$Results> {
@@ -12912,17 +12940,17 @@ export class TestMoreStuff_MethodWithNullDefault$Params extends $.Struct {
     defaultB: $.readRawPointer(new Uint8Array([16, 1, 0, 0]).buffer)
   };
   static _applyInit(target: TestMoreStuff_MethodWithNullDefault$Params, value: $.Init<TestMoreStuff_MethodWithNullDefault$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["a"];
       if (value !== undefined) {
-        target.a = value as any;
+        target.a = value;
       }
     }
     {
       const value = init["b"];
       if (value !== undefined) {
-        target.b = value as any;
+        target.b = value;
       }
     }
   }
@@ -12962,22 +12990,22 @@ export class TestMoreStuff_MethodWithNullDefault$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMoreStuff_MethodWithNullDefault$Results, value: $.Init<TestMoreStuff_MethodWithNullDefault$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMoreStuff_MethodWithNullDefault$Results_" + super.toString(); }
 }
 export class TestMoreStuff_MethodWithNullDefault$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMoreStuff_MethodWithNullDefault$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMoreStuff_MethodWithNullDefault$Results>) {
+  pipeline: $.Pipeline<TestMoreStuff_MethodWithNullDefault$Results, $.Struct, TestMoreStuff_MethodWithNullDefault$Results>;
+  constructor(pipeline: $.Pipeline<TestMoreStuff_MethodWithNullDefault$Results, $.Struct, TestMoreStuff_MethodWithNullDefault$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMoreStuff_MethodWithNullDefault$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithNullDefault$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMoreStuff_MethodWithNullDefault$Results, TResult2 = never>(onfulfilled?: ((value: TestMoreStuff_MethodWithNullDefault$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMoreStuff_MethodWithNullDefault$Results> {
@@ -13136,7 +13164,7 @@ export class TestMoreStuff$Client {
       resultFields: TestMoreStuff_MethodWithNullDefault$Results._capnp.fields
     }
   ];
-  static readonly methods: $.Method<any, any>[] = [
+  static readonly methods: $.Method<$.Struct, $.Struct>[] = [
     ...TestCallOrder$Client.methods,
     ...TestMoreStuff$Client.ownMethods
   ];
@@ -13404,12 +13432,13 @@ export class TestMoreStuff$Server extends $.Server {
   readonly target: TestMoreStuff$Server$Target;
   constructor(target: TestMoreStuff$Server$Target) {
     super(target, [
-      ...(TestCallOrder$Client.methods as $.Method<any, any>[]).map((method) => ({
-        ...(method as any),
-        impl: async (params: any, results: any) => {
-          const value = await (target[method.methodName as keyof TestMoreStuff$Server$Target] as any).call(target, params, results);
+      ...(TestCallOrder$Client.methods as $.Method<$.Struct, $.Struct>[]).map((method) => ({
+        ...method,
+        impl: async (params: $.Struct, results: $.Struct) => {
+          const targetMethod = target[method.methodName as keyof TestMoreStuff$Server$Target] as unknown as (params: $.Struct, results: $.Struct) => $.MaybePromise<void | $.Init<$.Struct>>;
+          const value = await targetMethod.call(target, params, results);
           if (value !== undefined) {
-            (method.ResultsClass as any)._applyInit(results, value);
+            $.applyInit(results, value);
           }
         }
       })),
@@ -13564,7 +13593,7 @@ export class TestMembrane_Thing_PassThrough$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMembrane_Thing_PassThrough$Params, value: $.Init<TestMembrane_Thing_PassThrough$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMembrane_Thing_PassThrough$Params_" + super.toString(); }
 }
@@ -13580,11 +13609,11 @@ export class TestMembrane_Result extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_Result, value: $.Init<TestMembrane_Result>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["text"];
       if (value !== undefined) {
-        target.text = value as any;
+        target.text = value;
       }
     }
   }
@@ -13597,17 +13626,17 @@ export class TestMembrane_Result extends $.Struct {
   toString(): string { return "TestMembrane_Result_" + super.toString(); }
 }
 export class TestMembrane_Result$Promise {
-  pipeline: $.Pipeline<any, any, TestMembrane_Result>;
-  constructor(pipeline: $.Pipeline<any, any, TestMembrane_Result>) {
+  pipeline: $.Pipeline<TestMembrane_Result, $.Struct, TestMembrane_Result>;
+  constructor(pipeline: $.Pipeline<TestMembrane_Result, $.Struct, TestMembrane_Result>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestMembrane_Result> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_Result, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Result) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_Result, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Result) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Result | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Result | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_Result> {
@@ -13624,7 +13653,7 @@ export class TestMembrane_Thing_Intercept$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMembrane_Thing_Intercept$Params, value: $.Init<TestMembrane_Thing_Intercept$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMembrane_Thing_Intercept$Params_" + super.toString(); }
 }
@@ -13747,7 +13776,7 @@ export class TestMembrane_MakeThing$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestMembrane_MakeThing$Params, value: $.Init<TestMembrane_MakeThing$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestMembrane_MakeThing$Params_" + super.toString(); }
 }
@@ -13763,11 +13792,11 @@ export class TestMembrane_MakeThing$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_MakeThing$Results, value: $.Init<TestMembrane_MakeThing$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["thing"];
       if (value !== undefined) {
-        target.thing = value as any;
+        target.thing = value;
       }
     }
   }
@@ -13792,8 +13821,8 @@ export class TestMembrane_MakeThing$Results extends $.Struct {
   toString(): string { return "TestMembrane_MakeThing$Results_" + super.toString(); }
 }
 export class TestMembrane_MakeThing$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMembrane_MakeThing$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMembrane_MakeThing$Results>) {
+  pipeline: $.Pipeline<TestMembrane_MakeThing$Results, $.Struct, TestMembrane_MakeThing$Results>;
+  constructor(pipeline: $.Pipeline<TestMembrane_MakeThing$Results, $.Struct, TestMembrane_MakeThing$Results>) {
     this.pipeline = pipeline;
   }
   getThing(): TestMembrane_Thing$Client {
@@ -13802,10 +13831,10 @@ export class TestMembrane_MakeThing$Results$Promise {
   async promise(): Promise<TestMembrane_MakeThing$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_MakeThing$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_MakeThing$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_MakeThing$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_MakeThing$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_MakeThing$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_MakeThing$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_MakeThing$Results> {
@@ -13825,17 +13854,17 @@ export class TestMembrane_CallPassThrough$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_CallPassThrough$Params, value: $.Init<TestMembrane_CallPassThrough$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["thing"];
       if (value !== undefined) {
-        target.thing = value as any;
+        target.thing = value;
       }
     }
     {
       const value = init["tailCall"];
       if (value !== undefined) {
-        target.tailCall = value as any;
+        target.tailCall = value;
       }
     }
   }
@@ -13878,17 +13907,17 @@ export class TestMembrane_CallIntercept$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_CallIntercept$Params, value: $.Init<TestMembrane_CallIntercept$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["thing"];
       if (value !== undefined) {
-        target.thing = value as any;
+        target.thing = value;
       }
     }
     {
       const value = init["tailCall"];
       if (value !== undefined) {
-        target.tailCall = value as any;
+        target.tailCall = value;
       }
     }
   }
@@ -13930,11 +13959,11 @@ export class TestMembrane_Loopback$Params extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_Loopback$Params, value: $.Init<TestMembrane_Loopback$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["thing"];
       if (value !== undefined) {
-        target.thing = value as any;
+        target.thing = value;
       }
     }
   }
@@ -13970,11 +13999,11 @@ export class TestMembrane_Loopback$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestMembrane_Loopback$Results, value: $.Init<TestMembrane_Loopback$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["thing"];
       if (value !== undefined) {
-        target.thing = value as any;
+        target.thing = value;
       }
     }
   }
@@ -13999,8 +14028,8 @@ export class TestMembrane_Loopback$Results extends $.Struct {
   toString(): string { return "TestMembrane_Loopback$Results_" + super.toString(); }
 }
 export class TestMembrane_Loopback$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestMembrane_Loopback$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestMembrane_Loopback$Results>) {
+  pipeline: $.Pipeline<TestMembrane_Loopback$Results, $.Struct, TestMembrane_Loopback$Results>;
+  constructor(pipeline: $.Pipeline<TestMembrane_Loopback$Results, $.Struct, TestMembrane_Loopback$Results>) {
     this.pipeline = pipeline;
   }
   getThing(): TestMembrane_Thing$Client {
@@ -14009,10 +14038,10 @@ export class TestMembrane_Loopback$Results$Promise {
   async promise(): Promise<TestMembrane_Loopback$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestMembrane_Loopback$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Loopback$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestMembrane_Loopback$Results, TResult2 = never>(onfulfilled?: ((value: TestMembrane_Loopback$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Loopback$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestMembrane_Loopback$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestMembrane_Loopback$Results> {
@@ -14215,21 +14244,21 @@ export class TestContainMembrane extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestContainMembrane, value: $.Init<TestContainMembrane>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
     {
       const value = init["list"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list = value as any;
+          target.list = value as typeof target.list;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -14289,11 +14318,11 @@ export class TestContructorName extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestContructorName, value: $.Init<TestContructorName>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["$constructor"];
       if (value !== undefined) {
-        target.$constructor = value as any;
+        target.$constructor = value;
       }
     }
   }
@@ -14318,17 +14347,17 @@ export class TestTransferCap_Element extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestTransferCap_Element, value: $.Init<TestTransferCap_Element>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["text"];
       if (value !== undefined) {
-        target.text = value as any;
+        target.text = value;
       }
     }
     {
       const value = init["cap"];
       if (value !== undefined) {
-        target.cap = value as any;
+        target.cap = value;
       }
     }
   }
@@ -14372,15 +14401,15 @@ export class TestTransferCap extends $.Struct {
   };
   static _List: $.ListCtor<TestTransferCap_Element>;
   static _applyInit(target: TestTransferCap, value: $.Init<TestTransferCap>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["list"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.list = value as any;
+          target.list = value as typeof target.list;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initList(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
@@ -14425,7 +14454,7 @@ export class TestKeywordMethods_Delete$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Delete$Params, value: $.Init<TestKeywordMethods_Delete$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Delete$Params_" + super.toString(); }
 }
@@ -14439,22 +14468,22 @@ export class TestKeywordMethods_Delete$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Delete$Results, value: $.Init<TestKeywordMethods_Delete$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Delete$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Delete$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestKeywordMethods_Delete$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestKeywordMethods_Delete$Results>) {
+  pipeline: $.Pipeline<TestKeywordMethods_Delete$Results, $.Struct, TestKeywordMethods_Delete$Results>;
+  constructor(pipeline: $.Pipeline<TestKeywordMethods_Delete$Results, $.Struct, TestKeywordMethods_Delete$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestKeywordMethods_Delete$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Delete$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Delete$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Delete$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Delete$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Delete$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Delete$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Delete$Results> {
@@ -14471,7 +14500,7 @@ export class TestKeywordMethods_Class$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Class$Params, value: $.Init<TestKeywordMethods_Class$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Class$Params_" + super.toString(); }
 }
@@ -14485,22 +14514,22 @@ export class TestKeywordMethods_Class$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Class$Results, value: $.Init<TestKeywordMethods_Class$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Class$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Class$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestKeywordMethods_Class$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestKeywordMethods_Class$Results>) {
+  pipeline: $.Pipeline<TestKeywordMethods_Class$Results, $.Struct, TestKeywordMethods_Class$Results>;
+  constructor(pipeline: $.Pipeline<TestKeywordMethods_Class$Results, $.Struct, TestKeywordMethods_Class$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestKeywordMethods_Class$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Class$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Class$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Class$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Class$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Class$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Class$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Class$Results> {
@@ -14517,7 +14546,7 @@ export class TestKeywordMethods_Void$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Void$Params, value: $.Init<TestKeywordMethods_Void$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Void$Params_" + super.toString(); }
 }
@@ -14531,22 +14560,22 @@ export class TestKeywordMethods_Void$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Void$Results, value: $.Init<TestKeywordMethods_Void$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Void$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Void$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestKeywordMethods_Void$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestKeywordMethods_Void$Results>) {
+  pipeline: $.Pipeline<TestKeywordMethods_Void$Results, $.Struct, TestKeywordMethods_Void$Results>;
+  constructor(pipeline: $.Pipeline<TestKeywordMethods_Void$Results, $.Struct, TestKeywordMethods_Void$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestKeywordMethods_Void$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Void$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Void$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Void$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Void$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Void$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Void$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Void$Results> {
@@ -14563,7 +14592,7 @@ export class TestKeywordMethods_Return$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Return$Params, value: $.Init<TestKeywordMethods_Return$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Return$Params_" + super.toString(); }
 }
@@ -14577,22 +14606,22 @@ export class TestKeywordMethods_Return$Results extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestKeywordMethods_Return$Results, value: $.Init<TestKeywordMethods_Return$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestKeywordMethods_Return$Results_" + super.toString(); }
 }
 export class TestKeywordMethods_Return$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestKeywordMethods_Return$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestKeywordMethods_Return$Results>) {
+  pipeline: $.Pipeline<TestKeywordMethods_Return$Results, $.Struct, TestKeywordMethods_Return$Results>;
+  constructor(pipeline: $.Pipeline<TestKeywordMethods_Return$Results, $.Struct, TestKeywordMethods_Return$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestKeywordMethods_Return$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestKeywordMethods_Return$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Return$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestKeywordMethods_Return$Results, TResult2 = never>(onfulfilled?: ((value: TestKeywordMethods_Return$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Return$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestKeywordMethods_Return$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestKeywordMethods_Return$Results> {
@@ -14790,7 +14819,7 @@ export class TestAuthenticatedBootstrap_GetCallerId$Params extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestAuthenticatedBootstrap_GetCallerId$Params, value: $.Init<TestAuthenticatedBootstrap_GetCallerId$Params>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestAuthenticatedBootstrap_GetCallerId$Params_" + super.toString(); }
 }
@@ -14806,11 +14835,11 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestAuthenticatedBootstrap_GetCallerId$Results, value: $.Init<TestAuthenticatedBootstrap_GetCallerId$Results>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["caller"];
       if (value !== undefined) {
-        target.caller = value as any;
+        target.caller = value as $.Pointer;
       }
     }
   }
@@ -14832,17 +14861,17 @@ export class TestAuthenticatedBootstrap_GetCallerId$Results extends $.Struct {
   toString(): string { return "TestAuthenticatedBootstrap_GetCallerId$Results_" + super.toString(); }
 }
 export class TestAuthenticatedBootstrap_GetCallerId$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestAuthenticatedBootstrap_GetCallerId$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestAuthenticatedBootstrap_GetCallerId$Results>) {
+  pipeline: $.Pipeline<TestAuthenticatedBootstrap_GetCallerId$Results, $.Struct, TestAuthenticatedBootstrap_GetCallerId$Results>;
+  constructor(pipeline: $.Pipeline<TestAuthenticatedBootstrap_GetCallerId$Results, $.Struct, TestAuthenticatedBootstrap_GetCallerId$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestAuthenticatedBootstrap_GetCallerId$Results, TResult2 = never>(onfulfilled?: ((value: TestAuthenticatedBootstrap_GetCallerId$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestAuthenticatedBootstrap_GetCallerId$Results, TResult2 = never>(onfulfilled?: ((value: TestAuthenticatedBootstrap_GetCallerId$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestAuthenticatedBootstrap_GetCallerId$Results> {
@@ -14935,12 +14964,12 @@ export class TestSturdyRef extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestSturdyRef, value: $.Init<TestSturdyRef>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["hostId"];
       if (value !== undefined) {
         if (value instanceof TestSturdyRefHostId) {
-          target.hostId = value as TestSturdyRefHostId;
+          target.hostId = value;
         }
         else {
           TestSturdyRefHostId._applyInit(target._initHostId(), value as $.Init<TestSturdyRefHostId>);
@@ -14950,7 +14979,7 @@ export class TestSturdyRef extends $.Struct {
     {
       const value = init["objectId"];
       if (value !== undefined) {
-        target.objectId = value as any;
+        target.objectId = value as $.Pointer;
       }
     }
   }
@@ -15001,11 +15030,11 @@ export class TestSturdyRefHostId extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestSturdyRefHostId, value: $.Init<TestSturdyRefHostId>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["host"];
       if (value !== undefined) {
-        target.host = value as any;
+        target.host = value;
       }
     }
   }
@@ -15047,11 +15076,11 @@ export class TestSturdyRefObjectId extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestSturdyRefObjectId, value: $.Init<TestSturdyRefObjectId>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["tag"];
       if (value !== undefined) {
-        target.tag = value as any;
+        target.tag = value;
       }
     }
   }
@@ -15073,7 +15102,7 @@ export class TestProvisionId extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestProvisionId, value: $.Init<TestProvisionId>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestProvisionId_" + super.toString(); }
 }
@@ -15087,7 +15116,7 @@ export class TestRecipientId extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestRecipientId, value: $.Init<TestRecipientId>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestRecipientId_" + super.toString(); }
 }
@@ -15101,7 +15130,7 @@ export class TestThirdPartyCapId extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestThirdPartyCapId, value: $.Init<TestThirdPartyCapId>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestThirdPartyCapId_" + super.toString(); }
 }
@@ -15115,7 +15144,7 @@ export class TestJoinResult extends $.Struct {
     fields: [] as const,
   };
   static _applyInit(target: TestJoinResult, value: $.Init<TestJoinResult>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestJoinResult_" + super.toString(); }
 }
@@ -15145,18 +15174,18 @@ export class TestNameAnnotation_NestedStruct extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestNameAnnotation_NestedStruct, value: $.Init<TestNameAnnotation_NestedStruct>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["badNestedFieldName"];
       if (value !== undefined) {
-        target.badNestedFieldName = value as any;
+        target.badNestedFieldName = value;
       }
     }
     {
       const value = init["anotherBadNestedFieldName"];
       if (value !== undefined) {
         if (value instanceof TestNameAnnotation_NestedStruct) {
-          target.anotherBadNestedFieldName = value as TestNameAnnotation_NestedStruct;
+          target.anotherBadNestedFieldName = value;
         }
         else {
           TestNameAnnotation_NestedStruct._applyInit(target._initAnotherBadNestedFieldName(), value as $.Init<TestNameAnnotation_NestedStruct>);
@@ -15203,14 +15232,18 @@ export class TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup extends $.Struct
     ] as const,
   };
   static _applyInit(target: TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup, value: $.Init<TestNameAnnotation_BadlyNamedUnion_BadlyNamedGroup>): void {
-    const init = value as any;
+    const init = value;
     {
-      const value = init["foo"];
+      const value = (init as {
+        "foo"?: true;
+      })["foo"];
       if (value !== undefined) {
       }
     }
     {
-      const value = init["bar"];
+      const value = (init as {
+        "bar"?: true;
+      })["bar"];
       if (value !== undefined) {
       }
     }
@@ -15237,7 +15270,7 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestNameAnnotation_BadlyNamedUnion, value: $.Init<TestNameAnnotation_BadlyNamedUnion>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["badlyNamedGroup"];
       if (value !== undefined) {
@@ -15248,7 +15281,7 @@ export class TestNameAnnotation_BadlyNamedUnion extends $.Struct {
       const value = init["baz"];
       if (value !== undefined) {
         if (value instanceof TestNameAnnotation_NestedStruct) {
-          target.baz = value as TestNameAnnotation_NestedStruct;
+          target.baz = value;
         }
         else {
           TestNameAnnotation_NestedStruct._applyInit(target._initBaz(), value as $.Init<TestNameAnnotation_NestedStruct>);
@@ -15368,23 +15401,23 @@ export class TestNameAnnotation extends $.Struct {
     ] as const,
   };
   static _applyInit(target: TestNameAnnotation, value: $.Init<TestNameAnnotation>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["badFieldName"];
       if (value !== undefined) {
-        target.badFieldName = value as any;
+        target.badFieldName = value;
       }
     }
     {
       const value = init["bar"];
       if (value !== undefined) {
-        target.bar = value as any;
+        target.bar = value;
       }
     }
     {
       const value = init["anotherBadFieldName"];
       if (value !== undefined) {
-        target.anotherBadFieldName = value as any;
+        target.anotherBadFieldName = value;
       }
     }
     {
@@ -15490,11 +15523,11 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Params extends $.Struc
     ] as const,
   };
   static _applyInit(target: TestNameAnnotationInterface_BadlyNamedMethod$Params, value: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Params>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["badlyNamedParam"];
       if (value !== undefined) {
-        target.badlyNamedParam = value as any;
+        target.badlyNamedParam = value;
       }
     }
   }
@@ -15516,22 +15549,22 @@ export class TestNameAnnotationInterface_BadlyNamedMethod$Results extends $.Stru
     fields: [] as const,
   };
   static _applyInit(target: TestNameAnnotationInterface_BadlyNamedMethod$Results, value: $.Init<TestNameAnnotationInterface_BadlyNamedMethod$Results>): void {
-    const init = value as any;
+    const init = value;
   }
   toString(): string { return "TestNameAnnotationInterface_BadlyNamedMethod$Results_" + super.toString(); }
 }
 export class TestNameAnnotationInterface_BadlyNamedMethod$Results$Promise {
-  pipeline: $.Pipeline<any, any, TestNameAnnotationInterface_BadlyNamedMethod$Results>;
-  constructor(pipeline: $.Pipeline<any, any, TestNameAnnotationInterface_BadlyNamedMethod$Results>) {
+  pipeline: $.Pipeline<TestNameAnnotationInterface_BadlyNamedMethod$Results, $.Struct, TestNameAnnotationInterface_BadlyNamedMethod$Results>;
+  constructor(pipeline: $.Pipeline<TestNameAnnotationInterface_BadlyNamedMethod$Results, $.Struct, TestNameAnnotationInterface_BadlyNamedMethod$Results>) {
     this.pipeline = pipeline;
   }
   async promise(): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {
     return await this.pipeline.struct();
   }
-  then<TResult1 = TestNameAnnotationInterface_BadlyNamedMethod$Results, TResult2 = never>(onfulfilled?: ((value: TestNameAnnotationInterface_BadlyNamedMethod$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+  then<TResult1 = TestNameAnnotationInterface_BadlyNamedMethod$Results, TResult2 = never>(onfulfilled?: ((value: TestNameAnnotationInterface_BadlyNamedMethod$Results) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.promise().then(onfulfilled, onrejected);
   }
-  catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results | TResult> {
+  catch<TResult = never>(onrejected?: ((reason: unknown) => TResult | PromiseLike<TResult>) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results | TResult> {
     return this.promise().catch(onrejected);
   }
   finally(onfinally?: (() => void) | null): Promise<TestNameAnnotationInterface_BadlyNamedMethod$Results> {

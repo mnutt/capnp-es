@@ -17,24 +17,24 @@ export class Upgrade extends $.Struct {
   };
   static _SelfReferences: $.ListCtor<Upgrade>;
   static _applyInit(target: Upgrade, value: $.Init<Upgrade>): void {
-    const init = value as any;
+    const init = value;
     {
       const value = init["legacyName"];
       if (value !== undefined) {
-        target.legacyName = value as any;
+        target.legacyName = value;
       }
     }
     {
       const value = init["legacyId"];
       if (value !== undefined) {
-        target.legacyId = value as any;
+        target.legacyId = value;
       }
     }
     {
       const value = init["selfReference"];
       if (value !== undefined) {
         if (value instanceof Upgrade) {
-          target.selfReference = value as Upgrade;
+          target.selfReference = value;
         }
         else {
           Upgrade._applyInit(target._initSelfReference(), value as $.Init<Upgrade>);
@@ -45,10 +45,10 @@ export class Upgrade extends $.Struct {
       const value = init["selfReferences"];
       if (value !== undefined) {
         if (value instanceof $.List) {
-          target.selfReferences = value as any;
+          target.selfReferences = value as typeof target.selfReferences;
         }
         else {
-          const values = Array.isArray(value) ? value : Array.from(value as Iterable<any>);
+          const values = Array.isArray(value) ? value : Array.from(value);
           const list = target._initSelfReferences(values.length);
           for (let index = 0; index < values.length; index++) {
             const item = values[index];
