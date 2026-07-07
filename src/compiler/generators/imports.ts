@@ -39,8 +39,19 @@ export function generateCapnpImport(ctx: CodeGeneratorFileContext): void {
   const importAnnotation =
     tsImportPathAnnotation &&
     fileNode.annotations.find((a) => a.id === tsImportPathAnnotation.id);
-  const importPath =
+  const originalSpecifier =
     importAnnotation === undefined ? "capnp-es" : importAnnotation.value.text;
+  const importPath = ctx.context.resolveModuleSpecifier(
+    {
+      kind: "runtime",
+      fromPath: ctx.tsPath,
+      originalSpecifier,
+    },
+    {
+      kind: "runtime",
+      originalSpecifier,
+    },
+  );
 
   ctx.codeParts.push(`import * as $ from '${importPath}';`);
 }
@@ -58,14 +69,6 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
   for (const imp of ctx.imports) {
     const { name } = imp;
     const importNode = lookupNode(ctx, imp);
-    let importPath: string;
-
-    if (name.startsWith("/capnp/")) {
-      importPath = `capnp-es/capnp/${name.slice(7).replace(/\.capnp$/, "")}`;
-    } else {
-      importPath = generatedImportPath(ctx.tsPath, importNode.displayName);
-    }
-
     const imports = getImportNodes(ctx, importNode)
       .flatMap((node) => {
         const fullClassName = getFullClassName(node);
@@ -86,6 +89,41 @@ export function generateNestedImports(ctx: CodeGeneratorFileContext): void {
 
     if (imports.length === 0) {
       continue;
+    }
+
+    let importPath: string;
+    if (name.startsWith("/capnp/")) {
+      const originalSpecifier = `capnp-es/capnp/${name.slice(7).replace(/\.capnp$/, "")}`;
+      importPath = ctx.context.resolveModuleSpecifier(
+        {
+          kind: "runtime",
+          fromPath: ctx.tsPath,
+          originalSpecifier,
+        },
+        {
+          kind: "runtime",
+          originalSpecifier,
+        },
+      );
+    } else {
+      const toPath = schemaDisplayNameToTsPath(importNode.displayName);
+      const originalSpecifier = generatedImportPath(
+        ctx.tsPath,
+        importNode.displayName,
+      );
+      importPath = ctx.context.resolveModuleSpecifier(
+        {
+          kind: "schema",
+          fromPath: ctx.tsPath,
+          toPath,
+          originalSpecifier,
+          schemaDisplayName: importNode.displayName,
+        },
+        {
+          kind: "schema",
+          toPath,
+        },
+      );
     }
 
     ctx.codeParts.push(`import { ${imports} } from "${importPath}";`);

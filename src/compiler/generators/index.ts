@@ -1,6 +1,7 @@
 import * as schema from "../../capnp/schema";
 import { format } from "../../util";
 import * as E from "../errors";
+import type { CompileAllOptions, ModuleSpecifierContext } from "../options";
 import { lookupNode, getFullClassName } from "../node-util";
 import { generateEnumNode } from "./enum";
 import { generateInterfaceNode } from "./interface";
@@ -98,9 +99,16 @@ export class CodeGeneratorContext {
   readonly nodesByScopeId: Map<bigint, schema.Node[]>;
   readonly sourceInfo: schema.Node_SourceInfo[];
   readonly sourceInfoById: Map<bigint, schema.Node_SourceInfo>;
+  readonly moduleSpecifierResolutions = new Map<
+    string,
+    ModuleSpecifierResolution
+  >();
   files: CodeGeneratorFileContext[] = [];
 
-  constructor(public readonly req: schema.CodeGeneratorRequest) {
+  constructor(
+    public readonly req: schema.CodeGeneratorRequest,
+    private readonly options: Pick<CompileAllOptions, "moduleSpecifier"> = {},
+  ) {
     this.nodes = req.nodes.toArray();
     this.nodeById = new Map(this.nodes.map((node) => [node.id, node]));
     this.nodesByScopeId = new Map();
@@ -117,6 +125,36 @@ export class CodeGeneratorContext {
       this.sourceInfo.map((sourceInfo) => [sourceInfo.id, sourceInfo]),
     );
   }
+
+  resolveModuleSpecifier(
+    context: ModuleSpecifierContext,
+    resolution: ModuleSpecifierResolution,
+  ): string {
+    const specifier =
+      this.options.moduleSpecifier?.(context) ?? context.originalSpecifier;
+    this.moduleSpecifierResolutions.set(
+      moduleSpecifierResolutionKey(context.fromPath, specifier),
+      resolution,
+    );
+    return specifier;
+  }
+}
+
+export type ModuleSpecifierResolution =
+  | {
+      readonly kind: "runtime";
+      readonly originalSpecifier: string;
+    }
+  | {
+      readonly kind: "schema";
+      readonly toPath: string;
+    };
+
+export function moduleSpecifierResolutionKey(
+  fromPath: string,
+  specifier: string,
+): string {
+  return `${fromPath}\0${specifier}`;
 }
 
 export class CodeGeneratorFileContext {

@@ -1,9 +1,9 @@
 import { exec } from "node:child_process";
-import { compileAll } from "capnp-es/compiler";
+import { compileAll, type ModuleSpecifierContext } from "capnp-es/compiler";
 import { test, assert as t } from "vitest";
 
-test("compiler maps absolute non-standard imports to relative ESM imports", async () => {
-  const stdout = await new Promise<Buffer>((resolve, reject) => {
+async function compileAbsoluteImportFixtures(): Promise<Buffer> {
+  return new Promise<Buffer>((resolve, reject) => {
     exec(
       [
         "capnpc",
@@ -23,6 +23,10 @@ test("compiler maps absolute non-standard imports to relative ESM imports", asyn
       },
     );
   });
+}
+
+test("compiler maps absolute non-standard imports to relative ESM imports", async () => {
+  const stdout = await compileAbsoluteImportFixtures();
 
   const { files } = await compileAll(stdout, {
     ts: true,
@@ -43,4 +47,44 @@ test("compiler maps absolute non-standard imports to relative ESM imports", asyn
   t.notInclude(leaf, "export class BackendConfig extends");
   t.ok(files.has("sandstorm/leaf.js"));
   t.ok(files.has("sandstorm/leaf.d.ts"));
+});
+
+test("compiler supports custom generated module specifiers", async () => {
+  const stdout = await compileAbsoluteImportFixtures();
+  const seen: ModuleSpecifierContext[] = [];
+
+  const { files } = await compileAll(stdout, {
+    ts: true,
+    js: true,
+    dts: true,
+    moduleSpecifier(specifier) {
+      seen.push(specifier);
+      if (specifier.kind === "runtime") {
+        return `/vendor/${specifier.originalSpecifier}.js`;
+      }
+      return `capnp:/${specifier.toPath.replace(/\.ts$/, ".js")}`;
+    },
+  });
+
+  const leafTs = files.get("sandstorm/leaf.ts");
+  const leafJs = files.get("sandstorm/leaf.js");
+  const leafDts = files.get("sandstorm/leaf.d.ts");
+
+  t.ok(leafTs);
+  t.ok(leafJs);
+  t.ok(leafDts);
+  t.include(leafTs, 'import * as $ from "/vendor/capnp-es.js";');
+  t.include(
+    leafTs,
+    'import { BackendApi, BackendApi$Client, BackendConfig } from "capnp:/sandstorm/base.js";',
+  );
+  t.include(leafJs, 'from "capnp:/sandstorm/base.js"');
+  t.include(leafDts, 'from "capnp:/sandstorm/base.js"');
+  t.deepInclude(seen, {
+    kind: "schema",
+    fromPath: "sandstorm/leaf.ts",
+    toPath: "sandstorm/base.ts",
+    originalSpecifier: "./base.js",
+    schemaDisplayName: "sandstorm/base.capnp",
+  });
 });

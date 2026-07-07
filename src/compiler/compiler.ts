@@ -8,6 +8,8 @@ import * as E from "./errors";
 import {
   CodeGeneratorContext,
   CodeGeneratorFileContext,
+  type ModuleSpecifierResolution,
+  moduleSpecifierResolutionKey,
 } from "./generators/index.ts";
 import { RUNTIME_MODULE_NAME, SOURCE_COMMENT } from "./constants";
 import { loadRequestedFile, lookupNode } from "./node-util.ts";
@@ -18,6 +20,15 @@ import {
   generateNestedImports,
   generateCapnpImport,
 } from "./generators/imports.ts";
+import type { CompileAllOptions } from "./options";
+
+export type {
+  CompileAllOptions,
+  ModuleSpecifierContext,
+  ModuleSpecifierResolver,
+  RuntimeModuleSpecifierContext,
+  SchemaModuleSpecifierContext,
+} from "./options";
 
 /**
  * Compiles Cap'n Proto schema files into TypeScript/JavaScript code.
@@ -30,24 +41,20 @@ import {
  * @param opts.js - Whether to generate JavaScript (.js) files
  * @param opts.dts - Whether to generate TypeScript declaration (.d.ts) files
  * @param opts.tsconfig - Custom TypeScript compiler options
+ * @param opts.moduleSpecifier - Customizes generated runtime and schema import specifiers
  * @returns Object containing the compilation context and generated files
  * @returns.ctx - The CodeGeneratorContext used during compilation
  * @returns.files - Map of file paths to their generated content
  */
 export async function compileAll(
   codeGenRequest: Buffer,
-  opts?: {
-    ts?: boolean;
-    js?: boolean;
-    dts?: boolean;
-    tsconfig?: ts.CompilerOptions;
-  },
+  opts?: CompileAllOptions,
 ): Promise<{ ctx: CodeGeneratorContext; files: Map<string, string> }> {
   // Load requested files into context
   const req = new Message(codeGenRequest, false).getRoot(
     s.CodeGeneratorRequest,
   );
-  const ctx = new CodeGeneratorContext(req);
+  const ctx = new CodeGeneratorContext(req, opts);
   ctx.files = req.requestedFiles.map((file) => loadRequestedFile(ctx, file));
 
   // Compile files in memory
@@ -56,7 +63,13 @@ export async function compileAll(
   );
 
   // Transpile .d.ts and .js files
-  tsCompile(files, opts?.dts === true, opts?.js === true, opts?.tsconfig);
+  tsCompile(
+    files,
+    opts?.dts === true,
+    opts?.js === true,
+    opts?.tsconfig,
+    ctx.moduleSpecifierResolutions,
+  );
 
   // Remove .ts entries if ts option was not set
   if (!opts?.ts) {
@@ -131,6 +144,7 @@ function tsCompile(
   dts: boolean,
   js: boolean,
   tsconfig?: ts.CompilerOptions,
+  moduleSpecifierResolutions?: ReadonlyMap<string, ModuleSpecifierResolution>,
 ): void {
   if (!dts && !js) {
     return;
@@ -188,31 +202,92 @@ function tsCompile(
     }
     return _readFile(filename);
   };
+
+  const lookupModuleSpecifierResolution = (
+    containingFile: string,
+    moduleName: string,
+  ): ModuleSpecifierResolution | undefined => {
+    const candidates = [
+      containingFile,
+      relative(process.cwd(), containingFile),
+    ];
+    for (const candidate of candidates) {
+      const resolution = moduleSpecifierResolutions?.get(
+        moduleSpecifierResolutionKey(candidate, moduleName),
+      );
+      if (resolution) {
+        return resolution;
+      }
+    }
+    return undefined;
+  };
+
+  const resolveRuntimeModule = (
+    moduleName: string,
+    containingFile: string,
+  ): ts.ResolvedModuleFull | undefined => {
+    if (moduleName === RUNTIME_MODULE_NAME) {
+      const resolvedFileName = join(process.cwd(), "src/index.ts");
+      if (_fileExists(resolvedFileName)) {
+        return {
+          resolvedFileName,
+          extension: ts.Extension.Ts,
+        };
+      }
+    }
+
+    const runtimeModulePrefix = `${RUNTIME_MODULE_NAME}/`;
+    if (moduleName.startsWith(runtimeModulePrefix)) {
+      const resolvedFileName = join(
+        process.cwd(),
+        "src",
+        `${moduleName.slice(runtimeModulePrefix.length)}.ts`,
+      );
+      if (_fileExists(resolvedFileName)) {
+        return {
+          resolvedFileName,
+          extension: ts.Extension.Ts,
+        };
+      }
+    }
+
+    return ts.resolveModuleName(
+      moduleName,
+      containingFile,
+      compileOptions,
+      compilerHost,
+    ).resolvedModule;
+  };
+
   compilerHost.resolveModuleNames = (moduleNames, containingFile) =>
     moduleNames.map((moduleName) => {
-      if (moduleName === RUNTIME_MODULE_NAME) {
-        const resolvedFileName = join(process.cwd(), "src/index.ts");
-        if (_fileExists(resolvedFileName)) {
+      const moduleSpecifierResolution = lookupModuleSpecifierResolution(
+        containingFile,
+        moduleName,
+      );
+      if (moduleSpecifierResolution?.kind === "schema") {
+        const resolvedFileName = resolveInMemoryFile(
+          moduleSpecifierResolution.toPath,
+        );
+        if (resolvedFileName) {
           return {
             resolvedFileName,
             extension: ts.Extension.Ts,
           };
+        }
+      } else if (moduleSpecifierResolution?.kind === "runtime") {
+        const resolvedModule = resolveRuntimeModule(
+          moduleSpecifierResolution.originalSpecifier,
+          containingFile,
+        );
+        if (resolvedModule) {
+          return resolvedModule;
         }
       }
 
-      const runtimeModulePrefix = `${RUNTIME_MODULE_NAME}/`;
-      if (moduleName.startsWith(runtimeModulePrefix)) {
-        const resolvedFileName = join(
-          process.cwd(),
-          "src",
-          `${moduleName.slice(runtimeModulePrefix.length)}.ts`,
-        );
-        if (_fileExists(resolvedFileName)) {
-          return {
-            resolvedFileName,
-            extension: ts.Extension.Ts,
-          };
-        }
+      const runtimeModule = resolveRuntimeModule(moduleName, containingFile);
+      if (runtimeModule) {
+        return runtimeModule;
       }
 
       if (moduleName.startsWith(".") && moduleName.endsWith(".js")) {
