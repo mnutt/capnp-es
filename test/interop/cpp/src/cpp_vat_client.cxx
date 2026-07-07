@@ -9,6 +9,7 @@
 #include <capnp/persistent.capnp.h>
 #include "capnp/rpc-level2.capnp.h"
 #include "capnp/sandstorm-powerbox-flow.capnp.h"
+#include "capnp/web-session-interop.capnp.h"
 
 static std::string getArg(int argc, char* argv[], int idx, const char* fallback) {
   if (idx < argc) {
@@ -50,6 +51,44 @@ int main(int argc, char* argv[]) {
       mode == "restore-revoked";
 
   try {
+    if (mode == "web-session-get") {
+      auto session = client.getMain<WebSession>();
+      auto req = session.getRequest();
+      req.setPath("/native-export-websession?from=cpp-interop");
+      auto responseStream = kj::newPromiseAndFulfiller<ByteStream::Client>();
+      req.initContext().setResponseStream(kj::mv(responseStream.promise));
+      req.setIgnoreBody(false);
+      auto resp = req.send().wait(waitScope);
+      if (resp.which() != Response::CONTENT) {
+        std::cerr << "unexpected web session response union=" << static_cast<uint>(resp.which())
+                  << std::endl;
+        return 16;
+      }
+      auto content = resp.getContent();
+      if (content.getStatusCode() != 200) {
+        std::cerr << "unexpected web session status=" << content.getStatusCode() << std::endl;
+        return 13;
+      }
+      if (content.getMimeType() != "text/plain; charset=utf-8") {
+        std::cerr << "unexpected web session mimeType=" << content.getMimeType().cStr()
+                  << std::endl;
+        return 14;
+      }
+      auto contentBody = content.getBody();
+      if (contentBody.which() != Response::Content::Body::BYTES) {
+        std::cerr << "unexpected web session body union="
+                  << static_cast<uint>(contentBody.which()) << std::endl;
+        return 17;
+      }
+      const auto body = dataToString(contentBody.getBytes());
+      if (body != "native export websession get /native-export-websession?from=cpp-interop") {
+        std::cerr << "unexpected web session body=" << body << std::endl;
+        return 15;
+      }
+      std::cout << "OK web-session-get=" << body << std::endl;
+      return 0;
+    }
+
     if (mode == "sandstorm-apphooks") {
       auto appHooks = client.getMain<AppHooks>();
 

@@ -37,6 +37,20 @@ public:
   }
 };
 
+class TailReturnCapabilityImpl final: public ReturnCapability::Server {
+public:
+  TailReturnCapabilityImpl(): inner(kj::heap<ReturnCapabilityImpl>()) {}
+
+  kj::Promise<void> get(GetContext context) override {
+    auto req = inner.getRequest();
+    req.setIndex(context.getParams().getIndex());
+    return context.tailCall(kj::mv(req));
+  }
+
+private:
+  ReturnCapability::Client inner;
+};
+
 class RpcLevel2RestorerImpl final: public RpcLevel2Restorer::Server {
 public:
   kj::Promise<void> restore(RestoreContext context) override {
@@ -217,6 +231,14 @@ int main() {
     return 0;
   } else if (mainType == "sandstorm-bridge") {
     capnp::EzRpcServer server(kj::heap<SandstormBridgeImpl>(), bindAddr);
+    auto& waitScope = server.getWaitScope();
+    auto actualPort = server.getPort().wait(waitScope);
+    std::cout << "READY " << actualPort << std::endl;
+    std::cout.flush();
+    kj::NEVER_DONE.wait(waitScope);
+    return 0;
+  } else if (mainType == "tail-return") {
+    capnp::EzRpcServer server(kj::heap<TailReturnCapabilityImpl>(), bindAddr);
     auto& waitScope = server.getWaitScope();
     auto actualPort = server.getPort().wait(waitScope);
     std::cout << "READY " << actualPort << std::endl;

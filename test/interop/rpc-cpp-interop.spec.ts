@@ -33,7 +33,12 @@ async function startCppServer(): Promise<{
 }
 
 async function startCppServerWithMode(
-  mainType: "return" | "restorer" | "persistence" | "sandstorm-bridge",
+  mainType:
+    | "return"
+    | "restorer"
+    | "persistence"
+    | "sandstorm-bridge"
+    | "tail-return",
 ): Promise<{
   child: ChildProcessByStdio<null, Readable, Readable>;
   host: string;
@@ -126,7 +131,8 @@ type CppClientMode =
   | "restore-sealed-success"
   | "restore-sealed-denied"
   | "restore-revoked"
-  | "sandstorm-apphooks";
+  | "sandstorm-apphooks"
+  | "web-session-get";
 
 function dataFromText(text: string): Uint8Array {
   return new TextEncoder().encode(text);
@@ -191,6 +197,72 @@ async function startTsSandstormAppHooksServer(): Promise<{
 
       async drop(_params: any, _results: any): Promise<void> {
         // No-op for interop coverage.
+      },
+    });
+    conns.push(conn);
+  });
+
+  await new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, host, () => resolve());
+  });
+
+  const addr = server.address() as AddressInfo;
+  const stop = async () => {
+    for (const conn of conns) {
+      conn.shutdown();
+    }
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  };
+
+  return {
+    host,
+    port: addr.port,
+    seen,
+    stop,
+  };
+}
+
+async function startTsWebSessionServer(): Promise<{
+  host: string;
+  port: number;
+  seen: {
+    getCalls: number;
+    paths: string[];
+  };
+  stop: () => Promise<void>;
+}> {
+  const [{ Conn }, { WebSession }] = await Promise.all([
+    import("src/rpc"),
+    import("test/fixtures/web-session-interop"),
+  ]);
+
+  const host = process.env.CAPNP_INTEROP_HOST || "127.0.0.1";
+  const conns: Conn[] = [];
+  const seen = {
+    getCalls: 0,
+    paths: [] as string[],
+  };
+
+  const server = net.createServer((socket) => {
+    const conn = new Conn(TcpRPCTransport.fromSocket(socket));
+    conn.onError = () => {};
+    conn.initMain(WebSession, {
+      async ping(_params: any, _results: any): Promise<void> {
+        // Inherited UiSession method, included to mirror Sandstorm WebSession.
+      },
+
+      async get(params: any, _results: any): Promise<any> {
+        seen.getCalls++;
+        seen.paths.push(params.path);
+        const text = `native export websession get ${params.path}`;
+        return {
+          content: {
+            statusCode: 200,
+            mimeType: "text/plain; charset=utf-8",
+            body: { bytes: dataFromText(text) },
+          },
+        };
       },
     });
     conns.push(conn);
@@ -465,6 +537,47 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         import("test/fixtures/import-interface"),
       ]);
       const server = await startCppServer();
+      let conn: Conn | undefined;
+
+      try {
+        const transport = await TcpRPCTransport.connect(
+          server.host,
+          server.port,
+        );
+        conn = new Conn(transport);
+        conn.onError = () => {};
+
+        const ret = await conn
+          .bootstrap(ReturnCapability)
+          .get((p) => {
+            p.index = 0;
+          })
+          .promise();
+
+        const result = await ret.capability
+          .subtract((p: any) => {
+            p.a = 11;
+            p.b = 4;
+          })
+          .promise();
+
+        t.equal(result.result, 7);
+      } finally {
+        conn?.shutdown();
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "capnp-es client handles C++ tail-call resultsSentElsewhere",
+    { timeout: 10000 },
+    async () => {
+      const [{ Conn }, { ReturnCapability }] = await Promise.all([
+        import("src/rpc"),
+        import("test/fixtures/import-interface"),
+      ]);
+      const server = await startCppServerWithMode("tail-return");
       let conn: Conn | undefined;
 
       try {
@@ -1220,6 +1333,38 @@ describe.runIf(ENABLE_INTEROP)("rpc cpp interop", () => {
         t.equal(server.seen.getViewInfoCalls, 1);
         t.equal(server.seen.restoreCalls, 1);
         t.deepEqual(server.seen.restoredObjectIds, ["/cpp/restored-node"]);
+      } finally {
+        await server.stop();
+      }
+    },
+  );
+
+  test(
+    "C++ client can call capnp-es WebSession-like inherited data method",
+    { timeout: 10000 },
+    async () => {
+      const server = await startTsWebSessionServer();
+      try {
+        const res = await runCppClient(
+          server.host,
+          server.port,
+          "web-session-get",
+        );
+        t.equal(
+          res.code,
+          0,
+          `stdout=${res.stdout.trim()} stderr=${res.stderr.trim()}`,
+        );
+        t.equal(res.signal, null);
+        t.ok(
+          res.stdout.includes(
+            "OK web-session-get=native export websession get /native-export-websession?from=cpp-interop",
+          ),
+        );
+        t.equal(server.seen.getCalls, 1);
+        t.deepEqual(server.seen.paths, [
+          "/native-export-websession?from=cpp-interop",
+        ]);
       } finally {
         await server.stop();
       }
