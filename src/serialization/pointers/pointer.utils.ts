@@ -221,6 +221,10 @@ export function copyFrom(src: Pointer, p: Pointer): void {
  */
 
 export function erase(p: Pointer): void {
+  if (p._capnp.depthLimit <= 0) {
+    throw new Error(format(PTR_DEPTH_LIMIT_EXCEEDED, p));
+  }
+
   if (isNull(p)) return;
 
   // First deal with the contents.
@@ -239,7 +243,9 @@ export function erase(p: Pointer): void {
       // Iterate over all the pointers and nuke them.
 
       for (let i = 0; i < size.pointerLength; i++) {
-        erase(add(i * 8, c));
+        erase(
+          new Pointer(c.segment, c.byteOffset + i * 8, p._capnp.depthLimit - 1),
+        );
       }
 
       break;

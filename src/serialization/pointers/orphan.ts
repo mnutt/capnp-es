@@ -3,6 +3,7 @@ import {
   PTR_ALREADY_ADOPTED,
   PTR_INVALID_POINTER_TYPE,
 } from "../../errors";
+import { DEFAULT_DEPTH_LIMIT } from "../../constants";
 import { format } from "../../util";
 import { ListElementSize } from "../list-element-size";
 import { ObjectSize, getWordLength } from "../object-size";
@@ -159,6 +160,19 @@ export class Orphan<T extends Pointer> {
 
     switch (this._capnp.type) {
       case PointerType.STRUCT: {
+        const pointerSection =
+          this.byteOffset + this._capnp.size.dataByteLength;
+
+        for (let i = 0; i < this._capnp.size.pointerLength; i++) {
+          erase(
+            new Pointer(
+              this.segment,
+              pointerSection + i * 8,
+              DEFAULT_DEPTH_LIMIT - 1,
+            ),
+          );
+        }
+
         this.segment.fillZeroWords(
           this.byteOffset,
           getWordLength(this._capnp.size),

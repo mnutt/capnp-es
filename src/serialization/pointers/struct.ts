@@ -1,6 +1,6 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
-import { MAX_DEPTH } from "../../constants";
+import { DEFAULT_DEPTH_LIMIT } from "../../constants";
 import { ObjectSize } from "../object-size";
 import { Segment } from "../segment";
 import { _Pointer, _PointerCtor, Pointer } from "./pointer";
@@ -49,7 +49,7 @@ export class Struct extends Pointer<_Struct> {
   constructor(
     segment: Segment,
     byteOffset: number,
-    depthLimit = MAX_DEPTH,
+    depthLimit = DEFAULT_DEPTH_LIMIT,
     compositeIndex?: number,
   ) {
     super(segment, byteOffset, depthLimit);

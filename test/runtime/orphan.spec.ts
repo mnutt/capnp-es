@@ -3,6 +3,8 @@
 import { test, assert as t } from "vitest";
 
 import { Message, ObjectSize, Orphan, Struct, utils } from "capnp-es";
+import * as C from "src/constants";
+import { PTR_DEPTH_LIMIT_EXCEEDED } from "src/errors";
 import { Int32List } from "src/serialization";
 
 /** Just a silly struct that holds a single pointer to... itself? */
@@ -176,4 +178,28 @@ test("Orphan.dispose()", () => {
   listOrphan.dispose();
 
   t.equal(root.segment.getInt32(60), 0);
+});
+
+test("Orphan.dispose() rejects deeply nested struct contents", () => {
+  const message = new Message();
+  const root = new TestStruct(
+    message.getSegment(0),
+    0,
+    C.DEFAULT_DEPTH_LIMIT + 2,
+  );
+  utils.initStruct(TestStruct._capnp.size, root);
+
+  let cur = root;
+  for (let i = 0; i < C.DEFAULT_DEPTH_LIMIT + 1; i++) {
+    cur = cur.initTest();
+  }
+
+  const orphan = root.disownTest();
+
+  t.throws(
+    () => {
+      orphan.dispose();
+    },
+    new RegExp(PTR_DEPTH_LIMIT_EXCEEDED.slice(0, 12)),
+  );
 });

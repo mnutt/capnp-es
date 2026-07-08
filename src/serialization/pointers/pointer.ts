@@ -1,6 +1,6 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
-import { MAX_DEPTH } from "../../constants";
+import { DEFAULT_DEPTH_LIMIT } from "../../constants";
 import { format } from "../../util";
 import { Segment } from "../segment";
 import {
@@ -56,7 +56,11 @@ export class Pointer<T extends _Pointer = _Pointer> {
    */
   segment: Segment;
 
-  constructor(segment: Segment, byteOffset: number, depthLimit = MAX_DEPTH) {
+  constructor(
+    segment: Segment,
+    byteOffset: number,
+    depthLimit = DEFAULT_DEPTH_LIMIT,
+  ) {
     this._capnp = { compositeList: false, depthLimit } as T;
     this.segment = segment;
     this.byteOffset = byteOffset;

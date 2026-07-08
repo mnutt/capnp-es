@@ -4,7 +4,7 @@ import type { Client, Server } from "../../rpc";
 import type { ObjectSize } from "../object-size";
 import type { Segment } from "../segment";
 import { format } from "../../util";
-import { MAX_DEPTH } from "../../constants";
+import { DEFAULT_DEPTH_LIMIT } from "../../constants";
 import { Pointer, PointerType } from "./pointer";
 import { getTargetPointerType } from "./pointer.utils";
 import type { CapnpSchemaMetadata } from "../../metadata";
@@ -30,7 +30,11 @@ export class Interface extends Pointer {
   static readonly isInterface = isInterface;
   static readonly getClient = getClient;
 
-  constructor(segment: Segment, byteOffset: number, depthLimit = MAX_DEPTH) {
+  constructor(
+    segment: Segment,
+    byteOffset: number,
+    depthLimit = DEFAULT_DEPTH_LIMIT,
+  ) {
     super(segment, byteOffset, depthLimit);
   }
 

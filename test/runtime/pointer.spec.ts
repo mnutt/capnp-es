@@ -2,8 +2,21 @@
 
 import { test, assert as t } from "vitest";
 
-import { Message, Pointer, utils } from "capnp-es";
+import { Message, ObjectSize, Pointer, Struct, utils } from "capnp-es";
 import * as C from "src/constants";
+import { PTR_DEPTH_LIMIT_EXCEEDED } from "src/errors";
+
+class ChainStruct extends Struct {
+  static readonly _capnp = {
+    displayName: "ChainStruct",
+    id: "0000000000000003",
+    size: new ObjectSize(0, 1),
+  };
+
+  initNext(): ChainStruct {
+    return utils.initStructAt(0, ChainStruct, this);
+  }
+}
 
 test("new Pointer()", () => {
   const m = new Message();
@@ -48,7 +61,21 @@ test("new Pointer()", () => {
 
   t.equal(p.segment, s);
   t.equal(p.byteOffset, 4);
-  t.equal(p._capnp.depthLimit, C.MAX_DEPTH);
+  t.equal(p._capnp.depthLimit, C.DEFAULT_DEPTH_LIMIT);
+});
+
+test("Pointer depth limit applies to nested reads", () => {
+  const root = new Message().initRoot(ChainStruct);
+
+  t.throws(
+    () => {
+      let cur = root;
+      for (let i = 0; i < C.DEFAULT_DEPTH_LIMIT; i++) {
+        cur = cur.initNext();
+      }
+    },
+    new RegExp(PTR_DEPTH_LIMIT_EXCEEDED.slice(0, 12)),
+  );
 });
 
 test("Pointer.adopt(), Pointer.disown()", () => {
