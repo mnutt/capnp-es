@@ -2,8 +2,8 @@
 
 import type { MessageTarget } from "../capnp/rpc";
 import type { Struct } from "../serialization/pointers/struct";
-import type { AnswerEntry, AnswerQCall } from "./answer";
-import { Answer } from "./answer";
+import type { AnswerQCall } from "./answer";
+import { Answer, isDisembargo, isLocalCall, isRemoteCall } from "./answer";
 import { Call, copyCall } from "./call";
 import { Client } from "./client";
 import { ErrorAnswer } from "./error-answer";
@@ -14,22 +14,7 @@ import { RPC_CALL_QUEUE_FULL } from "../errors";
 
 export const callQueueSize = 64;
 
-export type CallQueueSlot =
-  | {
-      kind: "local";
-      call: Call<any, any>;
-      f: Fulfiller<any>;
-    }
-  | {
-      kind: "remote";
-      call: Call<any, any>;
-      a: AnswerEntry<any>;
-    }
-  | {
-      kind: "disembargo";
-      embargoID: number;
-      embargoTarget: MessageTarget;
-    };
+export type CallQueueSlot = AnswerQCall;
 
 class CallQueueStorage implements QueueStorage {
   constructor(public data: Array<CallQueueSlot | null>) {}
@@ -62,28 +47,7 @@ export class CallQueue {
   }
 
   static fromAnswerQCalls(calls: AnswerQCall[]): CallQueue {
-    const slots = calls.map((call) => {
-      if ("a" in call) {
-        return {
-          kind: "remote" as const,
-          call: call.call,
-          a: call.a,
-        };
-      }
-      if ("f" in call) {
-        return {
-          kind: "local" as const,
-          call: call.call,
-          f: call.f,
-        };
-      }
-      return {
-        kind: "disembargo" as const,
-        embargoID: call.embargoID,
-        embargoTarget: call.embargoTarget,
-      };
-    });
-    return new CallQueue(callQueueSize, slots);
+    return new CallQueue(callQueueSize, calls);
   }
 
   get length(): number {
@@ -109,12 +73,11 @@ export class CallQueue {
   }
 
   pushPreparedLocal(call: Call<any, any>, f: Fulfiller<any>): boolean {
-    return this.pushSlot({ kind: "local", call, f });
+    return this.pushSlot({ call, f });
   }
 
   pushDisembargo(id: number, target: MessageTarget): boolean {
     return this.pushSlot({
-      kind: "disembargo",
       embargoID: id,
       embargoTarget: target,
     });
@@ -129,19 +92,12 @@ export class CallQueue {
       if (!slot) {
         break;
       }
-      switch (slot.kind) {
-        case "local": {
-          joinAnswer(slot.f, target.call(slot.call));
-          break;
-        }
-        case "remote": {
-          joinAnswer(slot.a, target.call(slot.call));
-          break;
-        }
-        case "disembargo": {
-          handleDisembargo?.(slot.embargoID, slot.embargoTarget);
-          break;
-        }
+      if (isLocalCall(slot)) {
+        joinAnswer(slot.f, target.call(slot.call));
+      } else if (isRemoteCall(slot)) {
+        joinAnswer(slot.a, target.call(slot.call));
+      } else if (isDisembargo(slot)) {
+        handleDisembargo?.(slot.embargoID, slot.embargoTarget);
       }
       this.q.pop();
     }
@@ -153,17 +109,11 @@ export class CallQueue {
       if (!slot) {
         break;
       }
-      if (slot.kind === "local") {
+      if (isLocalCall(slot)) {
         slot.f.tryReject(err);
-      } else if (slot.kind === "remote") {
+      } else if (isRemoteCall(slot)) {
         slot.a.reject(err);
       }
-      this.q.pop();
-    }
-  }
-
-  clear(): void {
-    while (this.length > 0) {
       this.q.pop();
     }
   }

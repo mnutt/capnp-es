@@ -16,7 +16,6 @@ export class ImportClient implements Client {
   resolved?: Client;
   embargoId?: number;
   embargoQueue = new CallQueue(callQueueSize);
-  embargoQueueCap = callQueueSize;
 
   constructor(
     public conn: Conn,

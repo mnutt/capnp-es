@@ -47,6 +47,7 @@ import type { Struct, StructCtor } from "./struct";
 
 // Used to apply bit masks (default values).
 const TMP_WORD = new DataView(new ArrayBuffer(8));
+const EMPTY_OBJECT_SIZE = new ObjectSize(0, 0);
 
 function isReadOnly(s: Struct): boolean {
   return s.segment.message._capnp.readonly;
@@ -733,7 +734,7 @@ export function getPointerSection(s: Struct): Pointer {
 
 export function getSize(s: Struct): ObjectSize {
   if (isNull(s)) {
-    return new ObjectSize(0, 0);
+    return EMPTY_OBJECT_SIZE;
   }
 
   if (s._capnp.compositeIndex !== undefined) {

@@ -30,11 +30,9 @@ interface pcall {
 // once fulfill or reject is called. Calls to the fulfiller will queue
 // up until it is resolved.
 export class Fulfiller<R extends Struct> implements Answer<R> {
-  resolved = false;
   settled = false;
   answer?: Answer<R>;
   queue: pcall[] = [];
-  queueCap = callQueueSize;
   deferred = new Deferred<R>();
 
   fulfill(s: R): void {
@@ -48,7 +46,6 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       return false;
     }
     this.settled = true;
-    this.resolved = true;
     this.answer = new ImmediateAnswer(s);
     const queues = this.emptyQueue(s);
     const msgcap = s.segment.message._capnp;
@@ -81,7 +78,6 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       return false;
     }
     this.settled = true;
-    this.resolved = true;
     const queue = this.queue;
     this.queue = [];
     for (const pc of queue) {
@@ -113,7 +109,7 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       }
     }
 
-    if (this.queue.length === this.queueCap) {
+    if (this.queue.length === callQueueSize) {
       return new ErrorAnswer(new Error(RPC_CALL_QUEUE_FULL));
     }
     const cc = copyCall(call);

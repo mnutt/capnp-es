@@ -26,7 +26,7 @@ import { Interface } from "src/serialization/pointers/interface";
 import { LocalAnswerClient } from "src/rpc/local-answer-client";
 import { ErrorClient } from "src/rpc/error-client";
 import { Server } from "src/rpc/server";
-import { RPC_CALL_QUEUE_FULL } from "src/errors";
+import { RPC_CALL_QUEUE_FULL, RPC_UNIMPLEMENTED } from "src/errors";
 import { RpcProtocolError, RpcProtocolErrorKind } from "src/rpc/rpc-error";
 
 class TestTransport implements Transport {
@@ -1100,6 +1100,68 @@ describe("Conn level-1 message dispatch", () => {
 
     t.equal(conn.findExport(capExportId), null);
     t.equal(paramCap.closed, true);
+  });
+
+  test("unknown return variant rejects the question", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const q = conn.newQuestion(TEST_METHOD);
+    q.start();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected unknown return rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    utils.setUint16(6, 999, ret);
+
+    conn.handleMessage(m);
+
+    const err = await wait;
+    t.equal(err.message, RPC_UNIMPLEMENTED);
+    t.equal(conn.findQuestion(q.id), null);
+    t.equal(transport.sent[0].which(), RPCMessage.FINISH);
+  });
+
+  test("receiverHosted descriptor with zero refcount aborts as protocol error", async () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const exportId = conn.addExport(new DummyClient());
+    const stale = conn.findExport(exportId);
+    if (!stale) {
+      throw new Error("expected export");
+    }
+    stale.client.close();
+
+    const q = conn.newQuestion(TEST_METHOD);
+    q.start();
+    const wait = q
+      .struct()
+      .then(() => {
+        throw new Error("expected protocol rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    const m = new Message().initRoot(RPCMessage);
+    const ret = m._initReturn();
+    ret.answerId = q.id;
+    const results = ret._initResults();
+    results._initCapTable(1).get(0).receiverHosted = exportId;
+
+    conn.handleMessage(m);
+
+    const err = await wait;
+    t.instanceOf(err, RpcProtocolError);
+    t.equal(
+      (err as RpcProtocolError).kind,
+      RpcProtocolErrorKind.UnknownExportId,
+    );
+    t.equal(conn.closed, true);
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
   });
 
   test("finish with releaseResultCaps releases answer result caps by ID", () => {

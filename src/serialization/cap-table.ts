@@ -11,9 +11,31 @@ export interface CapabilitySlot {
   normalize?(): any;
 }
 
-class ThrowingNullCapability implements CapabilitySlot {
-  call(): never {
-    throw new Error(RPC_NULL_CLIENT);
+class RejectedNullAnswer {
+  constructor(private err: Error) {}
+
+  struct(): Promise<never> {
+    return Promise.reject(this.err);
+  }
+
+  structSync(): never {
+    throw this.err;
+  }
+
+  pipelineCall(): RejectedNullAnswer {
+    return this;
+  }
+
+  pipelineClose(): void {
+    throw this.err;
+  }
+}
+
+class NullCapability implements CapabilitySlot {
+  private err = new Error(RPC_NULL_CLIENT);
+
+  call(): RejectedNullAnswer {
+    return new RejectedNullAnswer(this.err);
   }
 
   close(): void {
@@ -21,8 +43,7 @@ class ThrowingNullCapability implements CapabilitySlot {
   }
 }
 
-let nullCapabilityFactory: () => CapabilitySlot = () =>
-  new ThrowingNullCapability();
+let nullCapabilityFactory: () => CapabilitySlot = () => new NullCapability();
 
 export function setNullCapabilityFactory(factory: () => CapabilitySlot): void {
   nullCapabilityFactory = factory;

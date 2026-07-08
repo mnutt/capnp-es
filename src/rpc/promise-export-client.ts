@@ -13,7 +13,6 @@ export class PromiseExportClient implements Client {
   resolved?: Client;
   closed = false;
   queue = new CallQueue(promiseExportQueueCap);
-  queueCap = promiseExportQueueCap;
 
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
     if (this.closed) {

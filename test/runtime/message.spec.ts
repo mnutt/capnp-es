@@ -3,7 +3,11 @@
 import { test, assert as t } from "vitest";
 import { compareBuffers, readFileBuffer } from "test/utils";
 import * as C from "src/constants";
-import { MSG_INVALID_FRAME_HEADER, MSG_TOO_MANY_SEGMENTS } from "src/errors";
+import {
+  MSG_INVALID_FRAME_HEADER,
+  MSG_TOO_MANY_SEGMENTS,
+  RPC_NULL_CLIENT,
+} from "src/errors";
 import { Message } from "src/serialization";
 import { MultiSegmentArena } from "src/serialization/arena";
 import {
@@ -13,6 +17,31 @@ import {
 
 import { Person } from "test/fixtures/serialization-demo";
 import { TestAllTypes } from "test/fixtures/test";
+import { ObjectSize, Struct, utils } from "src/serialization";
+
+class TinyMutableStruct extends Struct {
+  static readonly _capnp = {
+    displayName: "TinyMutableStruct",
+    id: "0000000000002001",
+    size: new ObjectSize(8, 0),
+  };
+
+  get value(): number {
+    return utils.getUint32(0, this);
+  }
+
+  set value(value: number) {
+    utils.setUint32(0, value, this);
+  }
+}
+
+class NullCapStruct extends Struct {
+  static readonly _capnp = {
+    displayName: "NullCapStruct",
+    id: "0000000000002002",
+    size: new ObjectSize(0, 1),
+  };
+}
 
 const SEGMENTED_PACKED = readFileBuffer(
   "test/fixtures/data/segmented-packed.bin",
@@ -76,6 +105,21 @@ test("new Message(Buffer)", () => {
     SEGMENTED_UNPACKED,
     "should read packed messages from a Buffer",
   );
+});
+
+test("new Message(ArrayBuffer, { readonly: false }) allows decode-then-mutate", () => {
+  const source = new Message();
+  source.initRoot(TinyMutableStruct).value = 1;
+
+  const message = new Message(source.toUint8Array(), {
+    packed: false,
+    readonly: false,
+  });
+  const root = message.getRoot(TinyMutableStruct);
+
+  root.value = 2;
+
+  t.equal(root.value, 2);
 });
 
 test("getFramedSegments()", () => {
@@ -321,6 +365,20 @@ test("Data.copyToUint8Array()", () => {
   t.equal(data.get(0), 1);
   view[0] = 8;
   t.equal(data.get(0), 8);
+});
+
+test("null capabilities return rejected answers without RPC import-order setup", async () => {
+  const root = new Message().initRoot(NullCapStruct);
+  const client = utils.getInterfaceClientOrNullAt(0, root);
+
+  const answer = client.call({});
+
+  try {
+    await answer.struct();
+    throw new Error("expected null capability rejection");
+  } catch (error_) {
+    t.equal((error_ as Error).message, RPC_NULL_CLIENT);
+  }
 });
 
 test("preallocateSegments()", () => {

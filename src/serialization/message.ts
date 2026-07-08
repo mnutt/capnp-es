@@ -78,10 +78,24 @@ export class Message {
    */
   constructor(
     src?: AnyArena | ArrayBufferView | ArrayBuffer,
-    packed = true,
+    packed: boolean | CreateMessageOptions = true,
     singleSegment = false,
   ) {
-    this._capnp = initMessage(src, packed, singleSegment);
+    const options =
+      typeof packed === "boolean"
+        ? { packed, singleSegment }
+        : {
+            packed: packed.packed ?? true,
+            singleSegment: packed.singleSegment ?? false,
+            readonly: packed.readonly,
+          };
+
+    this._capnp = initMessage(
+      src,
+      options.packed,
+      options.singleSegment,
+      options.readonly,
+    );
 
     if (src) {
       preallocateSegments(this);
@@ -214,6 +228,7 @@ export class Message {
 
 export interface CreateMessageOptions {
   packed?: boolean;
+  readonly?: boolean;
   singleSegment?: boolean;
 }
 
@@ -221,6 +236,7 @@ export function initMessage(
   src?: AnyArena | ArrayBufferView | ArrayBuffer,
   packed = true,
   singleSegment = false,
+  readonly?: boolean,
 ): _Message {
   if (src === undefined) {
     return {
@@ -251,7 +267,7 @@ export function initMessage(
       arena: new SingleSegmentArena(copyToArrayBuffer(buf)),
       segments: [],
       traversalLimit: DEFAULT_TRAVERSE_LIMIT,
-      readonly: true,
+      readonly: readonly ?? true,
     };
   }
 
@@ -259,7 +275,7 @@ export function initMessage(
     arena: new MultiSegmentArena(getFramedSegments(buf)),
     segments: [],
     traversalLimit: DEFAULT_TRAVERSE_LIMIT,
-    readonly: true,
+    readonly: readonly ?? true,
   };
 }
 

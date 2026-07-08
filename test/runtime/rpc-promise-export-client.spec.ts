@@ -7,6 +7,7 @@ import { Struct, ObjectSize } from "src/serialization";
 import { Fulfiller } from "src/rpc/fulfiller/fulfiller";
 import { Message } from "src/serialization/message";
 import { RPC_CALL_QUEUE_FULL } from "src/errors";
+import { callQueueSize } from "src/rpc/call-queue";
 
 class TinyStruct extends Struct {
   static readonly _capnp = {
@@ -105,7 +106,7 @@ describe("PromiseExportClient", () => {
 
   test("unresolved queue is bounded", async () => {
     const p = new PromiseExportClient();
-    for (let i = 0; i < p.queueCap; i++) {
+    for (let i = 0; i < callQueueSize; i++) {
       p.call({
         method: METHOD,
         params: makeParams(),

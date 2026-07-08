@@ -96,6 +96,14 @@ function protocolError(
   return new RpcProtocolError(kind, message);
 }
 
+function nonProtocolError(error_: unknown): Error {
+  if (error_ instanceof RpcProtocolError) {
+    throw error_;
+  }
+
+  return error_ instanceof Error ? error_ : new Error(String(error_));
+}
+
 export class Conn {
   questionID = new IDGen();
   questions: QuestionSlot[] = [];
@@ -218,9 +226,7 @@ export class Conn {
         try {
           this.discardResolvedCap(resolve.cap);
         } catch (error_) {
-          if (error_ instanceof RpcProtocolError) {
-            throw error_;
-          }
+          nonProtocolError(error_);
           this.sendMessage(newUnimplementedMessage(m));
         }
       }
@@ -238,9 +244,7 @@ export class Conn {
         try {
           this.discardResolvedCap(resolve.cap);
         } catch (error_) {
-          if (error_ instanceof RpcProtocolError) {
-            throw error_;
-          }
+          nonProtocolError(error_);
           this.sendMessage(newUnimplementedMessage(m));
         }
       }
@@ -255,11 +259,9 @@ export class Conn {
         try {
           client = this.clientFromCapDescriptor(resolve.cap);
         } catch (error_) {
-          if (error_ instanceof RpcProtocolError) {
-            throw error_;
-          }
+          const err = nonProtocolError(error_);
           this.sendMessage(newUnimplementedMessage(m));
-          importClient.setResolved(new ErrorClient(error_ as Error));
+          importClient.setResolved(new ErrorClient(err));
           break;
         }
         importClient.setResolved(client);
@@ -442,12 +444,14 @@ export class Conn {
         try {
           this.populateMessageCapTable(results);
         } catch (error_) {
-          if (error_ instanceof RpcProtocolError) {
-            q.reject(error_);
-            throw error_;
+          try {
+            const err = nonProtocolError(error_);
+            this.sendMessage(newUnimplementedMessage(m));
+            q.reject(err);
+          } catch (protocolError_) {
+            q.reject(protocolError_ as Error);
+            throw protocolError_;
           }
-          this.sendMessage(newUnimplementedMessage(m));
-          q.reject(error_ as Error);
           break;
         }
 
@@ -498,9 +502,10 @@ export class Conn {
         q.reject(new Error(RPC_UNIMPLEMENTED));
         break;
       }
-      default:
-      // Unknown return variants are ignored after the question is rejected by the caller's timeout
-      // or connection shutdown path.
+      default: {
+        q.reject(new Error(RPC_UNIMPLEMENTED));
+        break;
+      }
     }
 
     if (!ret.noFinishNeeded) {
@@ -524,10 +529,7 @@ export class Conn {
     try {
       this.populateMessageCapTable(mparams);
     } catch (error_) {
-      if (error_ instanceof RpcProtocolError) {
-        throw error_;
-      }
-      this.sendReturnException(id, error_ as Error);
+      this.sendReturnException(id, nonProtocolError(error_));
       return;
     }
 
@@ -584,10 +586,7 @@ export class Conn {
     try {
       this.routeCallMessage(a, mt, call);
     } catch (error_) {
-      if (error_ instanceof RpcProtocolError) {
-        throw error_;
-      }
-      a.reject(error_ as Error);
+      a.reject(nonProtocolError(error_));
     }
   }
 
@@ -668,7 +667,14 @@ export class Conn {
               format(RPC_UNKNOWN_EXPORT_ID, id),
             );
           }
-          msg.addCap(e.rc.ref());
+          try {
+            msg.addCap(e.rc.ref());
+          } catch (error_) {
+            throw protocolError(
+              RpcProtocolErrorKind.UnknownExportId,
+              (error_ as Error).message,
+            );
+          }
           break;
         }
         case CapDescriptor.RECEIVER_ANSWER: {
@@ -935,7 +941,6 @@ export class Conn {
           c.embargoQueue.rejectAll(err);
           c.resolved?.close();
           c.resolved = undefined;
-          c.embargoQueue.clear();
           c.embargoId = undefined;
         }
       } catch {
@@ -1053,7 +1058,14 @@ export class Conn {
             format(RPC_UNKNOWN_EXPORT_ID, id),
           );
         }
-        return e.rc.ref();
+        try {
+          return e.rc.ref();
+        } catch (error_) {
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownExportId,
+            (error_ as Error).message,
+          );
+        }
       }
       case CapDescriptor.RECEIVER_ANSWER: {
         const recvAns = desc.receiverAnswer;
