@@ -138,6 +138,50 @@ describe("rpc level-2", () => {
     await Promise.all([server(), client()]);
   });
 
+  test("pipelined calls on a promised capability preserve e-order", async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const order: number[] = [];
+
+    const server = async () => {
+      const s = await rpc.accept();
+      s.initMain(ReturnCapability, {
+        get: async (_params, results) => {
+          await gate;
+          results.capability = new SimpleInterface.Server({
+            subtract: async (params, out) => {
+              order.push(params.a);
+              out.result = params.a - params.b;
+            },
+          }).client();
+        },
+      });
+      return s;
+    };
+
+    const client = async () => {
+      const pending = rpc.connect().bootstrap(ReturnCapability).get();
+      const cap = pending.getCapability();
+      const calls = [1, 2, 3].map((value) =>
+        cap
+          .subtract((params) => {
+            params.a = value;
+            params.b = 0;
+          })
+          .promise(),
+      );
+      release();
+      const results = await Promise.all(calls);
+      return results.map((result) => result.result);
+    };
+
+    const [, results] = await Promise.all([server(), client()]);
+    t.deepEqual(order, [1, 2, 3]);
+    t.deepEqual(results, [1, 2, 3]);
+  });
+
   test("cast flow to Persistent works when capability implements Persistent", async () => {
     const server = async () => {
       const s = await rpc.accept();

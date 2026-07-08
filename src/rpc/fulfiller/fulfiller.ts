@@ -5,7 +5,6 @@ import { Answer } from "../../rpc/answer";
 import { Deferred } from "../deferred";
 import { ImmediateAnswer } from "../immediate-answer";
 import { EmbargoClient } from "./embargo-client";
-import { Ecalls, pcall } from "./ecalls";
 import { Call, copyCall } from "../call";
 import { PipelineOp } from "../pipeline-op";
 import {
@@ -17,8 +16,13 @@ import { Pointer } from "../../serialization/pointers/pointer";
 import { transformPtr } from "../transform-ptr";
 import { ErrorAnswer } from "../error-answer";
 import { Interface } from "../../serialization/pointers/interface";
+import { CallQueue, callQueueSize } from "../call-queue";
 
-const callQueueSize = 64;
+interface pcall {
+  call: Call<any, any>;
+  f: Fulfiller<any>;
+  transform: PipelineOp[];
+}
 
 // Fulfiller is a promise for a utils. It starts out
 // as an unresolved answer. A Fulfiller is considered to be resolved
@@ -136,8 +140,8 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
   // emptyQueue splits the queue by which capability it targets and
   // drops any invalid calls.  Once this function returns, f.queue will
   // be nil.
-  emptyQueue(s: Struct): Record<number, Ecalls> {
-    const qs: { [key: number]: Ecalls } = {};
+  emptyQueue(s: Struct): Record<number, CallQueue> {
+    const qs: { [key: number]: CallQueue } = {};
     for (let i = 0; i < this.queue.length; i++) {
       const pc = this.queue[i];
       let c: Pointer;
@@ -154,9 +158,9 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       }
       const cn = iface.getCapId();
       if (!qs[cn]) {
-        qs[cn] = new Ecalls([]);
+        qs[cn] = new CallQueue();
       }
-      qs[cn].data.push(pc);
+      qs[cn].pushPreparedLocal(pc.call, pc.f);
     }
     this.queue = [];
     return qs;

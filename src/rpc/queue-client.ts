@@ -2,31 +2,19 @@
 
 import { Client } from "./client";
 import { Conn } from "./conn";
-import {
-  AnswerQCall,
-  Answer,
-  isRemoteCall,
-  isLocalCall,
-  isDisembargo,
-} from "./answer";
+import { AnswerQCall, Answer } from "./answer";
 import { Struct } from "../serialization";
-import { Fulfiller } from "./fulfiller/fulfiller";
-import { copyCall, Call } from "./call";
-import { ErrorAnswer } from "./error-answer";
-import { Queue } from "./queue";
-import { Qcalls, QCallSlot } from "./qcalls";
+import { Call } from "./call";
 import { RPC_CALL_QUEUE_FULL, RPC_QUEUE_CALL_CANCEL } from "../errors";
 import { MessageTarget, Disembargo_Context_Which } from "../capnp/rpc";
 import { newDisembargoMessage } from "./capability";
-import { joinAnswer } from "./join";
+import { CallQueue } from "./call-queue";
 
-// callQueueSize is the maximum number of calls that can be queued per answer or client.
-export const callQueueSize = 64;
+export { callQueueSize } from "./call-queue";
 
 export class QueueClient implements Client {
   _client: Client;
-  calls: Qcalls;
-  q: Queue;
+  queue: CallQueue;
 
   constructor(
     public conn: Conn,
@@ -34,82 +22,32 @@ export class QueueClient implements Client {
     calls: AnswerQCall[],
   ) {
     this._client = client;
-    this.calls = Qcalls.copyOf(calls);
-    this.q = new Queue(this.calls, callQueueSize);
+    this.queue = CallQueue.fromAnswerQCalls(calls);
   }
 
   pushCall<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
-    const f = new Fulfiller<R>();
-    try {
-      call = copyCall(call);
-    } catch (error_) {
-      return new ErrorAnswer(error_ as Error);
-    }
-    const i = this.q.push();
-    if (i === -1) {
-      return new ErrorAnswer(new Error(RPC_CALL_QUEUE_FULL));
-    }
-    this.calls.data[i] = {
-      call,
-      f,
-    };
-    return f;
+    return this.queue.push(call);
   }
 
   pushEmbargo(id: number, tgt: MessageTarget): void {
-    const i = this.q.push();
-    if (i === -1) {
+    if (!this.queue.pushDisembargo(id, tgt)) {
       throw new Error(RPC_CALL_QUEUE_FULL);
     }
-    this.calls.data[i] = {
-      embargoID: id,
-      embargoTarget: tgt,
-    };
   }
 
   flushQueue(): void {
-    let c: QCallSlot = null;
-    {
-      const i = this.q.front();
-      if (i !== -1) {
-        c = this.calls.data[i];
-      }
-    }
-
-    while (c) {
-      this.handle(c);
-      this.q.pop();
-
-      {
-        const i = this.q.front();
-        c = i === -1 ? null : this.calls.data[i];
-      }
-    }
-  }
-
-  handle(c: QCallSlot): void {
-    if (!c) {
-      return;
-    }
-
-    if (isRemoteCall(c)) {
-      const answer = this._client.call(c.call);
-      joinAnswer(c.a, answer);
-    } else if (isLocalCall(c)) {
-      const answer = this._client.call(c.call);
-      joinAnswer(c.f, answer);
-    } else if (isDisembargo(c)) {
+    this.queue.flushTo(this._client, (id, target) => {
       const msg = newDisembargoMessage(
         Disembargo_Context_Which.RECEIVER_LOOPBACK,
-        c.embargoID,
+        id,
       );
-      msg.disembargo.target = c.embargoTarget;
+      msg.disembargo.target = target;
       this.conn.sendMessage(msg);
-    }
+    });
   }
 
   isPassthrough(): boolean {
-    return this.q.len() === 0;
+    return this.queue.isEmpty;
   }
 
   normalize(): Client | undefined {
@@ -129,21 +67,7 @@ export class QueueClient implements Client {
   // close releases any resources associated with this client.
   // No further calls to the client should be made after calling Close.
   close(): void {
-    while (this.q.len() > 0) {
-      const i = this.q.front();
-      if (i === -1) {
-        break;
-      }
-      const c = this.calls.data[i];
-      if (c) {
-        if (isRemoteCall(c)) {
-          c.a.reject(new Error(RPC_QUEUE_CALL_CANCEL));
-        } else if (isLocalCall(c)) {
-          c.f.reject(new Error(RPC_QUEUE_CALL_CANCEL));
-        }
-      }
-      this.q.pop();
-    }
+    this.queue.rejectAll(new Error(RPC_QUEUE_CALL_CANCEL));
     this._client.close();
   }
 }

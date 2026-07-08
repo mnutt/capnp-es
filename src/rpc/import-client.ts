@@ -7,18 +7,16 @@ import { Call } from "./call";
 import { Answer } from "./answer";
 import { ErrorAnswer } from "./error-answer";
 import { newMessage } from "./capability";
-import { RPC_CALL_QUEUE_FULL, RPC_IMPORT_CLOSED } from "../errors";
-import { Fulfiller } from "./fulfiller/fulfiller";
-import { copyCall } from "./call";
-import { joinAnswer } from "./join";
+import { RPC_IMPORT_CLOSED } from "../errors";
+import { CallQueue, callQueueSize } from "./call-queue";
 
 // An ImportClient implements Client for a remote capability.
 export class ImportClient implements Client {
   closed = false;
   resolved?: Client;
   embargoId?: number;
-  embargoQueue: Array<{ call: Call<any, any>; f: Fulfiller<any> }> = [];
-  embargoQueueCap = 64;
+  embargoQueue = new CallQueue(callQueueSize);
+  embargoQueueCap = callQueueSize;
 
   constructor(
     public conn: Conn,
@@ -32,15 +30,7 @@ export class ImportClient implements Client {
       return new ErrorAnswer(new Error(RPC_IMPORT_CLOSED));
     }
     if (this.embargoId !== undefined && this.resolved) {
-      if (this.embargoQueue.length >= this.embargoQueueCap) {
-        return new ErrorAnswer(new Error(RPC_CALL_QUEUE_FULL));
-      }
-      const f = new Fulfiller<CallResults>();
-      this.embargoQueue.push({
-        call: copyCall(cl),
-        f,
-      });
-      return f;
+      return this.embargoQueue.push(cl);
     }
     if (this.resolved) {
       return this.resolved.call(cl);
@@ -92,10 +82,7 @@ export class ImportClient implements Client {
     if (!resolved) {
       return true;
     }
-    for (const item of this.embargoQueue) {
-      joinAnswer(item.f, resolved.call(item.call));
-    }
-    this.embargoQueue = [];
+    this.embargoQueue.flushTo(resolved);
     return true;
   }
 
@@ -104,10 +91,7 @@ export class ImportClient implements Client {
       return;
     }
     this.closed = true;
-    for (const item of this.embargoQueue) {
-      item.f.tryReject(new Error(RPC_IMPORT_CLOSED));
-    }
-    this.embargoQueue = [];
+    this.embargoQueue.rejectAll(new Error(RPC_IMPORT_CLOSED));
     this.embargoId = undefined;
     this.resolved?.close();
     this.conn.releaseImportAll(this.id);

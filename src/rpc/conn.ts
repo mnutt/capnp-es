@@ -932,12 +932,10 @@ export class Conn {
         const c = entry.rc._client;
         if (c instanceof ImportClient) {
           c.closed = true;
-          for (const item of c.embargoQueue) {
-            item.f.tryReject(err);
-          }
+          c.embargoQueue.rejectAll(err);
           c.resolved?.close();
           c.resolved = undefined;
-          c.embargoQueue = [];
+          c.embargoQueue.clear();
           c.embargoId = undefined;
         }
       } catch {

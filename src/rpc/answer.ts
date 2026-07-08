@@ -16,7 +16,8 @@ import {
   RPC_CALL_QUEUE_FULL,
   RPC_NULL_CLIENT,
 } from "../errors";
-import { QueueClient, callQueueSize } from "./queue-client";
+import { callQueueSize } from "./call-queue";
+import { QueueClient } from "./queue-client";
 
 // An Answer is the deferred result of a client call, which is usually wrapped
 // by a Pipeline.
