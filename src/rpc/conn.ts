@@ -14,7 +14,12 @@ import {
   Disembargo_Context_Which,
   Call_SendResultsTo_Which,
 } from "../capnp/rpc";
-import { RPCError } from "./rpc-error";
+import {
+  RPCError,
+  RpcProtocolError,
+  RpcProtocolErrorKind,
+  toException,
+} from "./rpc-error";
 import { AnswerEntry, Answer } from "./answer";
 import {
   newMessage,
@@ -83,6 +88,13 @@ const ConnWeakRefRegistry = globalThis.FinalizationRegistry
 const ConDefaultFinalize: Finalize = (obj, finalizer): void => {
   ConnWeakRefRegistry?.register(obj, finalizer);
 };
+
+function protocolError(
+  kind: RpcProtocolErrorKind,
+  message: string,
+): RpcProtocolError {
+  return new RpcProtocolError(kind, message);
+}
 
 export class Conn {
   questionID = new IDGen();
@@ -204,7 +216,10 @@ export class Conn {
       if (resolve.which() === Resolve.CAP) {
         try {
           this.discardResolvedCap(resolve.cap);
-        } catch {
+        } catch (error_) {
+          if (error_ instanceof RpcProtocolError) {
+            throw error_;
+          }
           this.sendMessage(newUnimplementedMessage(m));
         }
       }
@@ -221,7 +236,10 @@ export class Conn {
       if (resolve.which() === Resolve.CAP) {
         try {
           this.discardResolvedCap(resolve.cap);
-        } catch {
+        } catch (error_) {
+          if (error_ instanceof RpcProtocolError) {
+            throw error_;
+          }
           this.sendMessage(newUnimplementedMessage(m));
         }
       }
@@ -236,6 +254,9 @@ export class Conn {
         try {
           client = this.clientFromCapDescriptor(resolve.cap);
         } catch (error_) {
+          if (error_ instanceof RpcProtocolError) {
+            throw error_;
+          }
           this.sendMessage(newUnimplementedMessage(m));
           importClient.setResolved(new ErrorClient(error_ as Error));
           break;
@@ -311,6 +332,18 @@ export class Conn {
   }
 
   handleMessage(m: RPCMessage): void {
+    try {
+      this.dispatchMessage(m);
+    } catch (error_) {
+      if (error_ instanceof RpcProtocolError) {
+        this.abortForProtocolError(error_);
+        return;
+      }
+      throw error_;
+    }
+  }
+
+  private dispatchMessage(m: RPCMessage): void {
     switch (m.which()) {
       case RPCMessage.UNIMPLEMENTED: {
         // no-op for now to avoid feedback loop
@@ -365,12 +398,31 @@ export class Conn {
     }
   }
 
+  private abortForProtocolError(err: RpcProtocolError): void {
+    if (this.closed) {
+      return;
+    }
+    try {
+      const m = newMessage();
+      toException(m._initAbort(), err);
+      this.sendMessage(m);
+    } catch {
+      // Shutdown cleanup is more important than preserving the abort send path.
+    }
+    this.shutdown(err);
+  }
+
   handleReturnMessage(m: RPCMessage): void {
     const ret = m.return;
     const id = ret.answerId;
     const q = this.popQuestion(id);
     if (!q) {
-      this.shutdown(new Error(format(RPC_RETURN_FOR_UNKNOWN_QUESTION, id)));
+      this.abortForProtocolError(
+        protocolError(
+          RpcProtocolErrorKind.ReturnForUnknownQuestion,
+          format(RPC_RETURN_FOR_UNKNOWN_QUESTION, id),
+        ),
+      );
       return;
     }
 
@@ -388,6 +440,10 @@ export class Conn {
         try {
           this.populateMessageCapTable(results);
         } catch (error_) {
+          if (error_ instanceof RpcProtocolError) {
+            q.reject(error_);
+            throw error_;
+          }
           this.sendMessage(newUnimplementedMessage(m));
           q.reject(error_ as Error);
           break;
@@ -458,21 +514,28 @@ export class Conn {
       mt.which() !== MessageTarget.IMPORTED_CAP &&
       mt.which() !== MessageTarget.PROMISED_ANSWER
     ) {
-      this.sendReturnException(id, new Error(RPC_BAD_TARGET));
-      return;
+      throw protocolError(RpcProtocolErrorKind.BadTarget, RPC_BAD_TARGET);
     }
 
     const mparams = mcall.params;
     try {
       this.populateMessageCapTable(mparams);
     } catch (error_) {
+      if (error_ instanceof RpcProtocolError) {
+        throw error_;
+      }
       this.sendReturnException(id, error_ as Error);
       return;
     }
 
     const a = this.insertAnswer(id);
     if (!a) {
-      this.shutdown(new Error(format(RPC_QUESTION_ID_REUSED, id)));
+      this.abortForProtocolError(
+        protocolError(
+          RpcProtocolErrorKind.QuestionIdReused,
+          format(RPC_QUESTION_ID_REUSED, id),
+        ),
+      );
       return;
     }
     switch (mcall.sendResultsTo.which()) {
@@ -518,6 +581,9 @@ export class Conn {
     try {
       this.routeCallMessage(a, mt, call);
     } catch (error_) {
+      if (error_ instanceof RpcProtocolError) {
+        throw error_;
+      }
       a.reject(error_ as Error);
     }
   }
@@ -532,7 +598,7 @@ export class Conn {
         const id = mt.importedCap;
         const e = this.findExport(id);
         if (!e) {
-          throw new Error(RPC_BAD_TARGET);
+          throw protocolError(RpcProtocolErrorKind.BadTarget, RPC_BAD_TARGET);
         }
         const answer = this.call(e.client, cl);
         joinAnswer(result, answer);
@@ -543,11 +609,11 @@ export class Conn {
         const id = mpromise.questionId;
         if (id === result.id) {
           // Grandfather paradox
-          throw new Error(RPC_BAD_TARGET);
+          throw protocolError(RpcProtocolErrorKind.BadTarget, RPC_BAD_TARGET);
         }
         const pa = this.answers[id] as AnswerEntry<R>;
         if (!pa) {
-          throw new Error(RPC_BAD_TARGET);
+          throw protocolError(RpcProtocolErrorKind.BadTarget, RPC_BAD_TARGET);
         }
         const mtrans = mpromise.transform;
         const transform = promisedAnswerOpsToTransform(mtrans);
@@ -594,7 +660,10 @@ export class Conn {
           const id = desc.receiverHosted;
           const e = this.findExport(id);
           if (!e) {
-            throw new Error(format(RPC_UNKNOWN_EXPORT_ID, id));
+            throw protocolError(
+              RpcProtocolErrorKind.UnknownExportId,
+              format(RPC_UNKNOWN_EXPORT_ID, id),
+            );
           }
           msg.addCap(e.rc.ref());
           break;
@@ -604,7 +673,10 @@ export class Conn {
           const id = recvAns.questionId;
           const a = this.answers[id];
           if (!a) {
-            throw new Error(format(RPC_UNKNOWN_ANSWER_ID, id));
+            throw protocolError(
+              RpcProtocolErrorKind.UnknownAnswerId,
+              format(RPC_UNKNOWN_ANSWER_ID, id),
+            );
           }
           const recvTransform = recvAns.transform;
           const transform = promisedAnswerOpsToTransform(recvTransform);
@@ -612,7 +684,10 @@ export class Conn {
           break;
         }
         default: {
-          throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownCapDescriptor,
+            format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()),
+          );
         }
       }
     }
@@ -974,7 +1049,10 @@ export class Conn {
         const id = desc.receiverHosted;
         const e = this.findExport(id);
         if (!e) {
-          throw new Error(format(RPC_UNKNOWN_EXPORT_ID, id));
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownExportId,
+            format(RPC_UNKNOWN_EXPORT_ID, id),
+          );
         }
         return e.rc.ref();
       }
@@ -983,7 +1061,10 @@ export class Conn {
         const id = recvAns.questionId;
         const a = this.answers[id];
         if (!a) {
-          throw new Error(format(RPC_UNKNOWN_ANSWER_ID, id));
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownAnswerId,
+            format(RPC_UNKNOWN_ANSWER_ID, id),
+          );
         }
         return answerPipelineClient(
           a,
@@ -991,7 +1072,10 @@ export class Conn {
         );
       }
       default: {
-        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+        throw protocolError(
+          RpcProtocolErrorKind.UnknownCapDescriptor,
+          format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()),
+        );
       }
     }
   }
@@ -1009,22 +1093,34 @@ export class Conn {
       case CapDescriptor.RECEIVER_HOSTED: {
         const id = desc.receiverHosted;
         if (!this.findExport(id)) {
-          throw new Error(format(RPC_UNKNOWN_EXPORT_ID, id));
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownExportId,
+            format(RPC_UNKNOWN_EXPORT_ID, id),
+          );
         }
         return;
       }
       case CapDescriptor.RECEIVER_ANSWER: {
         const id = desc.receiverAnswer.questionId;
         if (!this.answers[id]) {
-          throw new Error(format(RPC_UNKNOWN_ANSWER_ID, id));
+          throw protocolError(
+            RpcProtocolErrorKind.UnknownAnswerId,
+            format(RPC_UNKNOWN_ANSWER_ID, id),
+          );
         }
         return;
       }
       case CapDescriptor.NONE: {
-        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+        throw protocolError(
+          RpcProtocolErrorKind.UnknownCapDescriptor,
+          format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()),
+        );
       }
       default: {
-        throw new Error(format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()));
+        throw protocolError(
+          RpcProtocolErrorKind.UnknownCapDescriptor,
+          format(RPC_UNKNOWN_CAP_DESCRIPTOR, desc.which()),
+        );
       }
     }
   }

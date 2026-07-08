@@ -1,5 +1,10 @@
 import { describe, test, assert as t } from "vitest";
-import { CapnpRpcError, toException } from "capnp-es";
+import {
+  CapnpRpcError,
+  RpcProtocolError,
+  RpcProtocolErrorKind,
+  toException,
+} from "capnp-es";
 import { Exception } from "src/capnp/rpc";
 import { MethodError } from "src/rpc/method-error";
 import { Message } from "src/serialization/message";
@@ -35,6 +40,18 @@ describe("CapnpRpcError", () => {
     t.equal(exc.reason, "not implemented here");
     t.equal(exc.type, Exception.Type.UNIMPLEMENTED);
     t.equal(exc.trace, "local trace");
+  });
+
+  test("protocol errors carry a discriminant", () => {
+    const err = new RpcProtocolError(
+      RpcProtocolErrorKind.UnknownExportId,
+      "unknown export",
+    );
+
+    t.instanceOf(err, CapnpRpcError);
+    t.equal(err.name, "RpcProtocolError");
+    t.equal(err.kind, RpcProtocolErrorKind.UnknownExportId);
+    t.equal(err.remoteReason, "unknown export");
   });
 
   test("method errors keep RPC exception codes", () => {

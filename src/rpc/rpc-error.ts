@@ -86,6 +86,25 @@ export class CapnpRpcError extends Error {
 
 export { CapnpRpcError as RPCError };
 
+export enum RpcProtocolErrorKind {
+  BadTarget = "badTarget",
+  QuestionIdReused = "questionIdReused",
+  ReturnForUnknownQuestion = "returnForUnknownQuestion",
+  UnknownAnswerId = "unknownAnswerId",
+  UnknownCapDescriptor = "unknownCapDescriptor",
+  UnknownExportId = "unknownExportId",
+}
+
+export class RpcProtocolError extends CapnpRpcError {
+  readonly kind: RpcProtocolErrorKind;
+
+  constructor(kind: RpcProtocolErrorKind, message: string) {
+    super(message, { code: "failed" });
+    this.name = "RpcProtocolError";
+    this.kind = kind;
+  }
+}
+
 export function toException(exc: Exception, err: Error): void {
   if (err instanceof CapnpRpcError) {
     exc.reason = err.remoteReason;

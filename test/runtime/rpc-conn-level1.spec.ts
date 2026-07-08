@@ -27,6 +27,7 @@ import { LocalAnswerClient } from "src/rpc/local-answer-client";
 import { ErrorClient } from "src/rpc/error-client";
 import { Server } from "src/rpc/server";
 import { RPC_CALL_QUEUE_FULL } from "src/errors";
+import { RpcProtocolError, RpcProtocolErrorKind } from "src/rpc/rpc-error";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -231,10 +232,10 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(conn.imports[9], undefined);
   });
 
-  test("resolve.cap with invalid descriptor sends unimplemented and settles import to error", async () => {
+  test("resolve.cap with invalid descriptor aborts the connection", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
-    const importClient = conn.addImport(19, true);
+    conn.addImport(19, true);
     const m = new Message().initRoot(RPCMessage);
     const resolve = m._initResolve();
     resolve.promiseId = 19;
@@ -243,17 +244,12 @@ describe("Conn level-1 message dispatch", () => {
     conn.handleMessage(m);
 
     t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
-
-    try {
-      await importClient.call({} as any).struct();
-      throw new Error("expected invalid resolve descriptor rejection");
-    } catch (error_) {
-      t.ok((error_ as Error).message.length > 0);
-    }
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
+    t.match(transport.sent[0].abort.reason, /CAPNP-TS113/);
+    t.equal(conn.closed, true);
   });
 
-  test("duplicate settled resolve.cap with invalid descriptor sends unimplemented", () => {
+  test("duplicate settled resolve.cap with invalid descriptor aborts", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     conn.addImport(20, true);
@@ -275,7 +271,8 @@ describe("Conn level-1 message dispatch", () => {
     }
 
     t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
+    t.equal(conn.closed, true);
   });
 
   test("duplicate resolve.cap after resolve.exception is ignored and preserves exception", async () => {
@@ -520,7 +517,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(e!.wireRefs, 2);
   });
 
-  test("resolve for unknown promise with invalid descriptor sends unimplemented", () => {
+  test("resolve for unknown promise with invalid descriptor aborts", () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const m = new Message().initRoot(RPCMessage);
@@ -531,8 +528,9 @@ describe("Conn level-1 message dispatch", () => {
     conn.handleMessage(m);
 
     t.equal(transport.sent.length, 1);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
-    t.equal(transport.sent[0].unimplemented.which(), RPCMessage.RESOLVE);
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
+    t.match(transport.sent[0].abort.reason, /CAPNP-TS113/);
+    t.equal(conn.closed, true);
   });
 
   test("descriptorForClient exports cross-conn in-progress pipeline as senderPromise and emits resolve.cap", async () => {
@@ -1335,6 +1333,44 @@ describe("Conn level-1 message dispatch", () => {
 
     t.equal(conn.closed, true);
     t.equal(transport.isClosed, true);
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
+  });
+
+  test("incoming call for unknown export aborts only that connection", async () => {
+    const badTransport = new TestTransport();
+    const badConn = new TestConn(badTransport);
+    const healthyTransport = new TestTransport();
+    const healthyConn = new TestConn(healthyTransport);
+    const outstanding = badConn.newQuestion(TEST_METHOD);
+    const wait = outstanding
+      .struct()
+      .then(() => {
+        throw new Error("expected protocol rejection");
+      })
+      .catch((error_) => error_ as Error);
+
+    Registry.register(TEST_METHOD.interfaceId, {
+      methods: [TEST_METHOD],
+    });
+
+    const m = new Message().initRoot(RPCMessage);
+    const call = m._initCall();
+    call.questionId = 20_001;
+    call.interfaceId = TEST_METHOD.interfaceId;
+    call.methodId = TEST_METHOD.methodId;
+    call._initTarget().importedCap = 9999;
+    call._initParams();
+
+    badConn.handleMessage(m);
+
+    const err = await wait;
+    t.instanceOf(err, RpcProtocolError);
+    t.equal((err as RpcProtocolError).kind, RpcProtocolErrorKind.BadTarget);
+    t.equal(badConn.closed, true);
+    t.equal(badTransport.isClosed, true);
+    t.equal(badTransport.sent[0].which(), RPCMessage.ABORT);
+    t.equal(healthyConn.closed, false);
+    t.equal(healthyTransport.isClosed, false);
   });
 
   test("incoming call with sendResultsTo.yourself returns resultsSentElsewhere", async () => {
@@ -1481,7 +1517,7 @@ describe("Conn level-1 message dispatch", () => {
     t.equal(transport.sent[1].return.answerId, 203);
   });
 
-  test("return.results decode failure responds unimplemented and rejects question", async () => {
+  test("return.results malformed cap descriptor aborts and rejects question", async () => {
     const transport = new TestTransport();
     const conn = new TestConn(transport);
     const q = conn.newQuestion();
@@ -1501,10 +1537,14 @@ describe("Conn level-1 message dispatch", () => {
 
     conn.handleMessage(m);
     const err = await wait;
-    t.ok(!!err);
-    t.equal(transport.sent.length, 2);
-    t.equal(transport.sent[0].which(), RPCMessage.UNIMPLEMENTED);
-    t.equal(transport.sent[1].which(), RPCMessage.FINISH);
+    t.instanceOf(err, RpcProtocolError);
+    t.equal(
+      (err as RpcProtocolError).kind,
+      RpcProtocolErrorKind.UnknownExportId,
+    );
+    t.equal(conn.closed, true);
+    t.equal(transport.sent.length, 1);
+    t.equal(transport.sent[0].which(), RPCMessage.ABORT);
   });
 
   test("cross-conn takeFromOtherQuestion follows source answer result", async () => {
