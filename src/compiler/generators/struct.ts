@@ -23,6 +23,238 @@ import {
 import * as capnp from "../..";
 import { format, pad } from "../../util";
 
+type TypeCodegenKind =
+  | "anyPointer"
+  | "bool"
+  | "data"
+  | "enum"
+  | "float32"
+  | "float64"
+  | "int16"
+  | "int32"
+  | "int64"
+  | "int8"
+  | "interface"
+  | "list"
+  | "struct"
+  | "text"
+  | "uint16"
+  | "uint32"
+  | "uint64"
+  | "uint8"
+  | "void";
+
+type TypeFieldKind =
+  | "anyPointer"
+  | "data"
+  | "interface"
+  | "list"
+  | "primitive"
+  | "struct"
+  | "text"
+  | "void";
+
+type TypeDefaultKind = "bool" | "numeric" | "pointer" | "text" | "unsupported";
+
+type TypeApplyInitKind =
+  | "anyPointer"
+  | "data"
+  | "list"
+  | "simple"
+  | "struct"
+  | "void";
+
+interface TypeCodegenInfo {
+  readonly which: schema.Type_Which;
+  readonly kind: TypeCodegenKind;
+  readonly fieldKind: TypeFieldKind;
+  readonly defaultKind: TypeDefaultKind;
+  readonly applyInitKind: TypeApplyInitKind;
+}
+
+function getTypeInfo(type: schema.Type): TypeCodegenInfo {
+  return getTypeInfoFromWhich(type.which());
+}
+
+function getTypeInfoFromWhich(which: schema.Type_Which): TypeCodegenInfo {
+  switch (which) {
+    case schema.Type.ANY_POINTER: {
+      return {
+        which,
+        kind: "anyPointer",
+        fieldKind: "anyPointer",
+        defaultKind: "pointer",
+        applyInitKind: "anyPointer",
+      };
+    }
+    case schema.Type.BOOL: {
+      return {
+        which,
+        kind: "bool",
+        fieldKind: "primitive",
+        defaultKind: "bool",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.DATA: {
+      return {
+        which,
+        kind: "data",
+        fieldKind: "data",
+        defaultKind: "pointer",
+        applyInitKind: "data",
+      };
+    }
+    case schema.Type.ENUM: {
+      return {
+        which,
+        kind: "enum",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.FLOAT32: {
+      return {
+        which,
+        kind: "float32",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.FLOAT64: {
+      return {
+        which,
+        kind: "float64",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.INT16: {
+      return {
+        which,
+        kind: "int16",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.INT32: {
+      return {
+        which,
+        kind: "int32",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.INT64: {
+      return {
+        which,
+        kind: "int64",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.INT8: {
+      return {
+        which,
+        kind: "int8",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.INTERFACE: {
+      return {
+        which,
+        kind: "interface",
+        fieldKind: "interface",
+        defaultKind: "pointer",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.LIST: {
+      return {
+        which,
+        kind: "list",
+        fieldKind: "list",
+        defaultKind: "pointer",
+        applyInitKind: "list",
+      };
+    }
+    case schema.Type.STRUCT: {
+      return {
+        which,
+        kind: "struct",
+        fieldKind: "struct",
+        defaultKind: "pointer",
+        applyInitKind: "struct",
+      };
+    }
+    case schema.Type.TEXT: {
+      return {
+        which,
+        kind: "text",
+        fieldKind: "text",
+        defaultKind: "text",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.UINT16: {
+      return {
+        which,
+        kind: "uint16",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.UINT32: {
+      return {
+        which,
+        kind: "uint32",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.UINT64: {
+      return {
+        which,
+        kind: "uint64",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.UINT8: {
+      return {
+        which,
+        kind: "uint8",
+        fieldKind: "primitive",
+        defaultKind: "numeric",
+        applyInitKind: "simple",
+      };
+    }
+    case schema.Type.VOID: {
+      return {
+        which,
+        kind: "void",
+        fieldKind: "void",
+        defaultKind: "unsupported",
+        applyInitKind: "void",
+      };
+    }
+    default: {
+      throw new Error(format(E.GEN_UNKNOWN_TYPE, which));
+    }
+  }
+}
+
 /**
  * Generates TypeScript class definition for a Cap'n Proto struct.
  * Creates class members, properties, methods and nested type definitions.
@@ -94,7 +326,7 @@ export function generateStructNode(
     if (
       field._isSlot &&
       field.slot.hadExplicitDefault &&
-      field.slot.type.which() !== schema.Type.VOID
+      getTypeInfo(field.slot.type).kind !== "void"
     ) {
       defaultValues.push(generateDefaultValue(field));
     }
@@ -183,20 +415,20 @@ export function generateStructFieldMethods(
   fieldIndex: number,
 ): void {
   let jsType: string;
-  let whichType: schema.Type_Which | "group";
+  let typeInfo: TypeCodegenInfo | undefined;
 
   if (field._isSlot) {
     const slotType = field.slot.type;
     jsType = getJsType(ctx, slotType, false);
-    whichType = slotType.which();
+    typeInfo = getTypeInfo(slotType);
   } else if (field._isGroup) {
     jsType = getFullClassName(lookupNode(ctx, field.group.typeId));
-    whichType = "group";
   } else {
     throw new Error(format(E.GEN_UNKNOWN_STRUCT_FIELD, field.which()));
   }
 
-  const isInterface = whichType === schema.Type.INTERFACE;
+  const fieldKind = typeInfo?.fieldKind ?? "group";
+  const isInterface = typeInfo?.kind === "interface";
   if (isInterface) {
     jsType = `${jsType}$Client`;
   }
@@ -222,8 +454,8 @@ export function generateStructFieldMethods(
   let get;
   let set;
 
-  switch (whichType) {
-    case schema.Type.ANY_POINTER: {
+  switch (fieldKind) {
+    case "anyPointer": {
       adopt = true;
       disown = true;
       has = true;
@@ -232,30 +464,20 @@ export function generateStructFieldMethods(
       break;
     }
 
-    case schema.Type.BOOL:
-    case schema.Type.ENUM:
-    case schema.Type.FLOAT32:
-    case schema.Type.FLOAT64:
-    case schema.Type.INT16:
-    case schema.Type.INT32:
-    case schema.Type.INT64:
-    case schema.Type.INT8:
-    case schema.Type.UINT16:
-    case schema.Type.UINT32:
-    case schema.Type.UINT64:
-    case schema.Type.UINT8: {
-      const { byteLength, getter, setter } = Primitives[whichType];
+    case "primitive": {
+      const primitive = Primitives[typeInfo!.which];
+      const { byteLength, getter, setter } = primitive;
       // NOTE: For a BOOL type this is actually a bit offset; `byteLength` will be `1` in that case.
       const byteOffset = offset * byteLength;
       get = `$.utils.${getter}(${byteOffset}, this${maybeDefaultArg})`;
       set = `$.utils.${setter}(${byteOffset}, value, this${maybeDefaultArg})`;
-      if (whichType === schema.Type.ENUM) {
+      if (typeInfo!.kind === "enum") {
         get = `${get} as ${jsType}`;
       }
       break;
     }
 
-    case schema.Type.DATA: {
+    case "data": {
       adopt = true;
       disown = true;
       has = true;
@@ -265,20 +487,18 @@ export function generateStructFieldMethods(
       break;
     }
 
-    case schema.Type.INTERFACE: {
+    case "interface": {
       get = `new ${jsType}($.utils.getInterfaceClientOrNullAt(${offset}, this))`;
       set = `$.utils.setInterfacePointer(this.segment.message.addCap(value.client), $.utils.getPointer(${offset}, this))`;
       break;
     }
 
-    case schema.Type.LIST: {
+    case "list": {
       const elementType = field.slot.type.list.elementType.which();
+      const elementInfo = getTypeInfoFromWhich(elementType);
       let listClass = ConcreteListType[elementType];
 
-      if (
-        elementType === schema.Type.LIST ||
-        elementType === schema.Type.STRUCT
-      ) {
+      if (elementInfo.kind === "list" || elementInfo.kind === "struct") {
         listClass = `${fullClassName}._${capitalizedName}`;
       } else if (listClass === undefined) {
         throw new Error(
@@ -292,14 +512,14 @@ export function generateStructFieldMethods(
       get = `$.utils.getList(${offset}, ${listClass}, this${maybeDefaultArg})`;
       set = `$.utils.copyFrom(value, $.utils.getPointer(${offset}, this))`;
       init = `$.utils.initList(${offset}, ${listClass}, length, this)`;
-      if (elementType === schema.Type.ENUM) {
+      if (elementInfo.kind === "enum") {
         get = `${get} as ${jsType}`;
         init = `${init} as ${jsType}`;
       }
       break;
     }
 
-    case schema.Type.STRUCT: {
+    case "struct": {
       adopt = true;
       disown = true;
       has = true;
@@ -309,13 +529,13 @@ export function generateStructFieldMethods(
       break;
     }
 
-    case schema.Type.TEXT: {
+    case "text": {
       get = `$.utils.getText(${offset}, this${maybeDefaultArg})`;
       set = `$.utils.setText(${offset}, value, this)`;
       break;
     }
 
-    case schema.Type.VOID: {
+    case "void": {
       break;
     }
 
@@ -391,9 +611,7 @@ export function generateStructFieldMethods(
 
   if (init) {
     const params =
-      whichType === schema.Type.DATA || whichType === schema.Type.LIST
-        ? `length: number`
-        : "";
+      fieldKind === "data" || fieldKind === "list" ? `length: number` : "";
     members.push(`
       _init${capitalizedName}(${params}): ${jsType} {
         ${union ? `$.utils.setUint16(${discriminantOffset * 2}, ${discriminantValue}, this);` : ""}
@@ -436,43 +654,29 @@ export function generateStructFieldMethods(
 
 export function generateDefaultValue(field: schema.Field): string {
   const { name, slot } = field;
-  const whichSlotType = slot.type.which();
-  const primitive = Primitives[whichSlotType];
+  const typeInfo = getTypeInfo(slot.type);
+  const primitive = Primitives[typeInfo.which];
   let initializer: string;
 
-  switch (whichSlotType) {
-    case schema.Type_Which.ANY_POINTER:
-    case schema.Type_Which.DATA:
-    case schema.Type_Which.LIST:
-    case schema.Type_Which.STRUCT:
-    case schema.Type_Which.INTERFACE: {
+  switch (typeInfo.defaultKind) {
+    case "pointer": {
       initializer = createValue(slot.defaultValue);
       break;
     }
 
-    case schema.Type_Which.TEXT: {
+    case "text": {
       initializer = JSON.stringify(slot.defaultValue.text);
       break;
     }
 
-    case schema.Type_Which.BOOL: {
+    case "bool": {
       const value = createValue(slot.defaultValue);
       const bitOffset = slot.offset % 8;
       initializer = `$.${primitive.mask}(${value}, ${bitOffset})`;
       break;
     }
 
-    case schema.Type_Which.ENUM:
-    case schema.Type_Which.FLOAT32:
-    case schema.Type_Which.FLOAT64:
-    case schema.Type_Which.INT16:
-    case schema.Type_Which.INT32:
-    case schema.Type_Which.INT64:
-    case schema.Type_Which.INT8:
-    case schema.Type_Which.UINT16:
-    case schema.Type_Which.UINT32:
-    case schema.Type_Which.UINT64:
-    case schema.Type_Which.UINT8: {
+    case "numeric": {
       const value = createValue(slot.defaultValue);
       initializer = `$.${primitive.mask}(${value})`;
 
@@ -483,7 +687,7 @@ export function generateDefaultValue(field: schema.Field): string {
       throw new Error(
         format(
           E.GEN_UNKNOWN_DEFAULT,
-          whichSlotType /* s.Type_Which[whichSlotType] */,
+          typeInfo.which /* s.Type_Which[typeInfo.which] */,
         ),
       );
     }
@@ -563,8 +767,9 @@ function createApplyInitField(
   }
 
   const slotType = field.slot.type;
-  switch (slotType.which()) {
-    case schema.Type.VOID: {
+  const typeInfo = getTypeInfo(slotType);
+  switch (typeInfo.applyInitKind) {
+    case "void": {
       return `
       {
         const value = (init as { ${valueKey}?: true })[${valueKey}];
@@ -575,7 +780,7 @@ function createApplyInitField(
       `;
     }
 
-    case schema.Type.DATA: {
+    case "data": {
       return `
       {
         const value = ${rawValueRef};
@@ -591,7 +796,7 @@ function createApplyInitField(
       `;
     }
 
-    case schema.Type.LIST: {
+    case "list": {
       return createApplyInitListField(
         ctx,
         field,
@@ -602,7 +807,7 @@ function createApplyInitField(
       );
     }
 
-    case schema.Type.STRUCT: {
+    case "struct": {
       const structClassName = getFullClassName(
         lookupNode(ctx, slotType.struct.typeId),
       );
@@ -620,7 +825,7 @@ function createApplyInitField(
       `;
     }
 
-    case schema.Type.ANY_POINTER: {
+    case "anyPointer": {
       return `
       {
         const value = ${rawValueRef};
@@ -631,20 +836,7 @@ function createApplyInitField(
       `;
     }
 
-    case schema.Type.INTERFACE:
-    case schema.Type.TEXT:
-    case schema.Type.BOOL:
-    case schema.Type.ENUM:
-    case schema.Type.FLOAT32:
-    case schema.Type.FLOAT64:
-    case schema.Type.INT16:
-    case schema.Type.INT32:
-    case schema.Type.INT64:
-    case schema.Type.INT8:
-    case schema.Type.UINT16:
-    case schema.Type.UINT32:
-    case schema.Type.UINT64:
-    case schema.Type.UINT8: {
+    case "simple": {
       return `
       {
         const value = ${rawValueRef};
@@ -695,8 +887,8 @@ function createApplyInitListElement(
   ctx: CodeGeneratorFileContext,
   elementType: schema.Type,
 ): string {
-  switch (elementType.which()) {
-    case schema.Type.STRUCT: {
+  switch (getTypeInfo(elementType).applyInitKind) {
+    case "struct": {
       const structClassName = getFullClassName(
         lookupNode(ctx, elementType.struct.typeId),
       );
@@ -709,7 +901,7 @@ function createApplyInitListElement(
       `;
     }
 
-    case schema.Type.DATA: {
+    case "data": {
       return `
         if (item instanceof $.Data) {
           list.set(index, item);
@@ -720,7 +912,7 @@ function createApplyInitListElement(
       `;
     }
 
-    case schema.Type.LIST: {
+    case "list": {
       const nestedListSet = createApplyInitListElement(
         ctx,
         elementType.list.elementType,
@@ -820,7 +1012,7 @@ function createUnionHelpers(
 }
 
 function isVoidField(field: schema.Field): boolean {
-  return field._isSlot && field.slot.type.which() === schema.Type.VOID;
+  return field._isSlot && getTypeInfo(field.slot.type).kind === "void";
 }
 
 function isSetOnlyUnionField(field: schema.Field): boolean {
@@ -841,7 +1033,7 @@ function getFieldValueTsType(
 
   const type = field.slot.type;
   const jsType = getJsType(ctx, type, false);
-  return type.which() === schema.Type.INTERFACE ? `${jsType}$Client` : jsType;
+  return getTypeInfo(type).kind === "interface" ? `${jsType}$Client` : jsType;
 }
 
 function createFieldMetadata(
@@ -879,72 +1071,28 @@ function createTypeMetadata(
   ctx: CodeGeneratorFileContext,
   type: schema.Type,
 ): string {
-  switch (type.which()) {
-    case schema.Type.ANY_POINTER: {
-      return `{ kind: "anyPointer" }`;
-    }
-    case schema.Type.BOOL: {
-      return `{ kind: "bool" }`;
-    }
-    case schema.Type.DATA: {
-      return `{ kind: "data" }`;
-    }
-    case schema.Type.ENUM: {
+  const typeInfo = getTypeInfo(type);
+  switch (typeInfo.kind) {
+    case "enum": {
       return createNodeTypeMetadata("enum", lookupNode(ctx, type.enum.typeId));
     }
-    case schema.Type.FLOAT32: {
-      return `{ kind: "float32" }`;
-    }
-    case schema.Type.FLOAT64: {
-      return `{ kind: "float64" }`;
-    }
-    case schema.Type.INT16: {
-      return `{ kind: "int16" }`;
-    }
-    case schema.Type.INT32: {
-      return `{ kind: "int32" }`;
-    }
-    case schema.Type.INT64: {
-      return `{ kind: "int64" }`;
-    }
-    case schema.Type.INT8: {
-      return `{ kind: "int8" }`;
-    }
-    case schema.Type.INTERFACE: {
+    case "interface": {
       return createNodeTypeMetadata(
         "interface",
         lookupNode(ctx, type.interface.typeId),
       );
     }
-    case schema.Type.LIST: {
+    case "list": {
       return `{ kind: "list", elementType: ${createTypeMetadata(ctx, type.list.elementType)} }`;
     }
-    case schema.Type.STRUCT: {
+    case "struct": {
       return createNodeTypeMetadata(
         "struct",
         lookupNode(ctx, type.struct.typeId),
       );
     }
-    case schema.Type.TEXT: {
-      return `{ kind: "text" }`;
-    }
-    case schema.Type.UINT16: {
-      return `{ kind: "uint16" }`;
-    }
-    case schema.Type.UINT32: {
-      return `{ kind: "uint32" }`;
-    }
-    case schema.Type.UINT64: {
-      return `{ kind: "uint64" }`;
-    }
-    case schema.Type.UINT8: {
-      return `{ kind: "uint8" }`;
-    }
-    case schema.Type.VOID: {
-      return `{ kind: "void" }`;
-    }
     default: {
-      throw new Error(format(E.GEN_UNKNOWN_TYPE, type.which()));
+      return `{ kind: "${typeInfo.kind}" }`;
     }
   }
 }
