@@ -20,7 +20,7 @@ export class ImmediateAnswer<R extends Struct> extends FixedAnswer<R> {
 
   findClient(transform: PipelineOp[]): Client {
     const p = transformPtr(this.s, transform);
-    return getInterfaceClientOrNull(p);
+    return getInterfaceClientOrNull<Client>(p);
   }
 
   pipelineCall<CallParams extends Struct, CallResults extends Struct>(

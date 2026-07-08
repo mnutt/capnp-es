@@ -6,6 +6,7 @@ import { Deferred } from "../deferred";
 import { ImmediateAnswer } from "../immediate-answer";
 import { EmbargoClient } from "./embargo-client";
 import { Call, copyCall } from "../call";
+import type { Client } from "../client";
 import { PipelineOp } from "../pipeline-op";
 import {
   RPC_CALL_QUEUE_FULL,
@@ -63,7 +64,7 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       if (!client) {
         throw new Error(INVARIANT_UNREACHABLE_CODE);
       }
-      ctab[capIdx] = new EmbargoClient(client, q);
+      ctab[capIdx] = new EmbargoClient(client as Client, q);
     }
     this.deferred.resolve(s);
     return true;

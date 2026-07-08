@@ -1,6 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { Struct } from "../serialization/pointers/struct";
+import type { CapabilitySlot } from "../serialization/cap-table";
 import { Call } from "./call";
 import { Answer } from "./answer";
 import { PipelineOp } from "./pipeline-op";
@@ -9,7 +10,7 @@ import { transformPtr } from "./transform-ptr";
 import { getInterfaceClientOrNull } from "../serialization/pointers/struct.utils";
 
 // A Client represents an Cap'n Proto interface type.
-export interface Client {
+export interface Client extends CapabilitySlot {
   // call starts executing a method and returns an answer that will hold
   // the resulting struct.  The call's parameters must be placed before
   // call() returns.
@@ -66,6 +67,6 @@ export function clientFromResolution(
   }
 
   const out = transformPtr(obj, transform);
-  return getInterfaceClientOrNull(out);
+  return getInterfaceClientOrNull<Client>(out);
   // return clientOrNull(Interface.fromPointer(out)!.getClient());
 }

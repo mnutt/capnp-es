@@ -1,6 +1,4 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz and fasterthanlime)
-import type { CapabilityID } from "../../rpc/capability";
-import type { Client, Server } from "../../rpc";
 import type { ObjectSize } from "../object-size";
 import type { Segment } from "../segment";
 import { format } from "../../util";
@@ -8,13 +6,14 @@ import { DEFAULT_DEPTH_LIMIT } from "../../constants";
 import { Pointer, PointerType } from "./pointer";
 import { getTargetPointerType } from "./pointer.utils";
 import type { CapnpSchemaMetadata } from "../../metadata";
+import type { CapabilityID, CapabilitySlot } from "../cap-table";
 
-export type ServerTarget<S extends InterfaceCtor<unknown, Server>> =
+export type ServerTarget<S extends InterfaceCtor<unknown, unknown>> =
   ConstructorParameters<S["Server"]>[0];
 
-export interface InterfaceCtor<C, S extends Server> {
+export interface InterfaceCtor<C, S> {
   readonly _capnp: CapnpSchemaMetadata & { id: string; size: ObjectSize };
-  readonly Client: { new (client: Client): C };
+  readonly Client: { new (client: any): C };
 
   readonly Server: { new (target: any): S };
 
@@ -46,7 +45,7 @@ export class Interface extends Pointer {
     return getCapID(this);
   }
 
-  getClient(): Client | null {
+  getClient(): CapabilitySlot | null {
     return getClient(this);
   }
 
@@ -79,7 +78,7 @@ export function getCapID(i: Interface): CapabilityID {
   return i.segment.getUint32(i.byteOffset + 4);
 }
 
-export function getClient(i: Interface): Client | null {
+export function getClient(i: Interface): CapabilitySlot | null {
   const capID = getCapID(i);
   const { capTable } = i.segment.message._capnp;
   if (!capTable) {

@@ -18,6 +18,7 @@ import {
 } from "../errors";
 import { callQueueSize } from "./call-queue";
 import { QueueClient } from "./queue-client";
+import type { Client } from "./client";
 
 // An Answer is the deferred result of a client call, which is usually wrapped
 // by a Pipeline.
@@ -103,8 +104,7 @@ export class AnswerEntry<R extends Struct> {
       if (objcap.capTable === null) throw new Error(INVARIANT_UNREACHABLE_CODE);
       const queueClient = new QueueClient(
         this.conn,
-
-        objcap.capTable[capIdx]!,
+        objcap.capTable[capIdx]! as Client,
         q,
       );
       objcap.capTable[capIdx] = queueClient;

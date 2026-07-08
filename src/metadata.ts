@@ -1,5 +1,4 @@
 import type { ObjectSize } from "./serialization/object-size";
-import type { Method } from "./rpc/method";
 
 export type CapnpSchemaTypeKind =
   | "anyPointer"
@@ -57,10 +56,21 @@ export interface StructSchemaMetadata extends CapnpSchemaMetadata {
   readonly [key: string]: unknown;
 }
 
+export interface CapnpMethodMetadata {
+  readonly interfaceId: bigint;
+  readonly methodId: number;
+  readonly interfaceName?: string;
+  readonly methodName?: string;
+  readonly ParamsClass: unknown;
+  readonly ResultsClass: unknown;
+  readonly paramFields?: readonly CapnpFieldMetadata[];
+  readonly resultFields?: readonly CapnpFieldMetadata[];
+}
+
 export interface InterfaceSchemaMetadata extends CapnpSchemaMetadata {
   readonly id: string;
   readonly typeId: bigint;
   readonly typeIdHex: string;
   readonly size: ObjectSize;
-  readonly methods: readonly Method<any, any>[];
+  readonly methods: readonly CapnpMethodMetadata[];
 }

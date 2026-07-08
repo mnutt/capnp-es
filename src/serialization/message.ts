@@ -11,8 +11,8 @@ import {
   MSG_SEGMENT_TOO_SMALL,
   MSG_TOO_MANY_SEGMENTS,
 } from "../errors";
-import type { Client } from "../rpc/client";
 import { dumpBuffer, format, padToWord } from "../util";
+import type { CapabilitySlot } from "./cap-table";
 import {
   AnyArena,
   Arena,
@@ -32,7 +32,7 @@ export interface _Message {
   segments: Segment[];
   traversalLimit: number;
   readonly: boolean;
-  capTable?: Array<Client | null>;
+  capTable?: Array<CapabilitySlot | null>;
 }
 
 export class Message {
@@ -198,7 +198,7 @@ export class Message {
     return toPackedUint8Array(this);
   }
 
-  addCap(client: Client | null): number {
+  addCap(client: CapabilitySlot | null): number {
     if (!this._capnp.capTable) {
       this._capnp.capTable = [];
     }

@@ -11,8 +11,7 @@ import {
 import { toException } from "./rpc-error";
 import { INVARIANT_UNREACHABLE_CODE } from "../errors";
 
-// A CapabilityID is an index into a message's capability table.
-export type CapabilityID = number;
+export type { CapabilityID } from "../serialization/cap-table";
 
 export function newMessage(): RPCMessage {
   return new Message().initRoot(RPCMessage);

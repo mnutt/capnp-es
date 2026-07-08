@@ -6,6 +6,7 @@ import { Answer } from "./answer";
 import { Struct } from "../serialization/pointers/struct";
 import { Call } from "./call";
 import { ErrorAnswer } from "./error-answer";
+import { setNullCapabilityFactory } from "../serialization/cap-table";
 
 export class ErrorClient implements Client {
   constructor(public err: Error) {}
@@ -22,3 +23,5 @@ export class ErrorClient implements Client {
 export function clientOrNull(client: Client | null): Client {
   return client ?? new ErrorClient(new Error(RPC_NULL_CLIENT));
 }
+
+setNullCapabilityFactory(() => new ErrorClient(new Error(RPC_NULL_CLIENT)));

@@ -1000,7 +1000,7 @@ export class Conn {
         desc.none = true;
         continue;
       }
-      this.descriptorForClient(desc, client);
+      this.descriptorForClient(desc, client as Client);
     }
   }
 

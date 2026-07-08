@@ -11,8 +11,7 @@ import {
 } from "../object-size";
 import { Data } from "./data";
 import { List, type ListCtor, initList as _initList } from "./list/list";
-import { type Client } from "../../rpc/client";
-import { clientOrNull } from "../../rpc/error-client";
+import { capabilityOrNull, type CapabilitySlot } from "../cap-table";
 import { _Pointer, _PointerCtor, Pointer, PointerCtor } from "./pointer";
 import {
   getContent,
@@ -136,18 +135,23 @@ export function checkPointerBounds(index: number, s: Struct): void {
   }
 }
 
-export function getInterfaceClientOrNullAt(index: number, s: Struct): Client {
+export function getInterfaceClientOrNullAt<T extends CapabilitySlot>(
+  index: number,
+  s: Struct,
+): T {
   return getInterfaceClientOrNull(getPointer(index, s));
 }
 
-export function getInterfaceClientOrNull(p: Pointer): Client {
-  let client: Client | null = null;
+export function getInterfaceClientOrNull<T extends CapabilitySlot>(
+  p: Pointer,
+): T {
+  let client: T | null = null;
   const capId = getInterfacePointer(p);
   const { capTable } = p.segment.message._capnp;
   if (capTable && capId >= 0 && capId < capTable.length) {
-    client = capTable[capId];
+    client = capTable[capId] as T | null;
   }
-  return clientOrNull(client);
+  return capabilityOrNull(client);
 }
 
 /**
