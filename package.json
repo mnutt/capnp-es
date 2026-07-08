@@ -55,7 +55,9 @@
     "profile:node": "node --cpu-prof --import jiti/register ./test/bench/profile.ts",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && vitest run --coverage && pnpm test:types",
+    "test:generated": "pnpm build:std && git diff --exit-code src/capnp/",
     "test:interop:cpp": "node ./scripts/test-interop-cpp.mjs",
+    "test:layering": "madge --extensions ts --json src/serialization | node ./scripts/check-serialization-layering.mjs",
     "test:pack": "node ./scripts/test-pack.mjs",
     "test:types": "tsc --noEmit --skipLibCheck"
   },
@@ -73,6 +75,7 @@
     "eslint-config-unjs": "^0.6.2",
     "hex2dec": "^1.1.2",
     "jiti": "^2.6.1",
+    "madge": "^8.0.0",
     "mitata": "^1.0.34",
     "prettier": "^3.8.1",
     "protobufjs": "^8.0.0",

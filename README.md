@@ -22,6 +22,7 @@ TypeScript implementation of the [Cap'n Proto](https://capnproto.org) serializat
 
 > [!NOTE]
 > Make sure `capnpc` command is available. You can find install instructions [here](https://capnproto.org/install.html) to install it.
+> This repository's checked-in standard schemas are regenerated and verified with Cap'n Proto C++ `capnpc` 1.3.0 in CI.
 
 Install `capnp-es` dependency:
 
@@ -205,6 +206,7 @@ Feedback and PRs are more than welcome. 🙏
 - Install the latest LTS version of [Node.js](https://nodejs.org/en/)
 - Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable`
 - Install dependencies using `pnpm install`
+- Install Cap'n Proto C++ `capnpc` 1.3.0 for reproducible standard-schema regeneration (`pnpm build:std`)
 - Run interactive tests using `pnpm dev`
 
 </details>
