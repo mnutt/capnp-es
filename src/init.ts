@@ -1,6 +1,9 @@
 import { ListElementSize } from "./serialization/list-element-size";
-import { Data, List, type Struct, utils } from "./serialization/pointers";
+import type { Data } from "./serialization/pointers/data";
 import { initList as initRawList } from "./serialization/pointers/list/list";
+import { List } from "./serialization/pointers/list/list";
+import type { Struct } from "./serialization/pointers/struct";
+import * as utils from "./serialization/pointers/utils";
 
 export type MaybePromise<T> = T | PromiseLike<T>;
 

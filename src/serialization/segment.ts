@@ -7,7 +7,7 @@ import {
   SEG_SIZE_OVERFLOW,
 } from "../errors";
 import { format, padToWord } from "../util";
-import { Pointer } from "./pointers";
+import { Pointer } from "./pointers/pointer";
 import type { Message } from "./message";
 
 export class Segment implements DataView {

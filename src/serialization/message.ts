@@ -21,7 +21,8 @@ import {
   ArenaKind,
 } from "./arena";
 import { pack, unpack } from "./packing";
-import { Pointer, StructCtor, PointerType, Struct } from "./pointers";
+import { Pointer, PointerType } from "./pointers/pointer";
+import type { Struct, StructCtor } from "./pointers/struct";
 import { Segment } from "./segment";
 import { getTargetStructSize, validate } from "./pointers/pointer.utils";
 import { resize, initStruct } from "./pointers/struct.utils";
