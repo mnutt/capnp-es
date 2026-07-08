@@ -6,6 +6,8 @@ import { Answer } from "./answer";
 export interface FulfillerLike<R extends Struct> {
   fulfill(r: R): void;
   reject(err: Error): void;
+  tryFulfill?(r: R): boolean;
+  tryReject?(err: Error): boolean;
 }
 
 export function joinAnswer<R extends Struct>(
@@ -15,17 +17,29 @@ export function joinAnswer<R extends Struct>(
   Promise.resolve()
     .then(() => answer.struct())
     .then((obj) => {
+      if (fl.tryFulfill) {
+        if (fl.tryFulfill(obj) === false) {
+          // Safe to ignore: another settlement path already owns the terminal answer state.
+        }
+        return;
+      }
       try {
         fl.fulfill(obj);
       } catch {
-        // Races can double-settle fulfillers; ignore late delivery.
+        // Safe to ignore: another settlement path already owns the terminal answer state.
       }
     })
     .catch((error_) => {
+      if (fl.tryReject) {
+        if (fl.tryReject(error_) === false) {
+          // Safe to ignore: another settlement path already owns the terminal answer state.
+        }
+        return;
+      }
       try {
         fl.reject(error_);
       } catch {
-        // Races can double-settle fulfillers; ignore late delivery.
+        // Safe to ignore: another settlement path already owns the terminal answer state.
       }
     });
 }

@@ -26,12 +26,24 @@ const callQueueSize = 64;
 // up until it is resolved.
 export class Fulfiller<R extends Struct> implements Answer<R> {
   resolved = false;
+  settled = false;
   answer?: Answer<R>;
   queue: pcall[] = [];
   queueCap = callQueueSize;
   deferred = new Deferred<R>();
 
   fulfill(s: R): void {
+    if (!this.tryFulfill(s)) {
+      throw new Error("Fulfiller.fulfill called after settlement");
+    }
+  }
+
+  tryFulfill(s: R): boolean {
+    if (this.settled) {
+      return false;
+    }
+    this.settled = true;
+    this.resolved = true;
     this.answer = new ImmediateAnswer(s);
     const queues = this.emptyQueue(s);
     const msgcap = s.segment.message._capnp;
@@ -50,10 +62,28 @@ export class Fulfiller<R extends Struct> implements Answer<R> {
       ctab[capIdx] = new EmbargoClient(client, q);
     }
     this.deferred.resolve(s);
+    return true;
   }
 
   reject(err: Error): void {
+    if (!this.tryReject(err)) {
+      throw new Error("Fulfiller.reject called after settlement");
+    }
+  }
+
+  tryReject(err: Error): boolean {
+    if (this.settled) {
+      return false;
+    }
+    this.settled = true;
+    this.resolved = true;
+    const queue = this.queue;
+    this.queue = [];
+    for (const pc of queue) {
+      pc.f.tryReject(err);
+    }
     this.deferred.reject(err);
+    return true;
   }
 
   peek(): Answer<R> | undefined {

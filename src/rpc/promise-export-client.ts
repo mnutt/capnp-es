@@ -60,7 +60,7 @@ export class PromiseExportClient implements Client {
 
   reject(err: Error): void {
     for (const item of this.queue) {
-      item.f.reject(err);
+      item.f.tryReject(err);
     }
     this.queue = [];
   }

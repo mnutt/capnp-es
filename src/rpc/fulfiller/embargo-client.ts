@@ -40,9 +40,9 @@ export class EmbargoClient implements Client {
       const ans = this._client.call(c.call);
       void (async <R extends Struct>(f: Fulfiller<R>, ans: Answer<R>) => {
         try {
-          f.fulfill(await ans.struct());
+          f.tryFulfill(await ans.struct());
         } catch (error_) {
-          f.reject(error_ as Error);
+          f.tryReject(error_ as Error);
         }
       })(c.f, ans);
       this.q.pop();
@@ -100,7 +100,7 @@ export class EmbargoClient implements Client {
       if (!first) {
         throw new Error(INVARIANT_UNREACHABLE_CODE);
       }
-      first.f.reject(new Error(RPC_QUEUE_CALL_CANCEL));
+      first.f.tryReject(new Error(RPC_QUEUE_CALL_CANCEL));
       this.q.pop();
     }
     this._client.close();

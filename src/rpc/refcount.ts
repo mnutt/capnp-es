@@ -4,7 +4,6 @@ import { Client } from "./client";
 import { Struct } from "../serialization/pointers/struct";
 import { Call } from "./call";
 import { Answer } from "./answer";
-import { ErrorClient } from "./error-client";
 import { RPC_ZERO_REF } from "../errors";
 import { Ref } from "./ref";
 import { Finalize } from "./finalize";
@@ -49,7 +48,7 @@ export class RefCount implements Client {
 
   ref(): Client {
     if (this.refs <= 0) {
-      return new ErrorClient(new Error(RPC_ZERO_REF));
+      throw new Error(RPC_ZERO_REF);
     }
     this.refs++;
     return this.newRef();

@@ -48,7 +48,7 @@ import { Ref } from "./ref";
 import { PipelineClient } from "./pipeline-client";
 import { FixedAnswer } from "./fixed-answer";
 import { LocalAnswerClient } from "./local-answer-client";
-import { Finalize } from "./finalize";
+import { Finalize, runTrackedFinalizer } from "./finalize";
 import { Message as RPCMessage } from "../capnp/rpc";
 import { MethodError } from "./method-error";
 import { Registry } from "./registry";
@@ -82,7 +82,7 @@ type QuestionSlot = Question<any, any> | null;
 
 // https://github.com/unjs/capnp-es/issues/7
 const ConnWeakRefRegistry = globalThis.FinalizationRegistry
-  ? new FinalizationRegistry<() => void>((cb) => cb())
+  ? new FinalizationRegistry<() => void>((cb) => runTrackedFinalizer(cb))
   : undefined;
 
 const ConDefaultFinalize: Finalize = (obj, finalizer): void => {
@@ -194,7 +194,8 @@ export class Conn {
     const id = finish.questionId;
     const a = this.popAnswer(id);
     if (a === null) {
-      // Finish may race with noFinishNeeded cleanup; silently ignore.
+      // Safe to ignore: noFinishNeeded cleanup already removed the answer entry, so there is
+      // no remaining table-owned result capability for this finish message to release.
       return;
     }
     if (finish.releaseResultCaps) {
@@ -211,8 +212,8 @@ export class Conn {
     const promiseId = resolve.promiseId;
     const entry = this.imports[promiseId];
     if (!entry) {
-      // Resolve may race with release. If this promise is already unknown,
-      // release any newly-introduced capability immediately.
+      // Safe to ignore after cleanup below: release already removed this promise import, and any
+      // newly-introduced capability in the late resolve is discarded before returning.
       if (resolve.which() === Resolve.CAP) {
         try {
           this.discardResolvedCap(resolve.cap);
@@ -231,8 +232,8 @@ export class Conn {
       throw new TypeError(INVARIANT_UNREACHABLE_CODE);
     }
     if (!entry.isPromise) {
-      // Duplicate/late resolve for an already-settled import.
-      // Ignore it, but release any newly introduced capability to avoid leaks.
+      // Safe to ignore after cleanup below: the import already has a terminal target, and any
+      // newly-introduced capability in the duplicate resolve is discarded before returning.
       if (resolve.which() === Resolve.CAP) {
         try {
           this.discardResolvedCap(resolve.cap);
@@ -394,7 +395,8 @@ export class Conn {
         break;
       }
       default:
-      // Ignore
+      // Unknown message variants are intentionally ignored for compatibility with peers that know
+      // newer protocol extensions.
     }
   }
 
@@ -497,7 +499,8 @@ export class Conn {
         break;
       }
       default:
-      // Ignore
+      // Unknown return variants are ignored after the question is rejected by the caller's timeout
+      // or connection shutdown path.
     }
 
     if (!ret.noFinishNeeded) {
@@ -915,7 +918,8 @@ export class Conn {
       try {
         e.client.close();
       } catch {
-        // ignore
+        // Safe to ignore: the export table entry is removed below, and shutdown has already made
+        // the connection unreachable for further sends.
       }
       this.exports[i] = null;
       this.exportID.remove(i);
@@ -929,11 +933,7 @@ export class Conn {
         if (c instanceof ImportClient) {
           c.closed = true;
           for (const item of c.embargoQueue) {
-            try {
-              item.f.reject(err);
-            } catch {
-              // Ignore late settlement races during shutdown.
-            }
+            item.f.tryReject(err);
           }
           c.resolved?.close();
           c.resolved = undefined;
@@ -941,7 +941,8 @@ export class Conn {
           c.embargoId = undefined;
         }
       } catch {
-        // ignore
+        // Safe to ignore: the import table entry is removed below, so any cleanup failure cannot
+        // leave a live connection-owned import.
       }
       delete this.imports[Number(idStr)];
     }

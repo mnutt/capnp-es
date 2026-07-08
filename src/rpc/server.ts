@@ -52,11 +52,7 @@ export class Server implements Client {
         await call.serverMethod.impl.call(this.target, call.params, results);
         call.answer.fulfill(results);
       } catch (error_) {
-        try {
-          call.answer.reject(error_ as Error);
-        } catch {
-          // Ignore late/double-settle races.
-        }
+        call.answer.tryReject(error_ as Error);
       }
     })();
   }

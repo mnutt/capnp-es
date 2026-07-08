@@ -161,7 +161,8 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
       try {
         clientFromResolution(transform, this.obj, this.err).close();
       } catch {
-        // Ignore close races while question is settling.
+        // Safe to ignore: settlement already transferred ownership to the resolved client or
+        // rejection path, and this close was only releasing the derived pipeline handle.
       }
       return;
     }
@@ -180,7 +181,8 @@ export class Question<P extends Struct, R extends Struct> implements Answer<R> {
     try {
       clientFromResolution(transform, this.obj, this.err).close();
     } catch {
-      // Ignore close races while question is settling.
+      // Safe to ignore: settlement already transferred ownership to the resolved client or
+      // rejection path, and this close was only releasing the root pipeline handle.
     }
   }
 
