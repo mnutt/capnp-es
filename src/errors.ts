@@ -35,6 +35,9 @@ export const MSG_SEGMENT_OUT_OF_BOUNDS =
 export const MSG_SEGMENT_TOO_SMALL =
   "CAPNP-TS005 First segment must have at least enough room to hold the root pointer (8 bytes).";
 
+export const MSG_TOO_MANY_SEGMENTS =
+  "CAPNP-TS047 Message has too many segments (%d); possible DoS attempt.";
+
 // Used for methods that are not yet implemented.
 
 // My bad. I'll get to it. Eventually.

@@ -3,6 +3,7 @@
 import { test, assert as t } from "vitest";
 import { compareBuffers, readFileBuffer } from "test/utils";
 import * as C from "src/constants";
+import { MSG_INVALID_FRAME_HEADER, MSG_TOO_MANY_SEGMENTS } from "src/errors";
 import { Message } from "src/serialization";
 import { MultiSegmentArena } from "src/serialization/arena";
 import {
@@ -139,6 +140,40 @@ test("getFramedSegments()", () => {
         ]).buffer,
       ),
     // "should throw when message is truncated",
+  );
+});
+
+test("getFramedSegments() validates the frame header before allocation", () => {
+  t.throws(
+    () => getFramedSegments(new ArrayBuffer(3)),
+    new RegExp(MSG_INVALID_FRAME_HEADER.slice(0, 12)),
+  );
+
+  const hugeSegmentCount = new ArrayBuffer(8);
+  new DataView(hugeSegmentCount).setUint32(0, 0xff_ff_ff_ff, true);
+  t.throws(
+    () => getFramedSegments(hugeSegmentCount),
+    new RegExp(MSG_TOO_MANY_SEGMENTS.slice(0, 12)),
+  );
+
+  const tooManySegments = new ArrayBuffer(8);
+  new DataView(tooManySegments).setUint32(0, C.MAX_STREAM_SEGMENTS, true);
+  t.throws(
+    () => getFramedSegments(tooManySegments),
+    new RegExp(MSG_TOO_MANY_SEGMENTS.slice(0, 12)),
+  );
+
+  const headerByteLength = 4 + C.MAX_STREAM_SEGMENTS * 4;
+  const paddedHeaderByteLength = headerByteLength + (headerByteLength % 8);
+  const maxSegmentsFrame = new ArrayBuffer(paddedHeaderByteLength);
+  new DataView(maxSegmentsFrame).setUint32(0, C.MAX_STREAM_SEGMENTS - 1, true);
+
+  const segments = getFramedSegments(maxSegmentsFrame);
+
+  t.equal(segments.length, C.MAX_STREAM_SEGMENTS);
+  t.equal(
+    segments.every((s) => s.byteLength === 0),
+    true,
   );
 });
 

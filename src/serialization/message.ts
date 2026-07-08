@@ -1,10 +1,15 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
-import { DEFAULT_TRAVERSE_LIMIT, DEFAULT_BUFFER_SIZE } from "../constants";
+import {
+  DEFAULT_TRAVERSE_LIMIT,
+  DEFAULT_BUFFER_SIZE,
+  MAX_STREAM_SEGMENTS,
+} from "../constants";
 import {
   MSG_INVALID_FRAME_HEADER,
   MSG_SEGMENT_OUT_OF_BOUNDS,
   MSG_SEGMENT_TOO_SMALL,
+  MSG_TOO_MANY_SEGMENTS,
 } from "../errors";
 import type { Client } from "../rpc/client";
 import { dumpBuffer, format, padToWord } from "../util";
@@ -263,16 +268,26 @@ export function getFramedSegments(
 ): ArrayBuffer[] {
   const dv = toDataView(message);
 
+  if (message.byteLength < 4) {
+    throw new Error(MSG_INVALID_FRAME_HEADER);
+  }
+
   const segmentCount = dv.getUint32(0, true) + 1;
 
-  const segments = Array.from({ length: segmentCount }) as ArrayBuffer[];
+  // Keep the historical hard cap for stream frames. Legitimate callers that
+  // need larger arenas should get an explicit decode option before raising it.
+  if (segmentCount > MAX_STREAM_SEGMENTS) {
+    throw new Error(format(MSG_TOO_MANY_SEGMENTS, segmentCount));
+  }
 
   let byteOffset = 4 + segmentCount * 4;
   byteOffset += byteOffset % 8;
 
-  if (byteOffset + segmentCount * 4 > message.byteLength) {
+  if (byteOffset > message.byteLength) {
     throw new Error(MSG_INVALID_FRAME_HEADER);
   }
+
+  const segments = Array.from({ length: segmentCount }) as ArrayBuffer[];
 
   for (let i = 0; i < segmentCount; i++) {
     const byteLength = dv.getUint32(4 + i * 4, true) * 8;
