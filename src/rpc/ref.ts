@@ -33,6 +33,10 @@ export class Ref implements Client {
     return this.rc._client;
   }
 
+  normalize(): Client | undefined {
+    return this.rc._client;
+  }
+
   close(): void {
     if (!this.closeState.closed) {
       this.closeState.closed = true;

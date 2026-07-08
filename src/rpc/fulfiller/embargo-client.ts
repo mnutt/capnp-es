@@ -63,6 +63,10 @@ export class EmbargoClient implements Client {
     return this.q.len() === 0;
   }
 
+  normalize(): Client | undefined {
+    return this.isPassthrough() ? this._client : undefined;
+  }
+
   // call either queues a call to the underlying client or starts a
   // call if the embargo has been lifted
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {

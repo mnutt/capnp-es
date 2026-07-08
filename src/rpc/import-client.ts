@@ -75,6 +75,10 @@ export class ImportClient implements Client {
     this.resolved = client;
   }
 
+  normalize(): Client | undefined {
+    return this.resolved;
+  }
+
   activateEmbargo(id: number): void {
     this.embargoId = id;
   }

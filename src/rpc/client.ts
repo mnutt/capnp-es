@@ -25,13 +25,26 @@ export interface Client {
   // close releases any resources associated with this client.
   // No further calls to the client should be made after calling Close.
   close(): void;
+
+  // normalize returns the client this instance transparently delegates to.
+  // It is used only for capability identity checks; queued/unresolved wrappers
+  // should return undefined until calls can pass through without reordering.
+  normalize?(): Client | undefined;
 }
 
 export function isSameClient(c: Client, d: Client): boolean {
-  const norm = (c: Client): Client => {
-    // TODO: normalize, see https://sourcegraph.com/github.com/capnproto/go-capnproto2@e1ae1f982d9908a41db464f02861a850a0880a5a/-/blob/rpc/introspect.go#L209
-    return c;
+  const norm = (client: Client): Client => {
+    let cur = client;
+    for (let hops = 0; hops < 64; hops++) {
+      const next = cur.normalize?.();
+      if (!next || next === cur) {
+        return cur;
+      }
+      cur = next;
+    }
+    return cur;
   };
+
   return norm(c) === norm(d);
 }
 

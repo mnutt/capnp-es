@@ -112,6 +112,10 @@ export class QueueClient implements Client {
     return this.q.len() === 0;
   }
 
+  normalize(): Client | undefined {
+    return this.isPassthrough() ? this._client : undefined;
+  }
+
   call<P extends Struct, R extends Struct>(call: Call<P, R>): Answer<R> {
     // Fast path: queue is flushed
     if (this.isPassthrough()) {

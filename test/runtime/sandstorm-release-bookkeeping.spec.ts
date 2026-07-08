@@ -8,6 +8,7 @@ import { Struct, ObjectSize, utils } from "src/serialization";
 import { AnyStruct } from "src/serialization/pointers/struct";
 import { ImmediateAnswer } from "src/rpc/immediate-answer";
 import { Registry } from "src/rpc/registry";
+import { RefCount } from "src/rpc/refcount";
 
 class TestTransport implements Transport {
   sent: RPCMessage[] = [];
@@ -53,6 +54,22 @@ class OneCapStruct extends Struct {
   setCap(client: Client): void {
     const capId = this.segment.message.addCap(client);
     utils.setInterfacePointer(capId, utils.getPointer(0, this));
+  }
+}
+
+class TwoCapStruct extends Struct {
+  static readonly _capnp = {
+    displayName: "TwoCapStruct",
+    id: "0000000000000002",
+    size: new ObjectSize(0, 2),
+  };
+
+  setCaps(first: Client, second: Client): void {
+    const firstCapId = this.segment.message.addCap(first);
+    utils.setInterfacePointer(firstCapId, utils.getPointer(0, this));
+
+    const secondCapId = this.segment.message.addCap(second);
+    utils.setInterfacePointer(secondCapId, utils.getPointer(1, this));
   }
 }
 
@@ -294,5 +311,32 @@ describe("sandstorm release bookkeeping", () => {
 
     t.equal(conn.findExport(exportB), null);
     t.equal(resultCapB.closed, true);
+  });
+
+  test("two refs for one capability share one export id with two wire refs", () => {
+    const transport = new TestTransport();
+    const conn = new TestConn(transport);
+    const target = new DummyClient();
+    const [rc, firstRef] = RefCount.new(target, () => {});
+    const secondRef = rc.ref();
+
+    const msg = new Message().initRoot(RPCMessage);
+    const payload = msg._initCall()._initParams();
+    const paramCaps = conn.fillParams(payload, {
+      method: {
+        interfaceId: 0x7ff3n,
+        methodId: 0,
+        ParamsClass: TwoCapStruct as any,
+        ResultsClass: AnyStruct as any,
+      },
+      paramsFunc: (params: TwoCapStruct) => {
+        params.setCaps(firstRef, secondRef);
+      },
+    });
+
+    t.equal(paramCaps.length, 2);
+    t.equal(paramCaps[0], paramCaps[1]);
+    t.equal(conn.exports.filter(Boolean).length, 1);
+    t.equal(conn.findExport(paramCaps[0])!.wireRefs, 2);
   });
 });

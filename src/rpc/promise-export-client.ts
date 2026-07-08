@@ -54,6 +54,10 @@ export class PromiseExportClient implements Client {
     this.queue = [];
   }
 
+  normalize(): Client | undefined {
+    return this.resolved;
+  }
+
   reject(err: Error): void {
     for (const item of this.queue) {
       item.f.reject(err);

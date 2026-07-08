@@ -39,6 +39,10 @@ export class RefCount implements Client {
     return this._client;
   }
 
+  normalize(): Client | undefined {
+    return this._client;
+  }
+
   close(): void {
     this._client.close();
   }
