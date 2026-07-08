@@ -31,6 +31,7 @@ export interface _Message {
   readonly arena: AnyArena;
   segments: Segment[];
   traversalLimit: number;
+  readonly: boolean;
   capTable?: Array<Client | null>;
 }
 
@@ -226,11 +227,17 @@ export function initMessage(
       arena: new SingleSegmentArena(),
       segments: [],
       traversalLimit: DEFAULT_TRAVERSE_LIMIT,
+      readonly: false,
     };
   }
 
   if (isAnyArena(src)) {
-    return { arena: src, segments: [], traversalLimit: DEFAULT_TRAVERSE_LIMIT };
+    return {
+      arena: src,
+      segments: [],
+      traversalLimit: DEFAULT_TRAVERSE_LIMIT,
+      readonly: false,
+    };
   }
 
   let buf = src;
@@ -244,6 +251,7 @@ export function initMessage(
       arena: new SingleSegmentArena(copyToArrayBuffer(buf)),
       segments: [],
       traversalLimit: DEFAULT_TRAVERSE_LIMIT,
+      readonly: true,
     };
   }
 
@@ -251,6 +259,7 @@ export function initMessage(
     arena: new MultiSegmentArena(getFramedSegments(buf)),
     segments: [],
     traversalLimit: DEFAULT_TRAVERSE_LIMIT,
+    readonly: true,
   };
 }
 
@@ -430,8 +439,9 @@ export function getRoot<T extends Struct>(
   // Make sure the underlying pointer is actually big enough to hold the data and pointers as specified in the schema.
   // If not a shallow copy of the struct contents needs to be made before returning.
   if (
-    ts.dataByteLength < RootStruct._capnp.size.dataByteLength ||
-    ts.pointerLength < RootStruct._capnp.size.pointerLength
+    !m._capnp.readonly &&
+    (ts.dataByteLength < RootStruct._capnp.size.dataByteLength ||
+      ts.pointerLength < RootStruct._capnp.size.pointerLength)
   ) {
     resize(RootStruct._capnp.size, root);
   }

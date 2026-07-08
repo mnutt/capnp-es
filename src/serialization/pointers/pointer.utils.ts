@@ -692,6 +692,9 @@ export function isDoubleFar(p: Pointer): boolean {
  * @returns `true` if the pointer is "null".
  */
 export function isNull(p: Pointer): boolean {
+  if (p.byteOffset + 8 > p.segment.byteLength) {
+    return true;
+  }
   return p.segment.isWordZero(p.byteOffset);
 }
 

@@ -17,6 +17,7 @@ import {
   setStructPointer,
   setListPointer,
   initPointer,
+  isNull,
 } from "../pointer.utils";
 
 export interface _ListCtor {
@@ -72,6 +73,9 @@ export class List<T> extends Pointer implements Array<T> {
   };
 
   get length(): number {
+    if (isNull(this)) {
+      return 0;
+    }
     return getTargetListLength(this);
   }
 

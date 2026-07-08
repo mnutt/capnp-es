@@ -46,6 +46,52 @@ import type { Struct, StructCtor } from "./struct";
 // Used to apply bit masks (default values).
 const TMP_WORD = new DataView(new ArrayBuffer(8));
 
+function isReadOnly(s: Struct): boolean {
+  return s.segment.message._capnp.readonly;
+}
+
+function checkReadDataBounds(
+  byteOffset: number,
+  byteLength: number,
+  s: Struct,
+): boolean {
+  const { dataByteLength } = getSize(s);
+
+  if (
+    byteOffset >= 0 &&
+    byteLength >= 0 &&
+    byteOffset + byteLength <= dataByteLength
+  ) {
+    return true;
+  }
+
+  if (isReadOnly(s) && byteOffset >= 0 && byteLength >= 0) {
+    return false;
+  }
+
+  checkDataBounds(byteOffset, byteLength, s);
+  return false;
+}
+
+function getNullPointer(s: Struct): Pointer {
+  return new Pointer(s.segment, s.segment.byteLength, s._capnp.depthLimit - 1);
+}
+
+function checkReadPointerBounds(index: number, s: Struct): boolean {
+  const { pointerLength } = getSize(s);
+
+  if (index >= 0 && index < pointerLength) {
+    return true;
+  }
+
+  if (isReadOnly(s) && index >= 0) {
+    return false;
+  }
+
+  checkPointerBounds(index, s);
+  return false;
+}
+
 /**
  * Initialize a struct with the provided object size. This will allocate new space for the struct contents, ideally in
  * the same segment as this pointer.
@@ -220,7 +266,12 @@ export function getBit(
   const byteOffset = Math.floor(bitOffset / 8);
   const bitMask = 1 << (bitOffset % 8);
 
-  checkDataBounds(byteOffset, 1, s);
+  if (!checkReadDataBounds(byteOffset, 1, s)) {
+    if (defaultMask === undefined) {
+      return false;
+    }
+    return (defaultMask.getUint8(0) & bitMask) !== 0;
+  }
 
   const ds = getDataSection(s);
 
@@ -239,7 +290,20 @@ export function getData(
   s: Struct,
   defaultValue?: Pointer,
 ): Data {
-  checkPointerBounds(index, s);
+  if (!checkReadPointerBounds(index, s)) {
+    const l = new Data(
+      getNullPointer(s).segment,
+      getNullPointer(s).byteOffset,
+      s._capnp.depthLimit - 1,
+    );
+    return defaultValue
+      ? new Data(
+          defaultValue.segment,
+          defaultValue.byteOffset,
+          l._capnp.depthLimit,
+        )
+      : l;
+  }
 
   const ps = getPointerSection(s);
 
@@ -248,9 +312,16 @@ export function getData(
   const l = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
   if (isNull(l)) {
+    if (defaultValue && isReadOnly(s)) {
+      return new Data(
+        defaultValue.segment,
+        defaultValue.byteOffset,
+        l._capnp.depthLimit,
+      );
+    }
     if (defaultValue) {
       copyFrom(defaultValue, l);
-    } else {
+    } else if (!isReadOnly(s)) {
       _initList(ListElementSize.BYTE, 0, l);
     }
   }
@@ -275,7 +346,13 @@ export function getFloat32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
+  if (!checkReadDataBounds(byteOffset, 4, s)) {
+    if (defaultMask === undefined) {
+      return 0;
+    }
+    TMP_WORD.setUint32(0, defaultMask.getUint32(0, true), NATIVE_LITTLE_ENDIAN);
+    return TMP_WORD.getFloat32(0, NATIVE_LITTLE_ENDIAN);
+  }
 
   const ds = getDataSection(s);
 
@@ -303,7 +380,14 @@ export function getFloat64(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 8, s);
+  if (!checkReadDataBounds(byteOffset, 8, s)) {
+    if (defaultMask === undefined) {
+      return 0;
+    }
+    TMP_WORD.setUint32(0, defaultMask.getUint32(0, true), NATIVE_LITTLE_ENDIAN);
+    TMP_WORD.setUint32(4, defaultMask.getUint32(4, true), NATIVE_LITTLE_ENDIAN);
+    return TMP_WORD.getFloat64(0, NATIVE_LITTLE_ENDIAN);
+  }
 
   const ds = getDataSection(s);
 
@@ -335,7 +419,13 @@ export function getInt16(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 2, s);
+  if (!checkReadDataBounds(byteOffset, 2, s)) {
+    if (defaultMask === undefined) {
+      return 0;
+    }
+    TMP_WORD.setUint16(0, defaultMask.getUint16(0, true), NATIVE_LITTLE_ENDIAN);
+    return TMP_WORD.getInt16(0, NATIVE_LITTLE_ENDIAN);
+  }
 
   const ds = getDataSection(s);
 
@@ -363,7 +453,13 @@ export function getInt32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
+  if (!checkReadDataBounds(byteOffset, 4, s)) {
+    if (defaultMask === undefined) {
+      return 0;
+    }
+    TMP_WORD.setUint32(0, defaultMask.getUint32(0, true), NATIVE_LITTLE_ENDIAN);
+    return TMP_WORD.getInt32(0, NATIVE_LITTLE_ENDIAN);
+  }
 
   const ds = getDataSection(s);
 
@@ -391,7 +487,14 @@ export function getInt64(
   s: Struct,
   defaultMask?: DataView,
 ): bigint {
-  checkDataBounds(byteOffset, 8, s);
+  if (!checkReadDataBounds(byteOffset, 8, s)) {
+    if (defaultMask === undefined) {
+      return 0n;
+    }
+    TMP_WORD.setUint32(0, defaultMask.getUint32(0, true), true);
+    TMP_WORD.setUint32(4, defaultMask.getUint32(4, true), true);
+    return TMP_WORD.getBigInt64(0, true);
+  }
 
   const ds = getDataSection(s);
 
@@ -423,7 +526,13 @@ export function getInt8(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 1, s);
+  if (!checkReadDataBounds(byteOffset, 1, s)) {
+    if (defaultMask === undefined) {
+      return 0;
+    }
+    TMP_WORD.setUint8(0, defaultMask.getUint8(0));
+    return TMP_WORD.getInt8(0);
+  }
 
   const ds = getDataSection(s);
 
@@ -443,7 +552,16 @@ export function getList<T>(
   s: Struct,
   defaultValue?: Pointer,
 ): List<T> {
-  checkPointerBounds(index, s);
+  if (!checkReadPointerBounds(index, s)) {
+    const p = getNullPointer(s);
+    return defaultValue
+      ? new ListClass(
+          defaultValue.segment,
+          defaultValue.byteOffset,
+          s._capnp.depthLimit - 1,
+        )
+      : new ListClass(p.segment, p.byteOffset, p._capnp.depthLimit);
+  }
 
   const ps = getPointerSection(s);
 
@@ -452,12 +570,19 @@ export function getList<T>(
   const l = new ListClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
   if (isNull(l)) {
+    if (defaultValue && isReadOnly(s)) {
+      return new ListClass(
+        defaultValue.segment,
+        defaultValue.byteOffset,
+        l._capnp.depthLimit,
+      );
+    }
     if (defaultValue) {
       copyFrom(defaultValue, l);
-    } else {
+    } else if (!isReadOnly(s)) {
       _initList(ListClass._capnp.size, 0, l, ListClass._capnp.compositeSize);
     }
-  } else if (ListClass._capnp.compositeSize !== undefined) {
+  } else if (!isReadOnly(s) && ListClass._capnp.compositeSize !== undefined) {
     // If this is a composite list we need to be sure the composite elements are big enough to hold everything as
     // specified in the schema. If the new schema has added fields we'll need to "resize" (shallow-copy) the list so
     // it has room for the new fields.
@@ -560,7 +685,9 @@ export function getList<T>(
 }
 
 export function getPointer(index: number, s: Struct): Pointer {
-  checkPointerBounds(index, s);
+  if (!checkReadPointerBounds(index, s)) {
+    return getNullPointer(s);
+  }
 
   const ps = getPointerSection(s);
 
@@ -574,7 +701,10 @@ export function getPointerAs<T extends Pointer>(
   PointerClass: PointerCtor<T>,
   s: Struct,
 ): T {
-  checkPointerBounds(index, s);
+  if (!checkReadPointerBounds(index, s)) {
+    const p = getNullPointer(s);
+    return new PointerClass(p.segment, p.byteOffset, p._capnp.depthLimit);
+  }
 
   const ps = getPointerSection(s);
 
@@ -592,6 +722,10 @@ export function getPointerSection(s: Struct): Pointer {
 }
 
 export function getSize(s: Struct): ObjectSize {
+  if (isNull(s)) {
+    return new ObjectSize(0, 0);
+  }
+
   if (s._capnp.compositeIndex !== undefined) {
     // For composite lists the object size is stored in a tag word right before the content.
 
@@ -614,9 +748,16 @@ export function getStruct<T extends Struct>(
   const t = getPointerAs(index, StructClass, s);
 
   if (isNull(t)) {
+    if (defaultValue && isReadOnly(s)) {
+      return new StructClass(
+        defaultValue.segment,
+        defaultValue.byteOffset,
+        t._capnp.depthLimit,
+      );
+    }
     if (defaultValue) {
       copyFrom(defaultValue, t);
-    } else {
+    } else if (!isReadOnly(s)) {
       initStruct(StructClass._capnp.size, t);
     }
   } else {
@@ -629,8 +770,9 @@ export function getStruct<T extends Struct>(
     // data and pointer sections. This will unfortunately leave a "hole" of zeroes in the message, but that hole will
     // at least compress well.
     if (
-      ts.dataByteLength < StructClass._capnp.size.dataByteLength ||
-      ts.pointerLength < StructClass._capnp.size.pointerLength
+      !isReadOnly(s) &&
+      (ts.dataByteLength < StructClass._capnp.size.dataByteLength ||
+        ts.pointerLength < StructClass._capnp.size.pointerLength)
     ) {
       resize(StructClass._capnp.size, t);
     }
@@ -648,6 +790,9 @@ export function getText(
 
   // FIXME: This will perform an unnecessary string<>ArrayBuffer roundtrip.
   if (isNull(t) && defaultValue) {
+    if (isReadOnly(s)) {
+      return defaultValue;
+    }
     t.set(0, defaultValue);
   }
 
@@ -667,7 +812,9 @@ export function getUint16(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 2, s);
+  if (!checkReadDataBounds(byteOffset, 2, s)) {
+    return defaultMask === undefined ? 0 : defaultMask.getUint16(0, true);
+  }
 
   const ds = getDataSection(s);
 
@@ -694,7 +841,9 @@ export function getUint32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
+  if (!checkReadDataBounds(byteOffset, 4, s)) {
+    return defaultMask === undefined ? 0 : defaultMask.getUint32(0, true);
+  }
 
   const ds = getDataSection(s);
 
@@ -721,7 +870,14 @@ export function getUint64(
   s: Struct,
   defaultMask?: DataView,
 ): bigint {
-  checkDataBounds(byteOffset, 8, s);
+  if (!checkReadDataBounds(byteOffset, 8, s)) {
+    if (defaultMask === undefined) {
+      return 0n;
+    }
+    TMP_WORD.setUint32(0, defaultMask.getUint32(0, true), true);
+    TMP_WORD.setUint32(4, defaultMask.getUint32(4, true), true);
+    return TMP_WORD.getBigUint64(0, true);
+  }
 
   const ds = getDataSection(s);
 
@@ -753,7 +909,9 @@ export function getUint8(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 1, s);
+  if (!checkReadDataBounds(byteOffset, 1, s)) {
+    return defaultMask === undefined ? 0 : defaultMask.getUint8(0);
+  }
 
   const ds = getDataSection(s);
 
