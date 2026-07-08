@@ -76,6 +76,31 @@ describe("read-only messages", () => {
     t.deepEqual(Buffer.from(message.toUint8Array()), before);
   });
 
+  test("default struct fallbacks from read-only messages are read-only copies", () => {
+    const source = new Message();
+    source.initRoot(EmptyStruct);
+    const message = new Message(source.toUint8Array(), false);
+
+    const child = message.getRoot(WideStruct).child;
+
+    t.throws(() => {
+      child.value = 456;
+    });
+    t.equal(defaultChild.value, 123);
+  });
+
+  test("empty pointer fallbacks from read-only messages are read-only", () => {
+    const source = new Message();
+    source.initRoot(EmptyStruct);
+    const message = new Message(source.toUint8Array(), false);
+
+    const child = message.getRoot(WideStruct).emptyChild;
+
+    t.throws(() => {
+      child.value = 456;
+    });
+  });
+
   test("mutable messages still resize undersized structs on read", () => {
     const message = new Message(new MultiSegmentArena([]));
     message.initRoot(EmptyStruct);

@@ -1,10 +1,14 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { MAX_SEGMENT_LENGTH, NATIVE_LITTLE_ENDIAN } from "../constants";
-import { SEG_REPLACEMENT_BUFFER_TOO_SMALL, SEG_SIZE_OVERFLOW } from "../errors";
+import {
+  PTR_WRITE_CONST_STRUCT,
+  SEG_REPLACEMENT_BUFFER_TOO_SMALL,
+  SEG_SIZE_OVERFLOW,
+} from "../errors";
 import { format, padToWord } from "../util";
-import { Message } from "./message";
 import { Pointer } from "./pointers";
+import type { Message } from "./message";
 
 export class Segment implements DataView {
   buffer: ArrayBuffer;
@@ -45,6 +49,8 @@ export class Segment implements DataView {
    * @returns A pointer to the newly allocated space.
    */
   allocate(byteLength: number): Pointer {
+    this.assertWritable();
+
     // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
     let segment: Segment = this;
 
@@ -77,6 +83,8 @@ export class Segment implements DataView {
     srcSegment: Segment,
     srcByteOffset: number,
   ): void {
+    this.assertWritable();
+
     const value = srcSegment._dv.getFloat64(
       srcByteOffset,
       NATIVE_LITTLE_ENDIAN,
@@ -99,6 +107,8 @@ export class Segment implements DataView {
     srcByteOffset: number,
     wordLength: number,
   ): void {
+    this.assertWritable();
+
     const dst = new Float64Array(this.buffer, byteOffset, wordLength);
     const src = new Float64Array(srcSegment.buffer, srcByteOffset, wordLength);
 
@@ -112,6 +122,8 @@ export class Segment implements DataView {
    * @param wordLength The number of words (not bytes!) to zero out.
    */
   fillZeroWords(byteOffset: number, wordLength: number): void {
+    this.assertWritable();
+
     new Float64Array(this.buffer, byteOffset, wordLength).fill(0);
   }
 
@@ -276,6 +288,8 @@ export class Segment implements DataView {
       return;
     }
 
+    this.assertWritable();
+
     if (buffer.byteLength < this.byteLength) {
       throw new Error(SEG_REPLACEMENT_BUFFER_TOO_SMALL);
     }
@@ -285,6 +299,8 @@ export class Segment implements DataView {
   }
 
   setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean): void {
+    this.assertWritable();
+
     this._dv.setBigInt64(byteOffset, value, littleEndian);
   }
 
@@ -295,6 +311,8 @@ export class Segment implements DataView {
     value: bigint,
     littleEndian?: boolean,
   ): void {
+    this.assertWritable();
+
     this._dv.setBigUint64(byteOffset, value, littleEndian);
   }
 
@@ -317,6 +335,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setFloat32(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setFloat32(byteOffset, val, true);
   }
 
@@ -327,6 +347,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setFloat64(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setFloat64(byteOffset, val, true);
   }
 
@@ -337,6 +359,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setInt16(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setInt16(byteOffset, val, true);
   }
 
@@ -347,6 +371,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setInt32(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setInt32(byteOffset, val, true);
   }
 
@@ -357,6 +383,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setInt8(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setInt8(byteOffset, val);
   }
 
@@ -367,6 +395,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setInt64(byteOffset: number, val: bigint): void {
+    this.assertWritable();
+
     this._dv.setBigInt64(byteOffset, val, true);
   }
 
@@ -377,6 +407,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setUint16(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setUint16(byteOffset, val, true);
   }
 
@@ -387,6 +419,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setUint32(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setUint32(byteOffset, val, true);
   }
 
@@ -397,6 +431,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setUint64(byteOffset: number, val: bigint): void {
+    this.assertWritable();
+
     this._dv.setBigUint64(byteOffset, val, true);
   }
 
@@ -407,6 +443,8 @@ export class Segment implements DataView {
    * @param val The value to store.
    */
   setUint8(byteOffset: number, val: number): void {
+    this.assertWritable();
+
     this._dv.setUint8(byteOffset, val);
   }
 
@@ -419,7 +457,15 @@ export class Segment implements DataView {
    * @param byteOffset The offset of the word to set to zero.
    */
   setWordZero(byteOffset: number): void {
+    this.assertWritable();
+
     this._dv.setFloat64(byteOffset, 0, NATIVE_LITTLE_ENDIAN);
+  }
+
+  private assertWritable(): void {
+    if (this.message._capnp.readonly) {
+      throw new Error(PTR_WRITE_CONST_STRUCT);
+    }
   }
 
   toString(): string {

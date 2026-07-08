@@ -2,7 +2,14 @@
 
 import { test, assert as t } from "vitest";
 
-import { Message, ObjectSize, Pointer, Struct, utils } from "capnp-es";
+import {
+  CompositeList,
+  Message,
+  ObjectSize,
+  Pointer,
+  Struct,
+  utils,
+} from "capnp-es";
 import * as C from "src/constants";
 import { PTR_DEPTH_LIMIT_EXCEEDED } from "src/errors";
 
@@ -16,6 +23,42 @@ class ChainStruct extends Struct {
   initNext(): ChainStruct {
     return utils.initStructAt(0, ChainStruct, this);
   }
+}
+
+class EraseChild extends Struct {
+  static readonly _capnp = {
+    displayName: "EraseChild",
+    id: "0000000000000004",
+    size: new ObjectSize(8, 1),
+  };
+
+  set name(value: string) {
+    utils.setText(0, value, this);
+  }
+}
+
+class EraseParent extends Struct {
+  static readonly _capnp = {
+    displayName: "EraseParent",
+    id: "0000000000000005",
+    size: new ObjectSize(8, 1),
+  };
+
+  initChild(): EraseChild {
+    return utils.initStructAt(0, EraseChild, this);
+  }
+
+  initChildren(length: number) {
+    return utils.initList(0, CompositeList(EraseChild), length, this);
+  }
+}
+
+function includesBytes(haystack: Uint8Array, needle: string): boolean {
+  const bytes = new TextEncoder().encode(needle);
+
+  return haystack.some((_, i) =>
+    bytes.every((byte, j) => haystack[i + j] === byte),
+  );
 }
 
 test("new Pointer()", () => {
@@ -75,6 +118,44 @@ test("Pointer depth limit applies to nested reads", () => {
       }
     },
     new RegExp(PTR_DEPTH_LIMIT_EXCEEDED.slice(0, 12)),
+  );
+});
+
+test("Pointer.isNull() rejects out-of-bounds pointer words", () => {
+  const m = new Message();
+  const s = m.getSegment(0);
+
+  t.throws(() => utils.isNull(new Pointer(s, s.byteLength)));
+});
+
+test("Pointer.erase() erases struct pointer sections after data", () => {
+  const root = new Message().initRoot(EraseParent);
+  root.initChild().name = "struct secret";
+
+  utils.erase(root);
+
+  t.equal(
+    includesBytes(
+      new Uint8Array(root.segment.buffer, 0, root.segment.byteLength),
+      "struct secret",
+    ),
+    false,
+  );
+});
+
+test("Pointer.erase() erases composite-list struct pointer sections after data", () => {
+  const root = new Message().initRoot(EraseParent);
+  const children = root.initChildren(1);
+  children.get(0).name = "composite secret";
+
+  utils.erase(root);
+
+  t.equal(
+    includesBytes(
+      new Uint8Array(root.segment.buffer, 0, root.segment.byteLength),
+      "composite secret",
+    ),
+    false,
   );
 });
 

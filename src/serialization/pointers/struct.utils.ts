@@ -30,6 +30,8 @@ import {
   setListPointer,
   getTargetStructSize,
   validate,
+  getReadOnlyNullPointer,
+  getReadOnlyPointer,
 } from "./pointer.utils";
 import { PointerType } from "./pointer";
 import { Text } from "./text";
@@ -38,6 +40,7 @@ import {
   PTR_INVALID_UNION_ACCESS,
   PTR_STRUCT_DATA_OUT_OF_BOUNDS,
   PTR_STRUCT_POINTER_OUT_OF_BOUNDS,
+  PTR_WRITE_CONST_STRUCT,
 } from "../../errors";
 
 import type { Struct, StructCtor } from "./struct";
@@ -47,6 +50,12 @@ const TMP_WORD = new DataView(new ArrayBuffer(8));
 
 function isReadOnly(s: Struct): boolean {
   return s.segment.message._capnp.readonly;
+}
+
+function checkWrite(s: Struct): void {
+  if (isReadOnly(s)) {
+    throw new Error(PTR_WRITE_CONST_STRUCT);
+  }
 }
 
 function checkReadDataBounds(
@@ -68,12 +77,12 @@ function checkReadDataBounds(
     return false;
   }
 
-  checkDataBounds(byteOffset, byteLength, s);
+  throwDataBounds(byteOffset, byteLength, s);
   return false;
 }
 
 function getNullPointer(s: Struct): Pointer {
-  return new Pointer(s.segment, s.segment.byteLength, s._capnp.depthLimit - 1);
+  return getReadOnlyNullPointer(s._capnp.depthLimit - 1);
 }
 
 function checkReadPointerBounds(index: number, s: Struct): boolean {
@@ -87,7 +96,7 @@ function checkReadPointerBounds(index: number, s: Struct): boolean {
     return false;
   }
 
-  checkPointerBounds(index, s);
+  throwPointerBounds(index, s);
   return false;
 }
 
@@ -126,6 +135,12 @@ export function initStructAt<T extends Struct>(
 }
 
 export function checkPointerBounds(index: number, s: Struct): void {
+  checkWrite(s);
+
+  throwPointerBounds(index, s);
+}
+
+function throwPointerBounds(index: number, s: Struct): void {
   const { pointerLength } = getSize(s);
 
   if (index < 0 || index >= pointerLength) {
@@ -295,18 +310,15 @@ export function getData(
   defaultValue?: Pointer,
 ): Data {
   if (!checkReadPointerBounds(index, s)) {
-    const l = new Data(
-      getNullPointer(s).segment,
-      getNullPointer(s).byteOffset,
-      s._capnp.depthLimit - 1,
-    );
-    return defaultValue
-      ? new Data(
-          defaultValue.segment,
-          defaultValue.byteOffset,
-          l._capnp.depthLimit,
-        )
-      : l;
+    const p = getNullPointer(s);
+    const l = new Data(p.segment, p.byteOffset, p._capnp.depthLimit);
+
+    if (defaultValue) {
+      const d = getReadOnlyPointer(defaultValue, l._capnp.depthLimit);
+      return new Data(d.segment, d.byteOffset, d._capnp.depthLimit);
+    }
+
+    return l;
   }
 
   const ps = getPointerSection(s);
@@ -317,11 +329,8 @@ export function getData(
 
   if (isNull(l)) {
     if (defaultValue && isReadOnly(s)) {
-      return new Data(
-        defaultValue.segment,
-        defaultValue.byteOffset,
-        l._capnp.depthLimit,
-      );
+      const p = getReadOnlyPointer(defaultValue, l._capnp.depthLimit);
+      return new Data(p.segment, p.byteOffset, p._capnp.depthLimit);
     }
     if (defaultValue) {
       copyFrom(defaultValue, l);
@@ -558,13 +567,13 @@ export function getList<T>(
 ): List<T> {
   if (!checkReadPointerBounds(index, s)) {
     const p = getNullPointer(s);
-    return defaultValue
-      ? new ListClass(
-          defaultValue.segment,
-          defaultValue.byteOffset,
-          s._capnp.depthLimit - 1,
-        )
-      : new ListClass(p.segment, p.byteOffset, p._capnp.depthLimit);
+
+    if (defaultValue) {
+      const d = getReadOnlyPointer(defaultValue, p._capnp.depthLimit);
+      return new ListClass(d.segment, d.byteOffset, d._capnp.depthLimit);
+    }
+
+    return new ListClass(p.segment, p.byteOffset, p._capnp.depthLimit);
   }
 
   const ps = getPointerSection(s);
@@ -575,11 +584,8 @@ export function getList<T>(
 
   if (isNull(l)) {
     if (defaultValue && isReadOnly(s)) {
-      return new ListClass(
-        defaultValue.segment,
-        defaultValue.byteOffset,
-        l._capnp.depthLimit,
-      );
+      const p = getReadOnlyPointer(defaultValue, l._capnp.depthLimit);
+      return new ListClass(p.segment, p.byteOffset, p._capnp.depthLimit);
     }
     if (defaultValue) {
       copyFrom(defaultValue, l);
@@ -753,11 +759,8 @@ export function getStruct<T extends Struct>(
 
   if (isNull(t)) {
     if (defaultValue && isReadOnly(s)) {
-      return new StructClass(
-        defaultValue.segment,
-        defaultValue.byteOffset,
-        t._capnp.depthLimit,
-      );
+      const p = getReadOnlyPointer(defaultValue, t._capnp.depthLimit);
+      return new StructClass(p.segment, p.byteOffset, p._capnp.depthLimit);
     }
     if (defaultValue) {
       copyFrom(defaultValue, t);
@@ -1318,6 +1321,16 @@ export function testWhich(
 }
 
 export function checkDataBounds(
+  byteOffset: number,
+  byteLength: number,
+  s: Struct,
+): void {
+  checkWrite(s);
+
+  throwDataBounds(byteOffset, byteLength, s);
+}
+
+function throwDataBounds(
   byteOffset: number,
   byteLength: number,
   s: Struct,

@@ -16,7 +16,7 @@ import {
 } from "../object-size";
 import { Segment } from "../segment";
 import { Orphan } from "./orphan";
-import { Message } from "../message";
+import type { Message } from "../message";
 import {
   PTR_TRAVERSAL_LIMIT_EXCEEDED,
   PTR_DEPTH_LIMIT_EXCEEDED,
@@ -27,8 +27,27 @@ import {
   PTR_WRONG_POINTER_TYPE,
   PTR_WRONG_LIST_TYPE,
   INVARIANT_UNREACHABLE_CODE,
+  PTR_OFFSET_OUT_OF_BOUNDS,
 } from "../../errors";
 import { Pointer, PointerType } from "./pointer";
+
+let readOnlyNullSegment: Segment | undefined;
+
+function getReadOnlyNullSegment(): Segment {
+  if (readOnlyNullSegment === undefined) {
+    const message = {
+      _capnp: {
+        readonly: true,
+        traversalLimit: Number.MAX_SAFE_INTEGER,
+      },
+    } as Message;
+
+    readOnlyNullSegment = new Segment(0, message, new ArrayBuffer(8), 8);
+  }
+
+  readOnlyNullSegment.message._capnp.traversalLimit = Number.MAX_SAFE_INTEGER;
+  return readOnlyNullSegment;
+}
 
 export function adopt<T extends Pointer>(src: Orphan<T>, p: T): void {
   src._moveTo(p);
@@ -242,9 +261,15 @@ export function erase(p: Pointer): void {
 
       // Iterate over all the pointers and nuke them.
 
+      const pointerSection = c.byteOffset + size.dataByteLength;
+
       for (let i = 0; i < size.pointerLength; i++) {
         erase(
-          new Pointer(c.segment, c.byteOffset + i * 8, p._capnp.depthLimit - 1),
+          new Pointer(
+            c.segment,
+            pointerSection + i * 8,
+            p._capnp.depthLimit - 1,
+          ),
         );
       }
 
@@ -286,12 +311,14 @@ export function erase(p: Pointer): void {
         // Recursively erase each pointer.
         for (let i = 0; i < length; i++) {
           for (let j = 0; j < compositeSize.pointerLength; j++) {
+            const pointerOffset =
+              c.byteOffset +
+              i * compositeByteLength +
+              compositeSize.dataByteLength +
+              j * 8;
+
             erase(
-              new Pointer(
-                c.segment,
-                c.byteOffset + i * compositeByteLength + j * 8,
-                p._capnp.depthLimit - 1,
-              ),
+              new Pointer(c.segment, pointerOffset, p._capnp.depthLimit - 1),
             );
           }
         }
@@ -693,9 +720,27 @@ export function isDoubleFar(p: Pointer): boolean {
  */
 export function isNull(p: Pointer): boolean {
   if (p.byteOffset + 8 > p.segment.byteLength) {
-    return true;
+    throw new Error(format(PTR_OFFSET_OUT_OF_BOUNDS, p.byteOffset));
   }
   return p.segment.isWordZero(p.byteOffset);
+}
+
+export function getReadOnlyNullPointer(depthLimit: number): Pointer {
+  return new Pointer(getReadOnlyNullSegment(), 0, depthLimit);
+}
+
+export function getReadOnlyPointer(src: Pointer, depthLimit: number): Pointer {
+  if (src.segment.message._capnp.readonly) {
+    return new Pointer(src.segment, src.byteOffset, depthLimit);
+  }
+
+  const message = src.segment.message.copy();
+  message._capnp.readonly = true;
+  return new Pointer(
+    message.getSegment(src.segment.id),
+    src.byteOffset,
+    depthLimit,
+  );
 }
 
 /**

@@ -4,6 +4,7 @@ import { ListElementSize } from "../list-element-size";
 import { List } from "./list/list";
 import { validate, getContent } from "./pointer.utils";
 import { Pointer, PointerType } from "./pointer";
+import { PTR_WRITE_CONST_LIST } from "../../errors";
 
 /**
  * A generic blob of bytes. Can be converted to a DataView or Uint8Array to access its contents using `toDataView()` and
@@ -33,6 +34,10 @@ export class Data extends List<number> {
   // TODO: Would be nice to have a way to zero-copy a buffer by allocating a new segment into the message with that
   // buffer data.
   copyBuffer(src: ArrayBuffer | ArrayBufferView): void {
+    if (this.segment.message._capnp.readonly) {
+      throw new Error(PTR_WRITE_CONST_LIST);
+    }
+
     const c = getContent(this);
 
     const dstLength = this.length;

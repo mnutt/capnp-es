@@ -76,6 +76,20 @@ describe("isSameClient", () => {
     t.equal(isSameClient(imported, target), true);
   });
 
+  test("does not normalize embargoed imports to their resolved target", () => {
+    const conn = new TestConn(new TestTransport());
+    const target = new DummyClient();
+    const imported = new ImportClient(conn, 12);
+
+    imported.setResolved(target);
+    imported.activateEmbargo(1);
+
+    t.equal(isSameClient(imported, target), false);
+
+    t.equal(imported.liftEmbargo(1), true);
+    t.equal(isSameClient(imported, target), true);
+  });
+
   test("normalizes resolved promise exports to their target", () => {
     const target = new DummyClient();
     const promise = new PromiseExportClient();

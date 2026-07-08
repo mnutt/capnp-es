@@ -66,6 +66,10 @@ export class ImportClient implements Client {
   }
 
   normalize(): Client | undefined {
+    if (this.embargoId !== undefined) {
+      return undefined;
+    }
+
     return this.resolved;
   }
 
