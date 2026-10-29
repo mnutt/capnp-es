@@ -152,9 +152,9 @@ test("Message.allocateSegment()", () => {
 
   t.throws(() => m1.getSegment(1));
 
-  // Single segment arenas always grow by slightly more than what was allocated.
+  // Single segment arenas retain enough capacity for both allocations.
 
-  t.equal(
+  t.isAtLeast(
     m1.getSegment(0).buffer.byteLength,
     C.DEFAULT_BUFFER_SIZE + C.MIN_SINGLE_SEGMENT_GROWTH * 2,
     "should replace existing segments",

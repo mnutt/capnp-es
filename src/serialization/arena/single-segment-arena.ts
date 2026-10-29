@@ -43,7 +43,11 @@ export function allocate(
       ? MIN_SINGLE_SEGMENT_GROWTH
       : padToWord(minSize);
 
-  s.buffer = new ArrayBuffer(srcBuffer.byteLength + minSize);
+  // Amortize repeated small allocations instead of copying the whole segment
+  // every 1 KiB. Large individual allocations still get the space they need.
+  s.buffer = new ArrayBuffer(
+    srcBuffer.byteLength + Math.max(minSize, srcBuffer.byteLength),
+  );
 
   // PERF: Assume that the source and destination buffers are word-aligned and use Float64Array to copy them one word
   // at a time.

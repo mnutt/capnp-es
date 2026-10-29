@@ -57,3 +57,21 @@ test("internal text fast path preserves Unicode and public Text indexing", () =>
     Text.fromPointer(new Pointer(empty.getSegment(0), 0)).toArray(),
   ).toEqual([]);
 });
+
+test("growing a single segment preserves earlier list and text handles", () => {
+  const message = new Message();
+  const root = message.initRoot(ListMania);
+  const numbers = root._initUint32List(2);
+  numbers.set(0, 123);
+  numbers.set(1, 456);
+  const list = root._initTextList(4096);
+  for (let i = 0; i < list.length; i++) list.set(i, `entry-${i}`);
+  numbers.set(1, 789);
+  const decoded = new Message(message.toArrayBuffer(), false).getRoot(
+    ListMania,
+  );
+  expect([...decoded.uint32List]).toEqual([123, 789]);
+  for (let i = 0; i < decoded.textList.length; i++) {
+    expect(decoded.textList.get(i)).toBe(`entry-${i}`);
+  }
+});
