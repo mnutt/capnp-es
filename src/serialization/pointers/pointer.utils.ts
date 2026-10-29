@@ -402,6 +402,30 @@ export function getContent(
   p: Pointer,
   ignoreCompositeIndex?: boolean,
 ): Pointer {
+  // Decode ordinary in-segment pointers once. Keep the far-pointer path below
+  // for landing pads and cross-segment validation.
+  const segment = p.segment;
+  const word = segment.getInt32(p.byteOffset);
+  const kind = word & POINTER_TYPE_MASK;
+  if (kind === PointerType.STRUCT || kind === PointerType.LIST) {
+    const c = new Pointer(segment, p.byteOffset + 8 + (word >> 2) * 8);
+    if (
+      kind === PointerType.LIST &&
+      (segment.getUint32(p.byteOffset + 4) & LIST_SIZE_MASK) ===
+        ListElementSize.COMPOSITE
+    ) {
+      c.byteOffset += 8;
+    }
+    const index = p._capnp.compositeIndex;
+    if (!ignoreCompositeIndex && index !== undefined) {
+      const tagOffset = c.byteOffset - 8;
+      const stride =
+        (segment.getUint16(tagOffset + 4) + segment.getUint16(tagOffset + 6)) *
+        8;
+      c.byteOffset += index * stride;
+    }
+    return c;
+  }
   let c: Pointer;
 
   if (isDoubleFar(p)) {
