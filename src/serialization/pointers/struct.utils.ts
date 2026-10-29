@@ -33,7 +33,7 @@ import {
   validate,
   trackPointerAllocation,
 } from "./pointer.utils";
-import { PointerType } from "./pointer";
+import { PointerType, checkPointer } from "./pointer";
 import { Text } from "./text";
 import {
   PTR_INIT_COMPOSITE_STRUCT,
@@ -639,7 +639,9 @@ export function getList<T>(
 export function getPointer(index: number, s: Struct): Pointer {
   const ps = getPointerSectionAt(index, s);
 
-  return new Pointer(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  ps._capnp.depthLimit = s._capnp.depthLimit - 1;
+  checkPointer(ps.segment, ps.byteOffset, ps._capnp.depthLimit, ps);
+  return ps;
 }
 
 export function getPointerAs<T extends Pointer>(

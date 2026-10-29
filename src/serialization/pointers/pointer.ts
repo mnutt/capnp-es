@@ -61,20 +61,7 @@ export class Pointer<T extends _Pointer = _Pointer> {
     this.segment = segment;
     this.byteOffset = byteOffset;
 
-    if (depthLimit < 1) {
-      throw new Error(format(PTR_DEPTH_LIMIT_EXCEEDED, this));
-    }
-
-    // Make sure we keep track of all pointer allocations; there's a limit per message (prevent DoS).
-    trackPointerAllocation(segment.message, this);
-
-    // NOTE: It's okay to have a pointer to the end of the segment; you'll see this when creating pointers to the
-    // beginning of the content of a newly-allocated composite list with zero elements. Unlike other language
-    // implementations buffer over/underflows are not a big issue since all buffer access is bounds checked in native
-    // code anyway.
-    if (byteOffset < 0 || byteOffset > segment.byteLength) {
-      throw new Error(format(PTR_OFFSET_OUT_OF_BOUNDS, byteOffset));
-    }
+    checkPointer(segment, byteOffset, depthLimit, this);
   }
 
   [Symbol.toStringTag](): string {
@@ -83,5 +70,30 @@ export class Pointer<T extends _Pointer = _Pointer> {
 
   toString(): string {
     return format("->%d@%a%s", this.segment.id, this.byteOffset, dump(this));
+  }
+}
+
+// Also used when an internal, freshly resolved location becomes a field
+// pointer. Reusing that temporary object must preserve constructor checks and
+// the traversal budget charge of the pointer it replaces.
+export function checkPointer(
+  segment: Segment,
+  byteOffset: number,
+  depthLimit: number,
+  p: Pointer,
+): void {
+  if (depthLimit < 1) {
+    throw new Error(format(PTR_DEPTH_LIMIT_EXCEEDED, p));
+  }
+
+  // Make sure we keep track of all pointer allocations; there's a limit per message (prevent DoS).
+  trackPointerAllocation(segment.message, p);
+
+  // NOTE: It's okay to have a pointer to the end of the segment; you'll see this when creating pointers to the
+  // beginning of the content of a newly-allocated composite list with zero elements. Unlike other language
+  // implementations buffer over/underflows are not a big issue since all buffer access is bounds checked in native
+  // code anyway.
+  if (byteOffset < 0 || byteOffset > segment.byteLength) {
+    throw new Error(format(PTR_OFFSET_OUT_OF_BOUNDS, byteOffset));
   }
 }
