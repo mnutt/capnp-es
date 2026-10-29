@@ -2,7 +2,8 @@
 
 import { RPC_ERROR } from "../errors";
 import { Exception, type Exception_Type } from "../capnp/rpc";
-import { format } from "../util";
+
+const messagePrefix = RPC_ERROR.slice(0, -2);
 
 export type CapnpRpcErrorCode =
   | "failed"
@@ -65,7 +66,7 @@ export class CapnpRpcError extends Error {
   ) {
     if (typeof exceptionOrMessage === "string") {
       const remoteReason = options.remoteReason ?? exceptionOrMessage;
-      super(format(RPC_ERROR, remoteReason), options);
+      super(messagePrefix + remoteReason, options);
       this.name = "CapnpRpcError";
       this.code = options.code ?? "failed";
       this.remoteReason = remoteReason;
@@ -76,7 +77,7 @@ export class CapnpRpcError extends Error {
 
     const exception = exceptionOrMessage;
     const remoteReason = exception.reason;
-    super(format(RPC_ERROR, remoteReason), options);
+    super(messagePrefix + remoteReason, options);
     this.name = "CapnpRpcError";
     this.code = exceptionTypeToCode(exception.type);
     this.remoteReason = remoteReason;

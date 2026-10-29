@@ -2,10 +2,13 @@
 
 import { Method } from "./method";
 import { Struct } from "../serialization/pointers/struct";
-import { format } from "../util";
 import { RPC_METHOD_ERROR } from "../errors";
 import { Exception } from "../capnp/rpc";
 import { CapnpRpcError } from "./rpc-error";
+
+// Split the fixed format once, while still reading the method's current names.
+const [messagePrefix, methodSeparator, reasonSeparator] =
+  RPC_METHOD_ERROR.split("%s");
 
 export class MethodError<
   P extends Struct,
@@ -21,11 +24,12 @@ export class MethodError<
     }
     this.name = "MethodError";
     this.method = method;
-    this.message = format(
-      RPC_METHOD_ERROR,
-      method.interfaceName,
-      method.methodName,
-      this.remoteReason,
-    );
+    this.message =
+      messagePrefix +
+      method.interfaceName +
+      methodSeparator +
+      method.methodName +
+      reasonSeparator +
+      this.remoteReason;
   }
 }
