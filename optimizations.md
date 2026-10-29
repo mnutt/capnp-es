@@ -2,7 +2,7 @@
 
 This records the optimizations retained on `perf/capnp-es-rpc` as of
 2026-10-28, relative to library source
-`1637aea6f19947a258d53344d32f789c26a44691`. It covers the serialization,
+[1637aea6f](https://github.com/mnutt/capnp-es/commit/1637aea6f19947a258d53344d32f789c26a44691). It covers the serialization,
 allocation, packing, RPC exception, and transport passes. Rejected experiments
 and prototypes are listed separately at the end.
 
@@ -58,6 +58,8 @@ methodology, commands, validation, and comparisons with node-capnp.
 
 ### 1. Decode near pointers once and read composite strides directly
 
+**Commit:** [fde53ab47](https://github.com/mnutt/capnp-es/commit/fde53ab476d3b923058e361a52ec512552a85aaf)
+
 **What:** `getContent()` handles ordinary same-segment pointers directly from
 their wire words. Composite-element offsets use the tag's data/pointer sizes
 without repeatedly resolving layout. Far pointers retain the general resolver.
@@ -71,6 +73,8 @@ offsets, composite tags, and traversal charges must agree between them.
 Source: [pointer.utils.ts](src/serialization/pointers/pointer.utils.ts).
 
 ### 2. Resolve field layout and bounds together
+
+**Commit:** [df62439e8](https://github.com/mnutt/capnp-es/commit/df62439e8e95a0a8484d5c1facbfdd730b6858d7)
 
 **What:** Scalar and pointer-field access combine the field bounds check with
 near-pointer layout resolution, including composite-list elements. Layout is
@@ -87,6 +91,8 @@ Source: [struct.utils.ts](src/serialization/pointers/struct.utils.ts).
 
 ### 3. Reuse the freshly resolved pointer-field temporary
 
+**Commit:** [2e6ad4dbe](https://github.com/mnutt/capnp-es/commit/2e6ad4dbe53b1af975c016e0df53afec3e7e08b9)
+
 **What:** `getPointer()` turns its freshly resolved location into the field
 pointer instead of constructing another Pointer and metadata object.
 `checkPointer()` retains the constructor's checks and traversal charge.
@@ -100,6 +106,8 @@ or shared reader. Sources: [pointer.ts](src/serialization/pointers/pointer.ts),
 [struct.utils.ts](src/serialization/pointers/struct.utils.ts).
 
 ### 4. Use numeric locations for successful near scalar reads and writes
+
+**Commit:** [541702fea](https://github.com/mnutt/capnp-es/commit/541702fea1538b8e350accea8ff6e09f99368d8d)
 
 **What:** `getCheckedDataSection()` returns a numeric offset for common locations
 instead of a temporary Pointer. `checkPointerOffset()` validates and charges
@@ -121,6 +129,8 @@ Sources: [pointer.ts](src/serialization/pointers/pointer.ts),
 
 ### 5. Use numeric locations for primitive-list and Data access
 
+**Commit:** [c880a25b4](https://github.com/mnutt/capnp-es/commit/c880a25b49bcbf565f5ed05322a82c1ee29a90e7)
+
 **What:** `getContentOffset()` provides the same allocation avoidance for simple
 near list/Data locations. Primitive list getters/setters and Data methods use
 the offset directly; composite and far locations keep the general resolver.
@@ -137,6 +147,8 @@ fallback checks. Sources: [pointer.utils.ts](src/serialization/pointers/pointer.
 [data.ts](src/serialization/pointers/data.ts).
 
 ### 6. Apply the numeric-location path to `Data.copyBuffer()`
+
+**Commit:** [560966853](https://github.com/mnutt/capnp-es/commit/5609668532740ef17edcc14baf717a6d2237c669)
 
 **What:** Bulk copying also avoids the temporary Pointer/metadata pair. The
 source and destination byte views, and the payload copy itself, remain.
@@ -156,6 +168,8 @@ Source: [data.ts](src/serialization/pointers/data.ts).
 
 ### 7. Reach list targets through a private Symbol for internal access
 
+**Commit:** [263f5e058](https://github.com/mnutt/capnp-es/commit/263f5e058fe4891d3e0edb600b2f81fc2689033e)
+
 **What:** Internal wire operations unwrap the list Proxy once through a private
 Symbol, then access the underlying object. Public indexing, method overrides,
 callback receivers, and snapshot iteration keep their existing behavior.
@@ -171,6 +185,8 @@ Source: [list.ts and neighboring implementations](src/serialization/pointers/lis
 
 ### 8. Allocate snapshot arrays without initializing them twice
 
+**Commit:** [f8630bd58](https://github.com/mnutt/capnp-es/commit/f8630bd5819c70c6d8ed489aa9eb8432ed8135ae)
+
 **What:** `List.toArray()` creates an array of the required length and fills
 every element, replacing `Array.from()` initialization followed by overwriting.
 It still calls the public `at()` path and retains snapshot semantics.
@@ -185,6 +201,8 @@ Source: [list.ts](src/serialization/pointers/list/list.ts).
 
 ### 9. Allocate segment tables without initializing them twice
 
+**Commit:** [2d2a79557](https://github.com/mnutt/capnp-es/commit/2d2a79557ba295e55bee8689fbb3d259674c2714)
+
 **What:** Framed-segment and Segment-object arrays are reserved and filled
 directly. Incoming header size is validated before allocating the array.
 
@@ -198,6 +216,8 @@ before allocation. Source: [message.ts](src/serialization/message.ts).
 ## Text
 
 ### 10. Omit indexed Proxies for internal Text wrappers
+
+**Commit:** [1991606b0](https://github.com/mnutt/capnp-es/commit/1991606b037d2a0cd5a2e347558f60b82a5a5a97)
 
 **What:** Internal Text construction can skip the indexed-list Proxy. The first
 pass used this to reduce text-access overhead; later direct reads superseded
@@ -214,6 +234,8 @@ from the public indexed interface. Sources: [text.ts](src/serialization/pointers
 
 ### 11. Decode internal text directly without a Text reader object
 
+**Commit:** [226e35d5e](https://github.com/mnutt/capnp-es/commit/226e35d5edbde3c319896e6fd08b750accf2316b)
+
 **What:** `readText()` resolves a near byte-list and decodes from its location
 without constructing a Text wrapper. Validation and traversal charges remain;
 other pointer layouts use the general decoding path.
@@ -227,6 +249,8 @@ handling. Null/default values, lengths, validation, and fallback decoding need
 to stay aligned. Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 12. Encode short UTF-8 strings directly into the segment
+
+**Commit:** [8f3bc0370](https://github.com/mnutt/capnp-es/commit/8f3bc0370951d6566a57ed3d1bc66e4212893524)
 
 **What:** For strings up to 256 UTF-16 code units, compute the byte length in JS
 and call `TextEncoder.encodeInto()` on segment storage. This avoids an encoded
@@ -243,6 +267,8 @@ The native encoder still writes the bytes; overwrite/prefix behavior needs
 coverage. Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 13. Decode tiny ASCII strings without a decoder view
+
+**Commit:** [b954b502e](https://github.com/mnutt/capnp-es/commit/b954b502e208102dd4e41d368e05f371113fb158)
 
 **What:** Bounded ASCII strings of up to eight bytes use direct byte reads and
 `String.fromCharCode()`. Longer or non-ASCII input uses TextDecoder, preserving
@@ -261,6 +287,8 @@ Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 14. Grow single-segment arenas geometrically
 
+**Commit:** [36bfd45ef](https://github.com/mnutt/capnp-es/commit/36bfd45eff241fa49f9a8f06f5224c76a27b9539)
+
 **What:** Grow by at least the current capacity rather than repeatedly adding
 only the minimum required increment. Existing handles continue to refer to the
 Segment whose backing buffer is replaced.
@@ -276,6 +304,8 @@ Source: [single-segment-arena.ts](src/serialization/arena/single-segment-arena.t
 
 ### 15. Pack into typed byte storage instead of a JS number array
 
+**Commit:** [8f5e1cd3a](https://github.com/mnutt/capnp-es/commit/8f5e1cd3a8200c0ac538f72208a5d29033e3ac64)
+
 **What:** Packing writes bytes into a typed output buffer with a cursor, avoiding
 dynamic number-array accumulation and conversion. Later passes refined its
 capacity policy and output ownership; see items 17–18.
@@ -288,6 +318,8 @@ policy hurt zero-filled input; that policy was replaced, not retained unchanged.
 Source: [packing.ts](src/serialization/packing.ts).
 
 ### 16. Scan zero runs by words and copy literal runs in bulk
+
+**Commit:** [0044c2e73](https://github.com/mnutt/capnp-es/commit/0044c2e7397006207c66febba33ad1ba042041af)
 
 **What:** Two 32-bit reads test a whole zero word; literal runs use bulk typed-array
 copying instead of individual byte operations where possible.
@@ -302,6 +334,8 @@ slice boundaries, and maximum run lengths. A 1,040-case differential check
 matched the previous output. Source: [packing.ts](src/serialization/packing.ts).
 
 ### 17. Adapt packing capacity to input size
+
+**Commit:** [14b233e6c](https://github.com/mnutt/capnp-es/commit/14b233e6cf145e67efccd337e97c9b057ae70e08)
 
 **What:** Reserve the maximum output size for inputs up to 2 KiB. For larger
 inputs, start at 256 bytes and grow as needed. This keeps small dense inputs
@@ -318,6 +352,8 @@ Source: [packing.ts](src/serialization/packing.ts).
 
 ### 18. Consume packed views without intermediate trim copies
 
+**Commit:** [a5d82dc61](https://github.com/mnutt/capnp-es/commit/a5d82dc614ed3e2c82b2a320b9e456243e954eb2)
+
 **What:** Internal `packToView()` returns a view over temporary packed storage.
 Message serialization copies it directly into the final output, avoiding an
 exact-size intermediate ArrayBuffer for each packed header/segment. Public
@@ -333,6 +369,8 @@ Sources: [packing.ts](src/serialization/packing.ts),
 [message.ts](src/serialization/message.ts).
 
 ### 19. Unpack bounded input views without a preliminary copy
+
+**Commit:** [f6b5a4bf1](https://github.com/mnutt/capnp-es/commit/f6b5a4bf1e294dea30059458ca381be9e6b3a986)
 
 **What:** Packed input can be an ArrayBuffer view, preserving its offset and
 length through sizing and decoding. Message construction no longer first
@@ -353,6 +391,8 @@ Sources: [packing.ts](src/serialization/packing.ts),
 
 ### 20. Decode a remote exception reason once
 
+**Commit:** [45fb03db1](https://github.com/mnutt/capnp-es/commit/45fb03db17d66f7f944f9ad4b36c389eaf1e06ea)
+
 **What:** CapnpRpcError reads the wire reason once, and MethodError reuses
 `remoteReason` instead of invoking the text getter again. The old path could
 decode the same reason three times.
@@ -366,6 +406,8 @@ Sources: [rpc-error.ts](src/rpc/rpc-error.ts),
 [method-error.ts](src/rpc/method-error.ts).
 
 ### 21. Build fixed-format RPC error messages directly
+
+**Commit:** [98f12d6c5](https://github.com/mnutt/capnp-es/commit/98f12d6c5849e3304eebcadb3d34c83de9ff2bb9)
 
 **What:** Split the fixed message templates once, then concatenate their pieces
 and current values. General-purpose `format()` remains unchanged. Error text,
@@ -385,6 +427,8 @@ that tradeoff. Sources: [rpc-error.ts](src/rpc/rpc-error.ts),
 
 ### 22. Avoid a default empty Error options object
 
+**Commit:** [29c9cdabb](https://github.com/mnutt/capnp-es/commit/29c9cdabbbe0b677994bed293cad7312b3af44c7)
+
 **What:** Leave omitted options undefined instead of constructing `{}` on every
 CapnpRpcError call. Explicit options and cause behavior remain supported.
 
@@ -397,6 +441,8 @@ prove every eliminated `{}` would have been materialized by V8.
 adding an algorithm or state. Source: [rpc-error.ts](src/rpc/rpc-error.ts).
 
 ### 23. Skip getters for absent RPC capability tables
+
+**Commit:** [5ad761256](https://github.com/mnutt/capnp-es/commit/5ad761256efaec2abada062ae331937475a628e3)
 
 **What:** Check `_hasCapTable()` before import processing and sender-hosted
 capability collection. The generated getter initializes a missing composite
@@ -416,6 +462,8 @@ Source: [conn.ts](src/rpc/conn.ts).
 
 ### 24. Queue fragmented input instead of repeatedly concatenating it
 
+**Commit:** [c60fe275d](https://github.com/mnutt/capnp-es/commit/c60fe275d5366944666b782ff16298ae5eaec74c)
+
 **What:** Retain incoming chunks until a complete frame is available. Contiguous
 frames can be views; fragmented payloads are copied into the completed frame
 once, rather than recopying the accumulated prefix on every arrival. Fragmented
@@ -433,6 +481,8 @@ Source: [CapnpFrameDecoder in node/index.ts](src/node/index.ts).
 
 ### 25. Construct small outgoing frames directly in pooled Buffers
 
+**Commit:** [b3a5d56f4](https://github.com/mnutt/capnp-es/commit/b3a5d56f48001bf79f0b0d8c986e541124b5fa5a)
+
 **What:** For frames up to 1,024 bytes, write the header and segment bytes directly
 into the final Buffer, avoiding an intermediate header ArrayBuffer and
 concatenation. Large frames use a pooled header and retain segment views.
@@ -447,6 +497,8 @@ padding, lengths, and ownership. Tests ensure small frames contain independent
 bytes and initialized padding. Source: [messageToBufferChunks in node/index.ts](src/node/index.ts).
 
 ### 26. Cork only multi-chunk writes and uncork immediately
+
+**Commit:** [b8f29f677](https://github.com/mnutt/capnp-es/commit/b8f29f67747d644b03833826afaedae27178b448)
 
 **What:** When multiple chunks are queued, cork for that flush so the socket can
 use a vectored write. Uncork in the same call, including on backpressure and
@@ -463,6 +515,8 @@ less compelling timing-to-complexity ratio than the larger measured wins.
 Source: [flushWrites in node/index.ts](src/node/index.ts).
 
 ### 27. Read contiguous incoming headers without temporary subarrays
+
+**Commit:** [74c7d221e](https://github.com/mnutt/capnp-es/commit/74c7d221efce0fd756d00bbc89c158c5b9e692f9)
 
 **What:** Read counts and segment sizes directly from the queued Buffer at its
 current offset. Fragmented headers retain the bounded-copy fallback.
@@ -499,6 +553,8 @@ was not reproduced by the focused repeat.
 ## Supporting correctness fix
 
 ### 28. Correct list erasure's byte/word count
+
+**Commit:** [e8ca698b5](https://github.com/mnutt/capnp-es/commit/e8ca698b58c69b7a4ee5f7aa741eca971455fe4a)
 
 **What:** Convert padded content bytes to words before passing the count to
 word-based erasure. Text overwrite tests exposed the old unit mismatch, which
@@ -548,6 +604,8 @@ These are not additional optimizations in the current implementation.
 | Borrow segment storage rather than copy it  | Prototype only; isolated 64 KiB copy/view measured 3.53/0.05 µs. This is not a full decoder/RPC comparison and adds no borrowed-message API.          |
 
 ## Benchmark and validation support
+
+**Benchmark-support commit:** [1b0c9f938](https://github.com/mnutt/capnp-es/commit/1b0c9f938aa6eb9758f38962f4d479636cbd5de3)
 
 The work also added isolated node-capnp setup, Sandstorm-shaped serialization
 fixtures, RPC scenarios against the common C++ peer, scaling cases, a compiled
