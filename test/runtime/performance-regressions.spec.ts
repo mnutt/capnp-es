@@ -3,6 +3,7 @@ import { Message, Pointer, Text, utils, type Struct } from "capnp-es";
 import { ListMania } from "../fixtures/list-mania";
 import { TestAllTypes, TestDefaults } from "../fixtures/test";
 import { MultiSegmentArena } from "src/serialization/arena/multi-segment-arena";
+import { MSG_INVALID_FRAME_HEADER } from "src/errors";
 
 test("near pointer decoding preserves signed offsets and traversal accounting", () => {
   const message = new Message();
@@ -86,6 +87,12 @@ test("internal text fast path preserves Unicode and public Text indexing", () =>
   expect(
     Text.fromPointer(new Pointer(empty.getSegment(0), 0)).toArray(),
   ).toEqual([]);
+});
+
+test("invalid segment tables are rejected before allocating their array", () => {
+  const header = new ArrayBuffer(8);
+  new DataView(header).setUint32(0, 0xffffffff, true);
+  expect(() => new Message(header, false)).toThrow(MSG_INVALID_FRAME_HEADER);
 });
 
 test("growing a single segment preserves earlier list and text handles", () => {

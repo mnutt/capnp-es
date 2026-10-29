@@ -265,14 +265,16 @@ export function getFramedSegments(
 
   const segmentCount = dv.getUint32(0, true) + 1;
 
-  const segments = Array.from({ length: segmentCount }) as ArrayBuffer[];
-
   let byteOffset = 4 + segmentCount * 4;
   byteOffset += byteOffset % 8;
 
   if (byteOffset + segmentCount * 4 > message.byteLength) {
     throw new Error(MSG_INVALID_FRAME_HEADER);
   }
+
+  // Validate the header before reserving the array; every entry is filled below.
+  // eslint-disable-next-line unicorn/no-new-array
+  const segments = new Array<ArrayBuffer>(segmentCount);
 
   for (let i = 0; i < segmentCount; i++) {
     const byteLength = dv.getUint32(4 + i * 4, true) * 8;
@@ -335,7 +337,8 @@ export function preallocateSegments(m: Message): void {
 
   // if (numSegments < 1) throw new Error(MSG_NO_SEGMENTS_IN_ARENA);
 
-  m._capnp.segments = Array.from({ length: numSegments }) as Segment[];
+  // eslint-disable-next-line unicorn/no-new-array
+  m._capnp.segments = new Array<Segment>(numSegments);
 
   for (let i = 0; i < numSegments; i++) {
     // Set up each segment so that they're fully allocated to the extents of the existing buffers.
