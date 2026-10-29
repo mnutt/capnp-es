@@ -105,6 +105,29 @@ describe("Node RPC transport", () => {
     transport.close();
   });
 
+  test.each([1, 2, 3, 4])(
+    "writes an owned small frame with %i segments and zero header padding",
+    (count) => {
+      const stream = new RecordingDuplex();
+      const transport = transportFromDuplex(stream);
+      const message = new Message(new MultiSegmentArena([]));
+      const root = message.initRoot(RPCMessage);
+      root._initBootstrap().questionId = 321;
+      for (let i = 1; i < count; i++) message.allocateSegment(8).allocate(8);
+      t.lengthOf(message._capnp.segments, count);
+      const expected = Buffer.from(message.toArrayBuffer());
+
+      transport.sendMessage(root);
+      t.lengthOf(stream.chunks, 1);
+      t.deepEqual(stream.chunks[0], expected);
+      if (count % 2 === 0)
+        t.equal(stream.chunks[0].readUInt32LE(4 + count * 4), 0);
+      root.bootstrap.questionId = 999;
+      t.deepEqual(stream.chunks[0], expected);
+      transport.close();
+    },
+  );
+
   test("writes large stream frames without concatenating segment chunks", () => {
     const stream = new RecordingDuplex();
     const transport = transportFromDuplex(stream);

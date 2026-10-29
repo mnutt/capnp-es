@@ -3,7 +3,7 @@
 import net from "net";
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import type { Duplex } from "stream";
-import { Message, getStreamFrame } from "../serialization/message";
+import { Message } from "../serialization/message";
 import type { Data } from "../serialization/pointers/data";
 import { Message as RPCMessage } from "../capnp/rpc";
 import { DeferredTransport } from "../rpc/transport/deferred-transport";
@@ -153,18 +153,32 @@ function messageToBufferChunks(message: Message): Buffer[] {
     message.getSegment(0);
   }
 
-  const chunks = [Buffer.from(getStreamFrame(message))];
-  let byteLength = chunks[0].byteLength;
+  const segments = message._capnp.segments;
+  const headerBytes = Math.ceil((1 + segments.length) / 2) * 8;
+  let byteLength = headerBytes;
+  for (const segment of segments) byteLength += padToWord(segment.byteLength);
 
-  for (const segment of message._capnp.segments) {
-    const chunk = Buffer.from(segment.buffer, 0, padToWord(segment.byteLength));
-    chunks.push(chunk);
-    byteLength += chunk.byteLength;
+  // Write small frames directly into the final pooled Buffer. Large frames
+  // retain segment views and allocate only the segment-table header here.
+  const coalesce = byteLength <= CONCAT_SMALL_FRAME_BYTES;
+  const header = Buffer.allocUnsafe(coalesce ? byteLength : headerBytes);
+  header.writeUInt32LE(segments.length - 1, 0);
+  if (segments.length % 2 === 0) header.writeUInt32LE(0, headerBytes - 4);
+  const chunks = [header];
+  let offset = headerBytes;
+  let headerOffset = 4;
+  for (const segment of segments) {
+    header.writeUInt32LE(segment.byteLength / 8, headerOffset);
+    headerOffset += 4;
+    const length = padToWord(segment.byteLength);
+    if (coalesce) {
+      header.set(new Uint8Array(segment.buffer, 0, length), offset);
+      offset += length;
+    } else {
+      chunks.push(Buffer.from(segment.buffer, 0, length));
+    }
   }
-
-  return byteLength <= CONCAT_SMALL_FRAME_BYTES
-    ? [Buffer.concat(chunks, byteLength)]
-    : chunks;
+  return chunks;
 }
 
 export class NodeRpcTransport extends DeferredTransport {
