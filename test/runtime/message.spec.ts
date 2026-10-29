@@ -18,6 +18,36 @@ const SEGMENTED_PACKED = readFileBuffer(
 );
 const SEGMENTED_UNPACKED = readFileBuffer("test/fixtures/data/segmented.bin");
 
+test("packed views respect their bounds and retain independent output", () => {
+  for (const kind of ["buffer", "bytes", "data-view", "shared"]) {
+    const storage =
+      kind === "shared"
+        ? new SharedArrayBuffer(SEGMENTED_PACKED.byteLength + 32)
+        : new ArrayBuffer(SEGMENTED_PACKED.byteLength + 32);
+    const bytes = new Uint8Array(storage).fill(0xcc);
+    bytes.set(new Uint8Array(SEGMENTED_PACKED), 7);
+    let input: ArrayBufferView;
+    switch (kind) {
+      case "buffer": {
+        input = Buffer.from(storage, 7, SEGMENTED_PACKED.byteLength);
+        break;
+      }
+      case "data-view": {
+        input = new DataView(storage, 7, SEGMENTED_PACKED.byteLength);
+        break;
+      }
+      default: {
+        input = new Uint8Array(storage, 7, SEGMENTED_PACKED.byteLength);
+      }
+    }
+    const before = bytes.slice();
+    const message = new Message(input);
+    t.deepEqual(bytes, before, "decoding must not modify input");
+    bytes.fill(0);
+    compareBuffers(message.toArrayBuffer(), SEGMENTED_UNPACKED);
+  }
+});
+
 test("new Message(ArrayBuffer, false)", () => {
   const message = new Message(SEGMENTED_UNPACKED, false);
 

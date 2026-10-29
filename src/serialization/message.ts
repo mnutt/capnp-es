@@ -231,7 +231,7 @@ export function initMessage(
   let buf = src;
 
   if (packed) {
-    buf = unpack(copyToArrayBuffer(buf));
+    buf = unpack(buf);
   }
 
   if (singleSegment) {

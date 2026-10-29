@@ -104,8 +104,25 @@ export function getTagByte(
  * @returns The length of the unpacked message in bytes.
  */
 
-export function getUnpackedByteLength(packed: ArrayBuffer): number {
-  const p = new Uint8Array(packed);
+export function getUnpackedByteLength(
+  packed: ArrayBuffer | ArrayBufferView,
+): number {
+  return getUnpackedLength(readPackedBytes(packed));
+}
+
+function readPackedBytes(packed: ArrayBuffer | ArrayBufferView): Uint8Array {
+  if (!ArrayBuffer.isView(packed)) return new Uint8Array(packed);
+  const bytes = new Uint8Array(
+    packed.buffer,
+    packed.byteOffset,
+    packed.byteLength,
+  );
+  // Ordinary input is only read synchronously. Snapshot shared storage so the
+  // sizing and decoding passes cannot observe different concurrent contents.
+  return packed.buffer instanceof ArrayBuffer ? bytes : new Uint8Array(bytes);
+}
+
+function getUnpackedLength(p: Uint8Array): number {
   let wordCount = 0;
   let lastTag = PackedTag.NONZERO_NONSPAN;
 
@@ -306,11 +323,9 @@ function growPacked(
  * @returns The unpacked message.
  */
 
-export function unpack(packed: ArrayBuffer): ArrayBuffer {
-  // We have no choice but to read the packed buffer one byte at a time.
-
-  const src = new Uint8Array(packed);
-  const dst = new Uint8Array(new ArrayBuffer(getUnpackedByteLength(packed)));
+export function unpack(packed: ArrayBuffer | ArrayBufferView): ArrayBuffer {
+  const src = readPackedBytes(packed);
+  const dst = new Uint8Array(new ArrayBuffer(getUnpackedLength(src)));
 
   /** The last tag byte that we've seen - it starts at a "neutral" value. */
 
