@@ -199,11 +199,16 @@ export function pack(
   const src = new Uint8Array(unpacked, byteOffset, byteLength);
 
   // A word needs at most a tag, eight literals and a run count.
-  const dst = new Uint8Array(Math.ceil(src.byteLength / 8) * 10);
+  const maxPackedLength = Math.ceil(src.byteLength / 8) * 10;
+  // Reserve small messages in one allocation; grow larger ones so highly
+  // compressible inputs do not reserve a buffer proportional to input size.
+  let dst = new Uint8Array(src.byteLength <= 2048 ? maxPackedLength : 256);
   const words = new DataView(src.buffer, src.byteOffset, src.byteLength);
   let dstOffset = 0;
   let srcOffset = 0;
   while (srcOffset < src.byteLength) {
+    if (dstOffset + 10 > dst.byteLength)
+      dst = growPacked(dst, dstOffset + 10, maxPackedLength);
     const a = src[srcOffset];
     const b = src[srcOffset + 1];
     const c = src[srcOffset + 2];
@@ -257,6 +262,8 @@ export function pack(
       }
       dst[dstOffset++] = (srcOffset - start) / 8;
       if (srcOffset !== start) {
+        if (dstOffset + srcOffset - start > dst.byteLength)
+          dst = growPacked(dst, dstOffset + srcOffset - start, maxPackedLength);
         // Copy a literal run in bulk rather than writing each byte in JS.
         dst.set(src.subarray(start, srcOffset), dstOffset);
         dstOffset += srcOffset - start;
@@ -264,6 +271,18 @@ export function pack(
     }
   }
   return dst.buffer.slice(0, dstOffset);
+}
+
+function growPacked(
+  buffer: Uint8Array<ArrayBuffer>,
+  required: number,
+  maxLength: number,
+): Uint8Array<ArrayBuffer> {
+  const grown = new Uint8Array(
+    Math.min(maxLength, Math.max(required, buffer.byteLength * 2)),
+  );
+  grown.set(buffer);
+  return grown;
 }
 
 /**
