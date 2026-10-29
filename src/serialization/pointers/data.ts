@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../list-element-size";
 import { List, getListTarget } from "./list/list";
-import { validate, getContent } from "./pointer.utils";
+import { validate, getContent, getContentOffset } from "./pointer.utils";
 import { Pointer, PointerType } from "./pointer";
 
 /**
@@ -63,8 +63,11 @@ export class Data extends List<number> {
    * @returns The byte value.
    */
   get(byteOffset: number): number {
-    const c = getContent(getListTarget(this));
-    return c.segment.getUint8(c.byteOffset + byteOffset);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    return segment.getUint8(contentOffset + byteOffset);
   }
 
   /**
@@ -75,8 +78,11 @@ export class Data extends List<number> {
    */
 
   set(byteOffset: number, value: number): void {
-    const c = getContent(getListTarget(this));
-    c.segment.setUint8(c.byteOffset + byteOffset, value);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    segment.setUint8(contentOffset + byteOffset, value);
   }
 
   /**
@@ -88,8 +94,11 @@ export class Data extends List<number> {
    */
 
   toArrayBuffer(): ArrayBuffer {
-    const c = getContent(getListTarget(this));
-    return c.segment.buffer.slice(c.byteOffset, c.byteOffset + this.length);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    return segment.buffer.slice(contentOffset, contentOffset + this.length);
   }
 
   /**
@@ -114,8 +123,11 @@ export class Data extends List<number> {
    */
 
   toDataView(): DataView {
-    const c = getContent(getListTarget(this));
-    return new DataView(c.segment.buffer, c.byteOffset, this.length);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    return new DataView(segment.buffer, contentOffset, this.length);
   }
 
   [Symbol.toStringTag](): string {
@@ -132,7 +144,10 @@ export class Data extends List<number> {
    */
 
   toUint8Array(): Uint8Array {
-    const c = getContent(getListTarget(this));
-    return new Uint8Array(c.segment.buffer, c.byteOffset, this.length);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    return new Uint8Array(segment.buffer, contentOffset, this.length);
   }
 }

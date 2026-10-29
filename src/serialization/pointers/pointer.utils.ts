@@ -28,7 +28,7 @@ import {
   PTR_WRONG_LIST_TYPE,
   INVARIANT_UNREACHABLE_CODE,
 } from "../../errors";
-import { Pointer, PointerType } from "./pointer";
+import { Pointer, PointerType, checkPointerOffset } from "./pointer";
 
 export function adopt<T extends Pointer>(src: Orphan<T>, p: T): void {
   src._moveTo(p);
@@ -387,6 +387,27 @@ function isCompositeList(p: Pointer): boolean {
     getTargetPointerType(p) === PointerType.LIST &&
     getTargetListElementSize(p) === ListElementSize.COMPOSITE
   );
+}
+
+// Internal primitive-list access only needs a segment and an offset. Return
+// offsets for simple near locations; retain the general path for composite and
+// far pointers. Public getContent still returns an independent Pointer.
+export function getContentOffset(p: Pointer): number | Pointer {
+  const segment = p.segment;
+  const word = segment.getInt32(p.byteOffset);
+  const kind = word & POINTER_TYPE_MASK;
+  if (
+    p._capnp.compositeIndex === undefined &&
+    (kind === PointerType.STRUCT ||
+      (kind === PointerType.LIST &&
+        (segment.getUint32(p.byteOffset + 4) & LIST_SIZE_MASK) !==
+          ListElementSize.COMPOSITE))
+  ) {
+    const offset = p.byteOffset + 8 + (word >> 2) * 8;
+    checkPointerOffset(segment, offset);
+    return offset;
+  }
+  return getContent(p);
 }
 
 /**

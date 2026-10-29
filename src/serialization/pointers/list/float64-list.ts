@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../../list-element-size";
 import { _ListCtor, List, getListTarget } from "./list";
-import { getContent } from "../pointer.utils";
+import { getContentOffset } from "../pointer.utils";
 
 export class Float64List extends List<number> {
   static readonly _capnp: _ListCtor = {
@@ -11,15 +11,21 @@ export class Float64List extends List<number> {
   };
 
   get(index: number): number {
-    const c = getContent(getListTarget(this));
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
 
-    return c.segment.getFloat64(c.byteOffset + index * 8);
+    return segment.getFloat64(contentOffset + index * 8);
   }
 
   set(index: number, value: number): void {
-    const c = getContent(getListTarget(this));
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
 
-    c.segment.setFloat64(c.byteOffset + index * 8, value);
+    segment.setFloat64(contentOffset + index * 8, value);
   }
 
   [Symbol.toStringTag](): string {

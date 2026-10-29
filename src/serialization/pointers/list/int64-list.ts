@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../../list-element-size";
 import { _ListCtor, List, getListTarget } from "./list";
-import { getContent } from "../pointer.utils";
+import { getContentOffset } from "../pointer.utils";
 
 export class Int64List extends List<bigint> {
   static readonly _capnp: _ListCtor = {
@@ -11,13 +11,19 @@ export class Int64List extends List<bigint> {
   };
 
   get(index: number): bigint {
-    const c = getContent(getListTarget(this));
-    return c.segment.getInt64(c.byteOffset + index * 8);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    return segment.getInt64(contentOffset + index * 8);
   }
 
   set(index: number, value: bigint): void {
-    const c = getContent(getListTarget(this));
-    c.segment.setInt64(c.byteOffset + index * 8, value);
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
+    segment.setInt64(contentOffset + index * 8, value);
   }
 
   [Symbol.toStringTag](): string {

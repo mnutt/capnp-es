@@ -206,6 +206,47 @@ test.each(["near", "composite", "far"])(
   },
 );
 
+test.each(["near", "far"])(
+  "primitive list access preserves %s location checks and budgets",
+  (kind) => {
+    const message = new Message(
+      kind === "far" ? new MultiSegmentArena([new ArrayBuffer(8)]) : undefined,
+    );
+    const root = message.initRoot(ListMania);
+    if (kind === "far") {
+      const { segment } = utils.getContent(root);
+      segment.allocate(segment.buffer.byteLength - segment.byteLength);
+    }
+    const list = root._initUint32List(3);
+    list.set(0, 123);
+    list.set(1, 456);
+    list.set(2, 789);
+    expect(utils.getPointerType(list)).toBe(kind === "far" ? 2 : 1);
+    for (const index of [-1, 0, 1, 3, 10000]) {
+      for (const budget of [8, 16, 24, 1024]) {
+        const read = (optimized: boolean) => {
+          message._capnp.traversalLimit = budget;
+          try {
+            const value = optimized
+              ? list.get(index)
+              : (() => {
+                  const c = utils.getContent(list);
+                  return c.segment.getUint32(c.byteOffset + index * 4);
+                })();
+            return { value, budget: message._capnp.traversalLimit };
+          } catch (error_) {
+            return {
+              error: String(error_),
+              budget: message._capnp.traversalLimit,
+            };
+          }
+        };
+        expect(read(true)).toEqual(read(false));
+      }
+    }
+  },
+);
+
 test("scalar offset fast path preserves malformed-content errors", () => {
   const message = new Message();
   const segment = message.getSegment(0);

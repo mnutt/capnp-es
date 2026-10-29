@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../../list-element-size";
 import { _ListCtor, List, getListTarget } from "./list";
-import { getContent } from "../pointer.utils";
+import { getContentOffset } from "../pointer.utils";
 
 export class Int16List extends List<number> {
   static readonly _capnp: _ListCtor = {
@@ -11,15 +11,21 @@ export class Int16List extends List<number> {
   };
 
   get(index: number): number {
-    const c = getContent(getListTarget(this));
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
 
-    return c.segment.getInt16(c.byteOffset + index * 2);
+    return segment.getInt16(contentOffset + index * 2);
   }
 
   set(index: number, value: number): void {
-    const c = getContent(getListTarget(this));
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
 
-    c.segment.setInt16(c.byteOffset + index * 2, value);
+    segment.setInt16(contentOffset + index * 2, value);
   }
 
   [Symbol.toStringTag](): string {
