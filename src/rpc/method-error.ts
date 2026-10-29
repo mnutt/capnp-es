@@ -14,9 +14,8 @@ export class MethodError<
   readonly method: Method<P, R>;
 
   constructor(method: Method<P, R>, error: string | Exception) {
-    const message = typeof error === "string" ? error : error.reason;
     if (typeof error === "string") {
-      super(message);
+      super(error);
     } else {
       super(error);
     }
@@ -26,7 +25,7 @@ export class MethodError<
       RPC_METHOD_ERROR,
       method.interfaceName,
       method.methodName,
-      message,
+      this.remoteReason,
     );
   }
 }

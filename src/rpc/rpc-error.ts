@@ -75,10 +75,11 @@ export class CapnpRpcError extends Error {
     }
 
     const exception = exceptionOrMessage;
-    super(format(RPC_ERROR, exception.reason), options);
+    const remoteReason = exception.reason;
+    super(format(RPC_ERROR, remoteReason), options);
     this.name = "CapnpRpcError";
     this.code = exceptionTypeToCode(exception.type);
-    this.remoteReason = exception.reason;
+    this.remoteReason = remoteReason;
     this.remoteTrace = exception.trace || undefined;
     this.exception = exception;
   }
