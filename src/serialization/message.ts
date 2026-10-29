@@ -15,7 +15,7 @@ import {
   SingleSegmentArena,
   ArenaKind,
 } from "./arena";
-import { pack, unpack } from "./packing";
+import { packToView, unpack } from "./packing";
 import { Pointer, StructCtor, PointerType, Struct } from "./pointers";
 import { Segment } from "./segment";
 import { getTargetStructSize, validate } from "./pointers/pointer.utils";
@@ -528,7 +528,7 @@ export function toArrayBuffer(m: Message): ArrayBuffer {
 }
 
 export function toPackedArrayBuffer(m: Message): ArrayBuffer {
-  const streamFrame = pack(getStreamFrame(m));
+  const streamFrame = packToView(getStreamFrame(m));
 
   // Make sure the first segment is allocated.
 
@@ -536,11 +536,10 @@ export function toPackedArrayBuffer(m: Message): ArrayBuffer {
     m.getSegment(0);
   }
 
-  // NOTE: A copy operation can be avoided here if we capture the intermediate array and use that directly in the copy
-  // loop below, rather than have `pack()` copy it to an ArrayBuffer just to have to copy it again later. If the
-  // intermediate array can be avoided altogether that's even better!
+  // The packed views own temporary storage and are consumed synchronously here.
+  // Only the final output needs a buffer trimmed to its exact size.
   const segments = m._capnp.segments.map((s) =>
-    pack(s.buffer, 0, padToWord(s.byteLength)),
+    packToView(s.buffer, 0, padToWord(s.byteLength)),
   );
 
   const totalLength =
@@ -548,10 +547,10 @@ export function toPackedArrayBuffer(m: Message): ArrayBuffer {
   const out = new Uint8Array(new ArrayBuffer(totalLength));
   let o = streamFrame.byteLength;
 
-  out.set(new Uint8Array(streamFrame));
+  out.set(streamFrame);
 
   for (const s of segments) {
-    out.set(new Uint8Array(s), o);
+    out.set(s, o);
 
     o += s.byteLength;
   }

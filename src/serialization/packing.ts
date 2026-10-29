@@ -192,6 +192,17 @@ export function pack(
   byteOffset = 0,
   byteLength?: number,
 ): ArrayBuffer {
+  const packed = packToView(unpacked, byteOffset, byteLength);
+  return packed.buffer.slice(0, packed.byteLength);
+}
+
+// Internal serialization can copy this view directly into the final frame,
+// avoiding a trimmed intermediate ArrayBuffer for each packed segment.
+export function packToView(
+  unpacked: ArrayBuffer,
+  byteOffset = 0,
+  byteLength?: number,
+): Uint8Array<ArrayBuffer> {
   if (unpacked.byteLength % 8 !== 0) {
     throw new Error(MSG_PACK_NOT_WORD_ALIGNED);
   }
@@ -270,7 +281,7 @@ export function pack(
       }
     }
   }
-  return dst.buffer.slice(0, dstOffset);
+  return dst.subarray(0, dstOffset);
 }
 
 function growPacked(
