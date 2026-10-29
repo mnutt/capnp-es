@@ -1,5 +1,5 @@
 import { Duplex, PassThrough } from "node:stream";
-import { describe, test, assert as t } from "vitest";
+import { describe, test, expect, assert as t } from "vitest";
 import { CapnpRpcError } from "capnp-es";
 import {
   copyDataToBuffer,
@@ -9,6 +9,7 @@ import {
 } from "capnp-es/node";
 import { Message as RPCMessage } from "src/capnp/rpc";
 import { Message } from "src/serialization/message";
+import { MultiSegmentArena } from "src/serialization/arena/multi-segment-arena";
 import { TestAllTypes } from "test/fixtures/test";
 
 class MemoryDuplex extends Duplex {
@@ -140,6 +141,52 @@ describe("Node RPC transport", () => {
     t.equal(msg.bootstrap.questionId, 456);
 
     transport.close();
+  });
+
+  test.each([1, 7, 64, 65536])(
+    "decodes multi-segment and coalesced frames in %i-byte chunks",
+    async (chunkSize) => {
+      const stream = new PassThrough();
+      const transport = transportFromDuplex(stream);
+      try {
+        const first = bootstrapMessage(10).message;
+        const second = new Message(
+          new MultiSegmentArena([new ArrayBuffer(64)]),
+        );
+        const call = second.initRoot(RPCMessage)._initCall();
+        call.questionId = 20;
+        call._initParams()._initCapTable(200);
+        t.isAbove(second._capnp.segments.length, 1);
+        const third = bootstrapMessage(30).message;
+        const bytes = Buffer.concat(
+          [first, second, third].map((message) =>
+            Buffer.from(message.toArrayBuffer()),
+          ),
+        );
+        for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+          stream.write(bytes.subarray(offset, offset + chunkSize));
+        }
+        t.equal((await transport.recvMessage()).bootstrap.questionId, 10);
+        const received = await transport.recvMessage();
+        t.equal(received.call.questionId, 20);
+        t.equal(received.call.params.capTable.length, 200);
+        t.equal((await transport.recvMessage()).bootstrap.questionId, 30);
+      } finally {
+        transport.close();
+      }
+    },
+  );
+
+  test("rejects invalid segment counts even when the header is fragmented", async () => {
+    const stream = new PassThrough();
+    const transport = transportFromDuplex(stream);
+    const pending = transport.recvMessage();
+    const bytes = Buffer.alloc(8);
+    bytes.writeUInt32LE(4096);
+    stream.write(bytes.subarray(0, 3));
+    stream.write(bytes.subarray(3));
+    await expect(pending).rejects.toThrow(/invalid segment count/);
+    t.isTrue(stream.destroyed);
   });
 
   test("turns peer stream end into a typed disconnected error", async () => {

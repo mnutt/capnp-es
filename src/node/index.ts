@@ -51,50 +51,100 @@ function abortError(reason?: unknown): Error {
 }
 
 class CapnpFrameDecoder {
-  private pending: Buffer = Buffer.alloc(0);
+  private chunks: Buffer[] = [];
+  private head = 0;
+  private offset = 0;
+  private available = 0;
+  private segmentCount = 0;
+  private frameBytes = 0;
 
   push(chunk: Buffer | Uint8Array): Buffer[] {
     const buf = Buffer.isBuffer(chunk)
       ? chunk
       : Buffer.from(chunk.buffer, chunk.byteOffset, chunk.byteLength);
-    this.pending =
-      this.pending.length === 0 ? buf : Buffer.concat([this.pending, buf]);
+    if (buf.length > 0) {
+      this.chunks.push(buf);
+      this.available += buf.length;
+    }
 
     const frames: Buffer[] = [];
 
     while (true) {
-      if (this.pending.length < 8) {
+      if (this.available < 8) {
         break;
       }
 
-      const segmentCount = this.pending.readUInt32LE(0) + 1;
-      if (segmentCount <= 0 || segmentCount > MAX_SEGMENT_COUNT) {
-        throw disconnected(`invalid segment count: ${segmentCount}`);
+      if (this.segmentCount === 0) {
+        this.segmentCount = this.peek(8).readUInt32LE(0) + 1;
+        if (this.segmentCount > MAX_SEGMENT_COUNT) {
+          throw disconnected(`invalid segment count: ${this.segmentCount}`);
+        }
       }
 
-      const tableInts = 1 + segmentCount;
-      const headerWords = Math.ceil(tableInts / 2);
-      const headerBytes = headerWords * 8;
-      if (this.pending.length < headerBytes) {
+      if (this.frameBytes === 0) {
+        const headerBytes = Math.ceil((1 + this.segmentCount) / 2) * 8;
+        if (this.available < headerBytes) break;
+        const header = this.peek(headerBytes);
+        let payloadWords = 0;
+        for (let i = 0; i < this.segmentCount; i++) {
+          payloadWords += header.readUInt32LE(4 + i * 4);
+        }
+        this.frameBytes = headerBytes + payloadWords * 8;
+      }
+
+      if (this.available < this.frameBytes) {
         break;
       }
 
-      let payloadWords = 0;
-      for (let i = 0; i < segmentCount; i++) {
-        payloadWords += this.pending.readUInt32LE(4 + i * 4);
-      }
-
-      const frameBytes = headerBytes + payloadWords * 8;
-      if (this.pending.length < frameBytes) {
-        break;
-      }
-
-      const frame = this.pending.subarray(0, frameBytes);
-      frames.push(frame);
-      this.pending = this.pending.subarray(frameBytes);
+      frames.push(this.peek(this.frameBytes));
+      this.consume(this.frameBytes);
+      this.segmentCount = 0;
+      this.frameBytes = 0;
     }
 
     return frames;
+  }
+
+  // Keep incoming chunks until a complete frame arrives. A fragmented frame
+  // is copied once; contiguous frames can still be returned as views. Do not
+  // allocate based on an advertised payload length before receiving it.
+  private peek(size: number): Buffer {
+    const first = this.chunks[this.head];
+    if (size <= first.length - this.offset) {
+      if (this.offset === 0 && size === first.length) return first;
+      return first.subarray(this.offset, this.offset + size);
+    }
+    const result = Buffer.allocUnsafe(size);
+    let written = 0;
+    for (let i = this.head; written < size; i++) {
+      const chunk = this.chunks[i];
+      const start = i === this.head ? this.offset : 0;
+      const length = Math.min(size - written, chunk.length - start);
+      chunk.copy(result, written, start, start + length);
+      written += length;
+    }
+    return result;
+  }
+
+  private consume(size: number): void {
+    this.available -= size;
+    while (size > 0) {
+      const remaining = this.chunks[this.head].length - this.offset;
+      if (size < remaining) {
+        this.offset += size;
+        break;
+      }
+      size -= remaining;
+      this.head++;
+      this.offset = 0;
+    }
+    if (this.available === 0) {
+      this.chunks = [];
+      this.head = 0;
+    } else if (this.head >= 32) {
+      this.chunks = this.chunks.slice(this.head);
+      this.head = 0;
+    }
   }
 }
 
