@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../list-element-size";
 import { List, getListTarget } from "./list/list";
-import { validate, getContent, getContentOffset } from "./pointer.utils";
+import { validate, getContentOffset } from "./pointer.utils";
 import { Pointer, PointerType } from "./pointer";
 
 /**
@@ -33,7 +33,10 @@ export class Data extends List<number> {
   // TODO: Would be nice to have a way to zero-copy a buffer by allocating a new segment into the message with that
   // buffer data.
   copyBuffer(src: ArrayBuffer | ArrayBufferView): void {
-    const c = getContent(getListTarget(this));
+    const target = getListTarget(this);
+    const c = getContentOffset(target);
+    const segment = typeof c === "number" ? target.segment : c.segment;
+    const contentOffset = typeof c === "number" ? c : c.byteOffset;
 
     const dstLength = this.length;
     const srcLength = src.byteLength;
@@ -47,7 +50,7 @@ export class Data extends List<number> {
             Math.min(dstLength, srcLength),
           );
 
-    const o = new Uint8Array(c.segment.buffer, c.byteOffset, this.length);
+    const o = new Uint8Array(segment.buffer, contentOffset, this.length);
 
     o.set(i);
 
