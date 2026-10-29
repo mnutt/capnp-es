@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List } from "./list";
+import { _ListCtor, List, getListTarget } from "./list";
 import { getContent } from "../pointer.utils";
 
 export class Uint64List extends List<bigint> {
@@ -11,12 +11,12 @@ export class Uint64List extends List<bigint> {
   };
 
   get(index: number): bigint {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return c.segment.getUint64(c.byteOffset + index * 8);
   }
 
   set(index: number, value: bigint): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     c.segment.setUint64(c.byteOffset + index * 8, value);
   }
 

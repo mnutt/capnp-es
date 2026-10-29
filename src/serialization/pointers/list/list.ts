@@ -19,6 +19,14 @@ import {
   initPointer,
 } from "../pointer.utils";
 
+const LIST_TARGET = Symbol("capnp.listTarget");
+
+// Only internal wire access uses the target. Public method calls and callbacks
+// still receive the indexable facade, including overridden methods.
+export function getListTarget<T>(list: List<T>): List<T> {
+  return list[LIST_TARGET] ?? list;
+}
+
 export interface _ListCtor {
   readonly compositeSize?: ObjectSize;
   readonly displayName: string;
@@ -68,6 +76,7 @@ export class List<T> extends Pointer implements Array<T> {
 
   static #proxyHandler: ProxyHandler<List<any>> = {
     get(target, prop, receiver) {
+      if (prop === LIST_TARGET) return target;
       const val = Reflect.get(target, prop, receiver);
       if (val !== undefined) {
         return val;
@@ -78,8 +87,12 @@ export class List<T> extends Pointer implements Array<T> {
     },
   };
 
+  get [LIST_TARGET](): List<T> {
+    return this;
+  }
+
   get length(): number {
-    return getTargetListLength(this);
+    return getTargetListLength(getListTarget(this));
   }
 
   toArray(): T[] {

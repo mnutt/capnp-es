@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../list-element-size";
-import { List } from "./list/list";
+import { List, getListTarget } from "./list/list";
 import { validate, getContent } from "./pointer.utils";
 import { Pointer, PointerType } from "./pointer";
 
@@ -33,7 +33,7 @@ export class Data extends List<number> {
   // TODO: Would be nice to have a way to zero-copy a buffer by allocating a new segment into the message with that
   // buffer data.
   copyBuffer(src: ArrayBuffer | ArrayBufferView): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     const dstLength = this.length;
     const srcLength = src.byteLength;
@@ -63,7 +63,7 @@ export class Data extends List<number> {
    * @returns The byte value.
    */
   get(byteOffset: number): number {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return c.segment.getUint8(c.byteOffset + byteOffset);
   }
 
@@ -75,7 +75,7 @@ export class Data extends List<number> {
    */
 
   set(byteOffset: number, value: number): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     c.segment.setUint8(c.byteOffset + byteOffset, value);
   }
 
@@ -88,7 +88,7 @@ export class Data extends List<number> {
    */
 
   toArrayBuffer(): ArrayBuffer {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return c.segment.buffer.slice(c.byteOffset, c.byteOffset + this.length);
   }
 
@@ -114,7 +114,7 @@ export class Data extends List<number> {
    */
 
   toDataView(): DataView {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return new DataView(c.segment.buffer, c.byteOffset, this.length);
   }
 
@@ -132,7 +132,7 @@ export class Data extends List<number> {
    */
 
   toUint8Array(): Uint8Array {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return new Uint8Array(c.segment.buffer, c.byteOffset, this.length);
   }
 }

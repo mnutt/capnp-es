@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List } from "./list";
+import { _ListCtor, List, getListTarget } from "./list";
 import { getContent } from "../pointer.utils";
 
 export class Float32List extends List<number> {
@@ -11,13 +11,13 @@ export class Float32List extends List<number> {
   };
 
   get(index: number): number {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     return c.segment.getFloat32(c.byteOffset + index * 4);
   }
 
   set(index: number, value: number): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     c.segment.setFloat32(c.byteOffset + index * 4, value);
   }

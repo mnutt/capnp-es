@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List } from "./list";
+import { _ListCtor, List, getListTarget } from "./list";
 import { Text, readText } from "../text";
 import { getContent } from "../pointer.utils";
 
@@ -12,7 +12,7 @@ export class TextList extends List<string> {
   };
 
   get(index: number): string {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     c.byteOffset += index * 8;
 
@@ -20,7 +20,7 @@ export class TextList extends List<string> {
   }
 
   set(index: number, value: string): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     c.byteOffset += index * 8;
 

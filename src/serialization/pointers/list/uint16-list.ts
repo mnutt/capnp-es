@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List } from "./list";
+import { _ListCtor, List, getListTarget } from "./list";
 import { getContent } from "../pointer.utils";
 
 export class Uint16List extends List<number> {
@@ -11,12 +11,12 @@ export class Uint16List extends List<number> {
   };
 
   get(index: number): number {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     return c.segment.getUint16(c.byteOffset + index * 2);
   }
 
   set(index: number, value: number): void {
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
 
     c.segment.setUint16(c.byteOffset + index * 2, value);
   }

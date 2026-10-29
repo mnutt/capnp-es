@@ -35,6 +35,35 @@ test("public lists retain indexing, callback identity, and snapshot iteration", 
   expect([...list]).toEqual([99, 20, 30]);
 });
 
+test("internal list access preserves public method receivers and overrides", () => {
+  const list = new Message().initRoot(ListMania)._initUint32List(3);
+  list.set(0, 11);
+  list.set(1, 22);
+  list.set(2, 33);
+  const get = list.get;
+  list.get = function (index) {
+    expect(this).toBe(list);
+    return get.call(this, index);
+  };
+  Object.defineProperty(list, "length", {
+    get() {
+      expect(this).toBe(list);
+      return 3;
+    },
+  });
+  expect(list.toArray()).toEqual([11, 22, 33]);
+  const context = {};
+  /* eslint-disable unicorn/no-array-method-this-argument */
+  expect(
+    list.map(function (value, index, receiver) {
+      expect(this).toBe(context);
+      expect(receiver).toBe(list);
+      return value + index;
+    }, context),
+  ).toEqual([11, 23, 35]);
+  /* eslint-enable unicorn/no-array-method-this-argument */
+});
+
 test("internal text fast path preserves Unicode and public Text indexing", () => {
   const root = new Message().initRoot(ListMania);
   const list = root._initTextList(5);

@@ -10,7 +10,12 @@ import {
   getWordLength,
 } from "../object-size";
 import { Data } from "./data";
-import { List, type ListCtor, initList as _initList } from "./list/list";
+import {
+  List,
+  type ListCtor,
+  initList as _initList,
+  getListTarget,
+} from "./list/list";
 import { type Client } from "../../rpc/client";
 import { clientOrNull } from "../../rpc/error-client";
 import { _Pointer, _PointerCtor, Pointer, PointerCtor } from "./pointer";
@@ -286,7 +291,8 @@ export function getData(
 ): Data {
   const ps = getPointerSectionAt(index, s);
 
-  const l = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const result = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const l = getListTarget(result);
 
   if (isNull(l)) {
     if (defaultValue) {
@@ -296,7 +302,7 @@ export function getData(
     }
   }
 
-  return l;
+  return result;
 }
 
 export function getDataSection(s: Struct): Pointer {
@@ -526,7 +532,12 @@ export function getList<T>(
 ): List<T> {
   const ps = getPointerSectionAt(index, s);
 
-  const l = new ListClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const result = new ListClass(
+    ps.segment,
+    ps.byteOffset,
+    s._capnp.depthLimit - 1,
+  );
+  const l = getListTarget(result);
 
   if (isNull(l)) {
     if (defaultValue) {
@@ -633,7 +644,7 @@ export function getList<T>(
     }
   }
 
-  return l;
+  return result;
 }
 
 export function getPointer(index: number, s: Struct): Pointer {
@@ -834,13 +845,14 @@ export function getUint8(
 export function initData(index: number, length: number, s: Struct): Data {
   const ps = getPointerSectionAt(index, s);
 
-  const l = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const result = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const l = getListTarget(result);
 
   erase(l);
 
   _initList(ListElementSize.BYTE, length, l);
 
-  return l;
+  return result;
 }
 
 export function initList<T>(
@@ -851,13 +863,18 @@ export function initList<T>(
 ): List<T> {
   const ps = getPointerSectionAt(index, s);
 
-  const l = new ListClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
+  const result = new ListClass(
+    ps.segment,
+    ps.byteOffset,
+    s._capnp.depthLimit - 1,
+  );
+  const l = getListTarget(result);
 
   erase(l);
 
   _initList(ListClass._capnp.size, length, l, ListClass._capnp.compositeSize);
 
-  return l;
+  return result;
 }
 
 /**

@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List, type ListCtor } from "./list";
+import { _ListCtor, List, type ListCtor, getListTarget } from "./list";
 import { Struct, StructCtor } from "../struct";
 import { copyFrom } from "../pointer.utils";
 
@@ -16,10 +16,11 @@ export function CompositeList<T extends Struct>(
     };
 
     get(index: number): T {
+      const target = getListTarget(this);
       return new CompositeClass(
-        this.segment,
-        this.byteOffset,
-        this._capnp.depthLimit - 1,
+        target.segment,
+        target.byteOffset,
+        target._capnp.depthLimit - 1,
         index,
       );
     }

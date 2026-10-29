@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List, type ListCtor } from "./list";
+import { _ListCtor, List, type ListCtor, getListTarget } from "./list";
 import { Pointer, PointerCtor } from "../pointer";
 import { getContent, copyFrom } from "../pointer.utils";
 
@@ -15,7 +15,7 @@ export function PointerList<T extends Pointer>(
     };
 
     get(index: number): T {
-      const c = getContent(this);
+      const c = getContent(getListTarget(this));
       return new PointerClass(
         c.segment,
         c.byteOffset + index * 8,

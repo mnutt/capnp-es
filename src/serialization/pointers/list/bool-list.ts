@@ -1,7 +1,7 @@
 // Based on https://github.com/jdiaz5513/capnp-ts (MIT - Julián Díaz)
 
 import { ListElementSize } from "../../list-element-size";
-import { _ListCtor, List } from "./list";
+import { _ListCtor, List, getListTarget } from "./list";
 import { getContent } from "../pointer.utils";
 
 export class BoolList extends List<boolean> {
@@ -13,7 +13,7 @@ export class BoolList extends List<boolean> {
   get(index: number): boolean {
     const bitMask = 1 << (index % 8);
     const byteOffset = index >>> 3;
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     const v = c.segment.getUint8(c.byteOffset + byteOffset);
 
     return (v & bitMask) !== 0;
@@ -21,7 +21,7 @@ export class BoolList extends List<boolean> {
 
   set(index: number, value: boolean): void {
     const bitMask = 1 << (index % 8);
-    const c = getContent(this);
+    const c = getContent(getListTarget(this));
     const byteOffset = c.byteOffset + (index >>> 3);
     const v = c.segment.getUint8(byteOffset);
 
