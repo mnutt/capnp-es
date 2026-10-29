@@ -95,6 +95,44 @@ test("invalid segment tables are rejected before allocating their array", () => 
   expect(() => new Message(header, false)).toThrow(MSG_INVALID_FRAME_HEADER);
 });
 
+test("short text decoding matches UTF-8 replacement and BOM semantics", () => {
+  const list = new Message().initRoot(ListMania)._initTextList(1);
+  const decoder = new TextDecoder();
+  const cases = [
+    [0xef, 0xbb, 0xbf],
+    [0xef, 0xbb, 0xbf, 0x61],
+    [0x80],
+    [0xc2],
+    [0xe0, 0x80, 0x80],
+    [0xed, 0xa0, 0x80],
+    [0xf0, 0x9f, 0xa6, 0x80],
+  ];
+  for (let length = 0; length <= 12; length++) {
+    for (let seed = 0; seed < 16; seed++) {
+      cases.push(
+        Array.from(
+          { length },
+          (_, i) => (i * 47 + seed * 31) & (seed < 8 ? 127 : 255),
+        ),
+      );
+    }
+  }
+  for (const values of cases) {
+    const bytes = new Uint8Array(values);
+    list.set(0, "x".repeat(bytes.length));
+    const pointer = utils.getContent(list);
+    const content = utils.getContent(pointer);
+    new Uint8Array(
+      content.segment.buffer,
+      content.byteOffset,
+      bytes.length,
+    ).set(bytes);
+    const expected = decoder.decode(bytes);
+    expect(list.get(0)).toBe(expected);
+    expect(Text.fromPointer(pointer).get()).toBe(expected);
+  }
+});
+
 test("growing a single segment preserves earlier list and text handles", () => {
   const message = new Message();
   const root = message.initRoot(ListMania);
