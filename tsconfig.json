@@ -18,5 +18,9 @@
     }
   },
   "include": ["src", "test", "playground"],
-  "exclude": ["**/*.d.ts", "test/interop/cpp/build/**"]
+  "exclude": [
+    "**/*.d.ts",
+    "test/interop/cpp/build/**",
+    "test/bench/cpp/build/**"
+  ]
 }

@@ -9,3 +9,6 @@ playground/*.js
 
 src/capnp/*.ts
 test/interop/cpp/build/**
+test/bench/cpp/build/**
+test/bench/*.bench.mjs
+test/bench/data/sandstorm/workloads.ts

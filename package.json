@@ -42,7 +42,15 @@
   ],
   "scripts": {
     "bench:bun": "bun run ./test/bench/bench.ts",
-    "bench:node": "node --import jiti/register ./test/bench/bench.ts",
+    "bench:compile": "node test/bench/compile.mjs",
+    "bench:node": "pnpm bench:compile && node test/bench/bench.bench.mjs",
+    "bench:node-capnp": "pnpm bench:compile && node test/bench/bench.bench.mjs --node-capnp",
+    "bench:setup": "node test/bench/setup.mjs",
+    "bench:rpc:build": "cmake -S test/bench/cpp -B test/bench/cpp/build -DCMAKE_BUILD_TYPE=Release && cmake --build test/bench/cpp/build --config Release",
+    "bench:rpc": "pnpm bench:rpc:build && pnpm bench:compile && node test/bench/rpc.bench.mjs",
+    "bench:sandstorm": "pnpm bench:compile && node test/bench/sandstorm.bench.mjs",
+    "bench:scaling": "pnpm bench:compile && node test/bench/scaling.bench.mjs",
+    "bench:measure": "node test/bench/run-measure.mjs",
     "build": "pnpm build:std && unbuild",
     "build:std": "node ./scripts/build-std.mjs",
     "capnp-es": "jiti ./src/compiler/capnpc-js.ts",
@@ -53,6 +61,9 @@
     "play": "pnpm capnp-es -ots,js,dts playground/*.capnp",
     "profile:bun": "bun run ./test/bench/profile.ts",
     "profile:node": "node --cpu-prof --import jiti/register ./test/bench/profile.ts",
+    "profile:addressbook": "pnpm bench:compile && node test/bench/bench.bench.mjs --profile",
+    "profile:allocations": "node --expose-gc test/bench/allocations.mjs",
+    "profile:rpc": "pnpm bench:rpc:build && pnpm bench:compile && node test/bench/rpc.bench.mjs --profile",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && vitest run --coverage && pnpm test:types",
     "test:interop:cpp": "node ./scripts/test-interop-cpp.mjs",
@@ -88,5 +99,8 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.29.2"
+  "packageManager": "pnpm@10.29.2",
+  "volta": {
+    "node": "24.22.2"
+  }
 }

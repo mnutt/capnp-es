@@ -2,6 +2,9 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { group, bench, run, summary } from "mitata";
 import * as capnpES from "capnp-es";
+import { loadNodeCapnp } from "./node-capnp";
+import { measure, selected } from "./measure";
+import { profileWorkload } from "./profile-workload";
 
 // JSON
 const decoder = new TextDecoder();
@@ -95,13 +98,38 @@ function traverseData(obj: any, capnpTSCompat = false) {
 }
 
 // All benchmarks
-const benchmarks = {
+const benchmarks: Record<
+  string,
+  { parse: () => unknown; length: () => number; traverse: () => string }
+> = {
   "capnp-es": capnpESBench,
   "capnp-ts": capnpTSBench,
   "JSON.parse(<string>)": jsonStrBench,
   "JSON.parse(<buffer>)": jsonBuffBench,
   protobuf: protobufBench,
-} as const;
+};
+
+// node-capnp is optional because it requires a compatible native addon.
+if (process.argv.includes("--node-capnp")) {
+  const nodeCapnp = loadNodeCapnp();
+  const { AddressBook } = nodeCapnp.import(
+    fileURLToPath(new URL("data/capnp/schema.capnp", import.meta.url)),
+  );
+  // The fixture is an unpacked segment without a stream framing header.
+  // Create the Buffer view once, outside the timed operations.
+  const buffer = Buffer.from(
+    capnpData.buffer,
+    capnpData.byteOffset,
+    capnpData.byteLength,
+  );
+  const options = { packed: false, flat: true };
+  const parse = () => nodeCapnp.parse(AddressBook, buffer, options);
+  benchmarks["node-capnp"] = {
+    parse,
+    length: () => parse().people.length,
+    traverse: () => traverseData(parse()),
+  };
+}
 
 // Tests
 const fails: string[] = [];
@@ -131,7 +159,7 @@ function assert(val: unknown, expected: unknown) {
   }
 }
 for (const [name, bench] of Object.entries(benchmarks)) {
-  test(`${name}.parse`, bench.parse, (val) => val !== undefined);
+  test(`${name}.parse`, bench.parse, (val) => assert(val !== undefined, true));
   test(`${name}.length`, bench.length, (val) => assert(val, 2));
   test(`${name}.traverse`, bench.traverse, (data) =>
     assert(data, jsonSerialized),
@@ -147,6 +175,24 @@ if (fails.length > 0) {
 }
 
 // Benchmarks
+
+if (process.argv.includes("--profile")) {
+  await profileWorkload(
+    "AddressBook traversal",
+    capnpESBench.traverse,
+    false,
+    "test/bench/addressbook.cpuprofile",
+  );
+}
+
+if (process.argv.includes("--measure")) {
+  for (const workload of ["parse", "length", "traverse"] as const) {
+    for (const [library, operations] of Object.entries(benchmarks)) {
+      const name = `AddressBook ${workload}: ${library}`;
+      if (selected(name)) await measure(name, operations[workload]);
+    }
+  }
+}
 
 group("parse data", () => {
   summary(() => {
@@ -172,4 +218,10 @@ group("traverse all nested properties", () => {
   });
 });
 
-await run();
+if (
+  !process.argv.includes("--measure") &&
+  !process.argv.includes("--check") &&
+  !process.argv.includes("--profile")
+) {
+  await run();
+}
