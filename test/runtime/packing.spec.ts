@@ -14,6 +14,20 @@ import {
 type Word = [number, number, number, number, number, number, number, number];
 type TagData = { tag: number; weight: number; word: Word }[];
 
+test("packing handles every tag, long runs, and a bounded input slice", () => {
+  const bytes = new Uint8Array(8 + 256 * 8 + 4096 + 4096 + 8);
+  bytes.fill(0x55);
+  for (let tag = 0; tag < 256; tag++) {
+    for (let bit = 0; bit < 8; bit++) {
+      bytes[8 + tag * 8 + bit] = tag & (1 << bit) ? bit + 1 : 0;
+    }
+  }
+  bytes.fill(0, 8 + 256 * 8, 8 + 256 * 8 + 4096);
+  const packed = pack(bytes.buffer, 8, bytes.length - 16);
+  t.deepEqual(new Uint8Array(unpack(packed)), bytes.subarray(8, -8));
+  t.equal(pack(new ArrayBuffer(0)).byteLength, 0);
+});
+
 const TAG_DATA: TagData = [
   {
     tag: 0b0000_0000,

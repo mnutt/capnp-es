@@ -179,8 +179,7 @@ export function getZeroByteCount(
  * For stream-framed messages this is called once for the frame header and once again for each segment in the message.
  *
  * The returned array buffer is trimmed to the exact size of the packed message with a single copy operation at the end.
- * This should be decent on CPU time but does require quite a lot of memory (a normal array is filled up with each
- * packed byte until the packing is complete).
+ * A byte buffer bounds temporary storage to at most ten bytes per input word.
  *
  * @param unpacked The message to pack.
  * @param byteOffset Starting byte offset to read bytes from, defaults to 0.
@@ -199,9 +198,10 @@ export function pack(
 
   const src = new Uint8Array(unpacked, byteOffset, byteLength);
 
-  // TODO: Maybe we should do this with buffers? This costs more than 8x the final compressed size in temporary RAM.
-
-  const dst: number[] = [];
+  // A word needs at most a tag, eight literal bytes and a run count. Avoid
+  // growing a JS number array and converting every element again at the end.
+  const dst = new Uint8Array(Math.ceil(src.byteLength / 8) * 10);
+  let dstByteOffset = 0;
 
   let lastTag = PackedTag.NONZERO_NONSPAN;
 
@@ -242,7 +242,7 @@ export function pack(
         if (tag !== PackedTag.ZERO || rangeWordCount >= 0xff) {
           // There's a bit in there or we got too many zeroes. Damn, we need to bail.
 
-          dst.push(rangeWordCount);
+          dst[dstByteOffset++] = rangeWordCount;
           rangeWordCount = 0;
 
           skipWriteWord = false;
@@ -274,7 +274,14 @@ export function pack(
         } else {
           // Just write this word verbatim.
 
-          dst.push(a, b, c, d, e, f, g, h);
+          dst[dstByteOffset++] = a;
+          dst[dstByteOffset++] = b;
+          dst[dstByteOffset++] = c;
+          dst[dstByteOffset++] = d;
+          dst[dstByteOffset++] = e;
+          dst[dstByteOffset++] = f;
+          dst[dstByteOffset++] = g;
+          dst[dstByteOffset++] = h;
 
           rangeWordCount++;
         }
@@ -295,36 +302,36 @@ export function pack(
       continue;
     }
 
-    dst.push(tag);
+    dst[dstByteOffset++] = tag;
     lastTag = tag;
 
-    if (a !== 0) dst.push(a);
-    if (b !== 0) dst.push(b);
-    if (c !== 0) dst.push(c);
-    if (d !== 0) dst.push(d);
-    if (e !== 0) dst.push(e);
-    if (f !== 0) dst.push(f);
-    if (g !== 0) dst.push(g);
-    if (h !== 0) dst.push(h);
+    if (a !== 0) dst[dstByteOffset++] = a;
+    if (b !== 0) dst[dstByteOffset++] = b;
+    if (c !== 0) dst[dstByteOffset++] = c;
+    if (d !== 0) dst[dstByteOffset++] = d;
+    if (e !== 0) dst[dstByteOffset++] = e;
+    if (f !== 0) dst[dstByteOffset++] = f;
+    if (g !== 0) dst[dstByteOffset++] = g;
+    if (h !== 0) dst[dstByteOffset++] = h;
 
     // Record the span tag offset if needed, making sure to actually leave room for it.
 
     if (tag === PackedTag.SPAN) {
-      spanWordCountOffset = dst.length;
+      spanWordCountOffset = dstByteOffset;
 
-      dst.push(0);
+      dst[dstByteOffset++] = 0;
     }
   }
 
   // We're done. If we were writing a range let's finish it.
 
   if (lastTag === PackedTag.ZERO) {
-    dst.push(rangeWordCount);
+    dst[dstByteOffset++] = rangeWordCount;
   } else if (lastTag === PackedTag.SPAN) {
     dst[spanWordCountOffset] = rangeWordCount;
   }
 
-  return new Uint8Array(dst).buffer;
+  return dst.buffer.slice(0, dstByteOffset);
 }
 
 /**
