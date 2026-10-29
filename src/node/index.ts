@@ -75,7 +75,11 @@ class CapnpFrameDecoder {
       }
 
       if (this.segmentCount === 0) {
-        this.segmentCount = this.peek(8).readUInt32LE(0) + 1;
+        const first = this.chunks[this.head];
+        this.segmentCount =
+          (this.offset + 4 <= first.length
+            ? first.readUInt32LE(this.offset)
+            : this.peek(8).readUInt32LE(0)) + 1;
         if (this.segmentCount > MAX_SEGMENT_COUNT) {
           throw disconnected(`invalid segment count: ${this.segmentCount}`);
         }
@@ -84,10 +88,15 @@ class CapnpFrameDecoder {
       if (this.frameBytes === 0) {
         const headerBytes = Math.ceil((1 + this.segmentCount) / 2) * 8;
         if (this.available < headerBytes) break;
-        const header = this.peek(headerBytes);
+        // Most headers are already contiguous. Read them in place instead of
+        // allocating subarray views for the count and segment-size table.
+        const first = this.chunks[this.head];
+        const contiguous = this.offset + headerBytes <= first.length;
+        const header = contiguous ? first : this.peek(headerBytes);
+        const headerOffset = contiguous ? this.offset : 0;
         let payloadWords = 0;
         for (let i = 0; i < this.segmentCount; i++) {
-          payloadWords += header.readUInt32LE(4 + i * 4);
+          payloadWords += header.readUInt32LE(headerOffset + 4 + i * 4);
         }
         this.frameBytes = headerBytes + payloadWords * 8;
       }
