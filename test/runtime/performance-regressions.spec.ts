@@ -1,7 +1,8 @@
 import { test, expect } from "vitest";
 import { Message, Pointer, Text, utils, type Struct } from "capnp-es";
 import { ListMania } from "../fixtures/list-mania";
-import { TestDefaults } from "../fixtures/test";
+import { TestAllTypes, TestDefaults } from "../fixtures/test";
+import { MultiSegmentArena } from "src/serialization/arena/multi-segment-arena";
 
 test("near pointer decoding preserves signed offsets and traversal accounting", () => {
   const message = new Message();
@@ -97,3 +98,74 @@ test("text encoding handles UTF-8 boundaries and unpaired surrogates", () => {
     expect(root.textField).toBe(input);
   }
 });
+
+test.each(["near", "composite", "far"])(
+  "field access preserves %s pointer validation and traversal charges",
+  (kind) => {
+    const message = new Message(
+      kind === "far" ? new MultiSegmentArena([new ArrayBuffer(8)]) : undefined,
+    );
+    const root = message.initRoot(TestAllTypes);
+    const struct = kind === "composite" ? root._initStructList(3).get(1) : root;
+    struct.uInt32Field = 0x12345678;
+    struct.uInt64Field = 0x123456789abcdef0n;
+    const reference = (index: number, s: Struct) => {
+      utils.checkPointerBounds(index, s);
+      const section = utils.getPointerSection(s);
+      return new Pointer(
+        section.segment,
+        section.byteOffset + index * 8,
+        s._capnp.depthLimit - 1,
+      );
+    };
+    for (const depth of [1, 8]) {
+      struct._capnp.depthLimit = depth;
+      for (const index of [-1, 0, 1, 100]) {
+        for (const budget of [8, 16, 24, 32, 40, 80, 1024]) {
+          const read = (getter: typeof reference) => {
+            message._capnp.traversalLimit = budget;
+            try {
+              const pointer = getter(index, struct);
+              return {
+                segment: pointer.segment.id,
+                offset: pointer.byteOffset,
+                depth: pointer._capnp.depthLimit,
+                remaining: message._capnp.traversalLimit,
+              };
+            } catch (error_) {
+              return {
+                error: String(error_),
+                remaining: message._capnp.traversalLimit,
+              };
+            }
+          };
+          expect(read(utils.getPointer)).toEqual(read(reference));
+        }
+      }
+    }
+    const referenceScalar = (offset: number, s: Struct) => {
+      utils.checkDataBounds(offset, 4, s);
+      const section = utils.getDataSection(s);
+      return section.segment.getUint32(section.byteOffset + offset);
+    };
+    for (const offset of [-1, 0, 4, 8, 12, 16, 20, 256]) {
+      for (const budget of [8, 16, 24, 40, 1024]) {
+        const read = (getter: typeof referenceScalar) => {
+          message._capnp.traversalLimit = budget;
+          try {
+            return {
+              value: getter(offset, struct),
+              remaining: message._capnp.traversalLimit,
+            };
+          } catch (error_) {
+            return {
+              error: String(error_),
+              remaining: message._capnp.traversalLimit,
+            };
+          }
+        };
+        expect(read(utils.getUint32)).toEqual(read(referenceScalar));
+      }
+    }
+  },
+);

@@ -31,6 +31,7 @@ import {
   setListPointer,
   getTargetStructSize,
   validate,
+  trackPointerAllocation,
 } from "./pointer.utils";
 import { PointerType } from "./pointer";
 import { Text } from "./text";
@@ -88,6 +89,52 @@ export function checkPointerBounds(index: number, s: Struct): void {
       format(PTR_STRUCT_POINTER_OUT_OF_BOUNDS, s, index, pointerLength),
     );
   }
+}
+
+// Resolve ordinary struct fields once. Composite elements share a tag word;
+// avoid constructing its location repeatedly for the bounds check and offset.
+// Keep the same traversal charges as checkPointerBounds + getPointerSection.
+function getPointerSectionAt(index: number, s: Struct): Pointer {
+  const segment = s.segment;
+  const word = segment.getInt32(s.byteOffset);
+  const high = segment.getUint32(s.byteOffset + 4);
+  const compositeIndex = s._capnp.compositeIndex;
+  const composite =
+    compositeIndex !== undefined &&
+    (word & 3) === PointerType.LIST &&
+    (high & 7) === ListElementSize.COMPOSITE;
+  if (
+    (compositeIndex === undefined && (word & 3) === PointerType.STRUCT) ||
+    composite
+  ) {
+    const contentOffset = s.byteOffset + 8 + (word >> 2) * 8;
+    let ps: Pointer | undefined;
+    let size = high;
+    if (composite) {
+      ps = new Pointer(segment, contentOffset);
+      size = segment.getUint32(contentOffset + 4);
+    }
+    const pointerLength = size >>> 16;
+    if (index < 0 || index >= pointerLength) {
+      throw new Error(
+        format(PTR_STRUCT_POINTER_OUT_OF_BOUNDS, s, index, pointerLength),
+      );
+    }
+    if (ps) {
+      trackPointerAllocation(segment.message, ps);
+      trackPointerAllocation(segment.message, ps);
+      ps.byteOffset +=
+        8 + compositeIndex! * ((size & 0xffff) + pointerLength) * 8;
+    } else {
+      ps = new Pointer(segment, contentOffset);
+    }
+    ps.byteOffset += ((size & 0xffff) + index) * 8;
+    return ps;
+  }
+  checkPointerBounds(index, s);
+  const ps = getPointerSection(s);
+  ps.byteOffset += index * 8;
+  return ps;
 }
 
 export function getInterfaceClientOrNullAt(index: number, s: Struct): Client {
@@ -220,9 +267,7 @@ export function getBit(
   const byteOffset = Math.floor(bitOffset / 8);
   const bitMask = 1 << (bitOffset % 8);
 
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   const v = ds.segment.getUint8(ds.byteOffset + byteOffset);
 
@@ -239,11 +284,7 @@ export function getData(
   s: Struct,
   defaultValue?: Pointer,
 ): Data {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   const l = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
@@ -262,6 +303,58 @@ export function getDataSection(s: Struct): Pointer {
   return getContent(s);
 }
 
+function getCheckedDataSection(
+  byteOffset: number,
+  byteLength: number,
+  s: Struct,
+): Pointer {
+  const segment = s.segment;
+  const word = segment.getInt32(s.byteOffset);
+  const high = segment.getUint32(s.byteOffset + 4);
+  const compositeIndex = s._capnp.compositeIndex;
+  const composite =
+    compositeIndex !== undefined &&
+    (word & 3) === PointerType.LIST &&
+    (high & 7) === ListElementSize.COMPOSITE;
+  if (
+    (compositeIndex === undefined && (word & 3) === PointerType.STRUCT) ||
+    composite
+  ) {
+    const contentOffset = s.byteOffset + 8 + (word >> 2) * 8;
+    let ds: Pointer | undefined;
+    let size = high;
+    if (composite) {
+      ds = new Pointer(segment, contentOffset);
+      size = segment.getUint32(contentOffset + 4);
+    }
+    const dataByteLength = (size & 0xffff) * 8;
+    if (
+      byteOffset < 0 ||
+      byteLength < 0 ||
+      byteOffset + byteLength > dataByteLength
+    ) {
+      throw new Error(
+        format(
+          PTR_STRUCT_DATA_OUT_OF_BOUNDS,
+          s,
+          byteLength,
+          byteOffset,
+          dataByteLength,
+        ),
+      );
+    }
+    if (ds) {
+      trackPointerAllocation(segment.message, ds);
+      ds.byteOffset +=
+        8 + compositeIndex! * (dataByteLength + (size >>> 16) * 8);
+      return ds;
+    }
+    return new Pointer(segment, contentOffset);
+  }
+  checkDataBounds(byteOffset, byteLength, s);
+  return getDataSection(s);
+}
+
 /**
  * Read a float32 value out of a struct.
  *
@@ -275,9 +368,7 @@ export function getFloat32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getFloat32(ds.byteOffset + byteOffset);
@@ -303,9 +394,7 @@ export function getFloat64(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     const lo =
@@ -335,9 +424,7 @@ export function getInt16(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 2, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 2, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getInt16(ds.byteOffset + byteOffset);
@@ -363,9 +450,7 @@ export function getInt32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getInt32(ds.byteOffset + byteOffset);
@@ -391,9 +476,7 @@ export function getInt64(
   s: Struct,
   defaultMask?: DataView,
 ): bigint {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     const lo =
@@ -423,9 +506,7 @@ export function getInt8(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getInt8(ds.byteOffset + byteOffset);
@@ -443,11 +524,7 @@ export function getList<T>(
   s: Struct,
   defaultValue?: Pointer,
 ): List<T> {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   const l = new ListClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
@@ -560,11 +637,7 @@ export function getList<T>(
 }
 
 export function getPointer(index: number, s: Struct): Pointer {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   return new Pointer(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 }
@@ -574,11 +647,7 @@ export function getPointerAs<T extends Pointer>(
   PointerClass: PointerCtor<T>,
   s: Struct,
 ): T {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   return new PointerClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 }
@@ -667,9 +736,7 @@ export function getUint16(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 2, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 2, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getUint16(ds.byteOffset + byteOffset);
@@ -694,9 +761,7 @@ export function getUint32(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getUint32(ds.byteOffset + byteOffset);
@@ -721,9 +786,7 @@ export function getUint64(
   s: Struct,
   defaultMask?: DataView,
 ): bigint {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     const lo =
@@ -753,9 +816,7 @@ export function getUint8(
   s: Struct,
   defaultMask?: DataView,
 ): number {
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   if (defaultMask === undefined) {
     return ds.segment.getUint8(ds.byteOffset + byteOffset);
@@ -767,11 +828,7 @@ export function getUint8(
 }
 
 export function initData(index: number, length: number, s: Struct): Data {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   const l = new Data(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
@@ -788,11 +845,7 @@ export function initList<T>(
   length: number,
   s: Struct,
 ): List<T> {
-  checkPointerBounds(index, s);
-
-  const ps = getPointerSection(s);
-
-  ps.byteOffset += index * 8;
+  const ps = getPointerSectionAt(index, s);
 
   const l = new ListClass(ps.segment, ps.byteOffset, s._capnp.depthLimit - 1);
 
@@ -821,9 +874,7 @@ export function setBit(
   const byteOffset = Math.floor(bitOffset / 8);
   const bitMask = 1 << (bitOffset % 8);
 
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   const b = ds.segment.getUint8(ds.byteOffset + byteOffset);
 
@@ -853,9 +904,7 @@ export function setFloat32(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setFloat32(0, value, NATIVE_LITTLE_ENDIAN);
@@ -884,9 +933,7 @@ export function setFloat64(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setFloat64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -919,9 +966,7 @@ export function setInt16(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 2, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 2, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt16(0, value, NATIVE_LITTLE_ENDIAN);
@@ -950,9 +995,7 @@ export function setInt32(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt32(0, value, NATIVE_LITTLE_ENDIAN);
@@ -981,9 +1024,7 @@ export function setInt64(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setBigInt64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -1016,9 +1057,7 @@ export function setInt8(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt8(0, value);
@@ -1049,9 +1088,7 @@ export function setUint16(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 2, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 2, s);
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint16(0, true);
@@ -1074,9 +1111,7 @@ export function setUint32(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 4, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 4, s);
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint32(0, true);
@@ -1099,9 +1134,7 @@ export function setUint64(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 8, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 8, s);
 
   if (defaultMask !== undefined) {
     TMP_WORD.setBigUint64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -1134,9 +1167,7 @@ export function setUint8(
   s: Struct,
   defaultMask?: DataView,
 ): void {
-  checkDataBounds(byteOffset, 1, s);
-
-  const ds = getDataSection(s);
+  const ds = getCheckedDataSection(byteOffset, 1, s);
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint8(0);
