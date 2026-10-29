@@ -58,7 +58,7 @@ methodology, commands, validation, and comparisons with node-capnp.
 
 ### 1. Decode near pointers once and read composite strides directly
 
-**Commit:** [fde53ab47](https://github.com/mnutt/capnp-es/commit/fde53ab476d3b923058e361a52ec512552a85aaf)
+**Commit:** [86032342f](https://github.com/mnutt/capnp-es/commit/86032342fa5d215a58b815657d44ff596fa821fb)
 
 **What:** `getContent()` handles ordinary same-segment pointers directly from
 their wire words. Composite-element offsets use the tag's data/pointer sizes
@@ -74,7 +74,7 @@ Source: [pointer.utils.ts](src/serialization/pointers/pointer.utils.ts).
 
 ### 2. Resolve field layout and bounds together
 
-**Commit:** [df62439e8](https://github.com/mnutt/capnp-es/commit/df62439e8e95a0a8484d5c1facbfdd730b6858d7)
+**Commit:** [deb8d9447](https://github.com/mnutt/capnp-es/commit/deb8d9447af67232fe8135e7e3622ba62498b72f)
 
 **What:** Scalar and pointer-field access combine the field bounds check with
 near-pointer layout resolution, including composite-list elements. Layout is
@@ -91,7 +91,7 @@ Source: [struct.utils.ts](src/serialization/pointers/struct.utils.ts).
 
 ### 3. Reuse the freshly resolved pointer-field temporary
 
-**Commit:** [2e6ad4dbe](https://github.com/mnutt/capnp-es/commit/2e6ad4dbe53b1af975c016e0df53afec3e7e08b9)
+**Commit:** [95041aedf](https://github.com/mnutt/capnp-es/commit/95041aedfdcd6d8fe64af72868d19b7c0d3a4f0f)
 
 **What:** `getPointer()` turns its freshly resolved location into the field
 pointer instead of constructing another Pointer and metadata object.
@@ -107,7 +107,7 @@ or shared reader. Sources: [pointer.ts](src/serialization/pointers/pointer.ts),
 
 ### 4. Use numeric locations for successful near scalar reads and writes
 
-**Commit:** [541702fea](https://github.com/mnutt/capnp-es/commit/541702fea1538b8e350accea8ff6e09f99368d8d)
+**Commit:** [69d43babb](https://github.com/mnutt/capnp-es/commit/69d43babb19c8fd2bebf58c1857d1fbce613dc73)
 
 **What:** `getCheckedDataSection()` returns a numeric offset for common locations
 instead of a temporary Pointer. `checkPointerOffset()` validates and charges
@@ -129,7 +129,7 @@ Sources: [pointer.ts](src/serialization/pointers/pointer.ts),
 
 ### 5. Use numeric locations for primitive-list and Data access
 
-**Commit:** [c880a25b4](https://github.com/mnutt/capnp-es/commit/c880a25b49bcbf565f5ed05322a82c1ee29a90e7)
+**Commit:** [eb43beb78](https://github.com/mnutt/capnp-es/commit/eb43beb78bde51debb5fc797234c361e955946e1)
 
 **What:** `getContentOffset()` provides the same allocation avoidance for simple
 near list/Data locations. Primitive list getters/setters and Data methods use
@@ -148,7 +148,7 @@ fallback checks. Sources: [pointer.utils.ts](src/serialization/pointers/pointer.
 
 ### 6. Apply the numeric-location path to `Data.copyBuffer()`
 
-**Commit:** [560966853](https://github.com/mnutt/capnp-es/commit/5609668532740ef17edcc14baf717a6d2237c669)
+**Commit:** [427b44ae7](https://github.com/mnutt/capnp-es/commit/427b44ae7f79b685e689ea819beeeefe03c68ad4)
 
 **What:** Bulk copying also avoids the temporary Pointer/metadata pair. The
 source and destination byte views, and the payload copy itself, remain.
@@ -168,7 +168,7 @@ Source: [data.ts](src/serialization/pointers/data.ts).
 
 ### 7. Reach list targets through a private Symbol for internal access
 
-**Commit:** [263f5e058](https://github.com/mnutt/capnp-es/commit/263f5e058fe4891d3e0edb600b2f81fc2689033e)
+**Commit:** [c16055098](https://github.com/mnutt/capnp-es/commit/c160550986ec45c81a6adc656cec72e660b1c255)
 
 **What:** Internal wire operations unwrap the list Proxy once through a private
 Symbol, then access the underlying object. Public indexing, method overrides,
@@ -185,7 +185,7 @@ Source: [list.ts and neighboring implementations](src/serialization/pointers/lis
 
 ### 8. Allocate snapshot arrays without initializing them twice
 
-**Commit:** [f8630bd58](https://github.com/mnutt/capnp-es/commit/f8630bd5819c70c6d8ed489aa9eb8432ed8135ae)
+**Commit:** [94b430176](https://github.com/mnutt/capnp-es/commit/94b430176324955df365357d70da3bc95a06a588)
 
 **What:** `List.toArray()` creates an array of the required length and fills
 every element, replacing `Array.from()` initialization followed by overwriting.
@@ -201,7 +201,7 @@ Source: [list.ts](src/serialization/pointers/list/list.ts).
 
 ### 9. Allocate segment tables without initializing them twice
 
-**Commit:** [2d2a79557](https://github.com/mnutt/capnp-es/commit/2d2a79557ba295e55bee8689fbb3d259674c2714)
+**Commit:** [0ed6f3263](https://github.com/mnutt/capnp-es/commit/0ed6f3263345ed13b8cc1db8cd7328386d449900)
 
 **What:** Framed-segment and Segment-object arrays are reserved and filled
 directly. Incoming header size is validated before allocating the array.
@@ -217,7 +217,7 @@ before allocation. Source: [message.ts](src/serialization/message.ts).
 
 ### 10. Omit indexed Proxies for internal Text wrappers
 
-**Commit:** [1991606b0](https://github.com/mnutt/capnp-es/commit/1991606b037d2a0cd5a2e347558f60b82a5a5a97)
+**Commit:** [1bf649c90](https://github.com/mnutt/capnp-es/commit/1bf649c9070b4d4d56b89dc98f0777baa89a9791)
 
 **What:** Internal Text construction can skip the indexed-list Proxy. The first
 pass used this to reduce text-access overhead; later direct reads superseded
@@ -234,7 +234,7 @@ from the public indexed interface. Sources: [text.ts](src/serialization/pointers
 
 ### 11. Decode internal text directly without a Text reader object
 
-**Commit:** [226e35d5e](https://github.com/mnutt/capnp-es/commit/226e35d5edbde3c319896e6fd08b750accf2316b)
+**Commit:** [d7dede2fa](https://github.com/mnutt/capnp-es/commit/d7dede2faf9443100a733a1a06cdd883dfdac4ce)
 
 **What:** `readText()` resolves a near byte-list and decodes from its location
 without constructing a Text wrapper. Validation and traversal charges remain;
@@ -250,7 +250,7 @@ to stay aligned. Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 12. Encode short UTF-8 strings directly into the segment
 
-**Commit:** [8f3bc0370](https://github.com/mnutt/capnp-es/commit/8f3bc0370951d6566a57ed3d1bc66e4212893524)
+**Commit:** [633778bcf](https://github.com/mnutt/capnp-es/commit/633778bcfc70aaf3154da072820f3185dfe31a2a)
 
 **What:** For strings up to 256 UTF-16 code units, compute the byte length in JS
 and call `TextEncoder.encodeInto()` on segment storage. This avoids an encoded
@@ -268,7 +268,7 @@ coverage. Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 13. Decode tiny ASCII strings without a decoder view
 
-**Commit:** [b954b502e](https://github.com/mnutt/capnp-es/commit/b954b502e208102dd4e41d368e05f371113fb158)
+**Commit:** [21ea5df45](https://github.com/mnutt/capnp-es/commit/21ea5df4509f7a2d3cbdf1195236a520c0037fd8)
 
 **What:** Bounded ASCII strings of up to eight bytes use direct byte reads and
 `String.fromCharCode()`. Longer or non-ASCII input uses TextDecoder, preserving
@@ -287,7 +287,7 @@ Source: [text.ts](src/serialization/pointers/text.ts).
 
 ### 14. Grow single-segment arenas geometrically
 
-**Commit:** [36bfd45ef](https://github.com/mnutt/capnp-es/commit/36bfd45eff241fa49f9a8f06f5224c76a27b9539)
+**Commit:** [11300a52d](https://github.com/mnutt/capnp-es/commit/11300a52da1b1deda966dad158f7ef0b5315d6d1)
 
 **What:** Grow by at least the current capacity rather than repeatedly adding
 only the minimum required increment. Existing handles continue to refer to the
@@ -304,7 +304,7 @@ Source: [single-segment-arena.ts](src/serialization/arena/single-segment-arena.t
 
 ### 15. Pack into typed byte storage instead of a JS number array
 
-**Commit:** [8f5e1cd3a](https://github.com/mnutt/capnp-es/commit/8f5e1cd3a8200c0ac538f72208a5d29033e3ac64)
+**Commit:** [7dd364d67](https://github.com/mnutt/capnp-es/commit/7dd364d6747329b4e0091aa9ff700ccdd80d2d70)
 
 **What:** Packing writes bytes into a typed output buffer with a cursor, avoiding
 dynamic number-array accumulation and conversion. Later passes refined its
@@ -319,7 +319,7 @@ Source: [packing.ts](src/serialization/packing.ts).
 
 ### 16. Scan zero runs by words and copy literal runs in bulk
 
-**Commit:** [0044c2e73](https://github.com/mnutt/capnp-es/commit/0044c2e7397006207c66febba33ad1ba042041af)
+**Commit:** [1dfb3ca33](https://github.com/mnutt/capnp-es/commit/1dfb3ca33c33ed1c09b34597d5b16c680e4ede52)
 
 **What:** Two 32-bit reads test a whole zero word; literal runs use bulk typed-array
 copying instead of individual byte operations where possible.
@@ -335,7 +335,7 @@ matched the previous output. Source: [packing.ts](src/serialization/packing.ts).
 
 ### 17. Adapt packing capacity to input size
 
-**Commit:** [14b233e6c](https://github.com/mnutt/capnp-es/commit/14b233e6cf145e67efccd337e97c9b057ae70e08)
+**Commit:** [76b45b3b7](https://github.com/mnutt/capnp-es/commit/76b45b3b75d1d3b3b5347022c7ec0a1da429f2c7)
 
 **What:** Reserve the maximum output size for inputs up to 2 KiB. For larger
 inputs, start at 256 bytes and grow as needed. This keeps small dense inputs
@@ -352,7 +352,7 @@ Source: [packing.ts](src/serialization/packing.ts).
 
 ### 18. Consume packed views without intermediate trim copies
 
-**Commit:** [a5d82dc61](https://github.com/mnutt/capnp-es/commit/a5d82dc614ed3e2c82b2a320b9e456243e954eb2)
+**Commit:** [10e378f03](https://github.com/mnutt/capnp-es/commit/10e378f0312db288e0a01a3c40b28aaffb4fcd52)
 
 **What:** Internal `packToView()` returns a view over temporary packed storage.
 Message serialization copies it directly into the final output, avoiding an
@@ -370,7 +370,7 @@ Sources: [packing.ts](src/serialization/packing.ts),
 
 ### 19. Unpack bounded input views without a preliminary copy
 
-**Commit:** [f6b5a4bf1](https://github.com/mnutt/capnp-es/commit/f6b5a4bf1e294dea30059458ca381be9e6b3a986)
+**Commit:** [aa7761c66](https://github.com/mnutt/capnp-es/commit/aa7761c665e7515f27372d7d9b7225bc12dbc2a8)
 
 **What:** Packed input can be an ArrayBuffer view, preserving its offset and
 length through sizing and decoding. Message construction no longer first
@@ -391,7 +391,7 @@ Sources: [packing.ts](src/serialization/packing.ts),
 
 ### 20. Decode a remote exception reason once
 
-**Commit:** [45fb03db1](https://github.com/mnutt/capnp-es/commit/45fb03db17d66f7f944f9ad4b36c389eaf1e06ea)
+**Commit:** [8dee1b0f6](https://github.com/mnutt/capnp-es/commit/8dee1b0f626ebc5988e767fc268d2589626bf268)
 
 **What:** CapnpRpcError reads the wire reason once, and MethodError reuses
 `remoteReason` instead of invoking the text getter again. The old path could
@@ -407,7 +407,7 @@ Sources: [rpc-error.ts](src/rpc/rpc-error.ts),
 
 ### 21. Build fixed-format RPC error messages directly
 
-**Commit:** [98f12d6c5](https://github.com/mnutt/capnp-es/commit/98f12d6c5849e3304eebcadb3d34c83de9ff2bb9)
+**Commit:** [3b4248351](https://github.com/mnutt/capnp-es/commit/3b4248351e3a92384e555a21d2a2f2178df90b3b)
 
 **What:** Split the fixed message templates once, then concatenate their pieces
 and current values. General-purpose `format()` remains unchanged. Error text,
@@ -427,7 +427,7 @@ that tradeoff. Sources: [rpc-error.ts](src/rpc/rpc-error.ts),
 
 ### 22. Avoid a default empty Error options object
 
-**Commit:** [29c9cdabb](https://github.com/mnutt/capnp-es/commit/29c9cdabbbe0b677994bed293cad7312b3af44c7)
+**Commit:** [955988de4](https://github.com/mnutt/capnp-es/commit/955988de474975e11b49037efcecb83f4b51da18)
 
 **What:** Leave omitted options undefined instead of constructing `{}` on every
 CapnpRpcError call. Explicit options and cause behavior remain supported.
@@ -442,7 +442,7 @@ adding an algorithm or state. Source: [rpc-error.ts](src/rpc/rpc-error.ts).
 
 ### 23. Skip getters for absent RPC capability tables
 
-**Commit:** [5ad761256](https://github.com/mnutt/capnp-es/commit/5ad761256efaec2abada062ae331937475a628e3)
+**Commit:** [bcf787294](https://github.com/mnutt/capnp-es/commit/bcf7872940610110cdb02536f410c6a411018099)
 
 **What:** Check `_hasCapTable()` before import processing and sender-hosted
 capability collection. The generated getter initializes a missing composite
@@ -462,7 +462,7 @@ Source: [conn.ts](src/rpc/conn.ts).
 
 ### 24. Queue fragmented input instead of repeatedly concatenating it
 
-**Commit:** [c60fe275d](https://github.com/mnutt/capnp-es/commit/c60fe275d5366944666b782ff16298ae5eaec74c)
+**Commit:** [053f19097](https://github.com/mnutt/capnp-es/commit/053f19097d87c97661d6999849e6ad9aa39179fb)
 
 **What:** Retain incoming chunks until a complete frame is available. Contiguous
 frames can be views; fragmented payloads are copied into the completed frame
@@ -481,7 +481,7 @@ Source: [CapnpFrameDecoder in node/index.ts](src/node/index.ts).
 
 ### 25. Construct small outgoing frames directly in pooled Buffers
 
-**Commit:** [b3a5d56f4](https://github.com/mnutt/capnp-es/commit/b3a5d56f48001bf79f0b0d8c986e541124b5fa5a)
+**Commit:** [52d0f30dc](https://github.com/mnutt/capnp-es/commit/52d0f30dc9cd8a78166804fc430cc8bda2746850)
 
 **What:** For frames up to 1,024 bytes, write the header and segment bytes directly
 into the final Buffer, avoiding an intermediate header ArrayBuffer and
@@ -498,7 +498,7 @@ bytes and initialized padding. Source: [messageToBufferChunks in node/index.ts](
 
 ### 26. Cork only multi-chunk writes and uncork immediately
 
-**Commit:** [b8f29f677](https://github.com/mnutt/capnp-es/commit/b8f29f67747d644b03833826afaedae27178b448)
+**Commit:** [f42f8d8f6](https://github.com/mnutt/capnp-es/commit/f42f8d8f639a1ffd88b6bc0eed1a84e78245701f)
 
 **What:** When multiple chunks are queued, cork for that flush so the socket can
 use a vectored write. Uncork in the same call, including on backpressure and
@@ -516,7 +516,7 @@ Source: [flushWrites in node/index.ts](src/node/index.ts).
 
 ### 27. Read contiguous incoming headers without temporary subarrays
 
-**Commit:** [74c7d221e](https://github.com/mnutt/capnp-es/commit/74c7d221efce0fd756d00bbc89c158c5b9e692f9)
+**Commit:** [5517c0230](https://github.com/mnutt/capnp-es/commit/5517c02304aa082e8d627fa75412277843416dba)
 
 **What:** Read counts and segment sizes directly from the queued Buffer at its
 current offset. Fragmented headers retain the bounded-copy fallback.
@@ -554,7 +554,7 @@ was not reproduced by the focused repeat.
 
 ### 28. Correct list erasure's byte/word count
 
-**Commit:** [e8ca698b5](https://github.com/mnutt/capnp-es/commit/e8ca698b58c69b7a4ee5f7aa741eca971455fe4a)
+**Commit:** [63a4d3237](https://github.com/mnutt/capnp-es/commit/63a4d32374bf68a05df31cb404bfa82834b711ff)
 
 **What:** Convert padded content bytes to words before passing the count to
 word-based erasure. Text overwrite tests exposed the old unit mismatch, which
@@ -605,7 +605,7 @@ These are not additional optimizations in the current implementation.
 
 ## Benchmark and validation support
 
-**Benchmark-support commit:** [1b0c9f938](https://github.com/mnutt/capnp-es/commit/1b0c9f938aa6eb9758f38962f4d479636cbd5de3)
+**Benchmark-support commit:** [c14bba7c3](https://github.com/mnutt/capnp-es/commit/c14bba7c3da145b8b37850d691ed3dcc40d99443)
 
 The work also added isolated node-capnp setup, Sandstorm-shaped serialization
 fixtures, RPC scenarios against the common C++ peer, scaling cases, a compiled
@@ -619,8 +619,20 @@ list receiver/override semantics, text encoding and overwrites, arena growth
 with live handles, packing equivalence, bounded/shared input, error metadata,
 capability tables, and transport fragmentation/backpressure.
 
-The latest recorded runtime validation is **248 passing, 26 skipped, and the
+At the end of the optimization passes, runtime validation was **248 passing, 26 skipped, and the
 same seven pre-existing RPC failures**, with all 20 common-C++-peer RPC checks
 passing. Types, changed-code lint, formatting, and whitespace checks passed.
 This catalogue consolidates that recorded evidence; writing it did not involve
 a new performance run.
+
+### RPC follow-up after the optimization passes
+
+[9fdf43f1b](https://github.com/mnutt/capnp-es/commit/9fdf43f1bfb3ef109d0de1b930a833037f32665f)
+fixes unsupported-call exception classification on `sandstorm-compat` and
+strengthens the RPC tests after integrating the newer upstream fixes. Tests now cover same-peer
+resolution without an embargo, ordered calls after receiver loopback,
+`UNIMPLEMENTED` returned exceptions, error-message behavior, and derived-pipeline
+release versus explicit root cancellation. The performance branch was rebased
+onto this fix; its full runtime suite passes **256 tests, with 28 skipped and
+no failures**, and type checking passes. The measurements above remain the
+historical results from before this follow-up; benchmarks were not rerun.
