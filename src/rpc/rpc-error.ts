@@ -3,6 +3,7 @@
 import { RPC_ERROR } from "../errors";
 import { Exception, type Exception_Type } from "../capnp/rpc";
 
+// This fixed format ends in %s; avoid parsing it for every rejected RPC.
 const messagePrefix = RPC_ERROR.slice(0, -2);
 
 export type CapnpRpcErrorCode =
@@ -62,16 +63,16 @@ export class CapnpRpcError extends Error {
   constructor(message: string, options?: CapnpRpcErrorOptions);
   constructor(
     exceptionOrMessage: Exception | string,
-    options: CapnpRpcErrorOptions = {},
+    options?: CapnpRpcErrorOptions,
   ) {
     if (typeof exceptionOrMessage === "string") {
-      const remoteReason = options.remoteReason ?? exceptionOrMessage;
+      const remoteReason = options?.remoteReason ?? exceptionOrMessage;
       super(messagePrefix + remoteReason, options);
       this.name = "CapnpRpcError";
-      this.code = options.code ?? "failed";
+      this.code = options?.code ?? "failed";
       this.remoteReason = remoteReason;
-      this.remoteTrace = options.remoteTrace;
-      this.exception = options.exception;
+      this.remoteTrace = options?.remoteTrace;
+      this.exception = options?.exception;
       return;
     }
 
