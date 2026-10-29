@@ -485,7 +485,10 @@ export class Conn {
       }
       default: {
         this.popAnswer(id);
-        this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
+        this.sendReturnException(
+          id,
+          new RPCError(RPC_UNIMPLEMENTED, { code: "unimplemented" }),
+        );
         return;
       }
     }
@@ -493,7 +496,10 @@ export class Conn {
     const interfaceDef = Registry.lookup(mcall.interfaceId);
     if (!interfaceDef) {
       this.popAnswer(id);
-      this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
+      this.sendReturnException(
+        id,
+        new RPCError(RPC_UNIMPLEMENTED, { code: "unimplemented" }),
+      );
       return;
     }
 
@@ -504,7 +510,10 @@ export class Conn {
     const method = methodTable[mcall.methodId];
     if (!method) {
       this.popAnswer(id);
-      this.sendReturnException(id, new Error(RPC_UNIMPLEMENTED));
+      this.sendReturnException(
+        id,
+        new RPCError(RPC_UNIMPLEMENTED, { code: "unimplemented" }),
+      );
       return;
     }
 

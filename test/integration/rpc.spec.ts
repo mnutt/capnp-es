@@ -572,12 +572,12 @@ describe("rpc", () => {
     },
   );
 
-  test(
-    "pipeline close sends finish for unresolved parent question",
+  test.each([false, true])(
+    "derived pipeline close preserves its parent unless the root is closed (root closed: %s)",
     {
       timeout: 2000,
     },
-    async () => {
+    async (closeRoot) => {
       let releaseGet: (() => void) | undefined;
       const getGate = new Promise<void>((resolve) => {
         releaseGet = resolve;
@@ -632,12 +632,29 @@ describe("rpc", () => {
         const pipedCap = pending.getCapability();
 
         await waitUntil(() => getQuestionId !== undefined, 1000);
-        pending.pipeline.answer.pipelineClose([]);
-        await waitUntil(
-          () => finishQuestionIds.includes(getQuestionId as number),
-          1000,
-        );
+        t.ok(clientConn.findQuestion(getQuestionId!));
         pipedCap.client.close();
+        t.ok(clientConn.findQuestion(getQuestionId!));
+        if (closeRoot) {
+          pending.pipeline.client().close();
+          await waitUntil(
+            () => finishQuestionIds.includes(getQuestionId!),
+            1000,
+          );
+          t.equal(clientConn.findQuestion(getQuestionId!), null);
+        } else {
+          t.ok(clientConn.findQuestion(getQuestionId!));
+          t.notInclude(finishQuestionIds, getQuestionId!);
+          releaseGet?.();
+          const result = await pending.promise();
+          const response = await result.capability
+            .subtract((p) => {
+              p.a = 9;
+              p.b = 2;
+            })
+            .promise();
+          t.equal(response.result, 7);
+        }
       } finally {
         serverPort.off("message", onMessage);
         releaseGet?.();
