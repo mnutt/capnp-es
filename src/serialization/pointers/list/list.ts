@@ -97,7 +97,10 @@ export class List<T> extends Pointer implements Array<T> {
 
   toArray(): T[] {
     const { length } = this;
-    const res = Array.from({ length }) as T[];
+    // Filled below. Avoid Array.from's per-element initialization, and retain
+    // its empty result for an uninitialized Text (whose length is -1).
+    // eslint-disable-next-line unicorn/no-new-array
+    const res = new Array<T>(Math.max(0, length));
     for (let i = 0; i < length; i++) {
       res[i] = this.at(i);
     }
