@@ -168,7 +168,7 @@ function messageToBufferChunks(message: Message): Buffer[] {
   for (const segment of segments) byteLength += padToWord(segment.byteLength);
 
   // Write small frames directly into the final pooled Buffer. Large frames
-  // retain segment views and allocate only the segment-table header here.
+  // copy each segment so queued writes cannot observe later message mutations.
   const coalesce = byteLength <= CONCAT_SMALL_FRAME_BYTES;
   const header = Buffer.allocUnsafe(coalesce ? byteLength : headerBytes);
   header.writeUInt32LE(segments.length - 1, 0);
@@ -184,7 +184,7 @@ function messageToBufferChunks(message: Message): Buffer[] {
       header.set(new Uint8Array(segment.buffer, 0, length), offset);
       offset += length;
     } else {
-      chunks.push(Buffer.from(segment.buffer, 0, length));
+      chunks.push(Buffer.from(new Uint8Array(segment.buffer, 0, length)));
     }
   }
   return chunks;

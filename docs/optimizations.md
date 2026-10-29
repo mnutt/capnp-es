@@ -485,7 +485,9 @@ Source: [CapnpFrameDecoder in node/index.ts](src/node/index.ts).
 
 **What:** For frames up to 1,024 bytes, write the header and segment bytes directly
 into the final Buffer, avoiding an intermediate header ArrayBuffer and
-concatenation. Large frames use a pooled header and retain segment views.
+concatenation. Large frames use a pooled header and owned copies of each segment.
+The ownership fix preserves snapshot semantics while writes wait for drain;
+large-frame timings above predate that additional copy and need remeasurement.
 
 **Benefit:** Isolated C trials `78` → `79` measured callbacks
 **43.39 → 41.71 µs**, about 4%, and 1 KiB writes **21.42 → 19.01 µs**, about 11%.
@@ -493,8 +495,8 @@ The latter is exploratory: final combined small-write improvements were only
 2–4%. Transport `getStreamFrame` allocation/profile work disappears.
 
 **Complexity: +2.** Two construction paths with explicit segment counts,
-padding, lengths, and ownership. Tests ensure small frames contain independent
-bytes and initialized padding. Source: [messageToBufferChunks in node/index.ts](src/node/index.ts).
+padding, lengths, and ownership. Tests cover independent small-frame bytes, initialized padding, and large
+frames mutated while queued behind backpressure. Source: [messageToBufferChunks in node/index.ts](src/node/index.ts).
 
 ### 26. Cork only multi-chunk writes and uncork immediately
 

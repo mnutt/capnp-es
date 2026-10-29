@@ -163,6 +163,34 @@ describe("Node RPC transport", () => {
     },
   );
 
+  test("snapshots large messages queued behind a blocked write", async () => {
+    const stream = new BackpressuredDuplex();
+    const transport = transportFromDuplex(stream);
+    const messages = [123, 456].map((id) => {
+      const message = new Message();
+      const root = message.initRoot(RPCMessage);
+      const call = root._initCall();
+      call.questionId = id;
+      call._initParams()._initCapTable(100);
+      return { message, root };
+    });
+    const expected = Buffer.concat(
+      messages.map(({ message }) => Buffer.from(message.toArrayBuffer())),
+    );
+    try {
+      for (const { root } of messages) transport.sendMessage(root);
+      for (const { root } of messages) root.call.questionId = 999;
+      for (let i = 0; i < messages.length; i++) {
+        const drained = once(stream, "drain");
+        stream.completeWrite();
+        await drained;
+      }
+      t.deepEqual(Buffer.concat(stream.batches.flat()), expected);
+    } finally {
+      transport.close();
+    }
+  });
+
   test("uncorks multi-chunk writes under backpressure and preserves frame order", async () => {
     const stream = new BackpressuredDuplex();
     const transport = transportFromDuplex(stream);
