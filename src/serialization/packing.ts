@@ -198,140 +198,72 @@ export function pack(
 
   const src = new Uint8Array(unpacked, byteOffset, byteLength);
 
-  // A word needs at most a tag, eight literal bytes and a run count. Avoid
-  // growing a JS number array and converting every element again at the end.
+  // A word needs at most a tag, eight literals and a run count.
   const dst = new Uint8Array(Math.ceil(src.byteLength / 8) * 10);
-  let dstByteOffset = 0;
-
-  let lastTag = PackedTag.NONZERO_NONSPAN;
-
-  /** This is where we need to remember to write the SPAN tag (0xff). */
-
-  let spanWordCountOffset = 0;
-
-  /** How many words have been copied during the current range. */
-
-  let rangeWordCount = 0;
-
-  for (
-    let srcByteOffset = 0;
-    srcByteOffset < src.byteLength;
-    srcByteOffset += 8
-  ) {
-    /** Read in the entire word. Yes, this feels silly but it's fast! */
-
-    const a = src[srcByteOffset];
-    const b = src[srcByteOffset + 1];
-    const c = src[srcByteOffset + 2];
-    const d = src[srcByteOffset + 3];
-    const e = src[srcByteOffset + 4];
-    const f = src[srcByteOffset + 5];
-    const g = src[srcByteOffset + 6];
-    const h = src[srcByteOffset + 7];
-
+  const words = new DataView(src.buffer, src.byteOffset, src.byteLength);
+  let dstOffset = 0;
+  let srcOffset = 0;
+  while (srcOffset < src.byteLength) {
+    const a = src[srcOffset];
+    const b = src[srcOffset + 1];
+    const c = src[srcOffset + 2];
+    const d = src[srcOffset + 3];
+    const e = src[srcOffset + 4];
+    const f = src[srcOffset + 5];
+    const g = src[srcOffset + 6];
+    const h = src[srcOffset + 7];
     const tag = getTagByte(a, b, c, d, e, f, g, h);
+    dst[dstOffset++] = tag;
+    if (a !== 0) dst[dstOffset++] = a;
+    if (b !== 0) dst[dstOffset++] = b;
+    if (c !== 0) dst[dstOffset++] = c;
+    if (d !== 0) dst[dstOffset++] = d;
+    if (e !== 0) dst[dstOffset++] = e;
+    if (f !== 0) dst[dstOffset++] = f;
+    if (g !== 0) dst[dstOffset++] = g;
+    if (h !== 0) dst[dstOffset++] = h;
+    srcOffset += 8;
 
-    /** If this is true we'll skip the normal word write logic after the switch statement. */
-
-    let skipWriteWord = true;
-
-    switch (lastTag) {
-      case PackedTag.ZERO: {
-        // We're writing a range of words with all zeroes in them. See if we need to bail out of the fast path.
-
-        if (tag !== PackedTag.ZERO || rangeWordCount >= 0xff) {
-          // There's a bit in there or we got too many zeroes. Damn, we need to bail.
-
-          dst[dstByteOffset++] = rangeWordCount;
-          rangeWordCount = 0;
-
-          skipWriteWord = false;
-        } else {
-          // Kay, let's quickly inc this and go.
-
-          rangeWordCount++;
-        }
-
-        break;
+    if (tag === PackedTag.ZERO) {
+      const start = srcOffset;
+      const end = Math.min(src.byteLength, start + 255 * 8);
+      // Zero runs only need two word reads, without reclassifying every byte.
+      while (
+        srcOffset + 8 <= end &&
+        (words.getUint32(srcOffset, true) |
+          words.getUint32(srcOffset + 4, true)) ===
+          0
+      ) {
+        srcOffset += 8;
       }
-
-      case PackedTag.SPAN: {
-        // We're writing a span of nonzero words.
-
-        const zeroCount = getZeroByteCount(a, b, c, d, e, f, g, h);
-
-        // See if we need to bail now.
-
-        if (zeroCount >= PACK_SPAN_THRESHOLD || rangeWordCount >= 0xff) {
-          // Alright, time to get packing again. Write the number of words we skipped to the beginning of the span.
-
-          dst[spanWordCountOffset] = rangeWordCount;
-          rangeWordCount = 0;
-
-          // We have to write this word normally.
-
-          skipWriteWord = false;
-        } else {
-          // Just write this word verbatim.
-
-          dst[dstByteOffset++] = a;
-          dst[dstByteOffset++] = b;
-          dst[dstByteOffset++] = c;
-          dst[dstByteOffset++] = d;
-          dst[dstByteOffset++] = e;
-          dst[dstByteOffset++] = f;
-          dst[dstByteOffset++] = g;
-          dst[dstByteOffset++] = h;
-
-          rangeWordCount++;
-        }
-
-        break;
+      dst[dstOffset++] = (srcOffset - start) / 8;
+    } else if (tag === PackedTag.SPAN) {
+      const start = srcOffset;
+      const end = Math.min(src.byteLength, start + 255 * 8);
+      while (
+        srcOffset < end &&
+        getZeroByteCount(
+          src[srcOffset],
+          src[srcOffset + 1],
+          src[srcOffset + 2],
+          src[srcOffset + 3],
+          src[srcOffset + 4],
+          src[srcOffset + 5],
+          src[srcOffset + 6],
+          src[srcOffset + 7],
+        ) < PACK_SPAN_THRESHOLD
+      ) {
+        srcOffset += 8;
       }
-      default: {
-        // Didn't get a special tag last time, let's write this as normal.
-
-        skipWriteWord = false;
-
-        break;
+      dst[dstOffset++] = (srcOffset - start) / 8;
+      if (srcOffset !== start) {
+        // Copy a literal run in bulk rather than writing each byte in JS.
+        dst.set(src.subarray(start, srcOffset), dstOffset);
+        dstOffset += srcOffset - start;
       }
-    }
-
-    // A goto is fast, idk why people keep hatin'.
-    if (skipWriteWord) {
-      continue;
-    }
-
-    dst[dstByteOffset++] = tag;
-    lastTag = tag;
-
-    if (a !== 0) dst[dstByteOffset++] = a;
-    if (b !== 0) dst[dstByteOffset++] = b;
-    if (c !== 0) dst[dstByteOffset++] = c;
-    if (d !== 0) dst[dstByteOffset++] = d;
-    if (e !== 0) dst[dstByteOffset++] = e;
-    if (f !== 0) dst[dstByteOffset++] = f;
-    if (g !== 0) dst[dstByteOffset++] = g;
-    if (h !== 0) dst[dstByteOffset++] = h;
-
-    // Record the span tag offset if needed, making sure to actually leave room for it.
-
-    if (tag === PackedTag.SPAN) {
-      spanWordCountOffset = dstByteOffset;
-
-      dst[dstByteOffset++] = 0;
     }
   }
-
-  // We're done. If we were writing a range let's finish it.
-
-  if (lastTag === PackedTag.ZERO) {
-    dst[dstByteOffset++] = rangeWordCount;
-  } else if (lastTag === PackedTag.SPAN) {
-    dst[spanWordCountOffset] = rangeWordCount;
-  }
-
-  return dst.buffer.slice(0, dstByteOffset);
+  return dst.buffer.slice(0, dstOffset);
 }
 
 /**
