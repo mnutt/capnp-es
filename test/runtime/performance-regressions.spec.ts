@@ -75,3 +75,25 @@ test("growing a single segment preserves earlier list and text handles", () => {
     expect(decoded.textList.get(i)).toBe(`entry-${i}`);
   }
 });
+
+test("text encoding handles UTF-8 boundaries and unpaired surrogates", () => {
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const codes = [
+    0, 0x7f, 0x80, 0x7ff, 0x800, 0xd7ff, 0xd800, 0xdbff, 0xdc00, 0xdfff, 0xe000,
+    0xffff,
+  ];
+  const root = new Message().initRoot(TestDefaults);
+  for (const first of codes) {
+    for (const second of codes) {
+      const input = String.fromCharCode(first, second);
+      root.textField = input;
+      expect(root.textField).toBe(decoder.decode(encoder.encode(input)));
+    }
+  }
+  for (const count of [255, 256, 257, 4096]) {
+    const input = "é".repeat(count - 2) + "🦀";
+    root.textField = input;
+    expect(root.textField).toBe(input);
+  }
+});

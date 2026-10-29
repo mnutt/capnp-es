@@ -8,6 +8,26 @@ import { Pointer, PointerType } from "./pointer";
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
+function utf8ByteLength(value: string): number {
+  let length = 0;
+  for (let i = 0; i < value.length; i++) {
+    const code = value.charCodeAt(i);
+    if (code < 0x80) length++;
+    else if (code < 0x800) length += 2;
+    else if (
+      code >= 0xd800 &&
+      code <= 0xdbff &&
+      i + 1 < value.length &&
+      value.charCodeAt(i + 1) >= 0xdc00 &&
+      value.charCodeAt(i + 1) <= 0xdfff
+    ) {
+      length += 4;
+      i++;
+    } else length += 3;
+  }
+  return length;
+}
+
 export class Text extends List<string> {
   static fromPointer(pointer: Pointer, indexed = true): Text {
     validate(PointerType.LIST, pointer, ListElementSize.BYTE);
@@ -55,8 +75,10 @@ export class Text extends List<string> {
    * @param value The string value to set.
    */
   set(index: number, value: string): void {
-    const src = textEncoder.encode(value);
-    const dstLength = src.byteLength + index;
+    // Short strings benefit from encoding directly into the segment. For long
+    // strings the native encoder's sizing pass is faster than a JS UTF-16 scan.
+    const src = value.length > 256 ? textEncoder.encode(value) : undefined;
+    const dstLength = (src ? src.byteLength : utf8ByteLength(value)) + index;
     let c: Pointer;
     let original: Uint8Array | undefined;
 
@@ -85,7 +107,8 @@ export class Text extends List<string> {
       dst.set(original);
     }
 
-    dst.set(src, index);
+    if (src) dst.set(src, index);
+    else textEncoder.encodeInto(value, index === 0 ? dst : dst.subarray(index));
   }
 
   toString(): string {
