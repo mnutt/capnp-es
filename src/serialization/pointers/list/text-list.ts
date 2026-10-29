@@ -2,7 +2,7 @@
 
 import { ListElementSize } from "../../list-element-size";
 import { _ListCtor, List } from "./list";
-import { Text } from "../text";
+import { Text, readText } from "../text";
 import { getContent } from "../pointer.utils";
 
 export class TextList extends List<string> {
@@ -16,7 +16,7 @@ export class TextList extends List<string> {
 
     c.byteOffset += index * 8;
 
-    return Text.fromPointer(c, false).get(0);
+    return readText(c);
   }
 
   set(index: number, value: string): void {

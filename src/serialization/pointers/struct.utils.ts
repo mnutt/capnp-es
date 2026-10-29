@@ -34,7 +34,7 @@ import {
   trackPointerAllocation,
 } from "./pointer.utils";
 import { PointerType, checkPointer } from "./pointer";
-import { Text } from "./text";
+import { Text, readText } from "./text";
 import {
   PTR_INIT_COMPOSITE_STRUCT,
   PTR_INVALID_UNION_ACCESS,
@@ -715,14 +715,16 @@ export function getText(
   s: Struct,
   defaultValue?: string,
 ): string {
-  const t = Text.fromPointer(getPointer(index, s), false);
+  const p = getPointer(index, s);
 
   // FIXME: This will perform an unnecessary string<>ArrayBuffer roundtrip.
-  if (isNull(t) && defaultValue) {
+  if (defaultValue && isNull(p)) {
+    const t = Text.fromPointer(p, false);
     t.set(0, defaultValue);
+    return t.get(0);
   }
 
-  return t.get(0);
+  return readText(p);
 }
 
 /**
