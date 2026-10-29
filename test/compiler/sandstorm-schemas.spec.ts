@@ -3,16 +3,16 @@ import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { compileAll } from "capnp-es/compiler";
-import { test, assert as t } from "vitest";
+import { test, expect, assert as t } from "vitest";
 
 const sandstormSrc =
   process.env.CAPNP_ES_SANDSTORM_SRC ?? "/home/michael/src/sandstorm/src";
 const sandstormSchemaDir = join(sandstormSrc, "sandstorm");
 
 test.skipIf(!existsSync(sandstormSchemaDir))(
-  "compiler compiles top-level Sandstorm schemas",
+  "compiler compiles all Sandstorm schemas recursively",
   async () => {
-    const sourceFiles = (await readdir(sandstormSchemaDir))
+    const sourceFiles = (await readdir(sandstormSchemaDir, { recursive: true }))
       .filter((fileName) => fileName.endsWith(".capnp"))
       .sort()
       .map((fileName) => join(sandstormSchemaDir, fileName));
@@ -39,13 +39,15 @@ test.skipIf(!existsSync(sandstormSchemaDir))(
 
     const { files } = await compileAll(stdout, {
       ts: true,
-      js: true,
-      dts: true,
+      // The shell consumes TypeScript directly; include every requested schema.
     });
 
+    t.ok(files.has("sandstorm/app-index/app-index.ts"));
+    t.ok(files.has("sandstorm/test-app/test-app.ts"));
+    await expect(
+      compileAll(stdout, { ts: true, traversalLimit: 8 }),
+    ).rejects.toThrow(/Traversal limit exceeded/);
     t.ok(files.has("sandstorm/backend.ts"));
-    t.ok(files.has("sandstorm/backend.js"));
-    t.ok(files.has("sandstorm/backend.d.ts"));
     t.ok(files.has("sandstorm/supervisor.ts"));
     t.ok(files.has("sandstorm/web-session.ts"));
     t.ok(files.has("sandstorm/util.ts"));

@@ -30,6 +30,7 @@ import {
  * @param opts.js - Whether to generate JavaScript (.js) files
  * @param opts.dts - Whether to generate TypeScript declaration (.d.ts) files
  * @param opts.tsconfig - Custom TypeScript compiler options
+ * @param opts.traversalLimit - Compiler traversal budget in bytes (default 1 GiB)
  * @returns Object containing the compilation context and generated files
  * @returns.ctx - The CodeGeneratorContext used during compilation
  * @returns.files - Map of file paths to their generated content
@@ -41,12 +42,19 @@ export async function compileAll(
     js?: boolean;
     dts?: boolean;
     tsconfig?: ts.CompilerOptions;
+    traversalLimit?: number;
   },
 ): Promise<{ ctx: CodeGeneratorContext; files: Map<string, string> }> {
   // Load requested files into context
-  const req = new Message(codeGenRequest, false).getRoot(
-    s.CodeGeneratorRequest,
-  );
+  // Compilation repeatedly visits the same schema graph. Its budget is separate
+  // from the smaller default used when decoding runtime RPC messages.
+  const traversalLimit = opts?.traversalLimit ?? 1024 * 1024 * 1024;
+  if (!Number.isSafeInteger(traversalLimit) || traversalLimit < 1) {
+    throw new RangeError("traversalLimit must be a positive safe integer");
+  }
+  const message = new Message(codeGenRequest, false);
+  message._capnp.traversalLimit = traversalLimit;
+  const req = message.getRoot(s.CodeGeneratorRequest);
   const ctx = new CodeGeneratorContext(req);
   ctx.files = req.requestedFiles.map((file) => loadRequestedFile(ctx, file));
 
