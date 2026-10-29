@@ -38,7 +38,7 @@ import {
   validate,
   trackPointerAllocation,
 } from "./pointer.utils";
-import { PointerType, checkPointer } from "./pointer";
+import { PointerType, checkPointer, checkPointerOffset } from "./pointer";
 import { Text, readText } from "./text";
 import {
   PTR_INIT_COMPOSITE_STRUCT,
@@ -273,8 +273,10 @@ export function getBit(
   const bitMask = 1 << (bitOffset % 8);
 
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
-  const v = ds.segment.getUint8(ds.byteOffset + byteOffset);
+  const v = segment.getUint8(offset);
 
   if (defaultMask === undefined) {
     return (v & bitMask) !== 0;
@@ -309,11 +311,13 @@ export function getDataSection(s: Struct): Pointer {
   return getContent(s);
 }
 
+// A near location is an offset in s.segment, avoiding a temporary Pointer and
+// its metadata. Far locations retain the general resolver and its validation.
 function getCheckedDataSection(
   byteOffset: number,
   byteLength: number,
   s: Struct,
-): Pointer {
+): number | Pointer {
   const segment = s.segment;
   const word = segment.getInt32(s.byteOffset);
   const high = segment.getUint32(s.byteOffset + 4);
@@ -327,10 +331,9 @@ function getCheckedDataSection(
     composite
   ) {
     const contentOffset = s.byteOffset + 8 + (word >> 2) * 8;
-    let ds: Pointer | undefined;
     let size = high;
     if (composite) {
-      ds = new Pointer(segment, contentOffset);
+      checkPointerOffset(segment, contentOffset);
       size = segment.getUint32(contentOffset + 4);
     }
     const dataByteLength = (size & 0xffff) * 8;
@@ -349,13 +352,15 @@ function getCheckedDataSection(
         ),
       );
     }
-    if (ds) {
-      trackPointerAllocation(segment.message, ds);
-      ds.byteOffset +=
-        8 + compositeIndex! * (dataByteLength + (size >>> 16) * 8);
-      return ds;
+    checkPointerOffset(segment, contentOffset);
+    if (composite) {
+      return (
+        contentOffset +
+        8 +
+        compositeIndex! * (dataByteLength + (size >>> 16) * 8)
+      );
     }
-    return new Pointer(segment, contentOffset);
+    return contentOffset;
   }
   checkDataBounds(byteOffset, byteLength, s);
   return getDataSection(s);
@@ -375,14 +380,14 @@ export function getFloat32(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getFloat32(ds.byteOffset + byteOffset);
+    return segment.getFloat32(offset);
   }
 
-  const v =
-    ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-    defaultMask.getUint32(0, true);
+  const v = segment.getUint32(offset) ^ defaultMask.getUint32(0, true);
   TMP_WORD.setUint32(0, v, NATIVE_LITTLE_ENDIAN);
   return TMP_WORD.getFloat32(0, NATIVE_LITTLE_ENDIAN);
 }
@@ -401,20 +406,18 @@ export function getFloat64(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
-    const lo =
-      ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-      defaultMask.getUint32(0, true);
-    const hi =
-      ds.segment.getUint32(ds.byteOffset + byteOffset + 4) ^
-      defaultMask.getUint32(4, true);
+    const lo = segment.getUint32(offset) ^ defaultMask.getUint32(0, true);
+    const hi = segment.getUint32(offset + 4) ^ defaultMask.getUint32(4, true);
     TMP_WORD.setUint32(0, lo, NATIVE_LITTLE_ENDIAN);
     TMP_WORD.setUint32(4, hi, NATIVE_LITTLE_ENDIAN);
     return TMP_WORD.getFloat64(0, NATIVE_LITTLE_ENDIAN);
   }
 
-  return ds.segment.getFloat64(ds.byteOffset + byteOffset);
+  return segment.getFloat64(offset);
 }
 
 /**
@@ -431,14 +434,14 @@ export function getInt16(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 2, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getInt16(ds.byteOffset + byteOffset);
+    return segment.getInt16(offset);
   }
 
-  const v =
-    ds.segment.getUint16(ds.byteOffset + byteOffset) ^
-    defaultMask.getUint16(0, true);
+  const v = segment.getUint16(offset) ^ defaultMask.getUint16(0, true);
   TMP_WORD.setUint16(0, v, NATIVE_LITTLE_ENDIAN);
   return TMP_WORD.getInt16(0, NATIVE_LITTLE_ENDIAN);
 }
@@ -457,14 +460,14 @@ export function getInt32(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getInt32(ds.byteOffset + byteOffset);
+    return segment.getInt32(offset);
   }
 
-  const v =
-    ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-    defaultMask.getUint16(0, true);
+  const v = segment.getUint32(offset) ^ defaultMask.getUint16(0, true);
   TMP_WORD.setUint32(0, v, NATIVE_LITTLE_ENDIAN);
   return TMP_WORD.getInt32(0, NATIVE_LITTLE_ENDIAN);
 }
@@ -483,20 +486,18 @@ export function getInt64(
   defaultMask?: DataView,
 ): bigint {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
-    const lo =
-      ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-      defaultMask.getUint32(0, true);
-    const hi =
-      ds.segment.getUint32(ds.byteOffset + byteOffset + 4) ^
-      defaultMask.getUint32(4, true);
+    const lo = segment.getUint32(offset) ^ defaultMask.getUint32(0, true);
+    const hi = segment.getUint32(offset + 4) ^ defaultMask.getUint32(4, true);
     TMP_WORD.setUint32(NATIVE_LITTLE_ENDIAN ? 0 : 4, lo, NATIVE_LITTLE_ENDIAN);
     TMP_WORD.setUint32(NATIVE_LITTLE_ENDIAN ? 4 : 0, hi, NATIVE_LITTLE_ENDIAN);
     return TMP_WORD.getBigInt64(0, NATIVE_LITTLE_ENDIAN);
   }
 
-  return ds.segment.getInt64(ds.byteOffset + byteOffset);
+  return segment.getInt64(offset);
 }
 
 /**
@@ -513,13 +514,14 @@ export function getInt8(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getInt8(ds.byteOffset + byteOffset);
+    return segment.getInt8(offset);
   }
 
-  const v =
-    ds.segment.getUint8(ds.byteOffset + byteOffset) ^ defaultMask.getUint8(0);
+  const v = segment.getUint8(offset) ^ defaultMask.getUint8(0);
   TMP_WORD.setUint8(0, v);
   return TMP_WORD.getInt8(0);
 }
@@ -752,15 +754,14 @@ export function getUint16(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 2, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getUint16(ds.byteOffset + byteOffset);
+    return segment.getUint16(offset);
   }
 
-  return (
-    ds.segment.getUint16(ds.byteOffset + byteOffset) ^
-    defaultMask.getUint16(0, true)
-  );
+  return segment.getUint16(offset) ^ defaultMask.getUint16(0, true);
 }
 
 /**
@@ -777,15 +778,14 @@ export function getUint32(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getUint32(ds.byteOffset + byteOffset);
+    return segment.getUint32(offset);
   }
 
-  return (
-    ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-    defaultMask.getUint32(0, true)
-  );
+  return segment.getUint32(offset) ^ defaultMask.getUint32(0, true);
 }
 
 /**
@@ -802,20 +802,18 @@ export function getUint64(
   defaultMask?: DataView,
 ): bigint {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
-    const lo =
-      ds.segment.getUint32(ds.byteOffset + byteOffset) ^
-      defaultMask.getUint32(0, true);
-    const hi =
-      ds.segment.getUint32(ds.byteOffset + byteOffset + 4) ^
-      defaultMask.getUint32(4, true);
+    const lo = segment.getUint32(offset) ^ defaultMask.getUint32(0, true);
+    const hi = segment.getUint32(offset + 4) ^ defaultMask.getUint32(4, true);
     TMP_WORD.setUint32(NATIVE_LITTLE_ENDIAN ? 0 : 4, lo, NATIVE_LITTLE_ENDIAN);
     TMP_WORD.setUint32(NATIVE_LITTLE_ENDIAN ? 4 : 0, hi, NATIVE_LITTLE_ENDIAN);
     return TMP_WORD.getBigUint64(0, NATIVE_LITTLE_ENDIAN);
   }
 
-  return ds.segment.getUint64(ds.byteOffset + byteOffset);
+  return segment.getUint64(offset);
 }
 
 /**
@@ -832,14 +830,14 @@ export function getUint8(
   defaultMask?: DataView,
 ): number {
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask === undefined) {
-    return ds.segment.getUint8(ds.byteOffset + byteOffset);
+    return segment.getUint8(offset);
   }
 
-  return (
-    ds.segment.getUint8(ds.byteOffset + byteOffset) ^ defaultMask.getUint8(0)
-  );
+  return segment.getUint8(offset) ^ defaultMask.getUint8(0);
 }
 
 export function initData(index: number, length: number, s: Struct): Data {
@@ -896,8 +894,10 @@ export function setBit(
   const bitMask = 1 << (bitOffset % 8);
 
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
-  const b = ds.segment.getUint8(ds.byteOffset + byteOffset);
+  const b = segment.getUint8(offset);
 
   // If the default mask bit is set, that means `true` values are actually written as `0`.
 
@@ -905,10 +905,7 @@ export function setBit(
     value = (defaultMask.getUint8(0) & bitMask) === 0 ? value : !value;
   }
 
-  ds.segment.setUint8(
-    ds.byteOffset + byteOffset,
-    value ? b | bitMask : b & ~bitMask,
-  );
+  segment.setUint8(offset, value ? b | bitMask : b & ~bitMask);
 }
 
 /**
@@ -926,18 +923,20 @@ export function setFloat32(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setFloat32(0, value, NATIVE_LITTLE_ENDIAN);
     const v =
       TMP_WORD.getUint32(0, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint32(0, true);
-    ds.segment.setUint32(ds.byteOffset + byteOffset, v);
+    segment.setUint32(offset, v);
 
     return;
   }
 
-  ds.segment.setFloat32(ds.byteOffset + byteOffset, value);
+  segment.setFloat32(offset, value);
 }
 
 /**
@@ -955,6 +954,8 @@ export function setFloat64(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setFloat64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -964,13 +965,13 @@ export function setFloat64(
     const hi =
       TMP_WORD.getUint32(4, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint32(4, true);
-    ds.segment.setUint32(ds.byteOffset + byteOffset, lo);
-    ds.segment.setUint32(ds.byteOffset + byteOffset + 4, hi);
+    segment.setUint32(offset, lo);
+    segment.setUint32(offset + 4, hi);
 
     return;
   }
 
-  ds.segment.setFloat64(ds.byteOffset + byteOffset, value);
+  segment.setFloat64(offset, value);
 }
 
 /**
@@ -988,18 +989,20 @@ export function setInt16(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 2, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt16(0, value, NATIVE_LITTLE_ENDIAN);
     const v =
       TMP_WORD.getUint16(0, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint16(0, true);
-    ds.segment.setUint16(ds.byteOffset + byteOffset, v);
+    segment.setUint16(offset, v);
 
     return;
   }
 
-  ds.segment.setInt16(ds.byteOffset + byteOffset, value);
+  segment.setInt16(offset, value);
 }
 
 /**
@@ -1017,18 +1020,20 @@ export function setInt32(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt32(0, value, NATIVE_LITTLE_ENDIAN);
     const v =
       TMP_WORD.getUint32(0, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint32(0, true);
-    ds.segment.setUint32(ds.byteOffset + byteOffset, v);
+    segment.setUint32(offset, v);
 
     return;
   }
 
-  ds.segment.setInt32(ds.byteOffset + byteOffset, value);
+  segment.setInt32(offset, value);
 }
 
 /**
@@ -1046,6 +1051,8 @@ export function setInt64(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setBigInt64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -1055,13 +1062,13 @@ export function setInt64(
     const hi =
       TMP_WORD.getUint32(NATIVE_LITTLE_ENDIAN ? 4 : 0, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint32(4, true);
-    ds.segment.setUint32(ds.byteOffset + byteOffset, lo);
-    ds.segment.setUint32(ds.byteOffset + byteOffset + 4, hi);
+    segment.setUint32(offset, lo);
+    segment.setUint32(offset + 4, hi);
 
     return;
   }
 
-  ds.segment.setInt64(ds.byteOffset + byteOffset, value);
+  segment.setInt64(offset, value);
 }
 
 /**
@@ -1079,16 +1086,18 @@ export function setInt8(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setInt8(0, value);
     const v = TMP_WORD.getUint8(0) ^ defaultMask.getUint8(0);
-    ds.segment.setUint8(ds.byteOffset + byteOffset, v);
+    segment.setUint8(offset, v);
 
     return;
   }
 
-  ds.segment.setInt8(ds.byteOffset + byteOffset, value);
+  segment.setInt8(offset, value);
 }
 
 export function setText(index: number, value: string, s: Struct): void {
@@ -1110,12 +1119,14 @@ export function setUint16(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 2, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint16(0, true);
   }
 
-  ds.segment.setUint16(ds.byteOffset + byteOffset, value);
+  segment.setUint16(offset, value);
 }
 
 /**
@@ -1133,12 +1144,14 @@ export function setUint32(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 4, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint32(0, true);
   }
 
-  ds.segment.setUint32(ds.byteOffset + byteOffset, value);
+  segment.setUint32(offset, value);
 }
 
 /**
@@ -1156,6 +1169,8 @@ export function setUint64(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 8, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     TMP_WORD.setBigUint64(0, value, NATIVE_LITTLE_ENDIAN);
@@ -1165,13 +1180,13 @@ export function setUint64(
     const hi =
       TMP_WORD.getUint32(NATIVE_LITTLE_ENDIAN ? 4 : 0, NATIVE_LITTLE_ENDIAN) ^
       defaultMask.getUint32(4, true);
-    ds.segment.setUint32(ds.byteOffset + byteOffset, lo);
-    ds.segment.setUint32(ds.byteOffset + byteOffset + 4, hi);
+    segment.setUint32(offset, lo);
+    segment.setUint32(offset + 4, hi);
 
     return;
   }
 
-  ds.segment.setUint64(ds.byteOffset + byteOffset, value);
+  segment.setUint64(offset, value);
 }
 
 /**
@@ -1189,11 +1204,13 @@ export function setUint8(
   defaultMask?: DataView,
 ): void {
   const ds = getCheckedDataSection(byteOffset, 1, s);
+  const segment = typeof ds === "number" ? s.segment : ds.segment;
+  const offset = (typeof ds === "number" ? ds : ds.byteOffset) + byteOffset;
 
   if (defaultMask !== undefined) {
     value ^= defaultMask.getUint8(0);
   }
-  ds.segment.setUint8(ds.byteOffset + byteOffset, value);
+  segment.setUint8(offset, value);
 }
 
 export function testWhich(

@@ -97,3 +97,23 @@ export function checkPointer(
     throw new Error(format(PTR_OFFSET_OUT_OF_BOUNDS, byteOffset));
   }
 }
+
+// Validate a temporary location without materializing a Pointer on successful
+// reads. The cold path uses the constructor to retain check ordering, error
+// context, and traversal accounting, including failures at an exhausted budget.
+export function checkPointerOffset(
+  segment: Segment,
+  byteOffset: number,
+  depthLimit = MAX_DEPTH,
+): void {
+  if (
+    depthLimit < 1 ||
+    segment.message._capnp.traversalLimit <= 8 ||
+    byteOffset < 0 ||
+    byteOffset > segment.byteLength
+  ) {
+    new Pointer(segment, byteOffset, depthLimit);
+    return;
+  }
+  segment.message._capnp.traversalLimit -= 8;
+}

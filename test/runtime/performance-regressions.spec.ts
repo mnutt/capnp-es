@@ -205,3 +205,35 @@ test.each(["near", "composite", "far"])(
     }
   },
 );
+
+test("scalar offset fast path preserves malformed-content errors", () => {
+  const message = new Message();
+  const segment = message.getSegment(0);
+  segment.allocate(32);
+  const root = new TestAllTypes(segment, 0);
+  for (const offsetWords of [-2, -1, 0, 4, 5, 10000]) {
+    segment.setInt32(0, offsetWords << 2);
+    segment.setUint32(4, 1); // one data word, no pointers
+    for (const budget of [8, 16, 24, 1024]) {
+      const read = (optimized: boolean) => {
+        message._capnp.traversalLimit = budget;
+        try {
+          let value;
+          if (optimized) value = utils.getUint32(0, root);
+          else {
+            utils.checkDataBounds(0, 4, root);
+            const c = utils.getDataSection(root);
+            value = c.segment.getUint32(c.byteOffset);
+          }
+          return { value, budget: message._capnp.traversalLimit };
+        } catch (error_) {
+          return {
+            error: String(error_),
+            budget: message._capnp.traversalLimit,
+          };
+        }
+      };
+      expect(read(true)).toEqual(read(false));
+    }
+  }
+});
