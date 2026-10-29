@@ -16,7 +16,7 @@ export class TextList extends List<string> {
 
     c.byteOffset += index * 8;
 
-    return Text.fromPointer(c).get(0);
+    return Text.fromPointer(c, false).get(0);
   }
 
   set(index: number, value: string): void {
@@ -24,7 +24,7 @@ export class TextList extends List<string> {
 
     c.byteOffset += index * 8;
 
-    Text.fromPointer(c).set(0, value);
+    Text.fromPointer(c, false).set(0, value);
   }
 
   [Symbol.toStringTag](): string {

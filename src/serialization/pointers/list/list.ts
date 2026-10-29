@@ -54,9 +54,16 @@ export class List<T> extends Pointer implements Array<T> {
 
   [n: number]: T;
 
-  constructor(segment: Segment, byteOffset: number, depthLimit?: number) {
+  constructor(
+    segment: Segment,
+    byteOffset: number,
+    depthLimit?: number,
+    indexed = true,
+  ) {
     super(segment, byteOffset, depthLimit);
-    return new Proxy(this, List.#proxyHandler);
+    // Internal text access does not need an indexable facade. Public lists keep
+    // their existing bracket-access and receiver semantics.
+    return indexed ? new Proxy(this, List.#proxyHandler) : this;
   }
 
   static #proxyHandler: ProxyHandler<List<any>> = {

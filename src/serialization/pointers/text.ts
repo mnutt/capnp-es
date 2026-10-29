@@ -9,10 +9,10 @@ const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
 export class Text extends List<string> {
-  static fromPointer(pointer: Pointer): Text {
+  static fromPointer(pointer: Pointer, indexed = true): Text {
     validate(PointerType.LIST, pointer, ListElementSize.BYTE);
 
-    return textFromPointerUnchecked(pointer);
+    return textFromPointerUnchecked(pointer, indexed);
   }
 
   /**
@@ -105,10 +105,11 @@ export class Text extends List<string> {
   }
 }
 
-function textFromPointerUnchecked(pointer: Pointer): Text {
+function textFromPointerUnchecked(pointer: Pointer, indexed: boolean): Text {
   return new Text(
     pointer.segment,
     pointer.byteOffset,
     pointer._capnp.depthLimit,
+    indexed,
   );
 }

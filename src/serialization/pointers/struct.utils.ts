@@ -644,7 +644,7 @@ export function getText(
   s: Struct,
   defaultValue?: string,
 ): string {
-  const t = Text.fromPointer(getPointer(index, s));
+  const t = Text.fromPointer(getPointer(index, s), false);
 
   // FIXME: This will perform an unnecessary string<>ArrayBuffer roundtrip.
   if (isNull(t) && defaultValue) {
@@ -1032,7 +1032,7 @@ export function setInt8(
 }
 
 export function setText(index: number, value: string, s: Struct): void {
-  Text.fromPointer(getPointer(index, s)).set(0, value);
+  Text.fromPointer(getPointer(index, s), false).set(0, value);
 }
 
 /**

@@ -18,6 +18,22 @@ test("near pointer decoding preserves signed offsets and traversal accounting", 
   expect(message._capnp.traversalLimit).toBe(before - 8);
 });
 
+test("public lists retain indexing, callback identity, and snapshot iteration", () => {
+  const list = new Message().initRoot(ListMania)._initUint32List(3);
+  list.set(0, 10);
+  list.set(1, 20);
+  list.set(2, 30);
+  expect(list[1]).toBe(20);
+  expect(list.at(-1)).toBe(30);
+  // Exercise callback receiver identity as part of the public Array API.
+  // eslint-disable-next-line unicorn/no-array-for-each
+  list.forEach((_v, _i, array) => expect(array).toBe(list));
+  const iterator = list.values();
+  list.set(0, 99);
+  expect([...iterator]).toEqual([10, 20, 30]);
+  expect([...list]).toEqual([99, 20, 30]);
+});
+
 test("internal text fast path preserves Unicode and public Text indexing", () => {
   const root = new Message().initRoot(ListMania);
   const list = root._initTextList(5);
