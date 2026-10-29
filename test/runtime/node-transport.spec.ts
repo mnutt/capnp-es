@@ -1,4 +1,5 @@
 import { Duplex, PassThrough } from "node:stream";
+import { once } from "node:events";
 import { describe, test, expect, assert as t } from "vitest";
 import { CapnpRpcError } from "capnp-es";
 import {
@@ -51,6 +52,40 @@ class RecordingDuplex extends Duplex {
       Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding),
     );
     callback();
+  }
+}
+
+class BackpressuredDuplex extends Duplex {
+  readonly batches: Buffer[][] = [];
+  private callbacks: Array<() => void> = [];
+
+  constructor() {
+    super({ writableHighWaterMark: 128 });
+  }
+
+  _read(): void {
+    // Tests control write completion and inspect the recorded bytes.
+  }
+
+  _write(
+    chunk: Buffer,
+    _encoding: BufferEncoding,
+    callback: (error?: Error | null) => void,
+  ): void {
+    this.batches.push([Buffer.from(chunk)]);
+    this.callbacks.push(callback);
+  }
+
+  _writev(
+    chunks: Array<{ chunk: Buffer; encoding: BufferEncoding }>,
+    callback: (error?: Error | null) => void,
+  ): void {
+    this.batches.push(chunks.map(({ chunk }) => Buffer.from(chunk)));
+    this.callbacks.push(callback);
+  }
+
+  completeWrite(): void {
+    this.callbacks.shift()!();
   }
 }
 
@@ -127,6 +162,78 @@ describe("Node RPC transport", () => {
       transport.close();
     },
   );
+
+  test("uncorks multi-chunk writes under backpressure and preserves frame order", async () => {
+    const stream = new BackpressuredDuplex();
+    const transport = transportFromDuplex(stream);
+    const messages = [1, 2, 3].map((id) => {
+      const message = new Message();
+      const root = message.initRoot(RPCMessage);
+      const call = root._initCall();
+      call.questionId = id;
+      call._initParams()._initCapTable(100);
+      return { message, root };
+    });
+    const expected = Buffer.concat(
+      messages.map(({ message }) => Buffer.from(message.toArrayBuffer())),
+    );
+
+    try {
+      for (const { root } of messages) transport.sendMessage(root);
+      t.lengthOf(stream.batches, 1);
+      t.lengthOf(stream.batches[0], 2);
+      t.equal(stream.writableCorked, 0);
+
+      for (let i = 0; i < messages.length; i++) {
+        const drained = once(stream, "drain");
+        stream.completeWrite();
+        await drained;
+        t.equal(stream.writableCorked, 0);
+      }
+      t.deepEqual(Buffer.concat(stream.batches.flat()), expected);
+    } finally {
+      transport.close();
+    }
+  });
+
+  test("closes the transport when a vectored write throws during uncork", async () => {
+    const failure = new Error("writev failed");
+    class ThrowingDuplex extends RecordingDuplex {
+      _writev(): void {
+        throw failure;
+      }
+    }
+    const stream = new ThrowingDuplex();
+    const transport = transportFromDuplex(stream);
+    const root = new Message().initRoot(RPCMessage);
+    root._initCall()._initParams()._initCapTable(100);
+    const received = transport.recvMessage();
+    transport.sendMessage(root);
+    await expect(received).rejects.toMatchObject({
+      code: "disconnected",
+      cause: failure,
+    });
+    t.isTrue(stream.destroyed);
+    t.equal(stream.writableCorked, 0);
+  });
+
+  test("enforces the transport queue limit while a vectored write is blocked", async () => {
+    const stream = new BackpressuredDuplex();
+    const message = new Message();
+    const root = message.initRoot(RPCMessage);
+    root._initCall()._initParams()._initCapTable(100);
+    const transport = transportFromDuplex(stream, {
+      maxQueuedBytes: message.toArrayBuffer().byteLength,
+    });
+    const received = transport.recvMessage();
+    transport.sendMessage(root);
+    transport.sendMessage(root);
+    t.throws(() => transport.sendMessage(root), /queue limit exceeded/);
+    await expect(received).rejects.toMatchObject({ code: "disconnected" });
+    t.isTrue(stream.destroyed);
+    t.equal(stream.writableCorked, 0);
+    stream.completeWrite();
+  });
 
   test("writes large stream frames without concatenating segment chunks", () => {
     const stream = new RecordingDuplex();

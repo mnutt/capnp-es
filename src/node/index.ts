@@ -258,21 +258,35 @@ export class NodeRpcTransport extends DeferredTransport {
       return;
     }
 
-    while (this.writeQueue.length > 0) {
-      const frame = this.writeQueue.shift()!;
-      this.queuedBytes -= frame.byteLength;
-      let canContinue: boolean;
-      try {
-        canContinue = this.stream.write(frame);
-      } catch (error_) {
-        this.fail(disconnected("transport write failed", error_));
-        return;
-      }
+    const batch = this.writeQueue.length > 1;
+    if (batch) this.stream.cork();
+    try {
+      while (this.writeQueue.length > 0) {
+        const frame = this.writeQueue.shift()!;
+        this.queuedBytes -= frame.byteLength;
+        let canContinue: boolean;
+        try {
+          canContinue = this.stream.write(frame);
+        } catch (error_) {
+          this.fail(disconnected("transport write failed", error_));
+          return;
+        }
 
-      if (!canContinue) {
-        this.waitingForDrain = true;
-        this.stream.once("drain", this.onDrain);
-        return;
+        if (!canContinue) {
+          this.waitingForDrain = true;
+          this.stream.once("drain", this.onDrain);
+          return;
+        }
+      }
+    } finally {
+      // Flush even when a corked write reports backpressure: waiting for drain
+      // before uncorking would leave the buffered chunks unable to drain.
+      if (batch) {
+        try {
+          this.stream.uncork();
+        } catch (error_) {
+          this.fail(disconnected("transport write failed", error_));
+        }
       }
     }
   }
