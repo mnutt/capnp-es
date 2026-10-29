@@ -578,6 +578,9 @@ export class Conn {
   }
 
   populateMessageCapTable(payload: Payload): void {
+    // The generated getter initializes a missing composite list. A received
+    // frame has no spare capacity, so even an empty table can grow its buffer.
+    if (!payload._hasCapTable()) return;
     const msg = payload.segment.message;
     const ctab = payload.capTable;
     for (const desc of ctab) {
@@ -941,6 +944,7 @@ export class Conn {
 
   collectPayloadSenderHosted(payload: Payload): number[] {
     const out: number[] = [];
+    if (!payload._hasCapTable()) return out;
     for (const desc of payload.capTable) {
       if (desc.which() === CapDescriptor.SENDER_HOSTED) {
         out.push(desc.senderHosted);
